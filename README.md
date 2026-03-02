@@ -1,14 +1,7 @@
-# TIW v1 Spec File Set (EDCM + PTCA/PCTA + PCNA)
+# TIW Addendum Package: Fiddly Bits (Thread)
 
-This folder is the **canon** for v1.0.2-S9.
+This package contains the canonicalized thread addendum.
 
-## Contents
-- canon/spec.md — frozen canonical spec
-- canon/CHANGELOG.md — append-only changelog
-- config/v1.0.2.json — frozen constants
-- schemas/events.schema.json — event schema
-- logs/events.jsonl — append-only event log (empty)
+- `canon/addenda/ADDENDUM_FIDDLY_BITS_THREAD.md`
 
-## Invariants
-- Update the spec only by versioned replacement (new file/version tag), never silent edits.
-- Append events to logs/events.jsonl; never rewrite.
+hmm — unresolved constraint marker: If you want this merged into the full canon zip, say so and I will rebuild a combined package.
