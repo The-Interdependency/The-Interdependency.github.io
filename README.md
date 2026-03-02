@@ -1,17 +1,7 @@
-# Interdependent Way
+# TIW Addendum Package: Fiddly Bits (Thread)
 
-A competence-based interdependency framework.
+This package contains the canonicalized thread addendum.
 
-## Core Components
+- `canon/addenda/ADDENDUM_FIDDLY_BITS_THREAD.md`
 
-- **EDCM** — Energy–Dissonance Circuit Model
-- **PCNA/PCTA** — Prime tensor architectures
-- Transcript parsing + metrics engines
-
-## Status
-
-Active early-stage build.
-
-## License
-
-Apache 2.0
+hmm — unresolved constraint marker: If you want this merged into the full canon zip, say so and I will rebuild a combined package.
