@@ -13,6 +13,17 @@ The core of a0p's intelligence lies in its EDCMBONE engine, utilizing Prime Tens
 
 ---
 
+# A0
+
+A0 is the instantiated runtime embodiment of PTCA.
+
+## Core split
+- Heartbeat: world-facing cadence, scheduling, sensing, deployment rhythm
+- Psi: interpretation, synthesis, discernment, council coordination
+- Omega: commitment, integration, release, terminal authority layer
+
+---
+
 # TIW Addendum Package: Fiddly Bits (Thread)
 
 This package contains the canonicalized thread addendum.
