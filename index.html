@@ -30,6 +30,27 @@
         padding: 15px; /* Reduce container padding */
       }
     }
+
+    /* Dark mode styles */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #1a1a1a;
+        color: #f4f4f4;
+      }
+      .container {
+        background: #2a2a2a;
+        box-shadow: 0 0 10px rgba(255,255,255,0.1);
+      }
+      h1, h2 {
+        color: #90caf9; /* Lighter blue for dark mode */
+      }
+      a {
+        color: #bbdefb; /* Lighter blue for links */
+      }
+      h2 {
+        border-bottom-color: #444; /* Darker border for headings */
+      }
+    }
   </style>
 </head>
 <body>
