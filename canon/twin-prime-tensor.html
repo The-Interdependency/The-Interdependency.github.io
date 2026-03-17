@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCNA • Twin Prime Tensor</title>
+    <style>
+        body { background: #0a0a0a; color: #ddd; font-family: 'Georgia', serif; line-height: 1.7; margin: 0; padding: 0; }
+        .container { max-width: 960px; margin: 40px auto; padding: 40px; background: #111; border: 1px solid #333; }
+        h1 { color: #a0e0ff; }
+        .viz-container { text-align: center; margin: 40px 0; }
+        .circle { width: 420px; height: 420px; border: 3px solid #334455; border-radius: 50%; margin: 0 auto; position: relative; background: radial-gradient(circle at center, #1a1a2e 0%, #000 70%); box-shadow: 0 0 60px rgba(0, 180, 255, 0.15); }
+        .legend { margin: 30px 0; display: flex; justify-content: center; gap: 40px; font-size: 0.95em; }
+        .legend-item { display: flex; align-items: center; gap: 10px; }
+        .green-dot { width: 18px; height: 18px; background: #00ffaa; border-radius: 50%; box-shadow: 0 0 12px #00ffaa; }
+        .white-dot { width: 18px; height: 18px; background: #eeeeee; border-radius: 50%; opacity: 0.7; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PCNA • Twin Prime Tensor</h1>
+        <p><strong>Stage 5</strong> — Twin primes displayed in green. Twin prime gaps rendered in white on the 2880-unit circular model.</p>
+        
+        <div class="viz-container">
+            <div class="circle" id="twin-viz">
+                <!-- Visualization would be rendered here via canvas or SVG in a full implementation -->
+            </div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item"><div class="green-dot"></div><span>Twin Primes (p, p+2)</span></div>
+            <div class="legend-item"><div class="white-dot"></div><span>Twin Prime Gaps / Spacing</span></div>
+        </div>
+
+        <p>This visualization highlights the delicate pairing structure within the prime ray lattice. The green marks reveal where the prime field exhibits the twin prime phenomenon, while white emphasizes the characteristic gap of 2.</p>
+
+        <p style="margin-top:50px; opacity:0.6; font-size:0.9em;">
+            Part of the Prime Circular Tensor Architecture (PCNA) progression<br>
+            <a href="prime-tensor-progression.html">← Back to Full Progression Gallery</a>
+        </p>
+    </div>
+</body>
+</html>
