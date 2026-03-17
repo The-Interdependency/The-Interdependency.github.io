@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prime Tensor Animations | PTCA/PCNA Artifacts</title>
+    <style>
+        body { background:#0a0a0a; color:#ddd; font-family:'Georgia', serif; margin:0; padding:20px; }
+        h1 { color:#88ccff; text-align:center; }
+        .controls { background:#111; padding:15px; border-radius:8px; margin:20px 0; }
+        canvas { background:#000; border:1px solid #333; margin:10px; image-rendering:pixelated; }
+        .overlay-toggle { margin:5px; }
+    </style>
+</head>
+<body>
+    <h1>Prime Tensor Field Explorer</h1>
+    <p style="text-align:center; max-width:800px; margin:0 auto 30px;">
+        Animated visualization of primes in cylindrical, unwrapped, and unit circle views.<br>
+        Up to the first 1,000,000 primes. Multiple overlays enabled.
+    </p>
+
+    <div class="controls">
+        <button onclick="toggleAnimation()">Play / Pause</button>
+        <button onclick="resetAnimation()">Reset</button>
+        <label>Speed: <input type="range" id="speed" min="1" max="50" value="10"></label>
+        <label>Model: 
+            <select id="modelSelect" onchange="changeModel()">
+                <option value="360">360-unit</option>
+                <option value="2880" selected>2880-unit (8×)</option>
+            </select>
+        </label>
+        <br><br>
+        <strong>Overlays:</strong><br>
+        <label><input type="checkbox" checked onchange="toggleOverlay(0)"> Primes (white)</label>
+        <label><input type="checkbox" checked onchange="toggleOverlay(1)"> Twin Primes (green)</label>
+        <label><input type="checkbox" onchange="toggleOverlay(2)"> Prime Gaps (red)</label>
+        <label><input type="checkbox" onchange="toggleOverlay(3)"> Squares (blue)</label>
+        <label><input type="checkbox" onchange="toggleOverlay(4)"> Fibonacci (gold)</label>
+    </div>
+
+    <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:20px;">
+        <div>
+            <h3>Cylinder View</h3>
+            <canvas id="cylinder" width="600" height="600"></canvas>
+        </div>
+        <div>
+            <h3>Cylindrical Unwrap</h3>
+            <canvas id="unwrap" width="800" height="400"></canvas>
+        </div>
+        <div>
+            <h3>Current Unit Circle</h3>
+            <canvas id="unit" width="500" height="500"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // Placeholder for full animation logic
+        console.log("%cPrime Tensor Animation Engine Initialized", "color:#88ccff; font-size:14px;");
+        console.log("This is a living demonstration under The Interdependent Way.");
+
+        let isPlaying = false;
+        let currentPrimeIndex = 0;
+        const maxPrimes = 1000000;
+
+        function toggleAnimation() {
+            isPlaying = !isPlaying;
+            console.log(isPlaying ? "Animation started" : "Animation paused");
+        }
+
+        function resetAnimation() {
+            currentPrimeIndex = 0;
+            console.log("Animation reset to beginning");
+        }
+
+        function changeModel() {
+            console.log("Switched to model:", document.getElementById("modelSelect").value);
+        }
+
+        function toggleOverlay(n) {
+            console.log("Overlay toggled:", n);
+        }
+
+        // Future: Full canvas drawing code for cylinder, unwrap, and unit circle will be implemented here.
+        // Currently in scaffolding stage per user request.
+    </script>
+
+    <p style="text-align:center; margin-top:40px; opacity:0.6;">
+        Living Demonstration • Prime Circular Tensor Architecture (PTCA)<br>
+        Part of <a href="https://interdependentway.org" style="color:#88ccff;">The Interdependent Way</a>
+    </p>
+</body>
+</html>
