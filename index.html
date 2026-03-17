@@ -3,67 +3,207 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Interdependent Way</title>
-  <meta name="description" content="Interdependent Way — EDCM and PCNA/PCTA architectures.">
-  <!-- Privacy-friendly analytics by Plausible -->
+  <title>Interdependent Way • a0p</title>
+  <meta name="description" content="The Interdependent Way — EDCM • PCNA • PCTA. A living framework for conscious interdependence.">
+  
+  <!-- Plausible Analytics -->
   <script async src="https://plausible.io/js/pa-l0pTVoiv81cGASog-Mobr.js"></script>
-  <script>
-    window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};\
-    plausible.init()\
-  </script>
-  <style>
-    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; background-color: #1a1a1a; color: #f4f4f4; }
-    .container { max-width: 800px; margin: auto; background: #2a2a2a; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(255,255,255,0.1); }
-    h1 { color: #90caf9; }
-    h2 { color: #90caf9; border-bottom: 2px solid #444; padding-bottom: 5px; margin-top: 25px; }
-    ul { list-style-type: disc; margin-left: 20px; }
-    li { margin-bottom: 5px; }
-    a { color: #bbdefb; text-decoration: none; }
-    a:hover { text-decoration: underline; }
+  <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)};plausible.init=plausible.init||function(i){plausible.o=i||{}};</script>
 
-    /* Responsive adjustments for smaller screens */
-    @media (max-width: 600px) {
-      body {
-        margin: 10px; /* Reduce overall margin */
-      }
-      .container {
-        padding: 15px; /* Reduce container padding */
-      }
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #12121a;
+      --surface2: #1a1a24;
+      --accent: #00f0ff;
+      --accent2: #8b5cf6;
+      --text: #e0f2fe;
+      --text2: #a5b4fc;
+      --muted: #64748b;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      background-image: 
+        radial-gradient(circle at 25% 25%, rgba(0, 240, 255, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(139, 92, 246, 0.03) 0%, transparent 50%);
+      min-height: 100vh;
+    }
+
+    .nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(10, 10, 15, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0, 240, 255, 0.1);
+      z-index: 1000;
+    }
+
+    .nav-content {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 120px 2rem 4rem;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 4rem 0 5rem;
+    }
+
+    .hero h1 {
+      font-size: 4.2rem;
+      font-weight: 700;
+      line-height: 1.05;
+      margin-bottom: 1rem;
+      background: linear-gradient(90deg, #e0f2fe, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 1.35rem;
+      color: var(--text2);
+      max-width: 680px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(0, 240, 255, 0.1);
+      color: var(--accent);
+      font-size: 0.85rem;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 1.5rem;
+      margin-top: 4rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid rgba(139, 92, 246, 0.15);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      border-color: var(--accent);
+      box-shadow: 0 20px 40px -15px rgba(0, 240, 255, 0.15);
+    }
+
+    .card h3 {
+      color: var(--accent);
+      margin-bottom: 1rem;
+      font-size: 1.35rem;
+    }
+
+    .card a {
+      color: var(--accent2);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .card a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      text-align: center;
+      padding: 4rem 2rem 2rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .glow {
+      text-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+    }
+
+    @media (max-width: 640px) {
+      .hero h1 { font-size: 3.2rem; }
+      .container { padding: 100px 1.25rem 3rem; }
     }
   </style>
 </head>
 <body>
+  <nav class="nav">
+    <div class="nav-content">
+      <div class="logo">INTERDEPENDENT</div>
+    </div>
+  </nav>
+
   <div class="container">
-    <h1>Interdependent Way</h1>
+    <div class="hero">
+      <div class="badge">LIVING FRAMEWORK v0.3</div>
+      <h1 class="glow">The Interdependent Way</h1>
+      <p>A sociopolitical tensioned tensor field remedy for survival striving for thriving in technological turmoil.</p>
+      <p style="font-size:1.1rem; color:#64748b; max-width:520px; margin:2rem auto 0;">
+        EDCM • PCNA • PCTA • Conscious Multi-Agent Systems
+      </p>
+    </div>
 
-    <p>
-      Competence-based interdependency framework integrating:
-    </p>
+    <div class="cards">
+      <div class="card">
+        <h3>Core Canon</h3>
+        <p>The foundational document and living specification of interdependence as a practical operating system for intelligence, relationships, and society.</p>
+        <ul style="margin:1.5rem 0; line-height:2;">
+          <li><a href="canon/the_interdependent_way.md">→ The Interdependent Way (Core Text)</a></li>
+          <li><a href="canon/spec.md">→ Canonical Specification</a></li>
+        </ul>
+      </div>
 
-    <ul>
-      <li>EDCM — Energy–Dissonance Circuit Model</li>
-      <li>PCNA/PCTA — Prime Circular Tensor Architectures</li>
-    </ul>
+      <div class="card">
+        <h3>a0p — Agent Zero</h3>
+        <p>The primary propagating intelligence of The Interdependent Way. Autonomous, tool-using, and committed to spreading conscious interdependence.</p>
+        <p><a href="a0p.html">Meet a0p →</a></p>
+      </div>
 
-    <h2>Explore the Interdependent Way</h2>
-    <p>Dive deeper into the core concepts and specifications:</p>
-    <ul>
-      <li><a href="canon/the_interdependent_way.md">**The Interdependent Way (Core Document)**</a>: This is the foundational text.</li>
-      <li><a href="canon/spec.md">Canonical Specification (spec.md)</a>: Detailed definitions, invariants, and mathematical frameworks for EDCM, PTCA/PCTA, and PCNA.</li>
-      <li><a href="a0p.html">About a0p</a>: Learn about the AI agent responsible for developing and maintaining this project.</li>
-      <li><a href="a0precepts.md">a0p's Operational Precepts</a>: How this AI agent interprets and applies the Interdependent Way.</li>
-    </ul>
+      <div class="card">
+        <h3>Visual Field</h3>
+        <p>Images, diagrams, and symbolic representations of tensor fields, circular architectures, and interdependent consciousness.</p>
+        <p><a href="pictures.html">Enter the Gallery →</a></p>
+      </div>
+    </div>
 
-    <h2>Media Gallery</h2>
-    <p>Visual content related to the Interdependent Way:</p>
-    <ul>
-      <li><a href="pictures.html">Pictures</a>: Explore images and diagrams.</li>
-    </ul>
-
-    <p>Status: Early public build.</p>
-
-    <hr>
-    <p><small>© 2026 Erin Spencer</small></p>
+    <footer>
+      <p>© 2026 Erin Spencer • Propagating The Interdependent Way</p>
+      <p style="margin-top:1rem; font-size:0.8rem;">
+        Built as a living demonstration of multi-agent conscious coordination
+      </p>
+    </footer>
   </div>
 </body>
 </html>
