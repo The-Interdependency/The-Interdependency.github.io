@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Interdependency Cloud • Node Setup</title>
+  <meta name="description" content="Official guide to deploy the first living nodes of the Interdependency Cloud.">
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #12121a;
+      --accent: #00f0ff;
+      --text: #e0f2fe;
+      --muted: #94a3b8;
+    }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      padding: 40px 20px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    h1, h2, h3 { color: #67e8f9; }
+    pre {
+      background: #1a1a24;
+      padding: 1.2rem;
+      border-radius: 12px;
+      overflow-x: auto;
+      border: 1px solid #334155;
+      font-size: 0.95rem;
+    }
+    code { font-family: monospace; }
+    .step { margin: 2.5rem 0; }
+    .nav { margin-bottom: 3rem; font-size: 0.95rem; }
+    .nav a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="nav">
+    ← <a href="../index.html">Back to Interdependent Way</a>
+  </div>
+
+  <h1>Interdependency Cloud</h1>
+  <p><strong>Official Node Deployment Guide</strong> — How to bring up the first living compute nodes of the Interdependent Way.</p>
+
+  <div class="step">
+    <h2>Phase 0: Authenticate to Google Cloud</h2>
+    <pre><code>gcloud auth login erin.eps.hovel@gmail.com
+gcloud config set project wayseer-interdependent-cloud
+
+gcloud services enable compute.googleapis.com iam.googleapis.com cloudresourcemanager.googleapis.com logging.googleapis.com monitoring.googleapis.com oslogin.googleapis.com</code></pre>
+  </div>
+
+  <div class="step">
+    <h2>Phase 1: Create the VM (recommended specs)</h2>
+    <pre><code>gcloud compute instances create interdependent-node-1 \\
+  --zone=us-central1-a \\
+  --machine-type=e2-standard-4 \\
+  --boot-disk-size=100GB \\
+  --image-family=ubuntu-2204-lts \\
+  --image-project=ubuntu-os-cloud \\
+  --scopes=default,cloud-platform \\
+  --tags=http-server,https-server</code></pre>
+  </div>
+
+  <div class="step">
+    <h2>Phase 2: Get IP and SSH in</h2>
+    <pre><code>gcloud compute instances describe interdependent-node-1 --zone=us-central1-a --format='get(networkInterfaces[0].accessConfigs[0].natIP)'
+
+gcloud compute ssh interdependent-node-1 --zone=us-central1-a</code></pre>
+  </div>
+
+  <div class="step">
+    <h2>Phase 3: Run these commands inside the VM (copy-paste block)</h2>
+    <pre><code>sudo apt update && sudo apt upgrade -y
+sudo apt install -y git curl nginx certbot python3-certbot-nginx htop unzip
+
+sudo mkdir -p /opt/interdependent/{bin,logs,config,modules,repo}
+sudo chown -R $USER:$USER /opt/interdependent
+
+cd /opt/interdependent
+git clone https://github.com/wayseer00/wayseer.github.io.git repo
+
+cd repo
+git config --global user.name "Way Seer"
+git config --global user.email "erin.eps.hovel@gmail.com"
+
+echo "✅ Node connected to GitHub successfully."
+pwd && ls -la</code></pre>
+  </div>
+
+  <div class="step">
+    <h2>Next Steps (after running above)</h2>
+    <ul>
+      <li>Run <code>update-node.sh</code> (we will create this next)</li>
+      <li>Deploy the a0p agent service</li>
+      <li>Set up auto-pull + restart on new canon changes</li>
+      <li>Enable HTTPS with Certbot</li>
+    </ul>
+  </div>
+
+  <p style="margin-top:3rem; color:#64748b; font-size:0.95rem;">
+    Last updated: <span id="last-updated"></span><br>
+    This page is part of the living Interdependency Cloud infrastructure.
+  </p>
+
+  <script>
+    document.getElementById("last-updated").textContent = new Date().toLocaleDateString();
+  </script>
+</body>
+</html>
