@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transcript Analyzer v0 • The Interdependent Way</title>
+    <style>
+        body { font-family: system-ui, sans-serif; background: #0a0a0a; color: #ddd; line-height: 1.6; max-width: 900px; margin: 40px auto; padding: 0 20px; }
+        h1, h2 { color: #88ccff; }
+        pre, code { background: #111; padding: 15px; border-radius: 6px; overflow-x: auto; }
+        .schema { background: #112233; padding: 20px; border-left: 4px solid #88ccff; }
+        .frozen { border: 2px solid #44aa66; padding: 15px; margin: 20px 0; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <h1>Transcript Analyzer v0</h1>
+    <p><strong>Frozen Specification</strong> — 19 March 2026</p>
+
+    <div class="frozen">
+        <h2>1. Transcript JSON Schema (frozen)</h2>
+        <p>See <a href="transcript-schema-v0.json">transcript-schema-v0.json</a></p>
+    </div>
+
+    <h2>2. Per-Turn Labels (frozen)</h2>
+    <ul>
+        <li>question</li>
+        <li>request</li>
+        <li>claim</li>
+        <li>feeling / affect</li>
+        <li>instruction</li>
+        <li>commitment</li>
+        <li>refusal</li>
+        <li>uncertainty</li>
+        <li>narrative</li>
+        <li>meta-comment</li>
+    </ul>
+
+    <h2>3. Cross-Turn Relation Types (frozen)</h2>
+    <ul>
+        <li>answers</li>
+        <li>contradicts</li>
+        <li>supports</li>
+        <li>clarifies</li>
+        <li>escalates</li>
+        <li>defers</li>
+        <li>reframes</li>
+    </ul>
+
+    <h2>4. Output Artifact Set for v0 (frozen)</h2>
+    <ul>
+        <li>Cleaned turn list with labels</li>
+        <li>Top topics</li>
+        <li>Explicit requests</li>
+        <li>Explicit commitments</li>
+        <li>Unanswered questions / open loops</li>
+        <li>Detected contradictions</li>
+        <li>Concise summary</li>
+        <li>Candidate memory entries</li>
+    </ul>
+
+    <p>This schema and these definitions are now frozen as the v0 baseline for A0’s transcript-to-structure engine. EDCM will be applied as the control-signal and constraint-persistence layer on top of this foundation.</p>
+
+    <p>Next: Implement Pass 1–5 pipeline that consumes raw text and emits the above schema.</p>
+</body>
+</html>
