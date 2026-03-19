@@ -1,0 +1,61 @@
+{
+  "transcript_id": "string",
+  "source": "chat|meeting|notes|sms|voice",
+  "metadata": {
+    "timestamp": "ISO datetime",
+    "source_file": "string",
+    "participant_count": "number"
+  },
+  "turns": [
+    {
+      "turn_id": "t1",
+      "speaker": "user|a0|other",
+      "addressee": "string or null",
+      "timestamp": "optional",
+      "text": "raw text here",
+      "intent": ["question", "request", "claim", "commitment", "feeling", "instruction", "refusal", "uncertainty", "narrative", "meta"],
+      "topics": ["array of strings"],
+      "claims": ["array of extracted claims"],
+      "requests": ["array of explicit or implied requests"],
+      "commitments": ["array of commitments made"],
+      "uncertainty_markers": ["array"],
+      "negations": ["array"],
+      "affect": {
+        "frustration": 0.0,
+        "urgency": 0.0,
+        "confidence": 0.0,
+        "other": "..."
+      },
+      "unresolved": ["array of open questions or constraints in this turn"],
+      "references": ["array of turn_ids referenced"]
+    }
+  ],
+  "entities": ["array"],
+  "contradictions": [
+    {
+      "description": "string",
+      "turns_involved": ["t1", "t5"],
+      "severity": "low|medium|high"
+    }
+  ],
+  "open_loops": ["array of unresolved questions or requests"],
+  "action_items": ["array"],
+  "memory_candidates": ["array of things worth remembering"],
+  "cross_turn_relations": [
+    {
+      "from": "t1",
+      "to": "t5",
+      "type": "answers|contradicts|supports|clarifies|escalates|defers|reframes"
+    }
+  ],
+  "summary": "concise summary",
+  "confidence": 0.85,
+  "edcm_scores": {
+    "constraint_mismatch": 0.0,
+    "dissonance": 0.0,
+    "drift": 0.0,
+    "divergence": 0.0,
+    "intensity": 0.0,
+    "turn_balance": 0.0
+  }
+}
