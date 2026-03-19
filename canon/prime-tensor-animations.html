@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prime Tensor Explorer | The Interdependent Way</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <style>
         body {
             margin: 0; padding: 0; background: #0a0a0a; color: #ddd; font-family: 'Segoe UI', system-ui, sans-serif;
@@ -12,7 +11,7 @@
         }
         .container {
             display: grid;
-            grid-template-columns: 280px 1fr;
+            grid-template-columns: 300px 1fr;
             height: 100vh;
         }
         .controls {
@@ -22,16 +21,17 @@
             position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px;
         }
         canvas {
-            background: #000; border: 1px solid #222; border-radius: 8px;
+            background: #000; border: 1px solid #222; border-radius: 8px; image-rendering: crisp-edges;
         }
-        h1 { font-size: 1.4rem; margin: 0 0 20px 0; color: #88ccff; }
-        label, button, input { display: block; margin: 12px 0; width: 100%; }
+        h1 { font-size: 1.4rem; margin: 0 0 20px 0; color: #88ccff; text-align: center; }
+        label, button, input, select { display: block; margin: 12px 0; width: 100%; }
         button {
-            background: #334466; color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer;
+            background: #334466; color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold;
         }
         button:hover { background: #5577aa; }
+        button.playing { background: #228822; }
         .output {
-            background: #1a1a1a; padding: 12px; border-radius: 6px; font-family: monospace; min-height: 1.2em;
+            background: #1a1a1a; padding: 12px; border-radius: 6px; font-family: monospace; min-height: 1.2em; text-align: center;
         }
         .section { margin-bottom: 25px; }
         .tensor-bg {
@@ -55,25 +55,35 @@
 
             <div class="section">
                 <label>Test if Prime</label>
-                <input type="number" id="testInput" value="53" style="padding:8px;background:#222;color:white;border:none;border-radius:4px;">
+                <input type="number" id="testInput" value="53" style="padding:10px;background:#222;color:white;border:none;border-radius:4px;">
                 <button onclick="checkPrime()">Check Prime</button>
-                <div id="primeResult" class="output"></div>
+                <div id="primeResult" class="output" style="margin-top:8px;"></div>
+            </div>
+
+            <div class="section">
+                <button id="playButton" onclick="toggleAnimation()" style="font-size:1.1rem;padding:14px;">▶ Play Animation</button>
+            </div>
+
+            <div class="section">
+                <label>Speed</label>
+                <input type="range" id="speedSlider" min="10" max="200" value="50" oninput="setSpeed(this.value)">
+                <span id="speedValue">50 ms</span>
             </div>
 
             <div class="section">
                 <label>Visualization Mode</label>
-                <select id="modeSelect" onchange="switchMode()" style="padding:8px;background:#222;color:white;border:none;width:100%;">
-                    <option value="cylinder">Cylinder / Helix</option>
-                    <option value="cartesian2d">Cartesian 2D (Primes)</option>
-                    <option value="cartesian3d">Cartesian 3D Projection</option>
+                <select id="modeSelect" onchange="switchMode()" style="padding:10px;background:#222;color:white;border:none;width:100%;">
                     <option value="unitcircle">Unit Circle Growth</option>
-                    <option value="zeta">Zeta Function (Real Part)</option>
+                    <option value="cylinder">Cylinder View</option>
+                    <option value="cartesian2d">Cartesian 2D</option>
+                    <option value="cartesian3d">Cartesian 3D</option>
+                    <option value="zeta">Zeta Function</option>
                 </select>
             </div>
 
             <div class="section">
                 <label>Series Overlays</label>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:0.9rem;">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:0.9rem;">
                     <label><input type="checkbox" id="showPrimes" checked onchange="redraw()"> Primes</label>
                     <label><input type="checkbox" id="showTwins" onchange="redraw()"> Twin Primes (green)</label>
                     <label><input type="checkbox" id="showGaps" onchange="redraw()"> Prime Gaps</label>
@@ -83,38 +93,30 @@
             </div>
 
             <div class="section">
-                <label>Max Numbers to Show</label>
+                <label>Max Numbers</label>
                 <input type="range" id="maxRange" min="100" max="10000" value="2000" step="100" oninput="updateMax(this.value)">
                 <span id="maxValue">2000</span>
             </div>
 
-            <button onclick="resetAnimation()" style="margin-top:20px;">Reset Animation</button>
+            <button onclick="resetAnimation()" style="margin-top:20px;">Reset</button>
         </div>
 
         <!-- Visualizations -->
         <div class="canvas-container">
             <canvas id="mainCanvas" width="620" height="620"></canvas>
             <canvas id="secondaryCanvas" width="620" height="620"></canvas>
-            <canvas id="cartesianCanvas" width="620" height="310"></canvas>
-            <canvas id="zetaCanvas" width="620" height="310"></canvas>
         </div>
     </div>
 
     <script>
         const mainCanvas = document.getElementById('mainCanvas');
         const ctx = mainCanvas.getContext('2d');
-        const secCanvas = document.getElementById('secondaryCanvas');
-        const sctx = secCanvas.getContext('2d');
-        const cartCanvas = document.getElementById('cartesianCanvas');
-        const cctx = cartCanvas.getContext('2d');
-        const zetaCanvas = document.getElementById('zetaCanvas');
-        const zctx = zetaCanvas.getContext('2d');
-
         let primes = [];
         let maxN = 2000;
-        let currentStep = 0;
+        let currentStep = 1;
         let isPlaying = false;
         let animationFrame;
+        let speed = 50;
 
         function isPrime(n) {
             if (n < 2) return false;
@@ -150,62 +152,84 @@
             redraw();
         }
 
+        function setSpeed(val) {
+            speed = parseInt(val);
+            document.getElementById('speedValue').textContent = speed + " ms";
+        }
+
         function drawUnitCircle() {
             ctx.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
             const centerX = mainCanvas.width / 2;
             const centerY = mainCanvas.height / 2;
-            const radius = 280;
+            const radius = 270;
 
-            // Circle
             ctx.beginPath();
             ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
             ctx.strokeStyle = '#334466';
-            ctx.lineWidth = 3;
+            ctx.lineWidth = 4;
             ctx.stroke();
 
-            // Primes on circle
             const step = Math.PI * 2 / 360;
             for (let p of primes) {
-                if (p > maxN) break;
+                if (p > currentStep) break;
                 const angle = (p % 360) * step;
                 const x = centerX + Math.cos(angle) * radius;
                 const y = centerY + Math.sin(angle) * radius;
                 
                 ctx.fillStyle = '#88ccff';
-                ctx.fillRect(x-1.5, y-1.5, 3, 3);
+                ctx.fillRect(x-2, y-2, 4, 4);
             }
             document.getElementById('currentNumber').textContent = currentStep;
         }
 
         function redraw() {
             drawUnitCircle();
-            // Additional canvases can be expanded later
+        }
+
+        function animate() {
+            if (!isPlaying) return;
+            currentStep += Math.max(1, Math.floor(maxN / 300));
+            if (currentStep > maxN) {
+                currentStep = maxN;
+                toggleAnimation();
+                return;
+            }
+            redraw();
+            animationFrame = setTimeout(animate, speed);
+        }
+
+        function toggleAnimation() {
+            const btn = document.getElementById('playButton');
+            isPlaying = !isPlaying;
+            if (isPlaying) {
+                btn.textContent = '❚❚ Pause';
+                btn.classList.add('playing');
+                animate();
+            } else {
+                btn.textContent = '▶ Play Animation';
+                btn.classList.remove('playing');
+                clearTimeout(animationFrame);
+            }
         }
 
         function resetAnimation() {
-            currentStep = 0;
+            currentStep = 1;
+            isPlaying = false;
+            document.getElementById('playButton').textContent = '▶ Play Animation';
+            document.getElementById('playButton').classList.remove('playing');
             redraw();
         }
 
         function switchMode() {
-            const mode = document.getElementById('modeSelect').value;
-            console.log("Switched to mode:", mode);
+            console.log("Mode switched to:", document.getElementById('modeSelect').value);
             redraw();
         }
 
         // Initialize
         generatePrimes(maxN);
         redraw();
-
-        // Keyboard support
-        document.addEventListener('keydown', (e) => {
-            if (e.key === " ") {
-                e.preventDefault();
-                resetAnimation();
-            }
-        });
-
-        console.log("%cPrime Tensor Explorer v0.3 initialized. The field is listening.", "color:#88ccff;font-size:0.9rem");
+        
+        console.log("%cPrime Tensor Explorer initialized", "color:#88ccff;font-weight:bold");
     </script>
 </body>
 </html>
