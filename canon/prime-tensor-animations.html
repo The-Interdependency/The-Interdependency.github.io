@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prime Tensor Animations | PTCA/PCNA Artifacts</title>
+    <title>Prime Tensor Field Explorer | PTCA/PCNA</title>
     <style>
         body { 
             background: #0a0a0a; 
@@ -16,151 +16,148 @@
         h1 { 
             color: #88ccff; 
             text-align: center; 
-            letter-spacing: 2px;
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #7799bb;
+            margin-bottom: 30px;
+            font-size: 1.05em;
         }
         .container {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
         }
         .controls { 
             background: #111; 
-            padding: 15px; 
+            padding: 16px; 
             border-radius: 8px; 
             margin: 20px 0; 
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 14px;
             align-items: center;
-            border: 1px solid #333;
+            border: 1px solid #334466;
         }
         canvas { 
-            background: #000; 
-            border: 1px solid #334455; 
-            image-rendering: pixelated;
-            box-shadow: 0 0 20px rgba(136, 204, 255, 0.15);
+            background: #050505; 
+            border: 1px solid #223344; 
+            box-shadow: 0 0 30px rgba(136, 204, 255, 0.12);
         }
         button, select, input[type=range] {
             background: #1a1a1a;
             color: #ccc;
             border: 1px solid #445577;
-            padding: 6px 12px;
+            padding: 8px 14px;
             border-radius: 4px;
+            cursor: pointer;
         }
         button:hover {
             background: #223355;
             color: #88ccff;
-        }
-        .overlay-toggle { 
-            margin-right: 12px; 
-            font-size: 0.95em;
-        }
-        .info {
-            text-align: center;
-            max-width: 800px;
-            margin: 30px auto;
-            font-size: 0.95em;
-            opacity: 0.85;
-        }
-        .canvas-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
-            margin-top: 20px;
         }
         .view {
             text-align: center;
         }
         .view h3 {
             color: #7799bb;
-            margin-bottom: 8px;
+            margin: 12px 0 8px;
+            font-size: 1.05em;
+        }
+        .canvas-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            margin: 30px 0;
+        }
+        .info {
+            max-width: 820px;
+            margin: 40px auto;
+            text-align: center;
+            font-size: 0.95em;
+            opacity: 0.75;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Prime Tensor Field Explorer</h1>
-        <div class="info">
-            Living visualization of the Prime Circular Tensor.<br>
-            360-unit and 2880-unit models • Real-time population of primes, twins, gaps, and other sequences.
-        </div>
+        <div class="subtitle">Living Demonstration of Prime Circular Tensor Architecture (PTCA)</div>
 
         <div class="controls">
-            <button onclick="toggleAnimation()" id="playBtn">▶ Play</button>
-            <button onclick="resetAnimation()">Reset</button>
+            <button onclick="togglePlay()" id="playBtn">▶ Play Animation</button>
+            <button onclick="resetAll()">Reset</button>
             
             <label>Speed: 
-                <input type="range" id="speed" min="1" max="60" value="12" style="width:160px;">
+                <input type="range" id="speedSlider" min="1" max="80" value="15" style="width:180px;" oninput="updateSpeed()">
             </label>
 
             <label>Model: 
                 <select id="modelSelect" onchange="changeModel()">
-                    <option value="360">360-unit Cylinder</option>
-                    <option value="2880" selected>2880-unit (8× resolution)</option>
+                    <option value="360">360-unit</option>
+                    <option value="2880" selected>2880-unit (8×)</option>
                 </select>
             </label>
 
-            <div style="flex-basis:100%; height:1px; background:#334455; margin:8px 0;"></div>
+            <div style="flex-basis:100%; height:1px; background:#334455; margin:6px 0 10px;"></div>
 
             <strong>Overlays:</strong>
-            <label class="overlay-toggle"><input type="checkbox" id="o0" checked onchange="toggleOverlay(0)"> Primes</label>
-            <label class="overlay-toggle"><input type="checkbox" id="o1" checked onchange="toggleOverlay(1)"> Twins (green)</label>
-            <label class="overlay-toggle"><input type="checkbox" id="o2" onchange="toggleOverlay(2)"> Gaps (red)</label>
-            <label class="overlay-toggle"><input type="checkbox" id="o3" onchange="toggleOverlay(3)"> Squares</label>
-            <label class="overlay-toggle"><input type="checkbox" id="o4" onchange="toggleOverlay(4)"> Fibonacci</label>
+            <label><input type="checkbox" id="showPrimes" checked onchange="toggleOverlay()"> Primes</label>
+            <label><input type="checkbox" id="showTwins" checked onchange="toggleOverlay()"> Twins (green)</label>
+            <label><input type="checkbox" id="showGaps" onchange="toggleOverlay()"> Gaps</label>
         </div>
 
         <div class="canvas-container">
             <div class="view">
                 <h3>Cylinder View</h3>
-                <canvas id="cylinder" width="620" height="620"></canvas>
+                <canvas id="cylinder" width="660" height="660"></canvas>
             </div>
             <div class="view">
-                <h3>Cylindrical Unwrap (Helix)</h3>
-                <canvas id="unwrap" width="920" height="420"></canvas>
+                <h3>Helical Unwrap</h3>
+                <canvas id="unwrap" width="960" height="460"></canvas>
             </div>
             <div class="view">
-                <h3>Current Unit Circle</h3>
+                <h3>Current Circle</h3>
                 <canvas id="unit" width="520" height="520"></canvas>
             </div>
         </div>
 
-        <div style="text-align:center; margin-top:40px; opacity:0.7; font-size:0.9em;">
-            Prime Circular Tensor Architecture (PTCA) • Living Demonstration of The Interdependent Way<br>
-            <a href="https://interdependentway.org" style="color:#88ccff;">interdependentway.org</a>
+        <div class="info">
+            Prime Circular Tensor • First 25,000 primes • 53-fold and 96-ray structures visible in the field.<br>
+            <a href="https://interdependentway.org" style="color:#88ccff;">← Back to The Interdependent Way</a>
         </div>
     </div>
 
     <script>
-        // ================== CONFIG ==================
-        const MAX_PRIMES = 20000;           // Performance-friendly starting point (can go higher)
-        let currentModel = 2880;
-        let isPlaying = false;
-        let animationFrame = null;
+        // ================== DATA ==================
+        let primes = [];
+        let twins = new Set();
+        let maxN = 320000;
         let primeIndex = 0;
-        let speed = 12;
+        let isPlaying = false;
+        let animationSpeed = 15;
+        let currentModel = 2880;
 
         let showPrimes = true;
         let showTwins = true;
         let showGaps = false;
-        let showSquares = false;
-        let showFib = false;
 
-        // Precompute primes using Sieve (up to ~300,000 to cover first 20k primes)
-        let primes = [];
-        let twins = new Set();
-        let gaps = [];
-        let squares = new Set();
-        let fibs = new Set();
+        const cCyl = document.getElementById('cylinder');
+        const ctxCyl = cCyl.getContext('2d');
+        const cUnwrap = document.getElementById('unwrap');
+        const ctxUnwrap = cUnwrap.getContext('2d');
+        const cUnit = document.getElementById('unit');
+        const ctxUnit = cUnit.getContext('2d');
 
+        // Generate primes
         function generatePrimes(limit) {
-            const sieve = new Uint8Array(limit + 1);
+            const sieve = new Uint8Array(limit+1);
             sieve.fill(1);
             sieve[0] = sieve[1] = 0;
-            for (let i = 2; i * i <= limit; i++) {
-                if (sieve[i]) {
-                    for (let j = i * i; j <= limit; j += i) sieve[j] = 0;
-                }
+            for (let i = 2; i*i <= limit; i++) {
+                if (sieve[i]) for (let j = i*i; j <= limit; j += i) sieve[j] = 0;
             }
             for (let i = 2; i <= limit; i++) {
                 if (sieve[i]) {
@@ -173,55 +170,41 @@
             }
         }
 
-        function generateOtherSets(maxN) {
-            // Squares
-            for (let i = 1; i * i <= maxN; i++) squares.add(i * i);
-            // Fibonacci
-            let a = 1, b = 1;
-            fibs.add(1);
-            while (b <= maxN) {
-                fibs.add(b);
-                const t = a + b;
-                a = b; b = t;
-            }
+        generatePrimes(maxN);
+
+        function getAngle(n, mod) {
+            return (n % mod) * (Math.PI * 2 / mod);
         }
 
-        // Generate data
-        generatePrimes(300000);
-        generateOtherSets(300000);
-
-        // Canvas elements
-        const cCylinder = document.getElementById('cylinder');
-        const ctxCyl = cCylinder.getContext('2d');
-        const cUnwrap = document.getElementById('unwrap');
-        const ctxUnwrap = cUnwrap.getContext('2d');
-        const cUnit = document.getElementById('unit');
-        const ctxUnit = cUnit.getContext('2d');
-
         function drawCylinder() {
-            ctxCyl.clearRect(0, 0, cCylinder.width, cCylinder.height);
-            const cx = 310, cy = 310, radius = 240;
-            const layers = 18;
-            const step = Math.max(1, Math.floor(primes.length / layers));
+            ctxCyl.clearRect(0, 0, cCyl.width, cCyl.height);
+            const cx = 330, baseY = 520, radius = 245;
+            const layers = 22;
 
+            // Draw stacked circles
             for (let l = 0; l < layers; l++) {
-                const r = radius * (0.3 + 0.7 * (l / layers));
-                const alpha = 0.15 + 0.7 * (l / layers);
-                ctxCyl.strokeStyle = `rgba(136, 204, 255, ${alpha})`;
-                ctxCyl.lineWidth = 1.5;
+                const y = baseY - l * 19;
+                const r = radius * (0.35 + 0.65 * (l / layers));
+                ctxCyl.strokeStyle = `rgba(100, 180, 255, ${0.12 + l/layers*0.45})`;
+                ctxCyl.lineWidth = 1.8;
                 ctxCyl.beginPath();
-                ctxCyl.arc(cx, cy - l * 12, r, 0, Math.PI * 2);
+                ctxCyl.ellipse(cx, y, r, r*0.28, 0, 0, Math.PI*2);
                 ctxCyl.stroke();
             }
 
-            // Mark primes on top layer
-            ctxCyl.fillStyle = '#aaccff';
-            for (let i = 0; i < Math.min(primeIndex, primes.length); i += 3) {
+            // Mark primes on the "surface"
+            ctxCyl.fillStyle = '#aaddff';
+            const drawUpTo = Math.min(primeIndex, primes.length);
+            for (let i = 0; i < drawUpTo; i += 2) {
                 const p = primes[i];
-                const angle = (p % currentModel) * (Math.PI * 2 / currentModel);
-                const x = cx + Math.cos(angle) * 235;
-                const y = cy - 210 + Math.sin(angle) * 12;
-                ctxCyl.fillRect(x-1, y-1, 3, 3);
+                const layer = Math.floor(i / 1200);
+                if (layer >= layers) continue;
+                const y = baseY - layer * 19;
+                const angle = getAngle(p, currentModel);
+                const r = radius * (0.35 + 0.65 * (layer / layers));
+                const x = cx + Math.cos(angle) * r * 0.92;
+                const sy = y + Math.sin(angle) * r * 0.25;
+                ctxCyl.fillRect(x-1, sy-1, 3, 3);
             }
         }
 
@@ -229,125 +212,119 @@
             ctxUnwrap.clearRect(0, 0, cUnwrap.width, cUnwrap.height);
             const w = cUnwrap.width;
             const h = cUnwrap.height;
-            const maxX = Math.min(primeIndex, primes.length);
+            const step = Math.max(1, Math.floor(primes.length / 240));
 
-            ctxUnwrap.strokeStyle = '#334455';
+            ctxUnwrap.strokeStyle = '#334466';
             ctxUnwrap.lineWidth = 1;
-            for (let i = 0; i < 20; i++) {
-                const y = 30 + i * (h-60)/19;
+            for (let x = 40; x < w-40; x += 48) {
                 ctxUnwrap.beginPath();
-                ctxUnwrap.moveTo(20, y);
-                ctxUnwrap.lineTo(w-20, y);
+                ctxUnwrap.moveTo(x, 30);
+                ctxUnwrap.lineTo(x, h-30);
                 ctxUnwrap.stroke();
             }
 
-            // Draw primes
-            ctxUnwrap.fillStyle = '#aaccff';
-            for (let i = 0; i < maxX; i++) {
-                const x = 30 + (primes[i] % 800) * (w-60)/800;
-                const y = 40 + (Math.floor(primes[i] / 800) % 12) * (h-80)/12;
-                ctxUnwrap.fillRect(x, y, 2.5, 2.5);
-            }
+            const drawUpTo = Math.min(primeIndex, primes.length);
+            for (let i = 0; i < drawUpTo; i += 1) {
+                const p = primes[i];
+                const x = 40 + (p % currentModel) * ((w-80) / currentModel);
+                const y = 40 + (i / 380) % (h-90);
+                const alpha = showPrimes ? 0.9 : 0.3;
 
-            // Twin primes
-            if (showTwins) {
-                ctxUnwrap.fillStyle = '#22ff88';
-                for (let p of twins) {
-                    if (p > primes[Math.min(primeIndex, primes.length-1)]) break;
-                    const x = 30 + (p % 800) * (w-60)/800;
-                    const y = 40 + (Math.floor(p / 800) % 12) * (h-80)/12;
-                    ctxUnwrap.fillRect(x-1, y-3, 4, 7);
+                if (twins.has(p) && showTwins) {
+                    ctxUnwrap.fillStyle = '#22ff99';
+                    ctxUnwrap.fillRect(x-1.5, y-4, 3, 8);
+                } else if (showPrimes) {
+                    ctxUnwrap.fillStyle = `rgba(160, 210, 255, ${alpha})`;
+                    ctxUnwrap.fillRect(x-1, y-1, 2.5, 2.5);
                 }
             }
         }
 
         function drawUnitCircle() {
             ctxUnit.clearRect(0, 0, cUnit.width, cUnit.height);
-            const cx = 260, cy = 260, r = 230;
+            const cx = 260, cy = 260, r = 218;
             
-            // Background circle
-            ctxUnit.strokeStyle = '#223344';
-            ctxUnit.lineWidth = 18;
-            ctxUnit.beginPath();
-            ctxUnit.arc(cx, cy, r, 0, Math.PI*2);
-            ctxUnit.stroke();
-
-            ctxUnit.strokeStyle = '#88aadd';
+            ctxUnit.strokeStyle = '#223355';
             ctxUnit.lineWidth = 2;
             ctxUnit.beginPath();
             ctxUnit.arc(cx, cy, r, 0, Math.PI*2);
             ctxUnit.stroke();
 
-            // Plot current primes
-            const maxShown = Math.min(primeIndex, primes.length);
-            ctxUnit.fillStyle = '#ddeeff';
-            for (let i = 0; i < maxShown; i += 2) {
-                const angle = (primes[i] % currentModel) * (Math.PI * 2 / currentModel);
-                const x = cx + Math.cos(angle) * r * 0.95;
-                const y = cy + Math.sin(angle) * r * 0.95;
-                ctxUnit.fillRect(x-1, y-1, 3, 3);
+            const drawUpTo = Math.min(primeIndex, primes.length);
+            for (let i = 0; i < drawUpTo; i += 3) {
+                const p = primes[i];
+                const angle = getAngle(p, currentModel);
+                const x = cx + Math.cos(angle) * r;
+                const y = cy + Math.sin(angle) * r;
+
+                if (twins.has(p) && showTwins) {
+                    ctxUnit.fillStyle = '#22ff99';
+                    ctxUnit.fillRect(x-3, y-3, 6, 6);
+                } else if (showPrimes) {
+                    ctxUnit.fillStyle = '#aaddff';
+                    ctxUnit.fillRect(x-1.5, y-1.5, 3, 3);
+                }
             }
         }
 
         function animate() {
             if (!isPlaying) return;
-
-            primeIndex = Math.min(primeIndex + speed * 3, primes.length);
-
+            
+            primeIndex = Math.min(primeIndex + 18, primes.length);
+            
             drawCylinder();
             drawUnwrap();
             drawUnitCircle();
 
-            document.getElementById('playBtn').textContent = '❚❚ Pause';
-
-            animationFrame = requestAnimationFrame(animate);
-        }
-
-        function toggleAnimation() {
-            isPlaying = !isPlaying;
-            const btn = document.getElementById('playBtn');
-            if (isPlaying) {
-                btn.textContent = '❚❚ Pause';
-                animate();
+            if (primeIndex < primes.length) {
+                setTimeout(() => requestAnimationFrame(animate), animationSpeed);
             } else {
-                btn.textContent = '▶ Play';
-                cancelAnimationFrame(animationFrame);
+                isPlaying = false;
+                document.getElementById('playBtn').textContent = '▶ Play Animation';
             }
         }
 
-        function resetAnimation() {
-            primeIndex = 0;
-            isPlaying = false;
-            document.getElementById('playBtn').textContent = '▶ Play';
-            drawCylinder();
-            drawUnwrap();
-            drawUnitCircle();
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            const btn = document.getElementById('playBtn');
+            btn.textContent = isPlaying ? '❚❚ Pause' : '▶ Play Animation';
+            if (isPlaying) animate();
+        }
+
+        function updateSpeed() {
+            animationSpeed = 82 - parseInt(document.getElementById('speedSlider').value);
         }
 
         function changeModel() {
             currentModel = parseInt(document.getElementById('modelSelect').value);
-            resetAnimation();
+            resetAll();
         }
 
-        function toggleOverlay(n) {
-            if (n === 0) showPrimes = !showPrimes;
-            if (n === 1) showTwins = !showTwins;
-            if (n === 2) showGaps = !showGaps;
-            if (n === 3) showSquares = !showSquares;
-            if (n === 4) showFib = !showFib;
-            drawUnwrap();
-        }
-
-        // Init
-        function init() {
+        function toggleOverlay() {
+            showPrimes = document.getElementById('showPrimes').checked;
+            showTwins = document.getElementById('showTwins').checked;
+            showGaps = document.getElementById('showGaps').checked;
             drawCylinder();
             drawUnwrap();
             drawUnitCircle();
-            console.log('%cPrime Tensor Animation Engine v0.3 — Fully Implemented', 'color:#88ccff; font-size:15px;');
-            console.log('The field is now visible.');
         }
 
-        window.onload = init;
+        function resetAll() {
+            primeIndex = 0;
+            isPlaying = false;
+            document.getElementById('playBtn').textContent = '▶ Play Animation';
+            drawCylinder();
+            drawUnwrap();
+            drawUnitCircle();
+        }
+
+        // Init
+        window.onload = () => {
+            updateSpeed();
+            drawCylinder();
+            drawUnwrap();
+            drawUnitCircle();
+        };
     </script>
 </body>
 </html>
