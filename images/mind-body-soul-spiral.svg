@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="spiralGrad" x1="20%" y1="20%" x2="80%" y2="80%">
+      <stop offset="0%" stop-color="#00ff9d"/>
+      <stop offset="100%" stop-color="#00ccff"/>
+    </linearGradient>
+  </defs>
+  <!-- Triple spiral representing Mind(Body)Soul -->
+  <path d="M200 200 Q120 60 80 160 Q90 280 190 310 Q300 290 340 190 Q310 90 200 110" fill="none" stroke="url(#spiralGrad)" stroke-width="42" stroke-linecap="round" opacity="0.9"/>
+  <path d="M200 200 Q135 85 105 165 Q115 255 185 275 Q270 260 295 185" fill="none" stroke="#e0f0ff" stroke-width="22" stroke-linecap="round"/>
+  <circle cx="200" cy="200" r="38" fill="none" stroke="#ffffff" stroke-width="11"/>
+  <text x="200" y="375" text-anchor="middle" fill="#556677" font-size="13" font-family="monospace">MIND(BODY)SOUL SPIRAL • hmmm</text>
+</svg>
