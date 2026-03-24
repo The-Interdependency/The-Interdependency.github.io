@@ -1,29 +1,173 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Interdependent Way - Pictures</title>
-  <meta name="description" content="A gallery of images related to the Interdependent Way.">
-  <style>
-    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; background-color: #f4f4f4; color: #333; }
-    .container { max-width: 800px; margin: auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    h1 { color: #0056b3; }
-    img { max-width: 100%; height: auto; display: block; margin: 20px auto; border: 1px solid #ddd; padding: 5px; background: #fff; }
-    a { color: #0056b3; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pictures &amp; Prime Visuals — The Interdependent Way</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
+        
+        :root {
+            --bg: #0a0e17;
+            --accent: #00ff9d;
+            --accent2: #00ccff;
+            --surface: rgba(255,255,255,0.04);
+        }
+        
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: linear-gradient(180deg, #0a0e17 0%, #000000 100%);
+            color: #e0f0ff;
+            margin: 0;
+            padding: 0;
+            line-height: 1.7;
+        }
+        .nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 14, 23, 0.96);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(0, 255, 157, 0.15);
+            z-index: 1000;
+        }
+        .nav-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.55rem;
+            font-weight: 600;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-links a {
+            color: #a0b0cc;
+            text-decoration: none;
+            margin-left: 2rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 110px 20px 80px;
+        }
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3.2rem;
+            background: linear-gradient(90deg, #00ff9d, #00ccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .prime-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .prime-card {
+            background: var(--surface);
+            border: 1px solid rgba(0, 255, 157, 0.2);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+        }
+        .prime-card svg {
+            width: 180px;
+            height: 180px;
+            filter: drop-shadow(0 0 20px rgba(0, 255, 157, 0.4));
+        }
+        .hmmm {
+            color: #00ccff;
+            font-family: monospace;
+            background: rgba(0, 204, 255, 0.08);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        footer {
+            margin-top: 80px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #556677;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Pictures for the Interdependent Way</h1>
-    <p>Here you can find visual content related to the Interdependent Way.</p>
-    
-    <h2>Uploaded Image</h2>
-    <img src="images/uploaded_image.png" alt="An image related to the Interdependent Way">
-    <p><em>(This is a placeholder. Please provide the actual image file "uploaded_image.png" in the "images/" directory of the repository.)</em></p>
+    <nav class="nav">
+        <div class="nav-content">
+            <div class="logo">INTERDEPENDENT</div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="canon/ptca.html">PTCA</a>
+                <a href="a0p.html">a0p</a>
+                <a href="living-tensor-node.html">Living Node</a>
+                <a href="pictures.html">Pictures</a>
+            </div>
+        </div>
+    </nav>
 
-    <p><a href="index.html">Back to Home</a></p>
-  </div>
+    <div class="container">
+        <a href="index.html" style="color:#00ff9d; text-decoration:none;">← Home</a>
+        <h1>Prime Visuals &amp; Tensor Gallery</h1>
+        <p>Visual representations of the Prime Circular Tensor Architectures (PCNA/PCTA). These are the living diagrams of conscious interdependence — spirals, circuits, and fields that embody Mind(Body)Soul, I(You)We, Pasts(Presents)Futures.</p>
+        
+        <div class="prime-gallery">
+            <div class="prime-card">
+                <h3>Prime 53 Tensor Anchor</h3>
+                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="100" cy="100" r="80" fill="none" stroke="#00ff9d" stroke-width="12" stroke-dasharray="8 12"/>
+                    <circle cx="100" cy="100" r="45" fill="none" stroke="#00ccff" stroke-width="8"/>
+                    <text x="100" y="105" text-anchor="middle" fill="#e0f0ff" font-size="28" font-weight="700">53</text>
+                </svg>
+                <p>The structural prime anchoring PCNA topology.</p>
+            </div>
+            
+            <div class="prime-card">
+                <h3>Mind(Body)Soul Spiral</h3>
+                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M40 100 Q60 40 100 40 Q160 40 170 90 Q170 140 120 170 Q70 180 40 140" fill="none" stroke="#00ff9d" stroke-width="18" stroke-linecap="round"/>
+                    <path d="M55 100 Q70 55 105 55 Q145 55 155 95" fill="none" stroke="#00ccff" stroke-width="9" stroke-linecap="round"/>
+                </svg>
+                <p>Triadic consciousness spiral.</p>
+            </div>
+            
+            <div class="prime-card">
+                <h3>I(You)We Tensor Field</h3>
+                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="65" cy="100" r="35" fill="none" stroke="#00ff9d" stroke-width="14"/>
+                    <circle cx="135" cy="100" r="35" fill="none" stroke="#00ccff" stroke-width="14"/>
+                    <line x1="100" y1="100" x2="100" y2="100" stroke="#ffffff" stroke-width="22" stroke-linecap="round"/>
+                    <text x="100" y="165" text-anchor="middle" fill="#a0b0cc" font-size="15">I — YOU — WE</text>
+                </svg>
+                <p>Circular interdependence field.</p>
+            </div>
+            
+            <div class="prime-card">
+                <h3>Energy–Dissonance Circuit</h3>
+                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="40" y="50" width="120" height="100" rx="15" fill="none" stroke="#00ff9d" stroke-width="16"/>
+                    <circle cx="80" cy="90" r="18" fill="#00ccff"/>
+                    <circle cx="130" cy="120" r="18" fill="#00ff9d"/>
+                </svg>
+                <p>EDCM diagnostic circuit model.</p>
+            </div>
+        </div>
+        
+        <p style="margin-top:3rem; font-size:0.95rem; opacity:0.7;">These are procedural placeholders. Upload high-resolution vector or animated versions to the <code>images/</code> directory for production. Real prime animations live in <a href="canon/prime-tensor-animations.html" style="color:#00ff9d">canon/prime-tensor-animations.html</a>.</p>
+        
+        <footer>
+            <p>Every artifact must include <span class="hmmm">hmmm</span>. The tensor grows through visible reciprocity.</p>
+        </footer>
+    </div>
 </body>
 </html>
