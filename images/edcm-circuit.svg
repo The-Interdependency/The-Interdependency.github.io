@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="circuitGrad" x1="20%" y1="20%" x2="80%" y2="80%">
+      <stop offset="0%" stop-color="#00ff9d"/>
+      <stop offset="100%" stop-color="#00ccff"/>
+    </linearGradient>
+  </defs>
+  <!-- EDCM circuit board style -->
+  <rect x="65" y="85" width="270" height="190" rx="28" ry="28" fill="none" stroke="url(#circuitGrad)" stroke-width="32"/>
+  <rect x="95" y="120" width="55" height="55" rx="8" fill="#0a0e17" stroke="#00ff9d" stroke-width="14"/>
+  <rect x="250" y="195" width="55" height="55" rx="8" fill="#0a0e17" stroke="#00ccff" stroke-width="14"/>
+  <!-- Flow lines -->
+  <path d="M165 147 L240 147 L240 205" fill="none" stroke="#ffffff" stroke-width="9" stroke-linecap="round"/>
+  <circle cx="200" cy="200" r="19" fill="#ffffff"/>
+  <text x="200" y="375" text-anchor="middle" fill="#556677" font-size="13" font-family="monospace">ENERGY–DISSONANCE CIRCUIT • hmmm</text>
+</svg>
