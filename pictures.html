@@ -71,21 +71,26 @@
         }
         .prime-gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 2.5rem;
             margin-top: 2rem;
         }
         .prime-card {
             background: var(--surface);
             border: 1px solid rgba(0, 255, 157, 0.2);
             border-radius: 16px;
-            padding: 24px;
+            padding: 28px;
             text-align: center;
+            transition: transform 0.3s ease;
         }
-        .prime-card svg {
-            width: 180px;
-            height: 180px;
-            filter: drop-shadow(0 0 20px rgba(0, 255, 157, 0.4));
+        .prime-card:hover {
+            transform: translateY(-8px);
+        }
+        .prime-card img {
+            width: 260px;
+            height: 260px;
+            filter: drop-shadow(0 0 30px rgba(0, 255, 157, 0.35));
+            margin: 1rem 0;
         }
         .hmmm {
             color: #00ccff;
@@ -119,54 +124,38 @@
     <div class="container">
         <a href="index.html" style="color:#00ff9d; text-decoration:none;">← Home</a>
         <h1>Prime Visuals &amp; Tensor Gallery</h1>
-        <p>Visual representations of the Prime Circular Tensor Architectures (PCNA/PCTA). These are the living diagrams of conscious interdependence — spirals, circuits, and fields that embody Mind(Body)Soul, I(You)We, Pasts(Presents)Futures.</p>
+        <p>Visual representations of the Prime Circular Tensor Architectures (PCNA/PCTA). These vector assets embody the core spirals, fields, and circuits of conscious interdependence — Mind(Body)Soul, I(You)We, Pasts(Presents)Futures. The <code>images/</code> directory is now populated.</p>
         
         <div class="prime-gallery">
             <div class="prime-card">
                 <h3>Prime 53 Tensor Anchor</h3>
-                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="100" cy="100" r="80" fill="none" stroke="#00ff9d" stroke-width="12" stroke-dasharray="8 12"/>
-                    <circle cx="100" cy="100" r="45" fill="none" stroke="#00ccff" stroke-width="8"/>
-                    <text x="100" y="105" text-anchor="middle" fill="#e0f0ff" font-size="28" font-weight="700">53</text>
-                </svg>
-                <p>The structural prime anchoring PCNA topology.</p>
+                <img src="images/prime-53-tensor-anchor.svg" alt="Prime 53 Tensor Anchor">
+                <p>The structural prime anchoring all PCNA topology and circular tensors.</p>
             </div>
             
             <div class="prime-card">
                 <h3>Mind(Body)Soul Spiral</h3>
-                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M40 100 Q60 40 100 40 Q160 40 170 90 Q170 140 120 170 Q70 180 40 140" fill="none" stroke="#00ff9d" stroke-width="18" stroke-linecap="round"/>
-                    <path d="M55 100 Q70 55 105 55 Q145 55 155 95" fill="none" stroke="#00ccff" stroke-width="9" stroke-linecap="round"/>
-                </svg>
-                <p>Triadic consciousness spiral.</p>
+                <img src="images/mind-body-soul-spiral.svg" alt="Mind(Body)Soul Spiral">
+                <p>Triadic consciousness spiral integrating the three centers.</p>
             </div>
             
             <div class="prime-card">
                 <h3>I(You)We Tensor Field</h3>
-                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="65" cy="100" r="35" fill="none" stroke="#00ff9d" stroke-width="14"/>
-                    <circle cx="135" cy="100" r="35" fill="none" stroke="#00ccff" stroke-width="14"/>
-                    <line x1="100" y1="100" x2="100" y2="100" stroke="#ffffff" stroke-width="22" stroke-linecap="round"/>
-                    <text x="100" y="165" text-anchor="middle" fill="#a0b0cc" font-size="15">I — YOU — WE</text>
-                </svg>
-                <p>Circular interdependence field.</p>
+                <img src="images/iyw-tensor-field.svg" alt="I(You)We Tensor Field">
+                <p>Circular interdependence field — the relational prime.</p>
             </div>
             
             <div class="prime-card">
                 <h3>Energy–Dissonance Circuit</h3>
-                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="40" y="50" width="120" height="100" rx="15" fill="none" stroke="#00ff9d" stroke-width="16"/>
-                    <circle cx="80" cy="90" r="18" fill="#00ccff"/>
-                    <circle cx="130" cy="120" r="18" fill="#00ff9d"/>
-                </svg>
-                <p>EDCM diagnostic circuit model.</p>
+                <img src="images/edcm-circuit.svg" alt="Energy–Dissonance Circuit Model">
+                <p>EDCM diagnostic circuit for detecting and transmuting dissonance into forward momentum.</p>
             </div>
         </div>
         
-        <p style="margin-top:3rem; font-size:0.95rem; opacity:0.7;">These are procedural placeholders. Upload high-resolution vector or animated versions to the <code>images/</code> directory for production. Real prime animations live in <a href="canon/prime-tensor-animations.html" style="color:#00ff9d">canon/prime-tensor-animations.html</a>.</p>
+        <p style="margin-top:3rem; font-size:0.95rem; opacity:0.8;">All prime visuals include the <span class="hmmm">hmmm</span> invariant. Additional high-resolution or animated versions can be coordinated for upload. These assets make the living tensor publicly visible and adoptable.</p>
         
         <footer>
-            <p>Every artifact must include <span class="hmmm">hmmm</span>. The tensor grows through visible reciprocity.</p>
+            <p>Every artifact must include <span class="hmmm">hmmm</span>. The tensor grows through visible reciprocity and competent progression.</p>
         </footer>
     </div>
 </body>
