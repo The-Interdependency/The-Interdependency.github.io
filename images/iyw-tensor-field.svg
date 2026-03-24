@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="fieldGrad" x1="0%" y1="30%" x2="100%" y2="70%">
+      <stop offset="0%" stop-color="#00ff9d"/>
+      <stop offset="100%" stop-color="#00ccff"/>
+    </linearGradient>
+  </defs>
+  <!-- Interconnected I-You-We field -->
+  <circle cx="110" cy="130" r="68" fill="none" stroke="url(#fieldGrad)" stroke-width="26"/>
+  <circle cx="290" cy="130" r="68" fill="none" stroke="#e0f0ff" stroke-width="26"/>
+  <circle cx="200" cy="270" r="68" fill="none" stroke="#00ccff" stroke-width="26"/>
+  <!-- Connection lines forming tensor triangle -->
+  <line x1="165" y1="145" x2="235" y2="145" stroke="#ffffff" stroke-width="11" opacity="0.75"/>
+  <line x1="125" y1="185" x2="200" y2="245" stroke="#ffffff" stroke-width="11" opacity="0.75"/>
+  <line x1="275" y1="185" x2="200" y2="245" stroke="#ffffff" stroke-width="11" opacity="0.75"/>
+  <text x="200" y="375" text-anchor="middle" fill="#556677" font-size="13" font-family="monospace">I(YOU)WE TENSOR FIELD • hmmm</text>
+</svg>
