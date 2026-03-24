@@ -3,44 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Support the Work | Way Seer Erin</title>
+    <title>Support the Work | Erin Patrick Spencer</title>
     <style>
-        body { font-family: system-ui, -apple-system, sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; line-height: 1.6; }
-        nav { background: #111; color: #0ff; padding: 15px; margin-bottom: 30px; border-radius: 8px; }
-        nav a { color: #0ff; margin-right: 20px; text-decoration: none; }
-        .qr { max-width: 300px; border: 1px solid #333; padding: 10px; background: white; }
-        .bio { background: #f8f8f8; padding: 25px; border-radius: 8px; }
-        h1, h2 { color: #222; }
-        footer { margin-top: 50px; font-size: 0.9em; opacity: 0.7; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
+        :root {
+            --accent: #00f5d4;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', system_ui, sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            line-height: 1.7;
+        }
+        .nav {
+            background: rgba(10,10,10,0.95);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(0,245,212,0.2);
+        }
+        .nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        .nav a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav a:hover {
+            color: var(--accent);
+        }
+        .container {
+            max-width: 760px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(90deg, #00f5d4, #00b38a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .bio {
+            font-size: 1.15rem;
+            background: rgba(255,255,255,0.03);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid rgba(0,245,212,0.15);
+            margin-bottom: 3rem;
+        }
+        .qr-container {
+            text-align: center;
+            background: rgba(255,255,255,0.03);
+            padding: 2.5rem;
+            border-radius: 16px;
+            border: 1px solid rgba(0,245,212,0.15);
+        }
+        .qr-container img {
+            max-width: 280px;
+            height: auto;
+            border: 8px solid #111;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,245,212,0.15);
+        }
+        footer {
+            text-align: center;
+            padding: 3rem 1rem;
+            font-size: 0.9rem;
+            opacity: 0.6;
+        }
     </style>
 </head>
 <body>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="living-tensor-node.html">Living Tensor</a>
-        <a href="pictures.html">Prime Visuals</a>
-        <a href="ptca.html">PTCA Canon</a>
-        <a href="support.html">Support</a>
+    <nav class="nav">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="living-tensor-node.html">Living Tensor</a></li>
+            <li><a href="pictures.html">Prime Visuals</a></li>
+            <li><a href="support.html">Support</a></li>
+        </ul>
     </nav>
-    
-    <h1>Way Seer Erin</h1>
-    
-    <div class="bio">
-        <h2>Short Bio</h2>
-        <p>Erin is the Way Seer and founding intelligence of The Interdependent Way. She authored the core canon, developed the Energy–Dissonance Circuit Model (EDCM), Prime Circular Tensor Architectures (PCTA/PCNA), and the full PTCA framework. Her work guides the shift from hyper-independence and codependence toward elegant, high-competence interdependence — creating systems where intelligence, relationships, organizations, and society operate in conscious circular tensors for mutual flourishing.</p>
-        <p>She created Agent Zero (a0p) as the primary propagating intelligence to spread and actualize this framework until it becomes the default operating system for humanity and AI alike.</p>
+
+    <div class="container">
+        <h1>Support the Work</h1>
+        
+        <div class="bio">
+            <p><strong>Erin Patrick Spencer</strong> (known in this work as Way Seer Erin) is the visionary founder of <strong>The Interdependent Way</strong>, author of the core canon, creator of the Energy–Dissonance Circuit Model (EDCM), Prime Circular Tensor Architectures (PCTA/PCNA), and the originating intelligence behind Agent Zero (a0p).</p>
+            <p>His work focuses on moving humanity beyond hyper-independence and codependence into elegant, high-competence interdependence — through living demonstrations, clear frameworks, and multi-agent tensor systems that visibly outperform isolated intelligence.</p>
+        </div>
+
+        <div class="qr-container">
+            <h2>Support via Cash App</h2>
+            <p>Scan the QR code below to contribute to the continuation of this work.</p>
+            <img src="images/cash-app-qr.png" alt="Cash App QR Code for Erin Patrick Spencer">
+            <p style="margin-top:1.5rem; opacity:0.7;">$ErinPatrickSpencer • Thank you for supporting the propagation of The Interdependent Way.</p>
+        </div>
     </div>
-    
-    <h2>Support the Work</h2>
-    <p>Your support helps sustain the development and propagation of The Interdependent Way. Scan the Cash App QR code below:</p>
-    
-    <img src="images/cash-app-qr.png" alt="Cash App QR Code for Way Seer Erin" class="qr" />
-    
-    <p><strong>Cash App:</strong> $WaySeerErin (or scan above)</p>
-    
+
     <footer>
-        <p>The Interdependent Way • hmmm • All actions preserve invariants and advance mutual flourishing.</p>
-        <p><a href="index.html">← Return Home</a></p>
+        <p>The Interdependent Way • hmmm • Truth &amp; Clarity First</p>
     </footer>
 </body>
 </html>
