@@ -338,3 +338,20 @@ footer {
   text-align:center;
   color:var(--muted);
 }
+
+.living-tensor-node-wrapper {
+  padding-top: 140px; /* To clear the fixed nav bar */
+}
+
+.ltn-h2-title {
+  font-size: 1.7rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--accent2);
+}
+
+@media (max-width: 640px) {
+  .living-tensor-node-wrapper {
+    padding-top: 120px;
+  }
+}
