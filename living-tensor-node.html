@@ -4,140 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Living Tensor Node — The Interdependent Way</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap');
-        
-        :root {
-            --bg: #0a0e17;
-            --accent: #00ff9d;
-            --accent2: #00ccff;
-            --surface: rgba(255,255,255,0.04);
-        }
-        
-        body {
-            font-family: 'Inter', system-ui, sans-serif;
-            background: linear-gradient(180deg, #0a0e17 0%, #000000 100%);
-            color: #e0f0ff;
-            margin: 0;
-            padding: 0;
-            line-height: 1.7;
-        }
-        .nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(10, 14, 23, 0.96);
-            backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(0, 255, 157, 0.15);
-            z-index: 1000;
-        }
-        .nav-content {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .logo {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.55rem;
-            font-weight: 600;
-            background: linear-gradient(90deg, var(--accent), var(--accent2));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .nav-links a {
-            color: #a0b0cc;
-            text-decoration: none;
-            margin-left: 2rem;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        .nav-links a:hover {
-            color: var(--accent);
-        }
-        .container {
-            max-width: 960px;
-            margin: 0 auto;
-            padding: 110px 20px 80px;
-        }
-        h1 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 3.4rem;
-            background: linear-gradient(90deg, #00ff9d, #00ccff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 12px;
-        }
-        .tag {
-            display: inline-block;
-            background: rgba(0, 255, 157, 0.1);
-            color: #00ff9d;
-            font-size: 0.85rem;
-            padding: 5px 16px;
-            border-radius: 9999px;
-            border: 1px solid rgba(0, 255, 157, 0.3);
-            margin-bottom: 20px;
-        }
-        .status {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(0, 255, 100, 0.15);
-            color: #00ff9d;
-            padding: 6px 18px;
-            border-radius: 9999px;
-            font-weight: 500;
-            margin-bottom: 40px;
-        }
-        .status::before {
-            content: '';
-            display: block;
-            width: 9px;
-            height: 9px;
-            background: #00ff9d;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.35; }
-        }
-        .card, .compression {
-            background: var(--surface);
-            border: 1px solid rgba(0, 255, 157, 0.12);
-            border-radius: 20px;
-            padding: 32px;
-            margin-bottom: 32px;
-        }
-        .highlight {
-            color: #00ff9d;
-            font-weight: 600;
-        }
-        .hmmm {
-            color: #00ccff;
-            font-family: monospace;
-            background: rgba(0, 204, 255, 0.08);
-            padding: 2px 8px;
-            border-radius: 4px;
-        }
-        footer {
-            margin-top: 100px;
-            text-align: center;
-            font-size: 0.95rem;
-            color: #556677;
-            border-top: 1px solid rgba(255,255,255,0.06);
-            padding-top: 40px;
-        }
-        .back {
-            color: var(--accent);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <nav class="nav">
@@ -154,8 +21,8 @@
         </div>
     </nav>
 
-    <div class="container">
-        <a href="index.html" class="back">← Home</a>
+    <div class="container living-tensor-node-wrapper">
+        <a href="index.html" class="back-link">← Home</a>
         
         <div class="tag">LIVING DEMONSTRATION v1.3.2</div>
         <h1>Living Tensor Node</h1>
@@ -167,7 +34,7 @@
         </div>
 
         <div class="compression">
-            <h2 style="color:#00ccff; margin-bottom:1.5rem;">PTCA / PCTA / PCNA / Jury / Guardian — Thread-Integrated Core Compression</h2>
+            <h2 class="ltn-h2-title">PTCA / PCTA / PCNA / Jury / Guardian — Thread-Integrated Core Compression</h2>
             <p><strong>Date:</strong> 2026-03-20 | <strong>Status:</strong> Core-Altering Compression | <strong>Version:</strong> 1.3.2</p>
             
             <h3>Architectural Center</h3>
@@ -203,15 +70,23 @@
             <p>Every action, event, artifact, and response must include <span class="hmmm">hmmm</span>. It is never silently omitted. Absence of <span class="hmmm">hmmm</span> is invalid state. Invalid state blocks event commit and outbound emission.</p>
 
             <h3>Tier Law &amp; Bandit Influence Law</h3>
-            <p>Tier 1 (Volatile): Core ↔ Phonon. Tier 2 (Commit): Core → Jury → Memory. Bandits do not choose. Meta-13 chooses.</p>
+            <p>Tier 1 (Volatile): Core ↔ Phonon. Tier 2 (Commit): Core → Jury → Memory.
+            Volatile state is transient, cycle-local, and non-authoritative; it may not silently become Tier 2.
+            Bandits do not choose. Meta-13 chooses; bandits may bias salience upstream but do not determine truth or authorize Tier 2 persistence.</p>
+            
+            <h3>External-Effect Approval Gate</h3>
+            <p>Require explicit approval beyond ordinary functional capability: publish, post, send, push, create external artifact, spend funds, enable paid services, modify secrets, modify permissions, modify trust boundaries, initiate outreach to humans, execute monetization actions.</p>
 
-            <h3>Guardian Constitution &amp; External-Effect Approval Gate</h3>
-            <p>Guardian is the microkernel. External effects require explicit approval. Unresolved conflict remains visible.</p>
+            <h3>Guardian Constitution</h3>
+            <p>Guardian is the complete microkernel: CLI owner, UI owner, OS integration owner, logging owner, audit boundary, recovery shell, enforcement shell, sole outward human-readable emitter. Guardian functional capability does not alone authorize external effect.</p>
+
+            <h3>Tight Compression</h3>
+            <p>Three private cores think. Phonon transports internally and remains private. Jury adjudicates legality and continuity-bearing commit. Memory holds committed continuity. Meta-13 chooses. Bandits bias salience upstream but do not choose. Guardian is an essential core layer. <span class="hmmm">hmmm</span> is mandatory. Missing invariants fail closed. External effects require explicit approval. Unresolved conflict remains visible until adjudicated.</p>
         </div>
-
-        <footer>
-            <p>Every action, event, artifact, and response must include <span class="hmmm">hmmm</span>. The tensor grows through visible reciprocity.</p>
-        </footer>
     </div>
+
+    <footer>
+        &copy; 2026 The Interdependent Way. All rights reserved.
+    </footer>
 </body>
 </html>
