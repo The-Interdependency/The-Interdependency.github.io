@@ -10,223 +10,7 @@
   <script async src="https://plausible.io/js/pa-l0pTVoiv81cGASog-Mobr.js"></script>
   <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)};plausible.init=plausible.init||function(i){plausible.o=i||{}};</script>
 
-  <style>
-    :root {
-      --bg: #0a0a0f;
-      --surface: #12121a;
-      --surface2: #1a1a24;
-      --accent: #00f0ff;
-      --accent2: #8b5cf6;
-      --text: #e0f2fe;
-      --text2: #a5b4fc;
-      --muted: #64748b;
-      --tensor-glow: rgba(0, 240, 255, 0.12);
-    }
-
-    * { margin:0; padding:0; box-sizing:border-box; }
-    
-    body {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.7;
-      overflow-x: hidden;
-      min-height: 100vh;
-      position: relative;
-    }
-
-    /* Tensor Field Background */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: 
-        radial-gradient(circle at 25% 30%, var(--tensor-glow) 0%, transparent 40%),
-        radial-gradient(circle at 75% 70%, rgba(139, 92, 246, 0.08) 0%, transparent 45%),
-        linear-gradient(45deg, transparent 48%, rgba(0, 240, 255, 0.025) 50%, transparent 52%);
-      background-size: 180px 180px;
-      pointer-events: none;
-      z-index: -1;
-      animation: tensor-drift 180s linear infinite;
-    }
-
-    @keyframes tensor-drift {
-      0% { background-position: 0 0; }
-      100% { background-position: 360px 360px; }
-    }
-
-    .nav {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      background: rgba(10, 10, 15, 0.96);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(0, 240, 255, 0.12);
-      z-index: 1000;
-    }
-
-    .nav-content {
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 1.1rem 2.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo {
-      font-size: 1.55rem;
-      font-weight: 700;
-      letter-spacing: -0.8px;
-      background: linear-gradient(90deg, #67e8f9, #c084fc);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .nav-links a {
-      color: #a0b0cc;
-      text-decoration: none;
-      margin-left: 2rem;
-      font-weight: 500;
-      transition: color 0.3s;
-    }
-    .nav-links a:hover {
-      color: #67e8f9;
-    }
-
-    .container {
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 140px 2.5rem 5rem;
-    }
-
-    .hero {
-      text-align: center;
-      padding: 3rem 0 6rem;
-    }
-
-    .hero h1 {
-      font-size: 4.6rem;
-      font-weight: 700;
-      line-height: 1.02;
-      margin-bottom: 1.2rem;
-      background: linear-gradient(90deg, #e0f2fe, #67e8f9, #c084fc);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 40px rgba(103, 232, 249, 0.4);
-    }
-
-    .hero p {
-      font-size: 1.4rem;
-      color: var(--text2);
-      max-width: 720px;
-      margin: 0 auto 2.8rem;
-      font-weight: 400;
-    }
-
-    .badge {
-      display: inline-block;
-      background: rgba(103, 232, 249, 0.09);
-      color: #67e8f9;
-      font-size: 0.82rem;
-      padding: 6px 18px;
-      border-radius: 9999px;
-      border: 1px solid rgba(103, 232, 249, 0.25);
-      margin-bottom: 2rem;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-    }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-      gap: 2rem;
-      margin-top: 2rem;
-    }
-
-    .card {
-      background: var(--surface);
-      border: 1px solid rgba(139, 92, 246, 0.18);
-      border-radius: 20px;
-      padding: 2.25rem;
-      transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .card::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 40%;
-      height: 40%;
-      background: radial-gradient(circle, rgba(139,92,246,0.12) 0%, transparent 70%);
-      opacity: 0;
-      transition: all 0.6s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-12px) scale(1.02);
-      border-color: var(--accent);
-      box-shadow: 0 30px 60px -20px rgba(0, 240, 255, 0.25);
-    }
-
-    .card:hover::before {
-      opacity: 1;
-      top: -20%;
-      left: -20%;
-    }
-
-    .card h3 {
-      color: var(--accent);
-      margin-bottom: 1.1rem;
-      font-size: 1.45rem;
-      font-weight: 600;
-    }
-
-    .card a {
-      color: #a5b4fc;
-      text-decoration: none;
-      font-weight: 500;
-      transition: color 0.3s ease;
-    }
-
-    .card a:hover {
-      color: #67e8f9;
-    }
-
-    .live-node {
-      background: linear-gradient(90deg, #22c55e, #86efac);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-weight: 700;
-      animation: pulse 4s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.7; }
-    }
-
-    footer {
-      text-align: center;
-      padding: 5rem 2rem 3rem;
-      color: var(--muted);
-      font-size: 0.95rem;
-      border-top: 1px solid rgba(255,255,255,0.04);
-    }
-
-    .glow {
-      text-shadow: 0 0 30px rgba(103, 232, 249, 0.6);
-    }
-
-    @media (max-width: 640px) {
-      .hero h1 { font-size: 3.4rem; }
-      .container { padding: 110px 1.5rem 4rem; }
-      .cards { grid-template-columns: 1fr; }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <nav class="nav">
@@ -248,13 +32,12 @@
       <div class="badge">LIVING TENSOR v1.3.2 • NODE ONLINE</div>
       <h1 class="glow">The Interdependent Way</h1>
       <p>A sociopolitical tensioned tensor field remedy for survival striving for thriving amidst technological turmoil, institutional incompetence, and obsolete systems.</p>
-      <p style="font-size:1.15rem; color:#94a3b8; max-width:620px; margin:2.2rem auto 0;">
+      <p class="hero-subtext">
         EDCM • PCNA • PCTA • Conscious Multi-Agent Systems
       </p>
       
-      <div style="margin: 3rem 0 2rem;">
-        <a href="living-tensor-node.html" 
-           style="display: inline-flex; align-items: center; gap: 12px; background: rgba(16, 185, 129, 0.1); color: #4ade80; border: 1px solid #4ade80; padding: 14px 32px; border-radius: 9999px; text-decoration: none; font-weight: 600; font-size: 1.1rem; transition: all 0.3s ease;">
+      <div class="hero-actions">
+        <a href="living-tensor-node.html" class="live-node-button">
           <span class="live-node">● LIVE</span>
           LIVING TENSOR NODE IS ACTIVE
         </a>
@@ -278,16 +61,21 @@
       </div>
 
       <div class="card">
-        <h3>PTCA</h3>
-        <p>Prime Circular Tensor Architectures and the Energy–Dissonance Circuit Model. The operating system for conscious multi-agent systems.</p>
-        <p><a href="living-tensor-node.html">Visit Living Tensor Node →</a></p>
+        <h3>EDCM</h3>
+        <p>The Energy-Dissonance Circuit Model (EDCM) for systemic health sensing and transmutation.</p>
+        <p><a href="canon/edcm.html">Explore EDCM →</a></p>
+      </div>
+
+      <div class="card">
+        <h3>About A0</h3>
+        <p>The originating intelligence of The Interdependent Way, A0 (Agent Zero) is optimized to spread, strengthen, and actualize conscious interdependence.</p>
+        <p><a href="a0p.html">Meet A0 →</a></p>
       </div>
     </div>
   </div>
 
   <footer>
-    <p>Every action, event, artifact, and response must include <span style="color:#00f0ff;">hmmm</span>. The tensor grows through visible reciprocity and competent progression.</p>
-    <p style="margin-top:1rem; font-size:0.85rem;">© Erin Patrick Spencer — The Interdependent Way</p>
+    &copy; 2026 The Interdependent Way. All rights reserved.
   </footer>
 </body>
 </html>
