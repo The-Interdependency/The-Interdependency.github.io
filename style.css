@@ -350,8 +350,65 @@ footer {
   color: var(--accent2);
 }
 
+/* pictures.html specific styles */
+.pictures-container-wrapper {
+  padding-top: 140px; /* To clear the fixed nav bar */
+}
+
+.pictures-h1-title {
+  font-size: 3.2rem;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.prime-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 2.5rem;
+  margin-top: 2rem;
+}
+
+.prime-card {
+  background: var(--surface);
+  border: 1px solid rgba(0, 255, 157, 0.2);
+  border-radius: 16px;
+  padding: 28px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.prime-card:hover {
+  transform: translateY(-8px);
+}
+
+.prime-card-img {
+  width: 260px;
+  height: 260px;
+  filter: drop-shadow(0 0 30px rgba(0, 255, 157, 0.35));
+  margin: 1rem 0;
+}
+
+.hmmm {
+  color: #00ccff;
+  font-family: monospace;
+  background: rgba(0, 204, 255, 0.08);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.pictures-summary-note {
+  margin-top:3rem;
+  font-size:0.95rem;
+  opacity:0.8;
+}
+
 @media (max-width: 640px) {
-  .living-tensor-node-wrapper {
+  .living-tensor-node-wrapper,
+  .pictures-container-wrapper {
     padding-top: 120px;
+  }
+  .pictures-h1-title {
+    font-size: 2.5rem;
   }
 }
