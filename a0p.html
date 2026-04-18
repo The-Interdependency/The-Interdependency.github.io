@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>a0 — Agent Zero</title>
-  <meta name="description" content="a0: live autonomous AI agent platform associated with The Interdependency.">
+  <meta name="description" content="Bounded public summary of the a0 repository and app surfaces.">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -15,7 +15,8 @@
         <a href="index.html">Home</a>
         <a href="canon/ptca.html">PTCA</a>
         <a href="a0p.html">a0</a>
-        <a href="living-tensor-node.html">Living Node</a>
+        <a href="projects.html">Projects</a>
+        <a href="living-tensor-node.html">Notes</a>
         <a href="pictures.html">Pictures</a>
         <a href="support.html">Support</a>
       </div>
@@ -28,45 +29,45 @@
     <div class="a0p-card">
       <h1>a0 — Agent Zero</h1>
       <p class="a0p-intro-text">
-        a0 is a live autonomous AI agent platform associated with The Interdependency.
-        It is presented here as an active software project, not a finished or final system.
+        This page is a bounded public summary of what is visible in <code>The-Interdependency/a0</code> and its linked deployment materials.
+        It describes repository structure and stated deployment intent without claiming that every described feature is complete, running, or validated.
       </p>
 
-      <h2>Current Description</h2>
+      <h2>What the public repository shows</h2>
       <ul class="a0p-list">
-        <li><strong>Project type:</strong> autonomous AI agent platform</li>
-        <li><strong>Status:</strong> active software project with public app access</li>
-        <li><strong>Surface:</strong> website, canon, live app, and supporting repositories</li>
-        <li><strong>App link:</strong> <a href="https://replit.interdependentway.org" target="_blank" rel="noopener noreferrer">replit.interdependentway.org</a></li>
+        <li><strong>Frontend:</strong> React, Vite, TypeScript, Tailwind, shadcn/ui.</li>
+        <li><strong>Node layer:</strong> Express server handling auth, sessions, and API proxying.</li>
+        <li><strong>Python layer:</strong> FastAPI backend with route modules, services, and storage layers.</li>
+        <li><strong>Data layer:</strong> PostgreSQL-oriented configuration with Drizzle and SQLAlchemy-related files.</li>
+        <li><strong>Deployment materials:</strong> Dockerfile, Cloud Build config, GitHub workflow directory, and deployment guide.</li>
       </ul>
 
-      <h2>What the Repository Shows</h2>
+      <h2>Public-facing interpretation</h2>
       <ul class="a0p-list">
-        <li>Frontend and backend structure for a live application</li>
-        <li>Agent, routing, memory, and system modules under active development</li>
-        <li>Deployment documentation and container configuration</li>
-        <li>Pricing and account tier logic in the application codebase</li>
+        <li>The repository reads as an active application codebase rather than a static document set.</li>
+        <li>Its architecture is more complex than the website and appears aimed at an interactive app environment.</li>
+        <li>The public docs include pricing, tiers, and deployment plans, but those should be read as implementation material unless separately confirmed in a live app.</li>
       </ul>
 
-      <h2>How to Approach It</h2>
+      <h2>What is useful for the website</h2>
       <ul class="a0p-list">
-        <li>Treat a0 as a working platform and research environment</li>
-        <li>Expect iteration, revision, and ongoing clarification</li>
-        <li>Use the live app for direct interaction</li>
-        <li>Use the canon and site pages for context and language</li>
+        <li>A short architecture summary.</li>
+        <li>A link to the repository.</li>
+        <li>A clear distinction between repository claims, live app behavior, and canon language.</li>
+        <li>A consolidation page describing overlap with <code>aimmh</code>.</li>
       </ul>
 
       <h2>Links</h2>
       <ul class="a0p-list">
-        <li><a href="https://replit.interdependentway.org" target="_blank" rel="noopener noreferrer">Open the a0 app</a></li>
+        <li><a href="projects.html">Open consolidation notes</a></li>
         <li><a href="https://github.com/The-Interdependency/a0" target="_blank" rel="noopener noreferrer">View the a0 repository</a></li>
         <li><a href="index.html">Return to homepage</a></li>
       </ul>
 
-      <p class="a0p-footer-note"><em>hmmm: this page is intentionally bounded to what is visible from the current repository and public app surface.</em></p>
+      <p class="a0p-footer-note"><em>hmmm: public repository structure is visible; runtime completeness, feature parity, and operational status still require separate verification.</em></p>
     </div>
   </div>
 
-  <footer>&copy; 2026 The Interdependent Way. All rights reserved.</footer>
+  <footer>&copy; 2026 The Interdependent Way. Public working site.</footer>
 </body>
 </html>
