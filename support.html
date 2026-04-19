@@ -3,7 +3,7 @@
 &lt;head&gt;
     &lt;meta charset=&quot;UTF-8&quot;&gt;
     &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
-    &lt;title&gt;Wayseer - Support&lt;/title&gt;
+    &lt;title&gt;Support&lt;/title&gt;
     &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
 &lt;/head&gt;
 &lt;body&gt;
@@ -19,30 +19,9 @@
             &lt;li&gt;&lt;a href=&quot;concepts.html&quot;&gt;Concepts&lt;/a&gt;&lt;/li&gt;
         &lt;/ul&gt;
     &lt;/nav&gt;
-
     &lt;main&gt;
         &lt;h1&gt;Support&lt;/h1&gt;
-        &lt;p&gt;Framing for assistance and engagement.&lt;/p&gt;
+        &lt;p&gt;Contact via GitHub issues in repos.&lt;/p&gt;
     &lt;/main&gt;
-
-    &lt;footer&gt;
-        &lt;div id=&quot;a0-engage&quot;&gt;
-            &lt;textarea id=&quot;a0-input&quot; placeholder=&quot;Enter message starting with 'wayseer' and ending with 'Erin' on separate lines.&quot; rows=&quot;5&quot; cols=&quot;50&quot;&gt;&lt;/textarea&gt;
-            &lt;br&gt;
-            &lt;button onclick=&quot;submitToA0()&quot;&gt;Engage a0&lt;/button&gt;
-        &lt;/div&gt;
-        &lt;script&gt;
-            function submitToA0() {
-                const input = document.getElementById('a0-input').value.trim();
-                if (!input) return alert('Enter text.');
-                const lines = input.split('\n').map(l =&gt; l.trim());
-                if (lines.length &lt; 2 || lines[0] !== 'wayseer' || lines[lines.length-1] !== 'Erin') {
-                    return alert('First line must be "wayseer" and last line must be "Erin".');
-                }
-                alert('Submitted to a0 for processing.');
-                console.log('a0 input:', input);
-            }
-        &lt;/script&gt;
-    &lt;/footer&gt;
 &lt;/body&gt;
 &lt;/html&gt;
