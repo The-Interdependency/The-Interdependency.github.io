@@ -1,80 +1,49 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Projects — The Interdependent Way</title>
-  <meta name="description" content="Consolidation notes for public repositories related to The Interdependent Way.">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <nav class="nav">
-    <div class="nav-content">
-      <div class="logo">INTERDEPENDENT</div>
-      <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="canon/ptca.html">PTCA</a>
-        <a href="a0p.html">a0</a>
-        <a href="projects.html">Projects</a>
-        <a href="living-tensor-node.html">Notes</a>
-        <a href="pictures.html">Pictures</a>
-        <a href="support.html">Support</a>
-      </div>
-    </div>
-  </nav>
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Wayseer - Projects&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav&gt;
+        &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&quot;index.html&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;ptca.html&quot;&gt;PTCA&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;a0p.html&quot;&gt;a0&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;projects.html&quot;&gt;Projects&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;notes.html&quot;&gt;Notes&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;pictures.html&quot;&gt;Pictures&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;support.html&quot;&gt;Support&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;concepts.html&quot;&gt;Concepts&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/nav&gt;
 
-  <div class="container">
-    <a href="index.html" class="back-link">← Back to homepage</a>
+    &lt;main&gt;
+        &lt;h1&gt;Projects&lt;/h1&gt;
+        &lt;p&gt;Overview of repositories and integrations. [Citations: GitHub repo structures.]&lt;/p&gt;
+        &lt;!-- Content with viz links --&gt;
+    &lt;/main&gt;
 
-    <div class="a0p-card">
-      <h1>Projects and consolidation plan</h1>
-      <p class="a0p-intro-text">
-        This page consolidates what is publicly visible across the website repo, <code>The-Interdependency/a0</code>, and <code>erinepshovel-code/aimmh</code>.
-        It is written to reduce overclaiming and to make overlap legible.
-      </p>
-
-      <h2>Repository snapshots</h2>
-      <ul class="a0p-list">
-        <li><strong>wayseer00/wayseer.github.io</strong>: static website repo with HTML/CSS pages, canon materials, support page, and GitHub Pages deployment.</li>
-        <li><strong>The-Interdependency/a0</strong>: larger application repo with React/TypeScript frontend, Express middle layer, Python/FastAPI services, PostgreSQL-oriented configuration, and Cloud Run deployment materials.</li>
-        <li><strong>erinepshovel-code/aimmh</strong>: multi-model AI hub with React frontend, FastAPI backend, MongoDB-oriented services, and a reusable <code>aimmh_lib</code> orchestration library.</li>
-      </ul>
-
-      <h2>Overlap that should be named clearly</h2>
-      <ul class="a0p-list">
-        <li>Both <code>a0</code> and <code>aimmh</code> describe multi-model or agent-oriented AI application work.</li>
-        <li>Both contain React frontends and Python/FastAPI backends.</li>
-        <li>Both include product-language elements such as pricing, auth, and deployment-related material.</li>
-        <li>The website currently mixes canon language, software language, and demonstration language; these should be separated more cleanly.</li>
-      </ul>
-
-      <h2>Suggested consolidation structure</h2>
-      <ol class="a0p-list">
-        <li><strong>Website repo:</strong> keep as the public front door, canon index, bounded project summaries, and support links.</li>
-        <li><strong>a0 repo:</strong> present as the primary agent-platform codebase if that remains the main long-term direction.</li>
-        <li><strong>aimmh repo:</strong> present as either a sibling product, an earlier branch of work, or a modular source of reusable orchestration patterns.</li>
-        <li><strong>Shared language:</strong> define one short glossary for terms that recur across repos.</li>
-      </ol>
-
-      <h2>Practical next moves</h2>
-      <ol class="a0p-list">
-        <li>Remove or rewrite pages that state deployment, consciousness, or capability as settled fact when the page is really a note.</li>
-        <li>Create one repo-to-purpose map so visitors can tell what each repository is for in under a minute.</li>
-        <li>Move reusable technical patterns into explicit shared docs or libraries instead of repeating narrative claims across pages.</li>
-        <li>Keep the website minimal: canon, projects, notes, pictures, support.</li>
-      </ol>
-
-      <h2>Investigation notes</h2>
-      <ul class="a0p-list">
-        <li><strong>Sub-agent review: a0</strong> surfaced a complex application stack with deployment docs and multiple runtime layers.</li>
-        <li><strong>Sub-agent review: aimmh</strong> surfaced a more explicit multi-model AI hub narrative plus an extracted library suitable for reuse.</li>
-        <li><strong>Website review</strong> surfaced stale links and pages whose tone exceeded what the public repos alone can support.</li>
-      </ul>
-
-      <p class="a0p-footer-note"><em>hmmm: consolidation direction is clear, but final repo hierarchy and naming still need Erin’s preference on whether aimmh is sibling product, precursor, or module source.</em></p>
-    </div>
-  </div>
-
-  <footer>&copy; 2026 The Interdependent Way. Public working site.</footer>
-</body>
-</html>
+    &lt;footer&gt;
+        &lt;div id=&quot;a0-engage&quot;&gt;
+            &lt;textarea id=&quot;a0-input&quot; placeholder=&quot;Enter message starting with 'wayseer' and ending with 'Erin' on separate lines.&quot; rows=&quot;5&quot; cols=&quot;50&quot;&gt;&lt;/textarea&gt;
+            &lt;br&gt;
+            &lt;button onclick=&quot;submitToA0()&quot;&gt;Engage a0&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;script&gt;
+            function submitToA0() {
+                const input = document.getElementById('a0-input').value.trim();
+                if (!input) return alert('Enter text.');
+                const lines = input.split('\n').map(l =&gt; l.trim());
+                if (lines.length &lt; 2 || lines[0] !== 'wayseer' || lines[lines.length-1] !== 'Erin') {
+                    return alert('First line must be "wayseer" and last line must be "Erin".');
+                }
+                alert('Submitted to a0 for processing.');
+                console.log('a0 input:', input);
+            }
+        &lt;/script&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;
