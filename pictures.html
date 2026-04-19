@@ -1,68 +1,49 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Pictures — The Interdependent Way</title>
-  <meta name="description" content="Visual assets, diagrams, and symbolic images used across The Interdependent Way website.">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <nav class="nav">
-    <div class="nav-content">
-      <div class="logo">INTERDEPENDENT</div>
-      <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="canon/ptca.html">PTCA</a>
-        <a href="a0p.html">a0</a>
-        <a href="projects.html">Projects</a>
-        <a href="living-tensor-node.html">Notes</a>
-        <a href="pictures.html">Pictures</a>
-        <a href="support.html">Support</a>
-      </div>
-    </div>
-  </nav>
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Wayseer - Pictures&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav&gt;
+        &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&quot;index.html&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;ptca.html&quot;&gt;PTCA&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;a0p.html&quot;&gt;a0&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;projects.html&quot;&gt;Projects&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;notes.html&quot;&gt;Notes&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;pictures.html&quot;&gt;Pictures&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;support.html&quot;&gt;Support&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;concepts.html&quot;&gt;Concepts&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/nav&gt;
 
-  <div class="container pictures-container-wrapper">
-    <a href="index.html" class="back-link">← Back to homepage</a>
-    <h1 class="pictures-h1-title">Pictures and visual assets</h1>
-    <p>
-      This page gathers visual materials used across the site: diagrams, symbolic graphics, and other image assets.
-      These images may reflect canon language or design ideas, but they should not be read as proof of deployment or validation.
-    </p>
+    &lt;main&gt;
+        &lt;h1&gt;Visual Assets&lt;/h1&gt;
+        &lt;p&gt;Bounded descriptions of diagrams from repos.&lt;/p&gt;
+        &lt;!-- Image embeds --&gt;
+    &lt;/main&gt;
 
-    <div class="prime-gallery">
-      <div class="prime-card">
-        <h3>Prime 53 Tensor Anchor</h3>
-        <img src="images/prime-53-tensor-anchor.svg" alt="Prime 53 Tensor Anchor" class="prime-card-img">
-        <p>A symbolic structural diagram used in the site’s visual language.</p>
-      </div>
-
-      <div class="prime-card">
-        <h3>Mind Body Soul Spiral</h3>
-        <img src="images/mind-body-soul-spiral.svg" alt="Mind Body Soul Spiral" class="prime-card-img">
-        <p>A triadic visual motif used for conceptual and illustrative purposes.</p>
-      </div>
-
-      <div class="prime-card">
-        <h3>I You We Tensor Field</h3>
-        <img src="images/iyw-tensor-field.svg" alt="I You We Tensor Field" class="prime-card-img">
-        <p>A relational diagram used in the site’s symbolic vocabulary.</p>
-      </div>
-
-      <div class="prime-card">
-        <h3>Energy Dissonance Circuit</h3>
-        <img src="images/edcm-circuit.svg" alt="Energy Dissonance Circuit Model" class="prime-card-img">
-        <p>A visual model associated with internal diagnostic and design language.</p>
-      </div>
-    </div>
-
-    <p class="pictures-summary-note">
-      These visuals are kept because they help orient the site’s symbolic and conceptual material. They are supporting assets,
-      not standalone evidence claims. hmmm: some image labels may still benefit from a later glossary pass.
-    </p>
-  </div>
-
-  <footer>&copy; 2026 The Interdependent Way. Public working site.</footer>
-</body>
-</html>
+    &lt;footer&gt;
+        &lt;div id=&quot;a0-engage&quot;&gt;
+            &lt;textarea id=&quot;a0-input&quot; placeholder=&quot;Enter message starting with 'wayseer' and ending with 'Erin' on separate lines.&quot; rows=&quot;5&quot; cols=&quot;50&quot;&gt;&lt;/textarea&gt;
+            &lt;br&gt;
+            &lt;button onclick=&quot;submitToA0()&quot;&gt;Engage a0&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;script&gt;
+            function submitToA0() {
+                const input = document.getElementById('a0-input').value.trim();
+                if (!input) return alert('Enter text.');
+                const lines = input.split('\n').map(l =&gt; l.trim());
+                if (lines.length &lt; 2 || lines[0] !== 'wayseer' || lines[lines.length-1] !== 'Erin') {
+                    return alert('First line must be "wayseer" and last line must be "Erin".');
+                }
+                alert('Submitted to a0 for processing.');
+                console.log('a0 input:', input);
+            }
+        &lt;/script&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;
