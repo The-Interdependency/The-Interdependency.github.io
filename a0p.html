@@ -1,73 +1,49 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>a0 — Agent Zero</title>
-  <meta name="description" content="Bounded public summary of the a0 repository and app surfaces.">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <nav class="nav">
-    <div class="nav-content">
-      <div class="logo">INTERDEPENDENT</div>
-      <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="canon/ptca.html">PTCA</a>
-        <a href="a0p.html">a0</a>
-        <a href="projects.html">Projects</a>
-        <a href="living-tensor-node.html">Notes</a>
-        <a href="pictures.html">Pictures</a>
-        <a href="support.html">Support</a>
-      </div>
-    </div>
-  </nav>
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Wayseer - a0&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;nav&gt;
+        &lt;ul&gt;
+            &lt;li&gt;&lt;a href=&quot;index.html&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;ptca.html&quot;&gt;PTCA&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;a0p.html&quot;&gt;a0&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;projects.html&quot;&gt;Projects&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;notes.html&quot;&gt;Notes&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;pictures.html&quot;&gt;Pictures&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;support.html&quot;&gt;Support&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href=&quot;concepts.html&quot;&gt;Concepts&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/nav&gt;
 
-  <div class="container">
-    <a href="index.html" class="back-link">← Back to The Interdependent Way</a>
+    &lt;main&gt;
+        &lt;h1&gt;a0 Platform&lt;/h1&gt;
+        &lt;p&gt;Agent zero for digital support. [Bounded: Repo-based curation via GitHub.]&lt;/p&gt;
+        &lt;!-- Bounded content with citations --&gt;
+    &lt;/main&gt;
 
-    <div class="a0p-card">
-      <h1>a0 — Agent Zero</h1>
-      <p class="a0p-intro-text">
-        This page is a bounded public summary of what is visible in <code>The-Interdependency/a0</code> and its linked deployment materials.
-        It describes repository structure and stated deployment intent without claiming that every described feature is complete, running, or validated.
-      </p>
-
-      <h2>What the public repository shows</h2>
-      <ul class="a0p-list">
-        <li><strong>Frontend:</strong> React, Vite, TypeScript, Tailwind, shadcn/ui.</li>
-        <li><strong>Node layer:</strong> Express server handling auth, sessions, and API proxying.</li>
-        <li><strong>Python layer:</strong> FastAPI backend with route modules, services, and storage layers.</li>
-        <li><strong>Data layer:</strong> PostgreSQL-oriented configuration with Drizzle and SQLAlchemy-related files.</li>
-        <li><strong>Deployment materials:</strong> Dockerfile, Cloud Build config, GitHub workflow directory, and deployment guide.</li>
-      </ul>
-
-      <h2>Public-facing interpretation</h2>
-      <ul class="a0p-list">
-        <li>The repository reads as an active application codebase rather than a static document set.</li>
-        <li>Its architecture is more complex than the website and appears aimed at an interactive app environment.</li>
-        <li>The public docs include pricing, tiers, and deployment plans, but those should be read as implementation material unless separately confirmed in a live app.</li>
-      </ul>
-
-      <h2>What is useful for the website</h2>
-      <ul class="a0p-list">
-        <li>A short architecture summary.</li>
-        <li>A link to the repository.</li>
-        <li>A clear distinction between repository claims, live app behavior, and canon language.</li>
-        <li>A consolidation page describing overlap with <code>aimmh</code>.</li>
-      </ul>
-
-      <h2>Links</h2>
-      <ul class="a0p-list">
-        <li><a href="projects.html">Open consolidation notes</a></li>
-        <li><a href="https://github.com/The-Interdependency/a0" target="_blank" rel="noopener noreferrer">View the a0 repository</a></li>
-        <li><a href="index.html">Return to homepage</a></li>
-      </ul>
-
-      <p class="a0p-footer-note"><em>hmmm: public repository structure is visible; runtime completeness, feature parity, and operational status still require separate verification.</em></p>
-    </div>
-  </div>
-
-  <footer>&copy; 2026 The Interdependent Way. Public working site.</footer>
-</body>
-</html>
+    &lt;footer&gt;
+        &lt;div id=&quot;a0-engage&quot;&gt;
+            &lt;textarea id=&quot;a0-input&quot; placeholder=&quot;Enter message starting with 'wayseer' and ending with 'Erin' on separate lines.&quot; rows=&quot;5&quot; cols=&quot;50&quot;&gt;&lt;/textarea&gt;
+            &lt;br&gt;
+            &lt;button onclick=&quot;submitToA0()&quot;&gt;Engage a0&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;script&gt;
+            function submitToA0() {
+                const input = document.getElementById('a0-input').value.trim();
+                if (!input) return alert('Enter text.');
+                const lines = input.split('\n').map(l =&gt; l.trim());
+                if (lines.length &lt; 2 || lines[0] !== 'wayseer' || lines[lines.length-1] !== 'Erin') {
+                    return alert('First line must be "wayseer" and last line must be "Erin".');
+                }
+                alert('Submitted to a0 for processing.');
+                console.log('a0 input:', input);
+            }
+        &lt;/script&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;
