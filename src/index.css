@@ -1,0 +1,10 @@
+/* Basic styles for coherence */
+body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+.home, .repo-details, .canon-page { max-width: 1200px; margin: 0 auto; }
+.repo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+.repo-card { background: white; padding: 20px; border-radius: 8px; text-decoration: none; color: black; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+.repo-card:hover { box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+button, Link { display: inline-block; margin: 10px 0; padding: 10px; background: #007bff; color: white; text-decoration: none; border-radius: 4px; }
+h1, h2 { color: #333; }
+.markdown { line-height: 1.6; }
+@media (max-width: 768px) { .repo-grid { grid-template-columns: 1fr; } }
