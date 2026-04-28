@@ -1,32 +1,56 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projects</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Project map for The Interdependent Way: website, a0, PCNA, PTCA, EDCM, UCNS, PCEA, ZFAE, AIMMH, and AI-TIW." />
+  <title>Projects — The Interdependent Way</title>
+  <style>
+    :root { color-scheme: dark; --bg:#07090d; --panel:#101722; --text:#edf2ff; --muted:#aab7cf; --line:#263244; --accent:#8fd3ff; --gold:#ffd479; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif; background:#07090d; color:var(--text); line-height:1.6; }
+    header, main, footer { max-width:1040px; margin:0 auto; padding:1.25rem; }
+    header { padding-top:2rem; }
+    a { color:var(--accent); text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    nav { display:flex; flex-wrap:wrap; gap:.75rem; margin:1rem 0 0; }
+    nav a, .button { border:1px solid var(--line); border-radius:999px; padding:.5rem .8rem; background:rgba(255,255,255,.03); }
+    h1 { font-size:clamp(2rem, 6vw, 4rem); line-height:1; margin:.2rem 0; }
+    .subtitle, .small { color:var(--muted); }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; margin:1.5rem 0; }
+    .card { background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:1rem; }
+    .card strong { color:var(--gold); }
+    footer { color:var(--muted); border-top:1px solid var(--line); margin-top:2rem; }
+  </style>
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="ptca.html">PTCA</a></li>
-            <li><a href="a0p.html">a0</a></li>
-            <li><ame href="projects.html">Projects</a></li>
-            <li><ame href="notes.html">Notes</a></li>
-            <li><ame href="pictures.html">Pictures</a></li>
-            <li><ame href="support.html">Support</a></li>
-            <li><a href="concepts.html">Concepts</a></li>
-        </ul>
+  <header>
+    <p class="small"><a href="index.html">The Interdependent Way</a> / project map</p>
+    <h1>Projects</h1>
+    <p class="subtitle">A plain map of the active repositories and their present purpose. Status language is intentionally conservative: prototype means prototype; canon means source material; public site means visitor-facing pages.</p>
+    <nav aria-label="Primary navigation">
+      <a href="index.html">Home</a>
+      <a href="canon/">Canon</a>
+      <a href="concepts.html">Concepts</a>
+      <a href="notes.html">Notes</a>
+      <a href="a0p.html">a0 Protocol</a>
+      <a href="ptca.html">PTCA</a>
     </nav>
-    <main>
-        <h1>Projects</h1>
-        <ul>
-            <li><a href="https://github.com/The-Interdependency/a0">a0</a> - Agent platform. </li>
-            <li><a href="https://github.com/erinepshovel-code/aimmh">AIMMH</a> - Multi-model hib. </li>
-            <li><a href="https://github.com/wayseer//wayseer.github.io">Website</a> - Public front. </li>
-        </ul>
-        <p>[ Theory] Relationships via EDCM/PCNA visuals in concepts, <a href="concepts.html">see here</a>.</p>
-    </main>
+  </header>
+  <main>
+    <section class="grid" aria-label="Project cards">
+      <article class="card"><h2>a0</h2><p><strong>Operational core.</strong> Agent-zero support layer and app/deployment workbench.</p><p><a class="button" href="https://github.com/The-Interdependency/a0">Open repo</a></p></article>
+      <article class="card"><h2>Website</h2><p><strong>Public front.</strong> This GitHub Pages site is the canonical public entry point for now.</p><p><a class="button" href="https://github.com/wayseer00/wayseer.github.io">Open repo</a></p></article>
+      <article class="card"><h2>PCNA</h2><p><strong>Architecture library.</strong> Prime Circled Neural Architecture research/prototype code.</p><p><a class="button" href="https://github.com/The-Interdependency/pcna">Open repo</a></p></article>
+      <article class="card"><h2>PTCA</h2><p><strong>Architecture prototype.</strong> Prime Tensor Circular Architecture.</p><p><a class="button" href="https://github.com/The-Interdependency/PTCA">Open repo</a></p></article>
+      <article class="card"><h2>EDCM Bone</h2><p><strong>Support library.</strong> Energy Dissonance Circuit Model Bound Operator Numerical Evaluation.</p><p><a class="button" href="https://github.com/The-Interdependency/edcmbone">Open repo</a></p></article>
+      <article class="card"><h2>UCNS</h2><p><strong>Math prototype.</strong> Unit Circle Number System.</p><p><a class="button" href="https://github.com/The-Interdependency/ucns">Open repo</a></p></article>
+      <article class="card"><h2>PCEA</h2><p><strong>Cryptography-related prototype.</strong> Not presented here as secure encryption without external cryptographic review.</p><p><a class="button" href="https://github.com/The-Interdependency/PCEA">Open repo</a></p></article>
+      <article class="card"><h2>ZFAE</h2><p><strong>Concept seed.</strong> Zeta Function Alpha Echo.</p><p><a class="button" href="https://github.com/The-Interdependency/ZFAE">Open repo</a></p></article>
+      <article class="card"><h2>AIMMH</h2><p><strong>Hub prototype.</strong> AI Multimodel Multimodal Hub.</p><p><a class="button" href="https://github.com/The-Interdependency/aimmh">Open repo</a></p></article>
+      <article class="card"><h2>AI-TIW</h2><p><strong>Corpus.</strong> AI-facing corpus and interaction archive for The Interdependent Way.</p><p><a class="button" href="https://github.com/The-Interdependency/ai-tiw">Open repo</a></p></article>
+    </section>
+  </main>
+  <footer><p>Rough edges are marked rather than hidden. This page is a working map, not a final institution.</p></footer>
 </body>
 </html>
