@@ -3,91 +3,87 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="The Interdependent Way: public canon, projects, research notes, and working repositories curated by Erin / Wayseer." />
+  <meta name="description" content="The Interdependent Way — public canon, project map, research notes, and working repositories curated by Erin / Wayseer." />
   <title>The Interdependent Way</title>
   <style>
-    :root { color-scheme: dark; --bg:#07090d; --panel:#101722; --text:#edf2ff; --muted:#aab7cf; --line:#263244; --accent:#8fd3ff; --gold:#ffd479; }
-    * { box-sizing: border-box; }
-    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; background: radial-gradient(circle at top, #162033 0, var(--bg) 46rem); color:var(--text); line-height:1.6; }
-    a { color:var(--accent); text-decoration:none; }
-    a:hover { text-decoration:underline; }
-    header, main, footer { max-width:1040px; margin:0 auto; padding:1.25rem; }
-    header { padding-top:3rem; }
-    nav { display:flex; flex-wrap:wrap; gap:.75rem; margin:1.5rem 0 0; }
-    nav a, .button { border:1px solid var(--line); border-radius:999px; padding:.55rem .85rem; background:rgba(255,255,255,.03); }
-    h1 { font-size: clamp(2.3rem, 7vw, 5.5rem); line-height:.95; margin:0; letter-spacing:-.06em; }
-    h2 { margin-top:0; }
-    .subtitle { color:var(--muted); font-size:1.18rem; max-width:760px; }
-    .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:1rem; margin:1rem 0 2rem; }
-    .card { background:rgba(16,23,34,.82); border:1px solid var(--line); border-radius:18px; padding:1rem; box-shadow:0 18px 60px rgba(0,0,0,.22); }
-    .card strong { color:var(--gold); }
-    .notice { border-left:4px solid var(--gold); padding:1rem; background:rgba(255,212,121,.08); border-radius:12px; color:#fff4d6; }
-    .small { color:var(--muted); font-size:.95rem; }
-    ul { padding-left:1.2rem; }
-    footer { color:var(--muted); border-top:1px solid var(--line); margin-top:2rem; }
+    :root{
+      color-scheme:dark;
+      --bg:#06080d; --panel:#101722; --panel2:#151f2d; --text:#eef3ff; --muted:#aab8cf;
+      --line:#2b3850; --accent:#8fd3ff; --gold:#ffd479; --green:#9dffbf; --danger:#ff9d9d;
+      --shadow:0 22px 80px rgba(0,0,0,.32);
+    }
+    *{box-sizing:border-box} html{scroll-behavior:smooth}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;background:radial-gradient(circle at 20% 0%,#18243a 0,#06080d 36rem);color:var(--text);line-height:1.62}
+    a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+    header,main,footer{max-width:1120px;margin:0 auto;padding:1.25rem}
+    header{padding-top:2rem}.top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+    .brand{font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-size:.82rem}
+    nav{display:flex;flex-wrap:wrap;gap:.55rem} nav a,.button{border:1px solid var(--line);border-radius:999px;padding:.55rem .85rem;background:rgba(255,255,255,.035);color:var(--text)}
+    nav a:hover,.button:hover{background:rgba(143,211,255,.12);text-decoration:none;border-color:var(--accent)}
+    .hero{padding:4.5rem 0 2.5rem}.eyebrow{color:var(--gold);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:.82rem}
+    h1{font-size:clamp(2.7rem,8vw,6.4rem);line-height:.92;margin:.35rem 0;letter-spacing:-.075em;max-width:980px}
+    .subtitle{color:var(--muted);font-size:clamp(1.08rem,2.2vw,1.35rem);max-width:790px}.actions{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:1.4rem}.primary{background:linear-gradient(135deg,rgba(143,211,255,.24),rgba(255,212,121,.16));border-color:rgba(143,211,255,.7)}
+    .notice{border-left:4px solid var(--gold);background:rgba(255,212,121,.08);border-radius:14px;padding:1rem 1.1rem;color:#fff5d7;margin:1.3rem 0}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:1rem;margin:1rem 0 2rem}.card{background:linear-gradient(180deg,rgba(21,31,45,.93),rgba(12,17,26,.93));border:1px solid var(--line);border-radius:20px;padding:1.1rem;box-shadow:var(--shadow)}
+    .card h3{margin-top:0}.card strong{color:var(--gold)}.tag{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:.18rem .55rem;margin:.16rem;color:var(--muted);font-size:.86rem}.ok{color:var(--green)}.wip{color:var(--gold)}.risk{color:var(--danger)}
+    section{margin:2.4rem 0} h2{font-size:clamp(1.55rem,3vw,2.35rem);margin-bottom:.35rem} code{background:rgba(255,255,255,.07);border:1px solid var(--line);border-radius:7px;padding:.12rem .33rem;color:#d9ecff}
+    .repo-list{display:grid;gap:.75rem}.repo{display:flex;justify-content:space-between;gap:1rem;align-items:start;border:1px solid var(--line);border-radius:16px;padding:.85rem;background:rgba(255,255,255,.025)}.repo span{color:var(--muted)}
+    footer{color:var(--muted);border-top:1px solid var(--line);margin-top:3rem;padding-bottom:3rem}.small{font-size:.94rem;color:var(--muted)}
   </style>
 </head>
 <body>
   <header>
-    <p class="small">Wayseer / The Interdependency</p>
-    <h1>The Interdependent Way</h1>
-    <p class="subtitle">A public working site for canon, projects, research notes, and digital infrastructure supporting Erin’s Wayseer work. Built for clarity first: where something is not yet proven, it is named as work in progress.</p>
-    <nav aria-label="Primary navigation">
-      <a href="projects.html">Projects</a>
-      <a href="concepts.html">Concepts</a>
-      <a href="notes.html">Notes</a>
-      <a href="pictures.html">Pictures</a>
-      <a href="a0p.html">a0 Protocol</a>
-      <a href="ptca.html">PTCA</a>
-      <a href="living-tensor-node.html">Living Tensor Node</a>
-      <a href="canon/">Canon</a>
-    </nav>
+    <div class="top">
+      <div class="brand">Wayseer / The Interdependency</div>
+      <nav aria-label="Primary navigation">
+        <a href="#start">Start</a><a href="#canon">Canon</a><a href="#projects">Projects</a><a href="#status">Status</a><a href="canon/">Archive</a>
+      </nav>
+    </div>
+    <section class="hero">
+      <div class="eyebrow">Public working site</div>
+      <h1>The Interdependent Way</h1>
+      <p class="subtitle">Canon, project map, research notes, and digital infrastructure for Erin / Wayseer. Built for clarity first: what is proven is named; what is prototype remains marked as work in progress.</p>
+      <div class="actions">
+        <a class="button primary" href="#canon">Read the canon map</a>
+        <a class="button" href="#projects">View projects</a>
+        <a class="button" href="projects.html">Full project page</a>
+      </div>
+    </section>
   </header>
 
-  <main>
-    <section class="notice">
-      <strong>Status:</strong> canonical public site restored as direct static HTML for GitHub Pages. The visitor path is now simple: home, canon, projects, notes, and concept pages load without a build step.
-    </section>
+  <main id="start">
+    <div class="notice"><strong>Completion target:</strong> this URL should look and behave like a website: clear landing page, visible navigation, project purpose, status, and honest boundaries. This page is static HTML for GitHub Pages and requires no build step.</div>
 
-    <section>
+    <section id="canon">
       <h2>Start here</h2>
       <div class="grid">
-        <article class="card">
-          <h3>Canon</h3>
-          <p>The Interdependent Way source material, precepts, and supporting explanations.</p>
-          <p><a class="button" href="canon/">Open canon</a></p>
-        </article>
-        <article class="card">
-          <h3>Projects</h3>
-          <p>Current repositories and research modules: a0, PCNA, PTCA, EDCM, UCNS, PCEA, ZFAE, AIMMH, and related work.</p>
-          <p><a class="button" href="projects.html">View projects</a></p>
-        </article>
-        <article class="card">
-          <h3>a0</h3>
-          <p>Agent-zero support layer: turns intention into structure and action while preserving grounded claims and durable systems.</p>
-          <p><a class="button" href="a0p.html">Read a0 protocol</a></p>
-        </article>
+        <article class="card"><h3>Canon</h3><p>The Interdependent Way source material, precepts, and supporting explanations.</p><p><a class="button" href="canon/">Open canon archive</a></p></article>
+        <article class="card"><h3>Concepts</h3><p>Working vocabulary and conceptual pages for EDCM, PCNA/PCTA/PTCA, a0, and related structures.</p><p><a class="button" href="concepts.html">Open concepts</a></p></article>
+        <article class="card"><h3>Projects</h3><p>Repository map for the public implementation and research modules.</p><p><a class="button" href="projects.html">Open projects</a></p></article>
       </div>
     </section>
 
-    <section>
-      <h2>Repository map</h2>
-      <ul>
-        <li><strong>Public website:</strong> <code>wayseer00/wayseer.github.io</code></li>
-        <li><strong>Operational core:</strong> <code>The-Interdependency/a0</code></li>
-        <li><strong>Architecture libraries:</strong> <code>pcna</code>, <code>PTCA</code>, <code>edcmbone</code>, <code>ucns</code></li>
-        <li><strong>Corpus and AI work:</strong> <code>ai-tiw</code>, <code>aimmh</code></li>
-      </ul>
+    <section id="projects">
+      <h2>Project map</h2>
+      <p class="small">Status labels are operational labels, not scientific validation.</p>
+      <div class="repo-list">
+        <div class="repo"><div><strong>a0</strong><br><span>Agent-zero support layer and operational core.</span></div><div class="wip">active core</div></div>
+        <div class="repo"><div><strong>wayseer.github.io</strong><br><span>Canonical public website for interdependentway.org.</span></div><div class="ok">public site</div></div>
+        <div class="repo"><div><strong>pcna / PTCA / edcmbone / ucns</strong><br><span>Architecture and numerical research libraries.</span></div><div class="wip">prototype</div></div>
+        <div class="repo"><div><strong>ai-tiw / aimmh</strong><br><span>AI corpus, multimodel/multimodal hub, and interaction materials.</span></div><div class="wip">organizing</div></div>
+        <div class="repo"><div><strong>PCEA</strong><br><span>Cryptography-related prototype. Not presented as reviewed secure encryption.</span></div><div class="risk">needs review</div></div>
+      </div>
     </section>
 
-    <section>
+    <section id="status">
       <h2>Claim discipline</h2>
-      <p>This site distinguishes canon, research, prototype software, and verified external claims. Scientific, medical, legal, and cryptographic claims require published support before being presented as fact. PCEA is therefore listed as a cryptography-related prototype, not as reviewed secure encryption.</p>
+      <p>This site distinguishes canon, research, prototype software, and externally verified claims. Scientific, medical, legal, and cryptographic claims require published support before being presented as fact. Where support is absent, the work remains labeled as hypothesis, interpretation, or prototype.</p>
+      <p><span class="tag">static site</span><span class="tag">GitHub Pages</span><span class="tag">no build step</span><span class="tag">public workbench</span></p>
     </section>
   </main>
 
   <footer>
-    <p>The Interdependent Way — public working site. If a page is rough, it is rough in public rather than falsely complete.</p>
+    <p><strong>The Interdependent Way</strong> — public working site. If a page is rough, it is rough in public rather than falsely complete.</p>
   </footer>
 </body>
 </html>
