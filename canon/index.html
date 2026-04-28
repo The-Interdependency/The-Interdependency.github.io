@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Interdependent Way — Canon</title>
+  <meta name="description" content="Canonical source notice and reader for The Interdependent Way.">
+  <style>
+    :root { color-scheme: light dark; --max: 920px; --fg:#171717; --bg:#faf7f0; --muted:#625b50; --line:#d8cdbd; --accent:#6d3f1d; }
+    @media (prefers-color-scheme: dark) { :root { --fg:#f4eadc; --bg:#14110e; --muted:#c9bba7; --line:#3a3027; --accent:#f0b36a; } }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif; background:var(--bg); color:var(--fg); line-height:1.6; }
+    header, main, footer { max-width: var(--max); margin: 0 auto; padding: 1.25rem; }
+    header { padding-top: 2rem; border-bottom:1px solid var(--line); }
+    nav a { margin-right: 1rem; color: var(--accent); }
+    h1 { line-height:1.1; font-size: clamp(2rem, 7vw, 4.5rem); margin: 1rem 0 .25rem; }
+    .kicker, .muted { color:var(--muted); }
+    .notice { border:1px solid var(--line); padding:1rem; border-radius:14px; background: color-mix(in srgb, var(--bg), var(--fg) 4%); margin: 1.25rem 0; }
+    .actions { display:flex; flex-wrap:wrap; gap:.75rem; margin:1rem 0; }
+    .button { display:inline-block; border:1px solid var(--accent); color:var(--bg); background:var(--accent); padding:.65rem .9rem; border-radius:999px; text-decoration:none; font-weight:700; }
+    .button.secondary { color:var(--accent); background:transparent; }
+    pre { white-space: pre-wrap; overflow-wrap: anywhere; font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif; font-size: 1.05rem; border-top:1px solid var(--line); padding-top:1.25rem; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:.9em; }
+  </style>
+</head>
+<body>
+  <header>
+    <nav aria-label="Primary">
+      <a href="/">Home</a>
+      <a href="/projects.html">Projects</a>
+      <a href="/concepts.html">Concepts</a>
+      <a href="/notes.html">Notes</a>
+    </nav>
+    <p class="kicker">Canon source</p>
+    <h1>The Interdependent Way</h1>
+    <p class="muted">This website treats <code>wayseer00/main:canon/INTERDEPENDENT_WAY.txt</code> as the canonical text.</p>
+  </header>
+  <main>
+    <section class="notice" aria-labelledby="canon-notice">
+      <h2 id="canon-notice">Canonical authority</h2>
+      <p>The controlling source for The Interdependent Way is the text file in the <code>wayseer00/main</code> repository, not a paraphrase, summary, older article page, or generated explanation on this site.</p>
+      <p>Website pages may explain, excerpt, or format the canon, but if they conflict with <code>canon/INTERDEPENDENT_WAY.txt</code>, the text file governs.</p>
+      <div class="actions">
+        <a class="button" href="https://github.com/wayseer00/main/blob/main/canon/INTERDEPENDENT_WAY.txt">View canon on GitHub</a>
+        <a class="button secondary" href="https://raw.githubusercontent.com/wayseer00/main/main/canon/INTERDEPENDENT_WAY.txt">Raw text</a>
+      </div>
+    </section>
+
+    <section aria-labelledby="reader-title">
+      <h2 id="reader-title">Live reader</h2>
+      <p class="muted">The text below is loaded from the canonical raw file. If loading fails, use the buttons above.</p>
+      <pre id="canon-text">Loading canonical text…</pre>
+    </section>
+  </main>
+  <footer>
+    <p class="muted">Interdependent Way canon reader. Static site; canonical content remains in <code>wayseer00/main</code>.</p>
+  </footer>
+  <script>
+    const target = 'https://raw.githubusercontent.com/wayseer00/main/main/canon/INTERDEPENDENT_WAY.txt';
+    fetch(target, { cache: 'no-store' })
+      .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
+      .then(t => { document.getElementById('canon-text').textContent = t; })
+      .catch(err => { document.getElementById('canon-text').textContent = 'Could not load canonical text from GitHub raw. Use the GitHub or Raw text button above.\n\n' + err.message; });
+  </script>
+</body>
+</html>
