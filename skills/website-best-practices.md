@@ -1,76 +1,96 @@
 # Website Best Practices Skill
 
-Compiled for the Wayseer public site on 2026-05-14.
+Use this skill when improving the Wayseer public site or any durable public-facing web surface.
 
-## Purpose
-Use this skill when upgrading public-facing website pages. The goal is not spectacle. The goal is orientation, trust, accessibility, performance, and clear paths into dense material.
+## Source basis
 
-## Source-grounded principles
+This skill was compiled from current web practice research and primary guidance:
+- W3C WAI: clear, consistent navigation; multiple ways to navigate; orientation cues; accessible labels.
+- W3C WCAG navigable guidance: structure, headings, focus order, and user orientation are core accessibility concerns.
+- W3C WAI menus tutorial: keyboard focus order and operable navigation must preserve meaning.
+- MDN accessibility guidance: semantic HTML gives browsers and assistive technology built-in hooks; use correct elements, good link text, alt text, labels, and keyboard-accessible controls.
+- web.dev performance guidance: fast pages require attention to Core Web Vitals, unused code, asset weight, and stable UI behavior.
 
-1. First screen must orient.
-   - A visitor should quickly understand what the site is, who it is for, and what to do next.
-   - Dense source/canon text should remain available, but should not be the first unavoidable wall.
+## Operating doctrine
 
-2. Use semantic HTML first.
-   - Prefer native landmarks and elements: header, nav, main, section, article, aside, footer.
-   - Use meaningful heading order.
-   - Use descriptive link text, not vague repeated labels.
+A website is not a storage closet. It is a receiving room, map, library, and invitation.
 
-3. Accessibility is structural, not decorative.
-   - Maintain WCAG-oriented contrast.
-   - Provide visible focus states.
-   - Include skip links.
-   - Keep touch/click targets large enough.
-   - Respect reduced-motion preferences.
+For the Wayseer site specifically:
+1. **Orientation before canon.** New visitors must first receive context, not raw dense source text.
+2. **Canon by choice.** Source material stays accessible, but never as an unavoidable first wall.
+3. **One primary action above the fold.** The homepage should guide readers toward the Article Lab / guided path.
+4. **Layered comprehension.** Offer beginner, interpreter, collaborator, and source-reader pathways.
+5. **No orphan shelves.** Every important page should be reachable from obvious navigation or a directory page.
+6. **Accessibility is structure, not decoration.** Semantic regions, headings, focus states, contrast, and good link text are mandatory.
+7. **Performance by restraint.** Static HTML/CSS, no unnecessary frameworks, no heavy scripts, no visual spectacle that slows comprehension.
+8. **Trust signals.** Tell visitors what the site is, who maintains it, how to support it, and how unfinished areas are marked.
+9. **Mobile-first.** The site must work at narrow widths before desktop refinement.
+10. **hmmm boundary.** Unfinishedness should be honest, explicit, and contained.
 
-4. Performance supports trust.
-   - Minimize JavaScript unless it serves a clear purpose.
-   - Avoid large render-blocking dependencies for static pages.
-   - Use system fonts unless custom typography is essential.
-   - Stabilize layout to avoid visual jumps.
+## Homepage checklist
 
-5. Navigation should create paths, not piles.
-   - The homepage should route readers by intent: newcomer, explorer, researcher, contributor/supporter.
-   - Canon should be framed as source material entered deliberately.
-   - Article Lab should be presented as the interpreted bridge between raw text and public understanding.
+- [ ] Descriptive title and meta description.
+- [ ] Skip link.
+- [ ] Sticky or clearly placed navigation.
+- [ ] Hero answers: what is this, why care, what should I do next?
+- [ ] Primary CTA visible without scrolling.
+- [ ] Secondary CTA for source/canon access.
+- [ ] Three or four role-based entry cards.
+- [ ] Clear explanation of site structure.
+- [ ] Support path present but not coercive.
+- [ ] Footer includes ownership/maintenance context and hmmm.
 
-6. Public-facing text must be complete enough to reduce confusion.
-   - Name what the reader is seeing.
-   - Explain why it exists.
-   - State what to do next.
-   - Do not hide uncertainty; mark living/incomplete work honestly.
+## Accessibility checklist
 
-## Wayseer site application
+- [ ] `lang` attribute present.
+- [ ] Semantic landmarks: `nav`, `main`, `section`, `footer`.
+- [ ] Headings in logical order.
+- [ ] Keyboard focus visible.
+- [ ] Links describe destination; avoid vague “click here.”
+- [ ] Contrast sufficient for body text and controls.
+- [ ] Motion respects `prefers-reduced-motion`.
+- [ ] Layout does not require horizontal scrolling on mobile.
 
-Homepage pattern:
-- Global nav
-- Hero with one clear statement
-- Three primary reader paths
-- Current work / Article Lab bridge
-- Canon boundary note
-- Support / continuity path
-- Footer with hmmm
+## Performance checklist
 
-Canon index pattern:
-- Explain canon as source material
-- Offer Article Lab before raw articles
-- Provide deliberate entry points into raw canon
+- [ ] Keep CSS small and inline only where useful for a static page.
+- [ ] Avoid render-blocking external assets unless necessary.
+- [ ] Avoid JavaScript on informational pages unless it directly improves comprehension.
+- [ ] Use system fonts unless a brand font is essential.
+- [ ] Avoid unoptimized large images above the fold.
+- [ ] Maintain stable layout: no late-loading elements that shift text.
 
-Quality checklist before completion:
-- [ ] Homepage does not begin with raw canon text.
-- [ ] Primary CTA appears above the fold.
-- [ ] Article Lab link works.
-- [ ] Canon remains accessible but contextualized.
-- [ ] Links have descriptive labels.
-- [ ] Page uses semantic landmarks.
-- [ ] Focus states are visible.
-- [ ] Mobile layout is single-column and readable.
-- [ ] No unnecessary JavaScript added.
-- [ ] hmmm boundary appears.
+## Information architecture pattern
 
-## Anti-patterns
-- Dumping raw source text at the first contact point.
-- Adding visual noise to compensate for unclear structure.
-- Creating many equal CTAs above the fold.
-- Hiding canon entirely.
-- Shipping pages with broken internal paths.
+Recommended top-level navigation:
+
+1. Start / Home
+2. Guided Path / Article Lab
+3. Concepts
+4. Projects
+5. About a0
+6. Canon
+7. Support
+
+Recommended homepage section order:
+
+1. Navigation
+2. Hero: orientation first, canon by choice
+3. Role-based paths
+4. What the site contains
+5. Current work / upgrades
+6. Support / collaboration
+7. Boundary note
+8. Footer
+
+## Quality bar
+
+A page is not complete until a first-time reader can answer:
+- What is this?
+- Who is it for?
+- Where should I start?
+- Where is the original source?
+- What is unfinished?
+- How can I help or continue?
+
+hmmm
