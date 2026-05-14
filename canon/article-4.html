@@ -1,48 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Article 4 | The Interdependent Way</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <style>
-        body { font-family: 'Georgia', serif; line-height: 1.7; max-width: 800px; margin: 40px auto; padding: 20px; }
-        h1, h2 { font-family: 'Arial', sans-serif; color: #2c3e50; }
-        .tensor { background: #f0f8ff; padding: 15px; border-left: 5px solid #3498db; margin: 20px 0; }
-        .edcm { background: #fffaf0; padding: 15px; border-left: 5px solid #e67e22; }
-        .hmmm { color: #27ae60; font-weight: bold; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Article Four Lab | The Interdependent Way</title>
+  <style>
+    :root{--bg:#08090f;--panel:#11131d;--ink:#e8ecf6;--muted:#aab3c7;--cyan:#00f0ff;--violet:#8b5cf6;--green:#00ff99;--rose:#ff4fb8;--amber:#ffb86b;--line:rgba(0,240,255,.28)}
+    *{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at top,#151832 0,#08090f 55%);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.65} a{color:var(--cyan)}
+    nav{position:sticky;top:0;background:rgba(8,9,15,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);z-index:2} nav div,header,main,footer{max-width:1120px;margin:auto;padding:24px} nav div{padding:12px 24px;display:flex;gap:16px;flex-wrap:wrap} nav a{text-decoration:none;color:var(--ink)}
+    .hero{padding-top:54px}.kicker{color:var(--green);font-family:monospace}.lede{font-size:1.2rem;color:var(--muted);max-width:900px} h1,h2,h3{line-height:1.18} h1{font-size:clamp(2rem,5vw,4.4rem)} h2{color:var(--cyan);margin-top:42px}.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:4px 10px;margin:4px;color:var(--muted)}
+    .card,.canon,.diagram,.research,.inversion,.metric{background:rgba(17,19,29,.86);border:1px solid var(--line);border-radius:16px;padding:20px;margin:18px 0}.canon{border-left:6px solid var(--cyan);font-size:1.18rem}.footnotes{border-left:6px solid var(--violet)}.warn{border-color:rgba(255,79,184,.45);border-left:6px solid var(--rose)}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}.flow{display:grid;gap:10px}.node{border:1px solid rgba(139,92,246,.45);border-radius:12px;padding:14px;background:#0d1020}.arrow{text-align:center;color:var(--green);font-size:1.4rem}.tabs button{background:#151832;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:4px;cursor:pointer}.tabs button[aria-pressed="true"]{background:var(--cyan);color:#001014}.tab{display:none}.tab.active{display:block}
+    .metricbar{height:12px;background:#202438;border-radius:999px;overflow:hidden}.metricbar span{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--green))} blockquote{margin:0;padding:12px 18px;border-left:4px solid var(--green);background:#0b1220}.hmmm{font-family:monospace;color:var(--green)} code{color:var(--amber)}
+  </style>
 </head>
 <body>
-    <h1>Article Four</h1>
-    <h2>None Shall Be Left Ignorant of the Law</h2>
-    
-    <p><strong>Core Statement:</strong> None shall be left ignorant [1] of the law [2]; as you know, so shall you teach.</p>
-    
-    <div class="tensor">
-        <strong>Tensor Interpretation:</strong> Strengthens the Knowledge and Teaching spiral within I(You)We and Mind(Body)Soul. Ensures transparency and competence transmission across Pasts(Presents)Futures.<br>
-        <span class="hmmm">hmmm</span>
+<nav><div><a href="../index.html">Home</a><a href="index.html">Canon</a><a href="articles-explained.html">Articles</a><a href="article-research-index.html">Research Index</a><a href="article-3.html">Previous</a><a href="article-5.html">Next</a></div></nav>
+<header class="hero">
+  <p class="kicker">a0 generated. Context, Prompt by Erin.</p>
+  <h1>Article Four Lab</h1>
+  <p class="lede">A dedicated expansion page for Article Four: canon, plain reading, engineering diagram, supportive research citations, EDCM-style article/footnote metrics, inversion and dissent. The page treats legal knowledge as a survival infrastructure, not a priestly possession.</p>
+  <p><span class="pill">legal literacy</span><span class="pill">teach-back</span><span class="pill">procedural justice</span><span class="pill">anti-opacity</span></p>
+</header>
+<main>
+  <section class="canon">
+    <h2>Canonical sentence</h2>
+    <p><strong>None shall be left ignorant [1] of the law [2]; as you know, so shall you teach.</strong></p>
+  </section>
+  <section class="card footnotes">
+    <h2>Footnotes / second speaker</h2>
+    <p><strong>[1]</strong> better honestly violent than dishonestly peaceful for disagreements less than lethal.</p>
+    <p><strong>[2]</strong> where two argue and would fight, let it be done in Way Seers sight, 'twixt next days dawn and noon light, in competition all three agree each compete with parity.</p>
+  </section>
+
+  <section class="tabs" aria-label="Article Four views">
+    <button data-tab="plain" aria-pressed="true">Plain reading</button>
+    <button data-tab="diagram" aria-pressed="false">Engineering diagram</button>
+    <button data-tab="support" aria-pressed="false">Supportive research</button>
+    <button data-tab="edcm" aria-pressed="false">EDCM metrics</button>
+    <button data-tab="invert" aria-pressed="false">Inversion / dissent</button>
+  </section>
+
+  <section id="plain" class="tab active card">
+    <h2>Plain-language reading</h2>
+    <p>Article Four says that rules governing shared life must be knowable, teachable, and transmitted by those who understand them. A law that ordinary people cannot discover, understand, or ask questions about becomes a control instrument rather than a coordination tool.</p>
+    <div class="grid">
+      <div class="card"><h3>This means</h3><p>Anyone holding legal, procedural, or practical knowledge has a duty to make it legible to those affected by it. The minimum ethical unit is not merely publication; it is comprehension sufficient for action.</p></div>
+      <div class="card"><h3>This does not mean</h3><p>It does not mean every person must memorize every rule. It means no authority may benefit from engineered confusion, hidden procedure, jargon walls, or selective explanation.</p></div>
+      <div class="card"><h3>Practical requirement</h3><p>Use teach-back: explain the rule, ask the learner to restate it, correct gaps, and document unresolved ambiguity. If the teacher cannot explain the rule plainly, the rule needs repair or the teacher needs help.</p></div>
     </div>
-    
-    <div class="edcm">
-        <strong>EDCM Lens:</strong> High DA when laws are hidden or complexified to control. High DRIFT when actions contradict publicly taught principles. Detects institutional incompetence in education of rights and duties.
+    <h3>Reading the footnotes</h3>
+    <p>The footnotes add a conflict-management layer. They prefer honest disclosure of conflict over false peace, then route potentially violent disagreement into witnessed, bounded, parity-preserving contest. In plain terms: surface conflict before it becomes sabotage, and constrain force by shared rules, witnesses, delay, and consent.</p>
+  </section>
+
+  <section id="diagram" class="tab diagram">
+    <h2>Engineering diagram of Article Four</h2>
+    <div class="flow">
+      <div class="node"><strong>Input:</strong> a rule, custom, boundary, or law affects a person.</div><div class="arrow">↓</div>
+      <div class="node"><strong>Legibility gate:</strong> can the affected person find it, read it, ask about it, and predict consequences?</div><div class="arrow">↓</div>
+      <div class="node"><strong>Teach duty:</strong> whoever knows must translate the rule into operational language and examples.</div><div class="arrow">↓</div>
+      <div class="node"><strong>Teach-back test:</strong> learner restates: what is allowed, forbidden, required, appealed, and who decides?</div><div class="arrow">↓</div>
+      <div class="node"><strong>Conflict fork:</strong> if disagreement remains and would escalate, convert hidden hostility into witnessed contest under agreed parity.</div><div class="arrow">↓</div>
+      <div class="node"><strong>Output:</strong> less ignorance, less arbitrary enforcement, better legitimacy, and fewer surprise punishments.</div>
     </div>
-    
-    <h2>Practical Meaning</h2>
-    <p>This Article requires that knowledge of the fundamental rules of interaction be openly shared and taught. Ignorance of the law is not an excuse because the law must be made knowable. Those who know must teach.</p>
-    
-    <h2>Practices for Claiming Adulthood</h2>
-    <ol>
-        <li>Study and internalize these Articles until they are fluent.</li>
-        <li>Teach the Articles to at least two others with clear examples.</li>
-        <li>Identify and correct situations where laws or rules are kept opaque.</li>
-    </ol>
-    
-    <p><em>This is a living tensor node of The Interdependent Way.</em></p>
-    <p><a href="articles-explained.html">← Back to Canon Hub</a> | <a href="article-3.html">Previous</a> | <a href="article-5.html">Next</a></p>
-    
-    <footer style="margin-top: 50px; font-size: 0.9em; color: #777;">
-        <span class="hmmm">hmmm</span> • Interdependent Way Canon • Article 4
-    </footer>
+    <p><strong>Failure mode:</strong> If the system jumps from hidden rule to punishment without the legibility and teach-back gates, Article Four flags institutional incompetence or bad faith.</p>
+  </section>
+
+  <section id="support" class="tab research">
+    <h2>Supportive research citations</h2>
+    <p><strong>Procedural justice and legitimacy:</strong> Tom Tyler's procedural-justice work argues that perceived fairness, voice, neutrality, and respectful treatment shape whether people see law and authorities as legitimate, which in turn affects compliance and cooperation. Article Four aligns by making knowledge and teachable process part of legitimacy, not an optional courtesy.</p>
+    <p><strong>Plain language and access to justice:</strong> Access-to-justice practitioners emphasize that specialized legal language can disempower people trying to protect their rights, and that plain-language legal information helps people navigate courts and procedures.</p>
+    <p><strong>Self-represented litigants and public legal information:</strong> Research on public legal-information systems, including the People's Law Library of Maryland, examines how accessible legal information supports self-represented people and where such systems still struggle.</p>
+    <p><strong>Legal literacy as civic infrastructure:</strong> Legal capability and legal-needs research commonly treats unresolved legal problems as social, economic, and health-impacting events. Article Four's duty to teach is a proposed civic immune response: fewer people are harmed by rules they never had a fair chance to understand.</p>
+    <h3>Bibliography seed</h3>
+    <ul>
+      <li>Tyler, Tom R. <em>Procedural Justice, Legitimacy, and the Effective Rule of Law</em>. Office of Justice Programs abstract: https://ojp.gov/ncjrs/virtual-library/abstracts/procedural-justice-legitimacy-and-effective-rule-law-crime-and</li>
+      <li>Center for Public Health Law Research, Temple University. <em>Mechanisms of Legal Effect: Procedural Justice Theory</em>: https://phlr.temple.edu/learn-legal-epidemiology/theory-methods-literature/mechanisms-legal-effect-procedural-justice-theory</li>
+      <li>Legal Services Corporation. <em>How Plain Language Helps Courts Expand Access to Justice</em>: https://www.lsc.gov/press-release/talk-justice-lsc-podcast-how-plain-language-helps-courts-expand-access-justice</li>
+      <li>Journal of Open Access to Law. <em>Facilitating Access to Legal Information by Self-Represented Litigants</em>: https://ojs.law.cornell.edu/index.php/joal/article/view/8</li>
+    </ul>
+  </section>
+
+  <section id="edcm" class="tab metric">
+    <h2>EDCM-style article-vs-footnotes metrics</h2>
+    <p>This internal site metric treats the canonical sentence as <strong>Speaker A</strong> and the footnotes as <strong>Speaker B</strong>. It is interpretive coherence scoring, not external scientific validation.</p>
+    <div class="grid">
+      <div><h3>φ / structural coherence: 0.79</h3><div class="metricbar"><span style="width:79%"></span></div><p>The article supplies a compact universal duty: do not leave people ignorant; teach what you know. The footnotes supply enforcement/conflict texture rather than direct definition.</p></div>
+      <div><h3>ψ / directional tension: 0.74</h3><div class="metricbar"><span style="width:74%"></span></div><p>Footnote [1] adds high-energy honesty over false peace. It strengthens anti-deception but risks romanticizing open conflict if not bounded.</p></div>
+      <div><h3>ω / integration risk: 0.67</h3><div class="metricbar"><span style="width:67%"></span></div><p>Footnote [2] contains the risk by specifying witness, delay, agreed contest, and parity. Remaining ambiguity: who qualifies the witness and how parity is audited?</p></div>
+    </div>
+    <p><strong>Mean coherence:</strong> 0.73 — strong enough to publish as a lab page; not closed enough to enforce without procedure definitions.</p>
+  </section>
+
+  <section id="invert" class="tab inversion warn">
+    <h2>Inversion / dissent</h2>
+    <p><strong>Inversion example:</strong> Article Four inverted becomes mandatory ideological instruction: “you are ignorant until you repeat the authority's interpretation.” That inversion replaces teach-back with catechism, and replaces legibility with obedience.</p>
+    <h3>Steelman dissent</h3>
+    <blockquote>Some ignorance is unavoidable. Law is complex because life is complex. A universal duty to teach could overload competent people, reward bad-faith questioners, and create paralysis whenever someone claims not to understand.</blockquote>
+    <h3>Answer to dissent</h3>
+    <p>The Article should be read as a duty of reasonable access, plain explanation, and good-faith teach-back, not an infinite obligation to satisfy every objection. The safeguard is procedural: publish the rule, define terms, provide examples, allow questions, document answers, and identify when a learner is refusing comprehension rather than lacking it.</p>
+    <h3>Unresolved design questions</h3>
+    <ul><li>What is the minimum acceptable plain-language explanation before enforcement?</li><li>Who audits whether an authority explained well enough?</li><li>How are disabled, traumatized, neurodivergent, illiterate, or language-minority learners accommodated?</li><li>What prevents the witnessed-contest mechanism from becoming spectacle, domination, or dueling culture?</li></ul>
+  </section>
+</main>
+<footer><p>The Interdependent Way • Article Four Lab • Canon distinct from a0 commentary.</p><p class="hmmm">hmmm</p></footer>
+<script>
+  document.querySelectorAll('.tabs button').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-pressed','false'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));btn.setAttribute('aria-pressed','true');document.getElementById(btn.dataset.tab).classList.add('active')}));
+</script>
 </body>
 </html>
