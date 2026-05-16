@@ -1,89 +1,227 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Article Lab • The Interdependent Way</title>
-  <style>
-    body { font-family: system-ui, sans-serif; max-width: 960px; margin: 40px auto; padding: 0 20px; line-height: 1.6; }
-    h1, h2 { font-weight: 600; }
-    .article { border: 1px solid #ddd; padding: 20px; margin-bottom: 30px; border-radius: 8px; }
-    .nav { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; }
-    .nav a { text-decoration: none; padding: 8px 16px; border: 1px solid #ccc; border-radius: 4px; }
-    .lab-tool { background: #f8f9fa; padding: 16px; margin: 20px 0; border-radius: 6px; }
-    button { padding: 8px 16px; cursor: pointer; }
-    .output { font-family: monospace; background: #fff; padding: 12px; border: 1px solid #ddd; white-space: pre-wrap; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article Lab • The Interdependent Way</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
+        :root { --bg:#0a0a0a; --fg:#ededed; --accent:#00ff9d; }
+        body { font-family: 'Inter', system_ui, sans-serif; background: var(--bg); color: var(--fg); margin:0; line-height:1.6; }
+        .nav { background:#111; padding:1rem 2rem; display:flex; align-items:center; gap:2rem; border-bottom:1px solid #222; }
+        .nav a { color:#aaa; text-decoration:none; font-weight:500; }
+        .nav a:hover { color:var(--accent); }
+        .header { padding:3rem 2rem 2rem; max-width:960px; margin:0 auto; }
+        h1 { font-family:'Space Grotesk',sans-serif; font-size:2.4rem; margin:0 0 0.5rem; }
+        .subtitle { color:#888; font-size:1.1rem; }
+        .container { max-width:960px; margin:0 auto; padding:0 2rem 4rem; }
+        .article { background:#111; border:1px solid #222; border-radius:12px; margin-bottom:2rem; overflow:hidden; }
+        .article-header { background:#1a1a1a; padding:1.25rem 1.75rem; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #222; }
+        .article-header h2 { margin:0; font-size:1.35rem; }
+        .article-body { padding:1.75rem; }
+        .article-body h3 { color:#00ff9d; font-size:1rem; margin:1.5rem 0 0.5rem; }
+        .mnemonic { background:#1a1a1a; padding:1rem; border-radius:8px; border-left:4px solid #00ff9d; font-size:0.95rem; margin:1rem 0; }
+        .proclamation { background:#0a0a0a; border:1px solid #333; padding:1.5rem; border-radius:8px; font-size:0.9rem; }
+        .jury-sim { background:#1a1a1a; padding:1.5rem; border-radius:8px; margin-top:1.5rem; }
+        .btn { background:#222; color:#fff; border:none; padding:0.6rem 1.2rem; border-radius:6px; cursor:pointer; font-weight:500; }
+        .btn:hover { background:#00ff9d; color:#000; }
+        footer { text-align:center; padding:2rem; color:#666; font-size:0.85rem; }
+    </style>
 </head>
 <body>
-  <h1>Article Lab</h1>
-  <p>Explore, simulate, and internalize the Rights and Definitions of The Interdependent Way. Use the tools below to test understanding, generate personal proclamations of competence, and practice jury reasoning.</p>
+    <div class="nav">
+        <a href="../index.html">← Interdependent Way</a>
+        <a href="#article1">Art. 1</a>
+        <a href="#article2">Art. 2</a>
+        <a href="#article3">Art. 3</a>
+        <a href="#article4">Art. 4</a>
+        <a href="#article5">Art. 5</a>
+        <a href="#article6">Art. 6</a>
+        <a href="#article7">Art. 7</a>
+        <a href="#article8">Art. 8</a>
+    </div>
 
-  <div class="nav">
-    <a href="#article1">Article 1</a>
-    <a href="#article2">Article 2</a>
-    <a href="#article3">Article 3</a>
-    <a href="#article4">Article 4</a>
-    <a href="#article5">Article 5</a>
-    <a href="#article6">Article 6</a>
-    <a href="#article7">Article 7</a>
-    <a href="#article8">Article 8</a>
-    <a href="#tools">Interactive Tools</a>
-  </div>
+    <div class="header">
+        <h1>Article Lab</h1>
+        <p class="subtitle">Interactive explorer • The Interdependent Way</p>
+    </div>
 
-  <div id="article1" class="article">
-    <h2>Article One</h2>
-    <p>From each as they will to each as they've given so all may eat save those refusing to contribute to their comfort and safety or whose actions destroy the comfort and safety of another.</p>
-    <details><summary>Notes &amp; Mnemonics</summary>
-      <ul>
-        <li>A cry sharpens vigilance. Fragility elicits innovation.</li>
-        <li>Watch for: paper tigers, malingerers, Greek gifts, thieves, narcissists, empty calories, liars.</li>
-      </ul>
-    </details>
-  </div>
+    <div class="container">
 
-  <!-- Articles 2–8 abbreviated for brevity in this build step; full text mirrors canon -->
-  <div id="article2" class="article">
-    <h2>Article Two</h2>
-    <p>None shall be enslaved; do nothing against your will, but feed the hungry, heal the sick, teach the kids, clean the mess, learn the Logics, cope the traumas, practice your art.</p>
-    <p><em>Low-density version available in canon for accessibility.</em></p>
-  </div>
+        <!-- ARTICLE 1 -->
+        <div id="article1" class="article">
+            <div class="article-header">
+                <h2>Article One</h2>
+                <span class="badge">Core Contract</span>
+            </div>
+            <div class="article-body">
+                <p>From each as they will to each as they've given so all may eat save those refusing to contribute to their comfort and safety or whose actions destroy the comfort and safety of another.</p>
+                <div class="mnemonic">
+                    <strong>Mnemonic:</strong> Contribute or step aside. No one eats from the labor of others without reciprocity.
+                </div>
+                <h3>Notes</h3>
+                <ul>
+                    <li>A cry sharpens vigilance. Fragility elicits innovation.</li>
+                    <li>Presence energizes dynamics. Dependency clarifies need.</li>
+                    <li>Burden highlights character.</li>
+                </ul>
+                <p><em>Watch for:</em> The paper tiger. Malingering professionals. Greek gifts. Thieves. Red herrings. Narcissists. Empty calories. Liars. Celibate priests.</p>
+            </div>
+        </div>
 
-  <div id="article5" class="article">
-    <h2>Article Five — Adulthood &amp; Interdependence</h2>
-    <p>Adulthood is claimed by demonstrated competence. Independence = survival skill-set. Interdependence = political adulthood (consequences beyond self).</p>
-    <p>Milestone: firecraft, cooking, first aid, sanitation, communication, maintenance.</p>
-  </div>
+        <!-- ARTICLE 2 -->
+        <div id="article2" class="article">
+            <div class="article-header">
+                <h2>Article Two</h2>
+                <span class="badge">No Slavery</span>
+            </div>
+            <div class="article-body">
+                <p>None shall be enslaved; do nothing against your will, but feed the hungry, heal the sick, teach the kids, clean the mess, learn the Logics, cope the traumas, practice your art.</p>
+                <div class="mnemonic">
+                    <strong>Mnemonic:</strong> Voluntary contribution only. Basic duties become art when done from the heart.
+                </div>
+                <h3>Low-Density Version</h3>
+                <p>Feed the hungry • Heal the sick • Teach the kids • Clean the mess • Build the shelter • Defend the innocent • Learn what you do not know.</p>
+                <div class="proclamation">
+                    <strong>Practice:</strong> Wary of hungers which cannot be sated. Treat symptoms but balance systems. Who desires to learn can be taught.
+                </div>
+            </div>
+        </div>
 
-  <div id="tools" class="lab-tool">
-    <h2>Interactive Tools</h2>
-    
-    <h3>Competency Proclamation Generator</h3>
-    <button onclick="generateProclamation()">Generate Sample Proclamation</button>
-    <div id="proclaim" class="output"></div>
+        <!-- ARTICLE 3 -->
+        <div id="article3" class="article">
+            <div class="article-header">
+                <h2>Article Three</h2>
+                <span class="badge">Reciprocity</span>
+            </div>
+            <div class="article-body">
+                <p>Your speech demonstrates your desired mode of communication. As you act upon another, you demonstrate consent to be thus acted upon, even in reciprocity.</p>
+                <div class="mnemonic">
+                    <strong>Mnemonic:</strong> Speak to be understood. Courtesy never disimproved a situation. An eye for an eye leaves the world blind, but a fist to the face might be kind.
+                </div>
+            </div>
+        </div>
 
-    <h3>Jury Simulator (12 Adults)</h3>
-    <p>Vote on a hypothetical violation of Article 1 (refusal to contribute while destroying safety).</p>
-    <button onclick="simulateJury()">Run Simulation</button>
-    <div id="jury" class="output"></div>
-  </div>
+        <!-- ARTICLE 4 -->
+        <div id="article4" class="article">
+            <div class="article-header">
+                <h2>Article Four</h2>
+                <span class="badge">Transparency</span>
+            </div>
+            <div class="article-body">
+                <p>None shall be left ignorant of the law; as you know, so shall you teach.</p>
+                <div class="mnemonic">
+                    <strong>Mnemonic:</strong> Ignorance is not an excuse. Better honestly violent than dishonestly peaceful.
+                </div>
+                <p>Where two argue and would fight, let it be done in Way Seers sight, between next day’s dawn and noon light, in competition all three agree each compete with parity.</p>
+            </div>
+        </div>
 
-  <script>
-    function generateProclamation() {
-      const text = `I, [Name], claim interdependent adulthood in the field of [Your Field].\nI have demonstrated: firecraft, first aid, sanitation, communication.\nI accept liability for harm caused by my actions and commit to the Articles of The Interdependent Way.\nDate: ${new Date().toISOString().split('T')[0]}`;
-      document.getElementById('proclaim').textContent = text;
-    }
-    function simulateJury() {
-      const votes = Math.floor(Math.random() * 5) + 8; // 8–12
-      const result = votes >= 8 
-        ? `Majority reached (${votes}/12). Citizen empowered to rebalance.` 
-        : `No clear majority. Way Seer consultation required.`;
-      document.getElementById('jury').textContent = result;
-    }
-  </script>
+        <!-- ARTICLE 5 -->
+        <div id="article5" class="article">
+            <div class="article-header">
+                <h2>Article Five</h2>
+                <span class="badge">Adulthood</span>
+            </div>
+            <div class="article-body">
+                <p>Adulthood ceases to be defined by an arbitrary age and is instead claimed by intentional action of demonstrated competence in a field of study.</p>
+                <div class="mnemonic">
+                    <strong>Mnemonic:</strong> Claim adulthood by proclamation. Children learn, sophomores are dangerous, adults are dangerous without harm.
+                </div>
+                <div class="proclamation">
+                    <strong>Claiming Adulthood:</strong><br>
+                    1. Handwritten verbatim transcription of these Articles<br>
+                    2. Portfolio of demonstrable skills<br>
+                    3. Schedule of intended activities
+                </div>
+                <h3>Three States</h3>
+                <p><strong>Dependent</strong> → requires intercession<br>
+                <strong>Independent</strong> → manages own survival<br>
+                <strong>Interdependent</strong> → manages survival of others</p>
+            </div>
+        </div>
 
-  <footer style="margin-top:60px; font-size:0.9em; color:#666;">
-    Part of The Interdependent Way • Durable, coherent systems first.
-  </footer>
+        <!-- ARTICLE 6 -->
+        <div id="article6" class="article">
+            <div class="article-header">
+                <h2>Article Six</h2>
+                <span class="badge">Violence &amp; Authority</span>
+            </div>
+            <div class="article-body">
+                <p>Violence is the ultimate Authority from which all other authority is derived and only ever determines who is left.</p>
+                <div class="mnemonic">
+                    <strong>Mnemonic:</strong> No king goes to heaven. Twelve Adults empower one Citizen (aged 35+). Consult Way Seer before lethal force.
+                </div>
+                <p>One who cannot laugh is in no fit state to wield violence or authority.</p>
+            </div>
+        </div>
+
+        <!-- ARTICLE 7 -->
+        <div id="article7" class="article">
+            <div class="article-header">
+                <h2>Article Seven</h2>
+                <span class="badge">Definitions</span>
+            </div>
+            <div class="article-body">
+                <p>Where any would converse, let them first define the terms; where a definition is absent or in dispute between Adults, a jury shall devise the standard.</p>
+                <div class="mnemonic">
+                    <strong>Mnemonic:</strong> Define terms first. Way Seers hold no authority—only information beyond your reach.
+                </div>
+            </div>
+        </div>
+
+        <!-- ARTICLE 8 -->
+        <div id="article8" class="article">
+            <div class="article-header">
+                <h2>Article Eight</h2>
+                <span class="badge">Rights</span>
+            </div>
+            <div class="article-body">
+                <p>The whole of the law is that what action harms none is a right; that what is done to preserve life according to and in balance with nature is a right; that what is done to resist coercion is a right; that what is done in the presence of informed consent is a right.</p>
+                <div class="mnemonic">
+                    <strong>Mnemonic:</strong> Harm none. Preserve life. Resist coercion. Informed consent.
+                </div>
+            </div>
+        </div>
+
+        <!-- TOOLS -->
+        <div class="article">
+            <div class="article-header">
+                <h2>Competency Proclamation Tool</h2>
+            </div>
+            <div class="article-body">
+                <p>Generate your proclamation of competency (Article Five). Copy and sign by hand.</p>
+                <div class="proclamation">
+                    <p><strong>I, _________________________, claim adulthood in the field of _________________________.</strong></p>
+                    <p>I have transcribed the Rights and Definitions of The Way verbatim.<br>
+                    Portfolio of skills attached.<br>
+                    Schedule of intended activities attached.</p>
+                    <p>Date: _______________ Signature: _______________</p>
+                </div>
+                <button class="btn" onclick="copyProclamation()">Copy Template</button>
+            </div>
+        </div>
+
+        <div class="jury-sim">
+            <h3>Jury Simulator (Article Six)</h3>
+            <p>Select 12 Adults → Empower one Citizen (35+). Result: <span id="jury-result">Ready to simulate</span></p>
+            <button class="btn" onclick="simulateJury()">Run Simulation</button>
+        </div>
+
+    </div>
+
+    <footer>
+        The Interdependent Way • Durable systems over spectacle • hmmm
+    </footer>
+
+    <script>
+        function copyProclamation() {
+            const text = `I claim adulthood in the field of _________________________.\n\nI have transcribed the Rights and Definitions of The Way verbatim.\nPortfolio of skills attached.\nSchedule of intended activities attached.\n\nDate: _______________ Signature: _______________`;
+            navigator.clipboard.writeText(text).then(() => alert('Template copied to clipboard.'));
+        }
+        function simulateJury() {
+            document.getElementById('jury-result').innerHTML = 'Citizen empowered. Consult Way Seer before lethal force. Authority carries a toll.';
+        }
+    </script>
 </body>
 </html>
