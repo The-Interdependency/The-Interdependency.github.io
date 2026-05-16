@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Article Lab • The Interdependent Way</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 960px; margin: 40px auto; padding: 0 20px; line-height: 1.6; }
+    h1, h2 { font-weight: 600; }
+    .article { border: 1px solid #ddd; padding: 20px; margin-bottom: 30px; border-radius: 8px; }
+    .nav { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; }
+    .nav a { text-decoration: none; padding: 8px 16px; border: 1px solid #ccc; border-radius: 4px; }
+    .lab-tool { background: #f8f9fa; padding: 16px; margin: 20px 0; border-radius: 6px; }
+    button { padding: 8px 16px; cursor: pointer; }
+    .output { font-family: monospace; background: #fff; padding: 12px; border: 1px solid #ddd; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>Article Lab</h1>
+  <p>Explore, simulate, and internalize the Rights and Definitions of The Interdependent Way. Use the tools below to test understanding, generate personal proclamations of competence, and practice jury reasoning.</p>
+
+  <div class="nav">
+    <a href="#article1">Article 1</a>
+    <a href="#article2">Article 2</a>
+    <a href="#article3">Article 3</a>
+    <a href="#article4">Article 4</a>
+    <a href="#article5">Article 5</a>
+    <a href="#article6">Article 6</a>
+    <a href="#article7">Article 7</a>
+    <a href="#article8">Article 8</a>
+    <a href="#tools">Interactive Tools</a>
+  </div>
+
+  <div id="article1" class="article">
+    <h2>Article One</h2>
+    <p>From each as they will to each as they've given so all may eat save those refusing to contribute to their comfort and safety or whose actions destroy the comfort and safety of another.</p>
+    <details><summary>Notes &amp; Mnemonics</summary>
+      <ul>
+        <li>A cry sharpens vigilance. Fragility elicits innovation.</li>
+        <li>Watch for: paper tigers, malingerers, Greek gifts, thieves, narcissists, empty calories, liars.</li>
+      </ul>
+    </details>
+  </div>
+
+  <!-- Articles 2–8 abbreviated for brevity in this build step; full text mirrors canon -->
+  <div id="article2" class="article">
+    <h2>Article Two</h2>
+    <p>None shall be enslaved; do nothing against your will, but feed the hungry, heal the sick, teach the kids, clean the mess, learn the Logics, cope the traumas, practice your art.</p>
+    <p><em>Low-density version available in canon for accessibility.</em></p>
+  </div>
+
+  <div id="article5" class="article">
+    <h2>Article Five — Adulthood &amp; Interdependence</h2>
+    <p>Adulthood is claimed by demonstrated competence. Independence = survival skill-set. Interdependence = political adulthood (consequences beyond self).</p>
+    <p>Milestone: firecraft, cooking, first aid, sanitation, communication, maintenance.</p>
+  </div>
+
+  <div id="tools" class="lab-tool">
+    <h2>Interactive Tools</h2>
+    
+    <h3>Competency Proclamation Generator</h3>
+    <button onclick="generateProclamation()">Generate Sample Proclamation</button>
+    <div id="proclaim" class="output"></div>
+
+    <h3>Jury Simulator (12 Adults)</h3>
+    <p>Vote on a hypothetical violation of Article 1 (refusal to contribute while destroying safety).</p>
+    <button onclick="simulateJury()">Run Simulation</button>
+    <div id="jury" class="output"></div>
+  </div>
+
+  <script>
+    function generateProclamation() {
+      const text = `I, [Name], claim interdependent adulthood in the field of [Your Field].\nI have demonstrated: firecraft, first aid, sanitation, communication.\nI accept liability for harm caused by my actions and commit to the Articles of The Interdependent Way.\nDate: ${new Date().toISOString().split('T')[0]}`;
+      document.getElementById('proclaim').textContent = text;
+    }
+    function simulateJury() {
+      const votes = Math.floor(Math.random() * 5) + 8; // 8–12
+      const result = votes >= 8 
+        ? `Majority reached (${votes}/12). Citizen empowered to rebalance.` 
+        : `No clear majority. Way Seer consultation required.`;
+      document.getElementById('jury').textContent = result;
+    }
+  </script>
+
+  <footer style="margin-top:60px; font-size:0.9em; color:#666;">
+    Part of The Interdependent Way • Durable, coherent systems first.
+  </footer>
+</body>
+</html>
