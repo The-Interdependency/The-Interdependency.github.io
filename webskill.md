@@ -1,38 +1,62 @@
-# WebSkill: Interdependent Way — Website plan and operating guide (v0.1, 2026-05-23)
+GPT-4 generated. Context, Prompt by Erin (“Way Seer Erin”)
+
+WebSkill: Interdependent Way site — build, deploy, and editorial operations (v0.2, 2026-05-23)
 
 Purpose
-- Build and maintain a research-informed, accessible, GitHub Pages site as a dynamic learning system for The Interdependent Way.
+- Make the website an aesthetically coherent, accessible, research‑informed, dynamic learning system.
+- Ship via GitHub Pages with reproducible builds and clear contribution workflow.
 
-Decision record (initial)
-- Stack: Eleventy (11ty) + GitHub Actions + Pagefind search.
-- IA: Home; The Way; Articles I–VIII; Etiquette I–III; Addenda; Interdefinables; Lab (by profession); Contra (site inversion); Glossary; Changelog; Resources.
-- Accessibility target: WCAG 2.2 AA built into templates; inclusive, plain‑language content.
-- Learning features: retrieval practice blocks, spaced revisit prompts (local-only), role pathways.
-- Governance: PR-based changes, link/a11y checks in CI, public changelog.
+Stack
+- Eleventy (11ty) static site generator.
+- Node.js 24 LTS (local and CI).
+- Pagefind for static full‑text search.
+- GitHub Actions → GitHub Pages deployment.
 
-Initial sprints
-1) Base scaffolding, layouts, navigation, build/deploy, minimal content (home + one Article + one Contra + one Lab page). 2) Port remaining Articles/Etiquette. 3) Add Addenda, Interdefinables, Glossary v1. 4) Learning features, analytics, polish.
+Node and package manager
+- Required Node: 24.x (LTS today). Local: use .nvmrc for auto‑switching; CI: actions/setup-node@v4.
+- Installer: npm. Short‑term we use `npm install` in CI to unblock; plan to commit a package‑lock.json and switch to `npm ci` for reproducible builds.
+
+Repository layout (11ty)
+- src/ — content root
+  - _includes/ — layouts and components
+  - _data/ — site‑wide data
+  - articles/, etiquette/, addenda/, interdefinables/, lab/, contra/
+- assets/ — css, images, client JS
+- .eleventy.js — collections + dir mapping
+- .github/workflows/build.yml — build & deploy
 
 Content model (front matter keys)
-- title, slug, summary, tags, roles, claims[], updated, status [draft|ready], sources[{title,href,kind}], reading_time.
+- title, summary, tags, roles, status [draft|ready], updated, sources: [{title, href, kind}], claims: []
 
-Design system (baseline)
-- Typographic scale (60–75 CPL), high contrast, large tap targets, keyboard focus, clear headings, descriptive links.
+Editorial workflow
+- Feature branches → PRs → preview build via Actions.
+- Required checks: link check + a11y snapshots (todo).
+- Changelog entries for meaning‑shifting edits.
 
-Citations (seed sources to verify/expand)
-- WCAG 2.2 (W3C), WAI-ARIA 1.2
-- Content design: GOV.UK guidance (plain language, links)
-- Learning science: testing effect, spaced practice; UDL Guidelines 3.0 (CAST)
-- Static search: Pagefind
-- Dissent set: Arendt (power vs violence), Rawls/Nozick, Hardin vs Ostrom, learning-styles critique.
+Accessibility & design
+- WCAG 2.2 AA baseline. Keyboard‑first nav. High contrast.
+- Plain‑language structure; progressive disclosure for complexity.
 
-Backlog (selected)
-- Glossary hover component; profession dashboards; printable summaries; audio/diagram alternates; a11y snapshot tests; zero-result search handling; cookie‑less opt‑in reminders; exportable role checklists.
+Dynamic learning features (phased)
+- Retrieval practice blocks; spaced revisit prompts (localStorage only).
+- Glossary tooltips; cross‑refs by tags.
 
-Open questions
-- Visual tone (austere civic vs warmer humanist)?
-- Top 3 professions to seed in Lab?
-- Contra priorities (which claims first)?
+Site inversion (contra)
+- Steel‑man critiques with citations; apply Rapoport’s Rules.
 
-Change log
-- 2026‑05‑23: v0.1 created; Eleventy chosen; CI workflow added; initial pages scaffolded.
+Rollout plan
+- Sprint 1 (done-ish): IA + skeleton + Actions workflow + Node 24.
+- Sprint 2 (in progress): Articles II–IV; Etiquette I; Lab templates (Clinician, Engineer); Contra pages (Rawls/Nozick; Commons); Glossary v1.
+- Sprint 3: Remaining Articles/Etiquette/Addenda; Contra expansion; Search UI polish.
+- Sprint 4: Learning features; a11y automation; docs.
+
+Operational notes
+- Accreditation line lives in footer; can be moved global‑top if desired.
+- hmmm doctrine: append a “hmmm” line to mark living continuation.
+
+Open items
+- Add package‑lock.json (Node 24, npm@10) and move CI back to `npm ci`.
+- Choose top 3 Lab professions after Educator (default: Clinician, Engineer, Community Organizer).
+- Decide on quiz timing (per‑page now vs after migration).
+
+hmmm
