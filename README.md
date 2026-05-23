@@ -1,33 +1,23 @@
-# a0p — Agent Zero Platform
+# The Interdependent Way — Website
 
-a0p is a mobile-first autonomous AI agent application. It leverages Gemini function-calling and a mathematically rigorous orchestration engine (EDCMBONE) to execute tasks autonomously. It integrates with Google infrastructure (Gmail, Drive), provides file management with direct phone upload, and includes robust features like cryptographic audit logging and real-time cost tracking.
+This is the public site for The Interdependent Way, built with [Eleventy](https://www.11ty.dev/) and deployed to GitHub Pages via Actions.
 
-**Key Design Principles:**
-*   **Mobile-first**: Optimized for phone browsers and PWA-like experience.
-*   **Autonomous**: Agent determines tool usage without manual intervention.
-*   **Auditable**: Every engine action is hash-chained and timestamped.
-*   **Cost-aware**: Tracks per-token usage with estimated USD costs.
-*   **Fail-closed**: No silent fallback for critical operations.
+## Quick start (local)
+1. Install Node.js 18+.
+2. `npm install`
+3. `npm run dev` — local server with hot reload
+4. `npm run build` — production build + Pagefind search index
 
-The core of a0p's intelligence lies in its EDCMBONE engine, utilizing Prime Tensor Circular Architecture (PTCA) and Prime Circular Neural Architecture (PCNA) for sophisticated AI orchestration and decision-making.
+## Structure
+- `src/` — content and templates
+- `src/_includes/` — layouts and components
+- `src/_data/` — site-wide data
+- `assets/` — CSS/JS/media (pass-through copy)
 
----
+## Contributing
+- Open a branch and PR; preview builds run in Actions.
+- Follow plain-language style and add sources in front matter.
+- Add a changelog entry for meaning-changing edits.
 
-# A0
-
-A0 is the instantiated runtime embodiment of PTCA.
-
-## Core split
-- Heartbeat: world-facing cadence, scheduling, sensing, deployment rhythm
-- Psi: interpretation, synthesis, discernment, council coordination
-- Omega: commitment, integration, release, terminal authority layer
-
----
-
-# TIW Addendum Package: Fiddly Bits (Thread)
-
-This package contains the canonicalized thread addendum.
-
-- `canon/addenda/ADDENDUM_FIDDLY_BITS_THREAD.md`
-
-hmm — unresolved constraint marker: If you want this merged into the full canon zip, say so and I will rebuild a combined package.
+## License
+Content © Way Seer Erin (and contributors). Code under MIT unless noted.
