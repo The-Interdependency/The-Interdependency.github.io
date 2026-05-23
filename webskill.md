@@ -1,75 +1,38 @@
-Webskill: Interdependent Way website — construction, operations, and governance (GitHub Pages)
+# WebSkill: Interdependent Way — Website plan and operating guide (v0.1, 2026-05-23)
 
 Purpose
-- Build and run an accessible, research‑informed, public website for The Interdependent Way using GitHub Pages, with a learning‑oriented IA, Article Lab, and a Site Inversion (contra) section.
-- Optimize for durability, clarity, and continuous improvement over spectacle.
+- Build and maintain a research-informed, accessible, GitHub Pages site as a dynamic learning system for The Interdependent Way.
 
-Core objectives
-- Aesthetically coherent, WCAG 2.2 AA accessible, mobile‑first site.
-- Information scent: any Article/Addendum concept discoverable in ≤2 clicks.
-- Dynamic learning: retrieval practice, spaced revisit prompts (opt‑in, privacy‑respecting), profession‑specific Article Lab.
-- Trust: steel‑manned dissent in a first‑class /contra section with citations.
+Decision record (initial)
+- Stack: Eleventy (11ty) + GitHub Actions + Pagefind search.
+- IA: Home; The Way; Articles I–VIII; Etiquette I–III; Addenda; Interdefinables; Lab (by profession); Contra (site inversion); Glossary; Changelog; Resources.
+- Accessibility target: WCAG 2.2 AA built into templates; inclusive, plain‑language content.
+- Learning features: retrieval practice blocks, spaced revisit prompts (local-only), role pathways.
+- Governance: PR-based changes, link/a11y checks in CI, public changelog.
 
-Architecture (high level)
-- Stack: Eleventy (11ty) static site generator + GitHub Actions → GitHub Pages.
-- Search: Pagefind (static, chunked index) generated at build.
-- Content model: Markdown with front matter (title, summary, tags, roles, claims, status, updated, sources[]).
-- Collections: articles, etiquette, addenda, interdefinables, lab (by role), contra, glossary, resources, changelog.
+Initial sprints
+1) Base scaffolding, layouts, navigation, build/deploy, minimal content (home + one Article + one Contra + one Lab page). 2) Port remaining Articles/Etiquette. 3) Add Addenda, Interdefinables, Glossary v1. 4) Learning features, analytics, polish.
 
-Information Architecture (URLs)
-- / (Home); /the-way/ (overview map); /articles/ (I–VIII with anchors); /etiquette/ (I–III); /addenda/ (consciousness, electronic‑element); /interdefinables/; /lab/; /contra/; /glossary/; /changelog/; /resources/.
+Content model (front matter keys)
+- title, slug, summary, tags, roles, claims[], updated, status [draft|ready], sources[{title,href,kind}], reading_time.
 
-Design system and a11y
-- Typographic scale targeting 60–75 CPL; high contrast; generous spacing; responsive.
-- Components: callouts (Note/Caution/Research), glossary tooltips, “On this page” ToC, next/previous nav.
-- WCAG 2.2 AA; ARIA only when needed; keyboard and focus management guaranteed.
+Design system (baseline)
+- Typographic scale (60–75 CPL), high contrast, large tap targets, keyboard focus, clear headings, descriptive links.
 
-Editorial standards
-- Plain language first; progressive disclosure (definitions → examples → edge cases).
-- Citations: numbered endnotes with stable anchors; link to primary sources where possible.
-- Contra: Rapoport’s Rules; state our claim, strongest counter‑position, common ground, disagreement, implications.
-- Changelog: record meaning‑shifting edits (what/why/when/who/sources).
+Citations (seed sources to verify/expand)
+- WCAG 2.2 (W3C), WAI-ARIA 1.2
+- Content design: GOV.UK guidance (plain language, links)
+- Learning science: testing effect, spaced practice; UDL Guidelines 3.0 (CAST)
+- Static search: Pagefind
+- Dissent set: Arendt (power vs violence), Rawls/Nozick, Hardin vs Ostrom, learning-styles critique.
 
-Governance and workflow
-- Branching: feature branches → PR with preview → required checks (build, broken links, basic a11y snapshot) → merge to main.
-- Roles: Editor (content), Maintainer (build and IA), Reviewer (a11y/content). All changes mapped to an issue or milestone.
-- Definition of Done (per page):
-  - Front matter complete; headings scan well; links descriptive; glossary terms linked once per section.
-  - At least 1 research citation (supportive or dissenting) where claims extend beyond common knowledge.
-  - QA: mobile viewport, keyboard nav, color‑contrast pass.
-
-Article Lab (by profession)
-- Template: relevance → situations/signals → minimum competencies checklist → starter scripts/patterns → metrics → pitfalls/countermeasures.
-- Seed roles: educator, clinician/therapist, engineer, policymaker, organizer, parent/guardian, artist, law enforcement, infosec.
-
-Site Inversion (/contra)
-- Organized by claim; each page presents steel‑manned critique with citations, our response, and practice implications.
-
-Analytics (privacy‑respecting)
-- Focus on task success (findability), recirculation, and engaged time. Avoid cross‑site tracking.
-
-Tech stack details
-- Eleventy + Node 20; @pagefind/cli for search; markdown‑it + anchors for heading links.
-- GitHub Actions: build on push to main; upload artifact; deploy via actions/deploy‑pages.
-
-Repository layout
-- /src/ (content root); /src/_includes/ (layouts); /src/_data/ (site config);
-- /src/{articles, etiquette, addenda, interdefinables, lab, contra, glossary, resources, changelog}
-- /assets/ (css/js/media); /.github/workflows/build.yml (CI/CD).
-
-Milestones (initial 4 sprints)
-- Sprint 1: IA confirmation; base layouts; a11y skeleton; Actions + Pagefind.
-- Sprint 2: Articles I–IV + Etiquette I; Glossary v1; Lab templates for 3 roles.
-- Sprint 3: Articles V–VIII + Etiquette II–III; Addenda; Contra v1 (3 critiques).
-- Sprint 4: Learning features (quizzes + spaced prompts), polish, docs.
+Backlog (selected)
+- Glossary hover component; profession dashboards; printable summaries; audio/diagram alternates; a11y snapshot tests; zero-result search handling; cookie‑less opt‑in reminders; exportable role checklists.
 
 Open questions
-- Visual mood (austere civic vs warmer humanist); Lab role priorities; Contra claim priorities; accreditation line placement (footer or about only?).
+- Visual tone (austere civic vs warmer humanist)?
+- Top 3 professions to seed in Lab?
+- Contra priorities (which claims first)?
 
-References (selected)
-- WCAG 2.2; GitHub Pages + Actions; NN/g info‑scent; testing effect/spaced practice; UDL guidelines; Pagefind docs; Arendt/Rawls/Nozick; Ostrom/Hardin.
-
-Maintenance checklist (per release)
-- Bump deps; run build locally; verify Pagefind index; link‑check; a11y spot‑check; update changelog; tag release.
-
-CLLD: Completion = web skill documented; repo scaffolded; CI building; content collections live; IA discoverable; plan tracked in /docs/plans; first pages published.
+Change log
+- 2026‑05‑23: v0.1 created; Eleventy chosen; CI workflow added; initial pages scaffolded.
