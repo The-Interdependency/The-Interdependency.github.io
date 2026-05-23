@@ -1,16 +1,29 @@
 {
-  "name": "interdependent-way-site",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "ELEVENTY_ENV=dev npx @11ty/eleventy --serve --quiet",
-    "build": "rm -rf _site && npx @11ty/eleventy && npx pagefind --site _site"
+  &quot;name&quot;: &quot;wayseer-site&quot;,
+  &quot;private&quot;: true,
+  &quot;version&quot;: &quot;0.0.0&quot;,
+  &quot;type&quot;: &quot;module&quot;,
+  &quot;scripts&quot;: {
+    &quot;dev&quot;: &quot;vite&quot;,
+    &quot;build&quot;: &quot;vite build&quot;,
+    &quot;lint&quot;: &quot;eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0&quot;,
+    &quot;preview&quot;: &quot;vite preview&quot;
   },
-  "devDependencies": {
-    "@11ty/eleventy": "^2.0.0",
-    "pagefind": "^1.0.0"
+  &quot;dependencies&quot;: {
+    &quot;react&quot;: &quot;^18.3.1&quot;,
+    &quot;react-dom&quot;: &quot;^18.3.1&quot;,
+    &quot;react-markdown&quot;: &quot;^9.0.1&quot;,
+    &quot;react-router-dom&quot;: &quot;^6.26.2&quot;,
+    &quot;remark-gfm&quot;: &quot;^4.0.0&quot;
   },
-  "engines": {
-    "node": ">=18"
+  &quot;devDependencies&quot;: {
+    &quot;@types/react&quot;: &quot;^18.3.3&quot;,
+    &quot;@types/react-dom&quot;: &quot;^18.3.0&quot;,
+    &quot;@vitejs/plugin-react&quot;: &quot;^4.3.1&quot;,
+    &quot;eslint&quot;: &quot;^9.6.1&quot;,
+    &quot;eslint-plugin-react&quot;: &quot;^7.35.2&quot;,
+    &quot;eslint-plugin-react-hooks&quot;: &quot;^4.6.2&quot;,
+    &quot;eslint-plugin-react-refresh&quot;: &quot;^0.4.7&quot;,
+    &quot;vite&quot;: &quot;^5.4.1&quot;
   }
 }

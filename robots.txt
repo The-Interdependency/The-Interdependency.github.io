@@ -1,4 +1,3 @@
-# robots.txt for interdependentway.org
 User-agent: *
 Allow: /
 

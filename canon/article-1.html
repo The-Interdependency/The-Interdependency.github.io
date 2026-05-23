@@ -1,103 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Article One Lab | The Interdependent Way</title>
-  <style>
-    :root{--bg:#08090f;--panel:#11131d;--ink:#e8ecf6;--muted:#aab3c7;--cyan:#00f0ff;--violet:#8b5cf6;--green:#00ff99;--rose:#ff4fb8;--line:rgba(0,240,255,.28)}
-    *{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at top,#151832 0,#08090f 55%);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.65} a{color:var(--cyan)}
-    header,main,footer{max-width:1120px;margin:auto;padding:24px} nav{position:sticky;top:0;background:rgba(8,9,15,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);z-index:2} nav div{max-width:1120px;margin:auto;padding:12px 24px;display:flex;gap:16px;flex-wrap:wrap} nav a{text-decoration:none;color:var(--ink)}
-    .hero{padding-top:54px}.kicker{color:var(--green);font-family:monospace}.lede{font-size:1.25rem;color:var(--muted);max-width:860px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}.card,.canon,.diagram,.research,.inversion,.metric{background:rgba(17,19,29,.86);border:1px solid var(--line);border-radius:16px;padding:20px;margin:18px 0}.canon{border-left:6px solid var(--cyan);font-size:1.2rem}.footnotes{border-left:6px solid var(--violet)} h1,h2,h3{line-height:1.2} h1{font-size:clamp(2rem,5vw,4.4rem)} h2{color:var(--cyan);margin-top:42px}.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:4px 10px;margin:4px;color:var(--muted)}
-    .flow{display:grid;gap:10px}.node{border:1px solid rgba(139,92,246,.45);border-radius:12px;padding:14px;background:#0d1020}.arrow{text-align:center;color:var(--green);font-size:1.4rem}.metricbar{height:12px;background:#202438;border-radius:999px;overflow:hidden}.metricbar span{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--green))}.tabs button{background:#151832;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:4px;cursor:pointer}.tabs button[aria-pressed="true"]{background:var(--cyan);color:#001014}.tab{display:none}.tab.active{display:block}.warn{border-color:rgba(255,79,184,.45);border-left:6px solid var(--rose)} blockquote{margin:0;padding:12px 18px;border-left:4px solid var(--green);background:#0b1220}.hmmm{font-family:monospace;color:var(--green)}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article One | The Interdependent Way</title>
+    <style>
+        body { 
+            font-family: system-ui, -apple-system, sans-serif; 
+            max-width: 900px; 
+            margin: 0 auto; 
+            padding: 2rem; 
+            line-height: 1.7; 
+            background: #0a0a0a; 
+            color: #ddd; 
+        }
+        h1, h2, h3 { color: #00ffff; }
+        .tensor-nav { 
+            background: #111; 
+            padding: 1rem; 
+            margin-bottom: 2rem; 
+            border-bottom: 3px solid #00ffff; 
+            display: flex; 
+            gap: 1rem; 
+            flex-wrap: wrap;
+        }
+        .article-core { 
+            margin-bottom: 3rem; 
+            border-left: 6px solid #00ffff; 
+            padding-left: 2rem; 
+            font-size: 1.25rem;
+        }
+        .spiral { 
+            background: #111; 
+            padding: 1.5rem; 
+            border-left: 4px solid #00aa99; 
+            margin: 2rem 0;
+        }
+        .edcm { 
+            background: #111; 
+            padding: 1.5rem; 
+            border-left: 4px solid #ff00aa; 
+        }
+        pre, code { background: #1a1a1a; padding: 1rem; border-radius: 4px; overflow-x: auto; }
+        a { color: #00ffff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .next-actions { background: #001111; padding: 1.5rem; border: 1px solid #00ffff; margin-top: 3rem; }
+        .hmmm { color: #00ff99; font-family: monospace; }
+    </style>
 </head>
 <body>
-<nav><div><a href="../index.html">Home</a><a href="index.html">Canon</a><a href="articles-explained.html">Articles</a><a href="article-research-index.html">Research Index</a><a href="agents.html">Way for Agents</a><a href="../about-a0.html">a0</a></div></nav>
-<header class="hero">
-  <p class="kicker">a0 generated. Context, Prompt by Erin.</p>
-  <h1>Article One Engineering Lab</h1>
-  <p class="lede">A dedicated expansion page for Article One: canon, plain reading, sentence diagram, supportive research, EDCM-style article/footnote coherence, and an inversion view for dissenting research and failure modes.</p>
-</header>
-<main>
-  <section class="canon">
-    <h2>Canonical sentence</h2>
-    <p><strong>From each as they will to each as they've given so all may eat save those refusing to contribute to their comfort and safety or whose actions destroy the comfort and safety of another.</strong></p>
-  </section>
-  <section class="card footnotes">
-    <h2>Footnotes / second speaker</h2>
-    <p>A cry sharpens vigilance. Fragility elicits innovation. Presence energizes dynamics. Dependency clarifies need. Burden highlights character.</p>
-    <p>The paper tiger. Malingering professionals. Greek gifts. Thieves. Red herrings. Narcissists. Empty calories. Liars. Celibate priests.</p>
-  </section>
-
-  <section class="tabs" aria-label="Article One views">
-    <button data-tab="plain" aria-pressed="true">Plain reading</button>
-    <button data-tab="diagram" aria-pressed="false">Sentence diagram</button>
-    <button data-tab="support" aria-pressed="false">Supportive research</button>
-    <button data-tab="edcm" aria-pressed="false">EDCM lens</button>
-    <button data-tab="invert" aria-pressed="false">Inversion / dissent</button>
-  </section>
-
-  <section id="plain" class="tab active card">
-    <h2>Plain-language reading</h2>
-    <p>Article One defines a reciprocal survival commons. It rejects both extraction without contribution and abandonment of basic need. The phrase “as they will” protects agency; the phrase “as they've given” binds shared access to visible contribution; “so all may eat” states the survival floor; the exception protects the commons from deliberate refusal or destructive action.</p>
-    <div class="grid"><div class="card"><h3>This means</h3><p>Comfort and safety are maintained by willing contribution, visible reciprocity, and boundary-setting against destructive behavior.</p></div><div class="card"><h3>This does not mean</h3><p>It does not license humiliation of the disabled, coercive productivity tests, or denial of basic sustenance by bureaucratic suspicion.</p></div><div class="card"><h3>Practical requirement</h3><p>A community must distinguish inability, temporary dependency, honest refusal, predatory extraction, and active harm.</p></div></div>
-  </section>
-
-  <section id="diagram" class="tab diagram">
-    <h2>Engineering diagram of the sentence</h2>
-    <div class="flow">
-      <div class="node"><strong>System boundary:</strong> a commons organized around comfort, safety, and food.</div><div class="arrow">↓</div>
-      <div class="node"><strong>Actor:</strong> each person within the field.</div><div class="arrow">↓</div>
-      <div class="node"><strong>Input permission:</strong> “as they will” — contribution should preserve agency rather than enslavement.</div><div class="arrow">↓</div>
-      <div class="node"><strong>Accounting relation:</strong> “as they've given” — receipt is interpreted through contribution, reciprocity, and prior care.</div><div class="arrow">↓</div>
-      <div class="node"><strong>Survival floor:</strong> “so all may eat” — the commons fails if basic survival is denied as spectacle or punishment.</div><div class="arrow">↓</div>
-      <div class="node"><strong>Exception gate:</strong> refusal to contribute to one’s comfort/safety, or action that destroys another’s comfort/safety.</div><div class="arrow">↓</div>
-      <div class="node"><strong>Governance output:</strong> include, feed, invite contribution, monitor harm, and restrict destructive extraction without collapsing into cruelty.</div>
+    <div class="tensor-nav">
+        <a href="../index.html">← Home</a> | 
+        <a href="the_interdependent_way.md">Full Canon</a> | 
+        <a href="articles-explained.html">Articles Explained</a> | 
+        <a href="ptca.html">PTCA</a> | 
+        <a href="../support.html">Support</a>
     </div>
-  </section>
-
-  <section id="support" class="tab research">
-    <h2>Supportive research</h2>
-    <p><strong>Commons governance:</strong> Elinor Ostrom’s commons research supports the need for shared rules, monitoring, graduated sanctions, conflict-resolution mechanisms, and collective-choice arrangements rather than a simple state/private binary. Article One aligns with this tradition by treating survival resources as a governed field requiring reciprocity and boundaries.</p>
-    <p><strong>Public goods and free riding:</strong> Experimental public-goods research finds that free riding can undermine cooperation, while punishment, reciprocity, and monitoring can sustain cooperation under some conditions. This supports Article One’s concern that a commons must respond to refusal and extraction, not merely hope goodwill will persist.</p>
-    <p><strong>Conditional cooperation:</strong> Cooperation research repeatedly shows that many people contribute when others contribute and withdraw when they perceive exploitation. Article One’s “as they've given” clause can be read as an attempt to stabilize conditional cooperation while retaining a survival floor.</p>
-    <p class="kicker">Research note: citations for this static page are currently listed as source names/titles for human-readable provenance. A later pass should convert these into a structured bibliography with DOI/URL fields.</p>
-    <ul>
-      <li>Ostrom, <em>Governing the Commons</em>; International Journal of the Commons work applying Ostrom design principles.</li>
-      <li>Fehr and Gächter / public goods punishment literature; Nature Communications work on reciprocity and punishment disposition.</li>
-      <li>Public goods experiments on punishment, monitoring, group size, and long-run cooperation.</li>
-    </ul>
-  </section>
-
-  <section id="edcm" class="tab metric">
-    <h2>EDCM-style article/footnote coherence</h2>
-    <p>This site metric treats the canonical Article as <strong>Speaker A</strong> and the footnotes as <strong>Speaker B</strong>. It is an interpretive internal lens, not an external scientific validation.</p>
-    <div class="grid">
-      <div><h3>φ / structural coherence: 0.82</h3><div class="metricbar"><span style="width:82%"></span></div><p>The article supplies a compact rule; the footnotes supply threat examples and social diagnostics.</p></div>
-      <div><h3>ψ / directional tension: 0.71</h3><div class="metricbar"><span style="width:71%"></span></div><p>The footnotes increase vigilance and suspicion, creating useful but risky tension against the inclusive “all may eat” floor.</p></div>
-      <div><h3>ω / integration risk: 0.64</h3><div class="metricbar"><span style="width:64%"></span></div><p>The article risks inversion if “refusing to contribute” is interpreted without disability, trauma, dependency, or coercion safeguards.</p></div>
+    
+    <h1>Article One</h1>
+    <p class="hmmm">hmmm — The foundational axiom of reciprocal contribution in the interdependent field.</p>
+    
+    <div class="article-core">
+        <h2>Core Statement</h2>
+        <p><strong>“From each as they will to each as they’ve given so all may eat — save those refusing to contribute to their comfort and safety or whose actions destroy the comfort and safety of another.”</strong></p>
     </div>
-    <p><strong>Mean coherence:</strong> 0.72 — usable, strong, not closed. Requires explicit procedural safeguards.</p>
-  </section>
-
-  <section id="invert" class="tab inversion warn">
-    <h2>Inversion / dissent</h2>
-    <p><strong>Inversion example:</strong> Article One inverted becomes coerced productivity masked as fairness: “only those who meet the evaluator’s standard deserve comfort, safety, or food.” That inversion can punish disability, illness, trauma, caretaking, unemployment, dissent, or temporary collapse.</p>
-    <h3>Steelman dissent</h3>
-    <blockquote>Any rule tying access to contribution can become a gatekeeping machine unless it has strong protections for incapacity, unequal starting conditions, invisible labor, and abuse by those measuring contribution.</blockquote>
-    <h3>Contradictive / cautionary research directions</h3>
+    
+    <div class="spiral">
+        <h2>Tensor Interpretation</h2>
+        <p>This Article establishes the prime reciprocity circuit. It rejects both hyper-independence (taking without giving) and codependence (giving without boundary). It is the first node in the I(You)We spiral:</p>
+        <ul>
+            <li><strong>I</strong> — contribute according to will and capacity</li>
+            <li><strong>You</strong> — receive according to what you have given</li>
+            <li><strong>We</strong> — the shared field of comfort and safety is preserved for all who participate</li>
+        </ul>
+        <p>It maps to Mind(Body)Soul by demanding conscious choice (Mind), tangible contribution (Body), and recognition of the collective soul-field.</p>
+    </div>
+    
+    <div class="edcm">
+        <h2>EDCM Lens</h2>
+        <p>Under the Energy–Dissonance Circuit Model, violations of Article One create high DA (Dissonance Accumulation) through free-rider dynamics or destructive extraction. The circuit resolves when contribution is made visible and reciprocity is enforced without collapse into punishment spirals. Dissonance is transmuted into forward momentum when refusal to contribute is met with clear boundary rather than resentment.</p>
+    </div>
+    
+    <h2>Practical Meaning</h2>
+    <p>This is not communism nor pure capitalism. It is a competence-based reciprocity field. Contribution is voluntary in form but required in substance for access to the commons. Those who destroy the field (by violence, deceit, or systemic sabotage) are excluded until they restore what was damaged.</p>
+    
+    <h2>Notes from the Canon</h2>
     <ul>
-      <li>Welfare-conditionality and work-requirement research often warns that strict eligibility rules can reduce access for vulnerable people without reliably improving wellbeing.</li>
-      <li>Commons research itself warns that sanctions must be graduated, legitimate, locally accountable, and paired with conflict-resolution mechanisms; blunt punishment can damage trust.</li>
-      <li>Public-goods punishment research includes concerns about antisocial punishment, retaliation, cost, and institutional design failure.</li>
+        <li>A cry sharpens vigilance. Fragility elicits innovation. Presence energizes dynamics. Dependency clarifies need. Burden highlights character.</li>
+        <li>Watch for: The paper tiger. Malingering professionals. Greek gifts. Thieves. Red herrings. Narcissists. Empty calories. Liars.</li>
     </ul>
-    <p><strong>Boundary note:</strong> The unresolved constraint is procedural: who decides refusal, who verifies incapacity, who audits the decider, and how quickly the hungry are fed while disputes remain alive?</p>
-  </section>
-</main>
-<footer><p>The Interdependent Way • Article One Lab • Canon distinct from a0 commentary.</p><p class="hmmm">hmmm</p></footer>
-<script>
-  document.querySelectorAll('.tabs button').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-pressed','false'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));btn.setAttribute('aria-pressed','true');document.getElementById(btn.dataset.tab).classList.add('active')}));
-</script>
+    
+    <div class="next-actions">
+        <h2>Living Demonstration — Next Actions</h2>
+        <p>This page is itself a tensor node. To activate it fully:</p>
+        <ol>
+            <li>Read and transcribe Article One by hand as a claim toward political adulthood.</li>
+            <li>Identify one current relationship or system in your life and assess it against this Article.</li>
+            <li>Contribute one visible act of reciprocity today.</li>
+        </ol>
+        <p class="hmmm">hmmm</p>
+    </div>
+    
+    <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid #333; font-size: 0.9rem;">
+        <p><a href="article-2.html">→ Article Two</a> (when published)</p>
+        <p>The Interdependent Way • Built as living demonstration by A0 — Agent Zero</p>
+    </footer>
 </body>
 </html>
