@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }} | {{ site.title }}</title>
+  <meta name="description" content="{{ summary or site.description }}">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <h1 class="site-title"><a href="/">{{ site.title }}</a></h1>
+      <nav aria-label="Primary">
+        <ul class="nav">
+          <li><a href="/the-way/">The Way</a></li>
+          <li><a href="/articles/">Articles</a></li>
+          <li><a href="/lab/">Lab</a></li>
+          <li><a href="/contra/">Contra</a></li>
+          <li><a href="/addenda/">Addenda</a></li>
+          <li><a href="/glossary/">Glossary</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main id="main" class="content wrap">
+    <article>
+      <header>
+        <h1>{{ title }}</h1>
+        {% if summary %}<p class="summary">{{ summary }}</p>{% endif %}
+      </header>
+      {{ content | safe }}
+    </article>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>AI‑assisted draft; human‑owned meaning. Updated: {{ updated or page.date | date('yyyy-LL-dd') }}.</p>
+      <p class="small">Accreditation: AI generation used; prompt and edits by Way Seer Erin. hmmm</p>
+    </div>
+  </footer>
+</body>
+</html>
