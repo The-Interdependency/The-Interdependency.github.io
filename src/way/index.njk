@@ -1,0 +1,5 @@
+---
+layout: layouts/base.njk
+title: Explore The Way
+---
+<h1>Explore The Way</h1><p>Every discovered canonical unit receives a companion entry. Exact source is one intentional step deeper.</p><div class="grid">{% for unit in generated.canon.units %}<article class="card"><h2><a href="/way/{{ unit.id | slug }}/">{{ unit.title }}</a></h2><p>Status: <span class="label">canonical-derived</span></p><p>{{ unit.section }}</p></article>{% endfor %}</div>

@@ -1,0 +1,387 @@
+{
+  "organization": "The-Interdependency",
+  "snapshotAt": "2026-07-10T11:35:18.128Z",
+  "fallback": false,
+  "publicRepoCount": 21,
+  "generatedRouteCount": 21,
+  "repositories": [
+    {
+      "name": "pcna",
+      "slug": "pcna",
+      "html_url": "https://github.com/The-Interdependency/pcna",
+      "description": "Prime Circled Neural Architecture",
+      "archived": true,
+      "fork": false,
+      "default_branch": "main",
+      "topics": [],
+      "license": "MPL-2.0",
+      "language": "Python",
+      "homepage": "",
+      "pushed_at": "2026-06-30T15:04:08Z",
+      "visibility": "public",
+      "hmmm": [
+        "Editorial project map missing until .interdependency/project.yml is reviewed."
+      ]
+    },
+    {
+      "name": "edcmbone",
+      "slug": "edcmbone",
+      "html_url": "https://github.com/The-Interdependency/edcmbone",
+      "description": "Energy Dissonance Circuit Model Bound Operator Numerical Evaluation",
+      "archived": false,
+      "fork": false,
+      "default_branch": "main",
+      "topics": [],
+      "license": "MPL-2.0",
+      "language": "Python",
+      "homepage": "",
+      "pushed_at": "2026-07-10T01:29:24Z",
+      "visibility": "public",
+      "hmmm": [
+        "Editorial project map missing until .interdependency/project.yml is reviewed."
+      ]
+    },
+    {
+      "name": "a0",
+      "slug": "a0",
+      "html_url": "https://github.com/The-Interdependency/a0",
+      "description": "Agentic Model Wrapper and Inference Engine Exploring Prime Consciousness Theory",
+      "archived": false,
+      "fork": false,
+      "default_branch": "main",
+      "topics": [],
+      "license": "AGPL-3.0",
+      "language": "HTML",
+      "homepage": "https://replit.interdependentway.org",
+      "pushed_at": "2026-07-10T01:31:02Z",
+      "visibility": "public",
+      "hmmm": [
+        "Editorial project map missing until .interdependency/project.yml is reviewed."
+      ]
+    },
+    {
+      "name": "The-Interdependency.github.io",
+      "slug": "the-interdependency-github-io",
+      "html_url": "https://github.com/The-Interdependency/The-Interdependency.github.io",
+      "description": "Interdependent Way — Competence-based interdependency framework integrating EDCM metrics and PCNA/PCTA tensor architectures. Open research, specifications, and live deployments.",
+      "archived": false,
+      "fork": false,
+      "default_branch": "main",
+      "topics": [],
+      "license": "Apache-2.0",
+      "language": "HTML",
+      "homepage": "https://interdependentway.org/",
+      "pushed_at": "2026-07-10T11:05:25Z",
+      "visibility": "public",
+      "hmmm": [
+        "Editorial project map missing until .interdependency/project.yml is reviewed."
+      ]
+    },
+    {
+      "name": "pcsa",
+      "slug": "pcsa",
+      "html_url": "https://github.com/The-Interdependency/pcsa",
+      "description": "prime tensor circular architecture ",
+      "archived": true,
+      "fork": false,
+      "default_branch": "main",
+      "topics": [],
+      "license": "MPL-2.0",
+      "language": "Python",
+      "homepage": null,
+      "pushed_at": "2026-06-30T15:04:30Z",
+      "visibility": "public",
+      "hmmm": [
+        "Editorial project map missing until .interdependency/project.yml is reviewed."
+      ]
+    },
+    {
+      "name": "pcea",
+      "slug": "pcea",
+      "html_url": "https://github.com/The-Interdependency/pcea",
+      "description": "Prime Circular Encryption Algorithm ",
+      "archived": false,
+      "fork": false,
+      "default_branch": "main",
+      "topics": [],
+      "license": "MIT",
+      "language": "Python",
+      "homepage": "",
+      "pushed_at": "2026-07-10T01:31:14Z",
+      "visibility": "public",
+      "hmmm": [
+        "Editorial project map missing until .interdependency/project.yml is reviewed."
+      ]
+    },
+    {
+      "name": "aimmh",
+      "slug": "aimmh",
+      "html_url": "https://github.com/The-Interdependency/aimmh",
+      "description": "AI Multimodel Multimodal Hub",
+      "archived": false,
+      "fork": false,
+      "default_branch": "main",
+      "topics": [],
+      "license": "MPL-2.0",
+      "language": "Python",
+      "homepage": "",
+      "pushed_at": "2026-07-10T01:30:46Z",
+      "visibility": "public",
+      "hmmm": [
+        "Editorial project map missing until .interdependency/project.yml is reviewed."
+      ]
+    },
+    {
+      "name": "a0replite",
+      "slug": "a0replite",
+      "html_url": "https://github.com/The-Interdependency/a0replite",
+      "description": "Grounded AI instance — The Interdependent Way",
+      "archived": true,
+      "fork": false,
+      "default_branch": "main",
+      "topics": [],
+      "license": null,
+      "language": "TypeScript",
+      "homepage": null,
+      "pushed_at": "2026-04-07T01:59:08Z",
+      "visibility": "public",
+      "hmmm": [
+        "Editorial project map missing until .interdependency/project.yml is reviewed."
+      ]
+    },
+    {
+      "name": "zfae",
+      "slug": "zfae",
+      "html_url": "https://github.com/The-Interdependency/zfae",
+      "description": "zeta function alpha echo (zeta fun!)",
+      "archived": false,
+      "fork": false,
+      "default_branch": "main",
+      "topics": [],
+      "license": "CC-BY-SA-4.0",
+      "language": "Python",
+      "homepage": null,
+      "pushed_at": "2026-07-10T01:33:48Z",
+      "visibility": "public",
+      "hmmm": [
+        "Editorial project map missing until .interdependency/project.yml is reviewed."
+      ]
+    },
+    {
+      "name": "ucns",
+      "slug": "ucns",
+      "html_url": "https://github.com/The-Interdependency/ucns",
+      "description": "unit circle number system - the unit circle is a Mobius disk with recursive epicycles",
+      "archived": false,
+      "fork": false,
+      "default_branch": "main",
+      "topics": [],
+      "license": "Apache-2.0",
+      "language": "Python",
+      "homepage": null,
+      "pushed_at": "2026-07-10T08:43:52Z",
+      "visibility": "public",
+      "hmmm": [
+        "Editorial project map missing until .interdependency/project.yml is reviewed."
+      ]
+    },
+    {
+      "name": "ai-tiw",
+      "slug": "ai-tiw",
+      "html_url": "https://github.com/The-Interdependency/ai-tiw",
+      "description": "this is the reactions of various ai when presented with the interdependent way through three readings.",
+      "archived": false,
+      "fork": false,
+      "default_branch": "main",
+      "topics": [],
+      "license": "CC-BY-4.0",
+      "language": "Python",
+      "homepage": "",
+      "pushed_at": "2026-07-10T01:30:18Z",
+      "visibility": "public",
+      "hmmm": [
+        "Editorial project map missing until .interdependency/project.yml is reviewed."
+      ]
+    },
+    {
+      "name": "interdependent-lib",
+      "slug": "interdependent-lib",
+      "html_url": "https://github.com/The-Interdependency/interdependent-lib",
+      "description": "This is where all the four letter acronyms will converge.",
+      "archived": false,
+      "fork": false,
+      "default_branch": "main",
+      "topics": [],
+      "license": "MPL-2.0",
+      "language": "Python",
+      "homepage": null,
+      "pushed_at": "2026-07-10T01:29:10Z",
+      "visibility": "public",
+      "hmmm": [
+        "Editorial project map missing until .interdependency/project.yml is reviewed."
+      ]
+    },
+    {
+      "name": "a0ucns",
+      "slug": "a0ucns",
+      "html_url": "https://github.com/The-Interdependency/a0ucns",
+      "description": "Agentic Model Wrapper and Inference Engine Exploring Prime Consciousness Theory",
+      "archived": false,
+      "fork": true,
+      "default_branch": "main",
+      "topics": [],
+      "license": null,
+      "language": "HTML",
+      "homepage": "https://replit.interdependentway.org",
+      "pushed_at": "2026-07-09T05:23:20Z",
+      "visibility": "public",
+      "hmmm": [
+        "Editorial project map missing until .interdependency/project.yml is reviewed."
+      ]
+    },
+    {
+      "name": "eml_ucns",
+      "slug": "eml-ucns",
+      "html_url": "https://github.com/The-Interdependency/eml_ucns",
+      "description": "EML × UCNS Bridge for The Interdependency",
+      "archived": false,
+      "fork": false,
+      "default_branch": "main",
+      "topics": [],
+      "license": "MPL-2.0",
+      "language": "Python",
+      "homepage": null,
+      "pushed_at": "2026-07-10T01:29:48Z",
+      "visibility": "public",
+      "hmmm": [
+        "Editorial project map missing until .interdependency/project.yml is reviewed."
+      ]
+    },
+    {
+      "name": "skill-lib",
+      "slug": "skill-lib",
+      "html_url": "https://github.com/The-Interdependency/skill-lib",
+      "description": null,
+      "archived": false,
+      "fork": false,
+      "default_branch": "main",
+      "topics": [],
+      "license": "MPL-2.0",
+      "language": "Python",
+      "homepage": null,
+      "pushed_at": "2026-07-10T11:03:10Z",
+      "visibility": "public",
+      "hmmm": [
+        "Editorial project map missing until .interdependency/project.yml is reviewed."
+      ]
+    },
+    {
+      "name": "edcm",
+      "slug": "edcm",
+      "html_url": "https://github.com/The-Interdependency/edcm",
+      "description": "Full four layers of energy dissonance circuit model",
+      "archived": false,
+      "fork": false,
+      "default_branch": "main",
+      "topics": [],
+      "license": "MPL-2.0",
+      "language": "Python",
+      "homepage": null,
+      "pushed_at": "2026-07-09T05:37:48Z",
+      "visibility": "public",
+      "hmmm": [
+        "Editorial project map missing until .interdependency/project.yml is reviewed."
+      ]
+    },
+    {
+      "name": "pcta",
+      "slug": "pcta",
+      "html_url": "https://github.com/The-Interdependency/pcta",
+      "description": "prime circle tensor architecture ",
+      "archived": true,
+      "fork": false,
+      "default_branch": "main",
+      "topics": [],
+      "license": "MPL-2.0",
+      "language": "Python",
+      "homepage": null,
+      "pushed_at": "2026-06-30T15:03:16Z",
+      "visibility": "public",
+      "hmmm": [
+        "Editorial project map missing until .interdependency/project.yml is reviewed."
+      ]
+    },
+    {
+      "name": "a0-betatest",
+      "slug": "a0-betatest",
+      "html_url": "https://github.com/The-Interdependency/a0-betatest",
+      "description": null,
+      "archived": false,
+      "fork": false,
+      "default_branch": "main",
+      "topics": [],
+      "license": null,
+      "language": "HTML",
+      "homepage": null,
+      "pushed_at": "2026-07-10T01:32:11Z",
+      "visibility": "public",
+      "hmmm": [
+        "Editorial project map missing until .interdependency/project.yml is reviewed."
+      ]
+    },
+    {
+      "name": "odysseus-a0",
+      "slug": "odysseus-a0",
+      "html_url": "https://github.com/The-Interdependency/odysseus-a0",
+      "description": "Self-hosted AI workspace. ",
+      "archived": false,
+      "fork": true,
+      "default_branch": "dev",
+      "topics": [],
+      "license": "MIT",
+      "language": "Python",
+      "homepage": "https://pewdiepie-archdaemon.github.io/odysseus/",
+      "pushed_at": "2026-06-07T02:48:16Z",
+      "visibility": "public",
+      "hmmm": [
+        "Editorial project map missing until .interdependency/project.yml is reviewed."
+      ]
+    },
+    {
+      "name": "metapat",
+      "slug": "metapat",
+      "html_url": "https://github.com/The-Interdependency/metapat",
+      "description": "Meta Energy Theory Axioms Postulates And Theorems - meta study of energy identifying interdomain first principals",
+      "archived": false,
+      "fork": false,
+      "default_branch": "main",
+      "topics": [],
+      "license": "MPL-2.0",
+      "language": "Python",
+      "homepage": null,
+      "pushed_at": "2026-07-10T01:30:32Z",
+      "visibility": "public",
+      "hmmm": [
+        "Editorial project map missing until .interdependency/project.yml is reviewed."
+      ]
+    },
+    {
+      "name": "ptcna",
+      "slug": "ptcna",
+      "html_url": "https://github.com/The-Interdependency/ptcna",
+      "description": "Prime Tensor Circled Neural Architecture — one architecture, four layers (neural/circle/seed/core). Consolidates pcna, pcta, pcsa. Feeds interdependent-lib.",
+      "archived": false,
+      "fork": false,
+      "default_branch": "main",
+      "topics": [],
+      "license": "MPL-2.0",
+      "language": "Python",
+      "homepage": null,
+      "pushed_at": "2026-07-06T19:45:41Z",
+      "visibility": "public",
+      "hmmm": [
+        "Editorial project map missing until .interdependency/project.yml is reviewed."
+      ]
+    }
+  ]
+}

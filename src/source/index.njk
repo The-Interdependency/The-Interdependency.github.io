@@ -1,0 +1,5 @@
+---
+layout: layouts/base.njk
+title: Source index
+---
+<h1>Source index</h1><p>Direct source permalinks are available for citation and accessibility. Ordinary homepage navigation introduces orientation before this layer.</p><ul>{% for unit in generated.canon.units %}<li><a href="/source/{{ unit.id | slug }}/">{{ unit.title }}</a></li>{% endfor %}</ul>

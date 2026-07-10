@@ -1,0 +1,10 @@
+import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
+await mkdir('src/_data/snapshots',{recursive:true});
+const local='canon/the_interdependent_way.md';
+let text=await readFile(local,'utf8');
+const commit=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
+const hash=createHash('sha256').update(text).digest('hex');
+await writeFile('src/_data/snapshots/canon.last-known-good.md',`---\nrepository: The-Interdependency/a0\npath: interdependent_way.md\ncommit: ${commit}\nretrieved_at: ${new Date().toISOString()}\ncontent_sha256: ${hash}\nfallback: local-repository-copy\n---\n${text}`);
+console.log(`canon ${commit} ${hash}`);
