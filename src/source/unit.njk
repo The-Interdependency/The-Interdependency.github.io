@@ -1,0 +1,10 @@
+---
+layout: layouts/base.njk
+pagination:
+  data: generated.canon.units
+  size: 1
+  alias: unit
+permalink: "/source/{{ unit.id | slug }}/"
+title: "Source: {{ unit.title }}"
+---
+<nav aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/way/{{ unit.id | slug }}/">{{ unit.title }}</a> / Source</nav><h1>Exact source: {{ unit.title }}</h1><dl class="provenance"><dt>Canonical unit ID</dt><dd>{{ unit.id }}</dd><dt>Repository</dt><dd>{{ generated.canon.source.repository }}</dd><dt>Path</dt><dd>{{ generated.canon.source.path }}</dd><dt>Commit</dt><dd>{{ generated.canon.source.commit }}</dd><dt>Unit hash</dt><dd>{{ unit.hash }}</dd><dt>Document hash</dt><dd>{{ generated.canon.source.contentSha256 }}</dd></dl><pre class="source-block">{{ unit.content }}</pre>

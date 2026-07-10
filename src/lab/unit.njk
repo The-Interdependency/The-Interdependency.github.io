@@ -1,0 +1,10 @@
+---
+layout: layouts/base.njk
+pagination:
+  data: generated.canon.units
+  size: 1
+  alias: unit
+permalink: "/lab/{{ unit.id | slug }}/"
+title: "Lab: {{ unit.title }}"
+---
+<h1>Lab: {{ unit.title }}</h1><h2>Orientation</h2><p>This is a static fallback Lab page for {{ unit.id }}. It preserves source identity while marking interpretation as review-needed.</p><h2>Conversation</h2><div class="turn"><strong>Speaker A — main text</strong><p>Canonical source excerpt is available through the exact source layer.</p></div>{% for note in generated.canon.notes %}{% if note.unit_id == unit.id %}<div class="turn note"><strong>Speaker B — note {{ note.marker }}</strong><p>Linked note relationship detected; note text mapping awaits parser review.</p></div>{% endif %}{% endfor %}<h2>EDCM-style interpretive tension map</h2><details><summary>Open heuristic map</summary><p class="hmmm">hmmm — no validated edcmbone metrics are run here; tension type remains certainty-vs-honest-uncertainty.</p></details><h2>Research</h2><p class="hmmm">No reviewed support, dissent, or mixed research is published for this unit yet. Search gap recorded as hmmm.</p><h2>Exact source</h2><p><a href="/source/{{ unit.id | slug }}/">Read exact source with provenance</a></p>
