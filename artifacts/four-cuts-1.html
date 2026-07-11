@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Four Cuts of the Same Country — Wealth & Tax</title>
+
+<!-- X / Twitter Card + Open Graph for clean link previews when shared on X -->
+<meta property="og:title" content="Four Cuts of the Same Country | Wealth & Tax Visualized">
+<meta property="og:description" content="Four honest cuts through the same data: total federal income tax by bracket, tax per person by bracket, total household net worth by income group, and net worth per person. Real IRS + Fed SCF numbers. The seams between incompatible cuts are left visible — no faking the alignment.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Four Cuts of the Same Country">
+<meta name="twitter:description" content="Wealth and tax, each cut its own honest way. Visualizing who generates what tax and who holds what net dollars — with the seams left visible. IRS TY2023 brackets + Fed SCF 2022 income sextiles.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14171c; --ink-2:#1b1f26; --ink-3:#20242c;
+    --brass:#b8935f; --brass-dim:#8a7150;
+    --rust:#c1502e; --rust-dim:#8f3c22;
+    --slate:#5b6472; --text:#e8e6de; --text-dim:#93979f; --hair:#2a2f38;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{ background:var(--ink); color:var(--text); font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
+  body{ display:flex; justify-content:center; padding:0 0 60px; }
+  main{ width:100%; max-width:540px; padding:32px 18px 0; }
+
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.14em;
+    text-transform:uppercase; color:var(--brass); display:flex; justify-content:space-between;
+    align-items:baseline; margin-bottom:16px;
+  }
+  .eyebrow span:last-child{ color:var(--text-dim); }
+  h1{ font-family:'Fraunces',serif; font-weight:600; font-size:24px; line-height:1.18; margin-bottom:8px; }
+  h1 em{ font-style:normal; color:var(--brass); }
+  .sub{ font-size:13.5px; color:var(--text-dim); line-height:1.55; margin-bottom:24px; max-width:46ch; }
+  .sub b{ color:var(--text); font-weight:600; }
+
+  .bracket-ref{ border:1px solid var(--hair); border-radius:6px; padding:12px 14px 14px; margin-bottom:16px; background:var(--ink-2); }
+  .ref-title{ font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-dim); margin-bottom:9px; }
+  .bracket-row{ display:flex; justify-content:space-between; font-family:'JetBrains Mono',monospace; font-size:11px; padding:3px 0; border-bottom:1px solid var(--hair); }
+  .bracket-row:last-child{ border-bottom:none; }
+  .bracket-row .rate{ color:var(--brass); font-weight:700; width:34px; }
+  .bracket-row .range{ color:var(--text); flex:1; text-align:right; }
+  .bracket-row .grp{ color:var(--slate); width:80px; text-align:right; }
+
+  .measure{ border:1px solid var(--hair); border-radius:8px; margin-bottom:20px; overflow:hidden; background:var(--ink-2); }
+  .m-head{ padding:14px 16px 4px; }
+  .m-title{ font-family:'Fraunces',serif; font-weight:600; font-size:17px; }
+  .m-title.tax{ color:var(--rust); } .m-title.wealth{ color:var(--brass); }
+  .m-unit{ font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-dim); margin-top:3px; letter-spacing:0.03em; }
+  .m-unit em{ font-style:normal; color:var(--brass); }
+  .m-axis{ font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--slate); text-transform:uppercase; letter-spacing:0.05em; margin-top:2px; }
+
+  .mf-canvas-wrap{ position:relative; width:100%; height:210px; overflow:hidden; background:var(--ink); border-top:1px solid var(--hair); border-bottom:1px solid var(--hair); margin-top:12px; }
+  .mf-canvas{ display:block; touch-action:none; cursor:grab; }
+  .mf-controls{ position:absolute; top:8px; right:8px; display:flex; flex-direction:column; gap:5px; }
+  .mf-controls button{ width:28px; height:28px; border-radius:5px; border:1px solid var(--hair); background:var(--ink-2); color:var(--text); font-family:'JetBrains Mono',monospace; font-size:14px; cursor:pointer; }
+  .mf-reset{ position:absolute; bottom:8px; left:8px; padding:5px 9px; border-radius:5px; border:1px solid var(--hair); background:var(--ink-2); color:var(--text-dim); font-family:'JetBrains Mono',monospace; font-size:9px; text-transform:uppercase; letter-spacing:0.05em; cursor:pointer; }
+  .mf-hint{ position:absolute; bottom:8px; right:8px; font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--slate); pointer-events:none; }
+
+  /* FOCUSED / EXPANDED FIELD */
+  .mf-backdrop{ position:fixed; inset:0; background:rgba(10,12,15,0.78); z-index:900; opacity:0; pointer-events:none; transition:opacity .18s ease; }
+  body.has-expanded .mf-backdrop.on{ opacity:1; pointer-events:auto; }
+  .mf-canvas-wrap.expanded{
+    position:fixed; left:2vw; right:2vw; top:2vh; bottom:2vh;
+    width:auto; height:auto !important; z-index:1000;
+    border-radius:12px; border:1px solid var(--hair);
+    box-shadow:0 24px 70px rgba(0,0,0,0.65); margin:0;
+  }
+  body.has-expanded{ overflow:hidden; }
+  .mf-expand{ font-size:13px !important; }
+  .mf-close{
+    position:absolute; top:10px; left:12px; z-index:2; display:none;
+    padding:7px 12px; border-radius:6px; border:1px solid var(--hair);
+    background:var(--ink-2); color:var(--text); font-family:'JetBrains Mono',monospace;
+    font-size:10px; text-transform:uppercase; letter-spacing:0.06em; cursor:pointer;
+  }
+  .mf-canvas-wrap.expanded .mf-close{ display:block; }
+  .mf-canvas-wrap.expanded .mf-reset{ left:auto; right:12px; }
+  .mf-expandcap{
+    position:absolute; top:12px; left:50%; transform:translateX(-50%); z-index:2; display:none;
+    font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-dim);
+    letter-spacing:0.04em; pointer-events:none; text-align:center; white-space:nowrap;
+  }
+  .mf-canvas-wrap.expanded .mf-expandcap{ display:block; }
+
+  .pie-wrap{ display:flex; gap:14px; align-items:center; padding:14px 16px 16px; }
+  .pie-wrap svg{ flex-shrink:0; }
+  .pie-legend{ flex:1; display:flex; flex-direction:column; gap:3px; }
+  .pie-legend .pl{ display:flex; align-items:center; justify-content:space-between; font-family:'JetBrains Mono',monospace; font-size:10.5px; }
+  .pie-legend .pl .k{ display:flex; align-items:center; gap:6px; color:var(--text-dim); }
+  .pie-legend .pl .k i{ width:9px; height:9px; border-radius:2px; display:inline-block; }
+  .pie-legend .pl .v{ color:var(--text); font-weight:600; }
+  .pie-title{ font-family:'JetBrains Mono',monospace; font-size:9px; text-transform:uppercase; letter-spacing:0.06em; color:var(--slate); padding:0 16px; }
+
+  .hmmm{ border-left:2px solid var(--brass-dim); padding:4px 0 4px 16px; margin:8px 0 34px; }
+  .hmmm .tag{ font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.08em; color:var(--brass); text-transform:lowercase; margin-bottom:8px; display:block; }
+  .hmmm p{ font-size:12.5px; line-height:1.6; color:var(--text-dim); margin-bottom:8px; }
+  .hmmm p:last-child{ margin-bottom:0; }
+  .hmmm b{ color:var(--text); font-weight:600; }
+  .flag{ color:var(--rust); }
+
+  .section-label{ font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--slate); margin:26px 0 14px; display:flex; gap:8px; align-items:center; }
+  .section-label::after{ content:''; flex:1; height:1px; background:var(--hair); }
+
+  footer{ font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--slate); line-height:1.7; padding-top:16px; border-top:1px solid var(--hair); }
+  @media (max-width:380px){ h1{ font-size:21px; } }
+</style>
+</head>
+<body>
+<main>
+
+  <div class="eyebrow"><span>Four Cuts of the Same Country</span><span>Tax 2026 · Data 2022–23</span></div>
+  <h1>Wealth and tax, <em>each cut its own honest way</em>.</h1>
+  <p class="sub">You asked to see wealth and tax burden per bracket, total and per person, as stacks of <b>$</b>. Two of these are cleanly measurable by tax bracket; two are not. Rather than fake the alignment, each measure sits on the finest axis its real data supports — and the seam between them is marked, not hidden. Tap <b>⤢</b> on any field to focus it full-screen.</p>
+
+  <div class="bracket-ref">
+    <div class="ref-title">2026 federal brackets — single filer · matched income group</div>
+    <div class="bracket-row"><span class="rate">10%</span><span class="range">$0 – $12,400</span><span class="grp">inc <20%</span></div>
+    <div class="bracket-row"><span class="rate">12%</span><span class="range">$12,401 – $50,400</span><span class="grp">20–40%</span></div>
+    <div class="bracket-row"><span class="rate">22%</span><span class="range">$50,401 – $105,700</span><span class="grp">40–60%</span></div>
+    <div class="bracket-row"><span class="rate">24%</span><span class="range">$105,701 – $201,775</span><span class="grp">60–80%</span></div>
+    <div class="bracket-row"><span class="rate">32%</span><span class="range">$201,776 – $256,225</span><span class="grp">80–90%</span></div>
+    <div class="bracket-row"><span class="rate">35%</span><span class="range">$256,226 – $640,600</span><span class="grp">90–100%</span></div>
+    <div class="bracket-row"><span class="rate">37%</span><span class="range">$640,601 +</span><span class="grp">90–100%</span></div>
+  </div>
+
+  <!-- ===== TAX SIDE (7 brackets, real IRS) ===== -->
+  <div class="section-label">tax — by marginal bracket · real</div>
+
+  <div class="measure">
+    <div class="m-head">
+      <div class="m-title tax">1 · Total tax generated per bracket</div>
+      <div class="m-unit">each $ = $1 billion of federal income tax</div>
+      <div class="m-axis">7 marginal brackets · IRS Table 3.6, TY2023</div>
+    </div>
+    <div class="mf-canvas-wrap">
+      <canvas class="mf-canvas" data-labels="10%,12%,22%,24%,32%,35%,37%" data-counts="185,448,478,280,93,157,429" data-color="#c1502e" data-unit="$1B" role="application" aria-label="Interactive visualization of 1 · Total tax generated per bracket. Shows total dollars in billions as stacks of $ symbols. Drag to pan, use +/- buttons or pinch/scroll to zoom, reset button to fit view. Tap the expand (⤢) button for full-screen focus mode." tabindex="0"></canvas>
+      <div class="mf-controls"><button class="mf-in" aria-label="Zoom in">+</button><button class="mf-out" aria-label="Zoom out">−</button></div>
+      <button class="mf-reset">reset</button><span class="mf-hint">drag · pinch · scroll</span>
+    </div>
+    <div class="pie-title">share of the $2.07T generated by these 7 rates</div>
+    <div class="pie-wrap">
+      <svg class="pie" width="112" height="112" data-values="184.9,447.7,478.2,280.0,93.1,156.9,429.1" data-labels="10%,12%,22%,24%,32%,35%,37%"></svg>
+      <div class="pie-legend"></div>
+    </div>
+  </div>
+
+  <div class="measure">
+    <div class="m-head">
+      <div class="m-title tax">2 · Tax per person, per bracket</div>
+      <div class="m-unit">each $ = $1,000 of tax generated at that rate, per return reaching it</div>
+      <div class="m-axis">7 marginal brackets · IRS Table 3.6, TY2023</div>
+    </div>
+    <div class="mf-canvas-wrap" style="height:230px;">
+      <canvas class="mf-canvas" data-labels="10%,12%,22%,24%,32%,35%,37%" data-counts="1434,4250,9664,17413,20118,52538,390847" data-color="#c1502e" data-unit="$1k" role="application" aria-label="Interactive visualization of 2 · Tax per person, per bracket. Shows dollars per person in thousands as stacks of $ symbols. Drag to pan, use +/- buttons or pinch/scroll to zoom, reset button to fit view. Tap the expand (⤢) button for full-screen focus mode." tabindex="0"></canvas>
+      <div class="mf-controls"><button class="mf-in" aria-label="Zoom in">+</button><button class="mf-out" aria-label="Zoom out">−</button></div>
+      <button class="mf-reset">reset</button><span class="mf-hint">drag · pinch · scroll</span>
+    </div>
+    <div class="pie-title">taxpayers, by top bracket reached (who sits where)</div>
+    <div class="pie-wrap">
+      <svg class="pie" width="112" height="112" data-values="18.3,43.3,25.9,8.9,1.3,1.5,0.9" data-labels="10%,12%,22%,24%,32%,35%,37%"></svg>
+      <div class="pie-legend"></div>
+    </div>
+  </div>
+
+  <!-- ===== WEALTH SIDE (6 income sextiles, real SCF) ===== -->
+  <div class="section-label">wealth — by income group · real</div>
+
+  <div class="measure">
+    <div class="m-head">
+      <div class="m-title wealth">3 · Total net dollars held per income group</div>
+      <div class="m-unit">each $ = $1 billion of household net dollars (assets − debts)</div>
+      <div class="m-axis">6 usual-income sextiles · Fed SCF 2022</div>
+    </div>
+    <div class="mf-canvas-wrap" style="height:230px;">
+      <canvas class="mf-canvas" data-labels="<20,20-40,40-60,60-80,80-90,90-100" data-counts="3407,5743,10121,16722,16605,87047" data-color="#b8935f" data-unit="$1B" role="application" aria-label="Interactive visualization of 3 · Total net dollars held per income group. Shows total net dollars in billions as stacks of $ symbols. Drag to pan, use +/- buttons or pinch/scroll to zoom, reset button to fit view. Tap the expand (⤢) button for full-screen focus mode." tabindex="0"></canvas>
+      <div class="mf-controls"><button class="mf-in" aria-label="Zoom in">+</button><button class="mf-out" aria-label="Zoom out">−</button></div>
+      <button class="mf-reset">reset</button><span class="mf-hint">drag · pinch · scroll</span>
+    </div>
+    <div class="pie-title">share of $139.6T in household net dollars (SCF)</div>
+    <div class="pie-wrap">
+      <svg class="pie" width="112" height="112" data-values="3.41,5.74,10.12,16.72,16.61,87.05" data-labels="<20,20-40,40-60,60-80,80-90,90-100"></svg>
+      <div class="pie-legend"></div>
+    </div>
+  </div>
+
+  <div class="measure">
+    <div class="m-head">
+      <div class="m-title wealth">4 · Net dollars held per person</div>
+      <div class="m-unit">each $ = $1,000 a person <em>holds</em> (assets − debts) — not what they're worth</div>
+      <div class="m-axis">6 usual-income sextiles · Fed SCF 2022</div>
+    </div>
+    <div class="mf-canvas-wrap" style="height:230px;">
+      <canvas class="mf-canvas" data-labels="<20,20-40,40-60,60-80,80-90,90-100" data-counts="130,219,385,637,1265,6630" data-color="#b8935f" data-unit="$1k" role="application" aria-label="Interactive visualization of 4 · Net dollars held per person. Shows net dollars per person in thousands as stacks of $ symbols. Drag to pan, use +/- buttons or pinch/scroll to zoom, reset button to fit view. Tap the expand (⤢) button for full-screen focus mode." tabindex="0"></canvas>
+      <div class="mf-controls"><button class="mf-in" aria-label="Zoom in">+</button><button class="mf-out" aria-label="Zoom out">−</button></div>
+      <button class="mf-reset">reset</button><span class="mf-hint">drag · pinch · scroll</span>
+    </div>
+    <div class="pie-title">households per income group (each group's size)</div>
+    <div class="pie-wrap">
+      <svg class="pie" width="112" height="112" data-values="20,20,20,20,10,10" data-labels="<20,20-40,40-60,60-80,80-90,90-100"></svg>
+      <div class="pie-legend"></div>
+    </div>
+  </div>
+
+  <div class="hmmm">
+    <span class="tag">hmmm</span>
+    <p>The two axes are <b>not</b> the same cut. Tax data (1, 2) is real, ranked by <b>marginal rate</b> — IRS reports exactly how much each rate generates and who reaches it. Wealth data (3, 4) is real, ranked by <b>income group</b> — the SCF reports net worth by income sextile. The bracket table up top pairs them by income range, but a taxpayer's <b>taxable</b> income (after deductions) and a family's <b>usual</b> income aren't the same number, so the pairing is a guide, not an identity.</p>
+    <p><span class="flag">Why wealth isn't drawn per bracket at all:</span> the wealth-by-tax-bracket cross-tab isn't published, and any estimate would collapse at the top — the SCF's top income decile holds mean net dollars of $6.63M, which hides the top 1% holding near $44M. Forcing wealth onto the 7 brackets would <b>understate the tail so badly it would lie.</b> The income-sextile cut is the finest honest one, and even it buries that top-1% tail inside the 90–100 slice.</p>
+    <p>One deliberate word choice: these fields count net <b>dollars held</b>, never net "worth." A person can be worthy and is priceless; the dollars are a holding, not a price on the human. The distinction is the whole point of measuring this at all.</p>
+  </div>
+
+  <!-- X-ready section: makes sharing / threading on X frictionless -->
+  <div class="section-label">ready for X · copy-paste numbers & thread starter</div>
+
+  <div class="x-ready" style="border:1px solid var(--hair); border-radius:8px; padding:16px 16px 18px; background:var(--ink-2); margin-bottom:28px; font-size:13px; line-height:1.55;">
+    <p style="color:var(--text-dim); margin-bottom:14px;">The interactive fields above (especially when expanded ⤢) make strong screenshots for threads. Below are the clean numbers + a suggested starter post you can copy straight into X. Feel free to quote any pie or field directly.</p>
+
+    <div style="background:#0f1218; border-radius:6px; padding:12px 14px; margin-bottom:14px; font-family:'JetBrains Mono',monospace; font-size:11.5px; color:#c8c6be; line-height:1.65;">
+      <b style="color:#e8e6de;">Key extracted numbers (easy to quote):</b><br><br>
+      <b>Total federal income tax (7 rates, TY2023):</b> $2.07 trillion<br>
+      &nbsp;&nbsp;• 37% bracket alone: $429.1B from ~0.9% of returns<br>
+      &nbsp;&nbsp;• Top two brackets (35%+37%): $586B combined<br><br>
+      <b>Household net worth (SCF 2022, 6 income groups):</b> $139.6 trillion total<br>
+      &nbsp;&nbsp;• Top 10% (90–100): ~$87T (62.4%)<br>
+      &nbsp;&nbsp;• Bottom 40% (<40): ~$9.15T combined (6.6%)<br>
+      &nbsp;&nbsp;• Per-person mean in top 10%: ~$6.63M held<br>
+      &nbsp;&nbsp;• Per-person mean in bottom 20%: ~$130k held
+    </div>
+
+    <button onclick="copyXStarter()" 
+            style="font-family:'JetBrains Mono',monospace; font-size:12px; padding:9px 16px; border-radius:6px; border:1px solid var(--brass); background:var(--ink); color:var(--brass); cursor:pointer; display:inline-flex; align-items:center; gap:8px;">
+      📋 Copy suggested X thread starter
+    </button>
+
+    <button onclick="shareOnX()" 
+            style="font-family:'JetBrains Mono',monospace; font-size:12px; padding:9px 16px; border-radius:6px; border:1px solid var(--brass-dim); background:var(--ink-2); color:var(--text); cursor:pointer; display:inline-flex; align-items:center; gap:8px; margin-left:8px;">
+      𝕏 Post on X
+    </button>
+    <span id="copy-confirm" style="margin-left:12px; font-size:11px; color:var(--text-dim); display:none;">copied ✓</span>
+
+    <details style="margin-top:16px; font-size:12px;">
+      <summary style="cursor:pointer; color:var(--slate); font-family:'JetBrains Mono',monospace; letter-spacing:0.04em;">Show full suggested thread text</summary>
+      <pre style="white-space:pre-wrap; margin-top:10px; padding:12px; background:#0f1218; border-radius:6px; font-size:11px; color:#c8c6be; line-height:1.6; overflow-x:auto;">Four honest cuts through US wealth & federal tax — each on its own real axis (no forced alignment).
+
+1. Total tax generated by each marginal rate (IRS)
+2. Tax per person who reaches that bracket
+3. Total household net dollars held by income sextile (Fed SCF)
+4. Net dollars held per person in each income group
+
+The seams are visible because taxable income ≠ usual income, and wealth-by-bracket data doesn’t exist without lying at the tail.
+
+Link: [paste your hosted URL here]
+
+#WealthTax #TaxData #EconomicTransparency</pre>
+    </details>
+  </div>
+
+  <footer>
+    Brackets: IRS Rev. Proc. 2025-32, TY2026, single filer.<br>
+    Tax (fields 1-2, pies): IRS SOI Table 3.6, "Returns with Modified Taxable Income: Tax Classified by Each Rate," TY2023. Topping-out counts derived by differencing reaching-counts.<br>
+    Wealth (fields 3-4, pies): Federal Reserve SCF 2022, Table 2, mean net worth by percentile of usual income (shown here as net dollars held); household count ≈131.3M.
+  </footer>
+
+</main>
+
+<script>
+(function(){
+  const dpr = window.devicePixelRatio || 1;
+  const SPACING = 20;
+  const MIN_SCALE = 0.008, MAX_SCALE = 22;
+
+  // shared dimming backdrop for the focused view
+  const backdrop = document.createElement('div');
+  backdrop.className = 'mf-backdrop';
+  document.body.appendChild(backdrop);
+  let currentExpanded = null;
+
+  // ---- $ FIELDS (multi-column grid per band, laid side by side) ----
+  function initField(canvas){
+    const wrap = canvas.parentElement;
+    const ctx = canvas.getContext('2d');
+    const labels = canvas.dataset.labels.split(',');
+    const counts = canvas.dataset.counts.split(',').map(n=>parseInt(n,10));
+    const color = canvas.dataset.color;
+    const COLS = 6;              // columns of $ within each band
+    const BANDGAP = 46;          // px gap between bands (world units)
+
+    // Accessibility: describe the interactive viz for screen readers & keyboard users
+    const measureTitle = wrap.closest('.measure')?.querySelector('.m-title')?.textContent || 'dollar field';
+    const unitDesc = canvas.dataset.unit === '$1B' ? 'total dollars in billions' : 'dollars per person in thousands';
+    canvas.setAttribute('role', 'application');
+    canvas.setAttribute('aria-label', `Interactive visualization of ${measureTitle}. Shows ${unitDesc} as stacks of $ symbols. Drag to pan, use +/- buttons or pinch/scroll to zoom, reset button to fit view. Tap the expand (⤢) button for full-screen focus mode. Keyboard: Tab to controls.`);
+    canvas.setAttribute('tabindex', '0');
+
+    const bands = [];
+    let x = 0;
+    counts.forEach((c,i)=>{
+      const rows = Math.ceil(c/COLS);
+      const bw = COLS*SPACING;
+      bands.push({ label:labels[i], count:c, rows, bw, bh:rows*SPACING, x0:x });
+      x += bw + BANDGAP;
+    });
+    const worldW = x - BANDGAP;
+    const worldH = Math.max.apply(null, bands.map(b=>b.bh));
+
+    let camX = worldW/2, camY = -worldH/2, scale = 1;
+    function css(){ const r=wrap.getBoundingClientRect(); return {w:r.width,h:r.height}; }
+    function resize(){ const s=css(); canvas.width=Math.max(1,Math.floor(s.w*dpr)); canvas.height=Math.max(1,Math.floor(s.h*dpr)); canvas.style.width=s.w+'px'; canvas.style.height=s.h+'px'; }
+    function w2s(wx,wy){ const s=css(); return [(wx-camX)*scale+s.w/2,(wy-camY)*scale+s.h/2]; }
+    function s2w(sx,sy){ const s=css(); return [(sx-s.w/2)/scale+camX,(sy-s.h/2)/scale+camY]; }
+
+    function fit(){
+      resize(); const s=css(); const mx=28, my=42;
+      scale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, Math.min((s.w-mx*2)/worldW, (s.h-my*2)/worldH)));
+      camX = worldW/2; camY = -worldH/2; render();
+    }
+    function render(){
+      const s=css();
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+      ctx.fillStyle='#14171c'; ctx.fillRect(0,0,s.w,s.h);
+      const tl=s2w(0,0), br=s2w(s.w,s.h);
+      const vL=Math.min(tl[0],br[0]), vR=Math.max(tl[0],br[0]), vT=Math.min(tl[1],br[1]), vB=Math.max(tl[1],br[1]);
+      const px = SPACING*scale;
+
+      bands.forEach(b=>{
+        if(b.x0+b.bw < vL || b.x0 > vR) return;
+        // baseline tick
+        const a=w2s(b.x0,0), c=w2s(b.x0+b.bw,0);
+        ctx.strokeStyle='rgba(147,151,159,0.28)'; ctx.lineWidth=1;
+        ctx.beginPath(); ctx.moveTo(a[0],a[1]); ctx.lineTo(c[0],c[1]); ctx.stroke();
+
+        if(px>=6){
+          let rStart=Math.max(0,Math.floor((-Math.min(0,vB))/SPACING)-1);
+          let rEnd=Math.min(b.rows-1,Math.ceil((-Math.max(-b.bh,vT))/SPACING)+1);
+          ctx.fillStyle=color; ctx.font=Math.max(7,px*0.72)+"px 'JetBrains Mono',monospace"; ctx.textAlign='center'; ctx.textBaseline='middle';
+          for(let r=rStart;r<=rEnd;r++){
+            const n=Math.min(COLS,b.count-r*COLS); if(n<=0)break;
+            const wy=-(r*SPACING+SPACING/2);
+            for(let k=0;k<n;k++){ const wx=b.x0+k*SPACING+SPACING/2; if(wx<vL-SPACING||wx>vR+SPACING)continue; const p=w2s(wx,wy); ctx.fillText('$',p[0],p[1]); }
+          }
+        } else {
+          const c1=w2s(b.x0,0), c2=w2s(b.x0+b.bw,-b.bh);
+          ctx.fillStyle=color; ctx.globalAlpha=0.6;
+          ctx.fillRect(Math.min(c1[0],c2[0]),Math.min(c1[1],c2[1]),Math.abs(c2[0]-c1[0]),Math.max(Math.abs(c2[1]-c1[1]),2));
+          ctx.globalAlpha=1;
+        }
+        // label under band
+        const lb=w2s(b.x0+b.bw/2,22);
+        ctx.fillStyle='#93979f'; ctx.font="600 10px 'JetBrains Mono',monospace"; ctx.textAlign='center';
+        ctx.fillText(b.label, lb[0], lb[1]+9);
+        // count above band
+        const tp=w2s(b.x0+b.bw/2,-b.bh-16);
+        if(tp[1]>-16 && tp[1]<s.h+16){ ctx.fillStyle='#e8e6de'; ctx.font="700 10px 'JetBrains Mono',monospace"; ctx.fillText(b.count.toLocaleString(), tp[0], tp[1]); }
+      });
+    }
+
+    let pts=new Map(), drag=false, lx=0, ly=0, pinch=null;
+    function zoomAt(sx,sy,f){ const r=canvas.getBoundingClientRect(); const cx=sx-r.left, cy=sy-r.top; const bf=s2w(cx,cy); scale=Math.max(MIN_SCALE,Math.min(MAX_SCALE,scale*f)); const af=s2w(cx,cy); camX+=bf[0]-af[0]; camY+=bf[1]-af[1]; render(); }
+    canvas.addEventListener('pointerdown',e=>{ canvas.setPointerCapture(e.pointerId); pts.set(e.pointerId,{x:e.clientX,y:e.clientY}); if(pts.size===1){drag=true;lx=e.clientX;ly=e.clientY;canvas.style.cursor='grabbing';} });
+    canvas.addEventListener('pointermove',e=>{ if(!pts.has(e.pointerId))return; pts.set(e.pointerId,{x:e.clientX,y:e.clientY}); if(pts.size===2){ const p=Array.from(pts.values()); const d=Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y); if(pinch)zoomAt((p[0].x+p[1].x)/2,(p[0].y+p[1].y)/2,d/pinch); pinch=d; return; } if(drag){ camX-=(e.clientX-lx)/scale; camY-=(e.clientY-ly)/scale; lx=e.clientX; ly=e.clientY; render(); } });
+    function end(e){ pts.delete(e.pointerId); if(pts.size<2)pinch=null; if(pts.size===0){drag=false;canvas.style.cursor='grab';} }
+    canvas.addEventListener('pointerup',end); canvas.addEventListener('pointercancel',end);
+    canvas.addEventListener('wheel',e=>{ e.preventDefault(); zoomAt(e.clientX,e.clientY,Math.pow(1.1,-e.deltaY/100)); },{passive:false});
+    wrap.querySelector('.mf-in').addEventListener('click',()=>{ const r=canvas.getBoundingClientRect(); zoomAt(r.left+r.width/2,r.top+r.height/2,1.5); });
+    wrap.querySelector('.mf-out').addEventListener('click',()=>{ const r=canvas.getBoundingClientRect(); zoomAt(r.left+r.width/2,r.top+r.height/2,1/1.5); });
+    wrap.querySelector('.mf-reset').addEventListener('click',fit);
+
+    // expand / focus mode: fill most of the screen
+    const expandBtn = document.createElement('button');
+    expandBtn.className = 'mf-expand'; expandBtn.title = 'Focus';
+    expandBtn.textContent = '⤢';
+    wrap.querySelector('.mf-controls').appendChild(expandBtn);
+
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'mf-close'; closeBtn.textContent = '✕ close';
+    wrap.appendChild(closeBtn);
+
+    const cap = document.createElement('div');
+    cap.className = 'mf-expandcap';
+    const unit = canvas.dataset.unit === '$1B' ? 'each $ = $1 billion' : 'each $ = $1,000';
+    cap.textContent = unit + ' · drag · pinch · scroll';
+    wrap.appendChild(cap);
+
+    function expand(){
+      if(currentExpanded) currentExpanded._collapse();
+      wrap.classList.add('expanded');
+      backdrop.classList.add('on');
+      document.body.classList.add('has-expanded');
+      currentExpanded = api;
+      requestAnimationFrame(()=>{ requestAnimationFrame(fit); });
+    }
+    function collapse(){
+      wrap.classList.remove('expanded');
+      backdrop.classList.remove('on');
+      document.body.classList.remove('has-expanded');
+      if(currentExpanded===api) currentExpanded=null;
+      requestAnimationFrame(()=>{ requestAnimationFrame(fit); });
+    }
+    expandBtn.addEventListener('click', expand);
+    closeBtn.addEventListener('click', collapse);
+
+    const api = { fit, render, _collapse:collapse };
+    return api;
+  }
+
+  // ---- PIES ----
+  const PIE_COLORS = ['#5b6472','#7a6f5a','#9a7d52','#b8935f','#ca6a44','#c1502e','#8f3c22'];
+  function initPie(svg){
+    const vals = svg.dataset.values.split(',').map(Number);
+    const labels = svg.dataset.labels.split(',');
+    const total = vals.reduce((a,b)=>a+b,0);
+    const W=112, R=52, cx=56, cy=56;
+    let ang=-Math.PI/2;
+    const ns='http://www.w3.org/2000/svg';
+    vals.forEach((v,i)=>{
+      const frac=v/total, a2=ang+frac*2*Math.PI;
+      const x1=cx+R*Math.cos(ang), y1=cy+R*Math.sin(ang);
+      const x2=cx+R*Math.cos(a2), y2=cy+R*Math.sin(a2);
+      const large=frac>0.5?1:0;
+      const path=document.createElementNS(ns,'path');
+      path.setAttribute('d',`M${cx},${cy} L${x1.toFixed(2)},${y1.toFixed(2)} A${R},${R} 0 ${large} 1 ${x2.toFixed(2)},${y2.toFixed(2)} Z`);
+      path.setAttribute('fill',PIE_COLORS[i%PIE_COLORS.length]);
+      path.setAttribute('stroke','#14171c'); path.setAttribute('stroke-width','1');
+      svg.appendChild(path);
+      ang=a2;
+    });
+    // legend
+    const legend = svg.parentElement.querySelector('.pie-legend');
+    vals.forEach((v,i)=>{
+      const pct = (v/total*100);
+      const row=document.createElement('div'); row.className='pl';
+      row.innerHTML = `<span class="k"><i style="background:${PIE_COLORS[i%PIE_COLORS.length]}"></i>${labels[i]}</span><span class="v">${pct.toFixed(1)}%</span>`;
+      legend.appendChild(row);
+    });
+  }
+
+  const fields = Array.prototype.map.call(document.querySelectorAll('.mf-canvas'), initField);
+  Array.prototype.forEach.call(document.querySelectorAll('.pie'), initPie);
+  backdrop.addEventListener('click', ()=>{ if(currentExpanded) currentExpanded._collapse(); });
+  window.addEventListener('keydown', e=>{ if(e.key==='Escape' && currentExpanded) currentExpanded._collapse(); });
+  window.addEventListener('resize', ()=>fields.forEach(f=>f.fit()));
+  if(document.fonts && document.fonts.ready){ document.fonts.ready.then(()=>fields.forEach(f=>f.render())); }
+
+  // X / sharing helper — copies a clean thread starter to clipboard
+  window.copyXStarter = function(){
+    const text = `Four honest cuts through US wealth & federal tax — each on its own real axis (no forced alignment).
+
+1. Total tax generated by each marginal rate (IRS)
+2. Tax per person who reaches that bracket
+3. Total household net dollars held by income sextile (Fed SCF)
+4. Net dollars held per person in each income group
+
+The seams are visible because taxable income ≠ usual income, and wealth-by-bracket data doesn’t exist without lying at the tail.
+
+Link: [paste your hosted URL here]
+
+#WealthTax #TaxData #EconomicTransparency`;
+
+    navigator.clipboard.writeText(text).then(() => {
+      const confirm = document.getElementById('copy-confirm');
+      if(confirm){
+        confirm.style.display = 'inline';
+        setTimeout(()=>{ confirm.style.display = 'none'; }, 2200);
+      }
+    }).catch(() => {
+      // fallback for older browsers or denied clipboard
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      const confirm = document.getElementById('copy-confirm');
+      if(confirm){
+        confirm.textContent = 'copied (fallback) ✓';
+        confirm.style.display = 'inline';
+        setTimeout(()=>{ 
+          confirm.style.display = 'none'; 
+          confirm.textContent = 'copied ✓';
+        }, 2200);
+      }
+    });
+  };
+
+  // Direct "Post on X" using Twitter web intent (user pastes link or edits in composer)
+  window.shareOnX = function(){
+    const text = encodeURIComponent(`Four honest cuts through US wealth & federal tax — each on its own real axis (no forced alignment).
+
+1. Total tax generated by each marginal rate (IRS)
+2. Tax per person who reaches that bracket
+3. Total household net dollars held by income sextile (Fed SCF)
+4. Net dollars held per person in each income group
+
+The seams are visible because taxable income ≠ usual income, and wealth-by-bracket data doesn’t exist without lying at the tail.
+
+#WealthTax #TaxData #EconomicTransparency`);
+    const url = `https://twitter.com/intent/tweet?text=${text}`;
+    window.open(url, '_blank', 'noopener,noreferrer,width=550,height=420');
+  };
+})();
+</script>
+</body>
+</html>
