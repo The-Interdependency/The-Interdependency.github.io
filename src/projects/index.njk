@@ -2,4 +2,22 @@
 layout: layouts/base.njk
 title: Projects
 ---
-<h1>Projects</h1><p>Snapshot date: {{ generated.repos.snapshotAt }}. Public repositories discovered: {{ generated.repos.publicRepoCount }}. Generated pages: {{ generated.repos.generatedRouteCount }}.</p>{% if generated.repos.publicRepoCount != generated.repos.generatedRouteCount %}<p class="hmmm">Route count mismatch.</p>{% endif %}<div class="grid">{% for repo in generated.repos.repositories %}<article class="card"><h2><a href="/projects/{{ repo.slug }}/">{{ repo.name }}</a></h2><p>{{ repo.description or 'No GitHub description supplied.' }}</p>{% if repo.archived %}<span class="label">archived</span>{% endif %}{% if repo.fork %}<span class="label">fork</span>{% endif %}</article>{% endfor %}</div>
+<h1>Projects</h1>
+<p>
+  Snapshot date: {{ generated.repos.snapshotAt }}.
+  Public repositories discovered: {{ generated.repos.publicRepoCount }}.
+  Generated pages: {{ generated.repos.generatedRouteCount }}.
+</p>
+{% if generated.repos.publicRepoCount != generated.repos.generatedRouteCount %}
+  <p class="hmmm">Route count mismatch.</p>
+{% endif %}
+<div class="grid">
+  {% for repo in generated.repos.repositories %}
+    <article class="card">
+      <h2><a href="/projects/{{ repo.slug }}/">{{ repo.name }}</a></h2>
+      <p>{{ repo.description or 'No GitHub description supplied.' }}</p>
+      {% if repo.archived %}<span class="label">archived</span>{% endif %}
+      {% if repo.fork %}<span class="label">fork</span>{% endif %}
+    </article>
+  {% endfor %}
+</div>
