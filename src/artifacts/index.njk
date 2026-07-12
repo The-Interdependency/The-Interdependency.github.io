@@ -1,0 +1,55 @@
+---
+layout: layouts/base.njk
+title: Artifacts
+permalink: /artifacts/
+---
+<h1>Artifacts</h1>
+<p>
+  This page is generated at build time from repository folders named
+  <code>artifact</code> or <code>artifacts</code>. It displays only checked-out
+  public files and uses text excerpts only for safe text-like formats.
+</p>
+<dl class="provenance">
+  <dt>Inventory generated</dt><dd>{{ generated.artifacts.generatedAt }}</dd>
+  <dt>Artifact folders found</dt><dd>{{ generated.artifacts.directoryCount }}</dd>
+  <dt>Files listed</dt><dd>{{ generated.artifacts.fileCount }}</dd>
+</dl>
+{% if generated.artifacts.hmmm and generated.artifacts.hmmm.length %}
+<section class="hmmm">
+  <h2>hmmm</h2>
+  <ul>
+    {% for item in generated.artifacts.hmmm %}<li>{{ item }}</li>{% endfor %}
+  </ul>
+</section>
+{% endif %}
+{% for directory in generated.artifacts.directories %}
+<section class="card">
+  <h2>{{ directory.path }}</h2>
+  {% if directory.files.length %}
+    <ol>
+      {% for artifact in directory.files %}
+        <li>
+          <article>
+            <h3>{{ artifact.relativePath }}</h3>
+            <dl>
+              <dt>Size</dt><dd>{{ artifact.sizeBytes }} bytes</dd>
+              <dt>Modified</dt><dd>{{ artifact.modifiedAt }}</dd>
+              <dt>SHA-256</dt><dd><code>{{ artifact.sha256 }}</code></dd>
+            </dl>
+            {% if artifact.textSafe and artifact.excerpt %}
+              <details>
+                <summary>Preview text excerpt{% if artifact.truncated %} (truncated){% endif %}</summary>
+                <pre class="source-block">{{ artifact.excerpt }}</pre>
+              </details>
+            {% else %}
+              <p class="hmmm">No inline preview: this file type is treated as non-text or unsafe for direct display.</p>
+            {% endif %}
+          </article>
+        </li>
+      {% endfor %}
+    </ol>
+  {% else %}
+    <p class="hmmm">This artifact folder is empty. A tiny museum with excellent acoustics.</p>
+  {% endif %}
+</section>
+{% endfor %}
