@@ -1,0 +1,25 @@
+---
+layout: layouts/base.njk
+title: Changes
+permalink: /changes/
+---
+<h1>Changes</h1>
+<p>This generated report separates what changed from what still needs review.</p>
+<dl class="provenance">
+  <dt>Generated</dt><dd>{{ generated.changes.generatedAt }}</dd>
+  <dt>Canon source commit</dt><dd>{{ generated.changes.canon.sourceCommit }}</dd>
+  <dt>Canon source hash</dt><dd>{{ generated.changes.canon.sourceHash }}</dd>
+  <dt>Canon units</dt><dd>{{ generated.changes.canon.unitCount }}</dd>
+  <dt>Public repositories</dt><dd>{{ generated.changes.repositories.publicRepoCount }}</dd>
+  <dt>Project routes</dt><dd>{{ generated.changes.repositories.generatedRouteCount }}</dd>
+</dl>
+<h2>Units requiring review</h2>
+<ul>
+{% for id in generated.changes.canon.changedUnitsRequiringReview %}
+  <li>{{ id }}</li>
+{% endfor %}
+</ul>
+<section class="hmmm">
+  <h2>hmmm</h2>
+  <ul>{% for item in generated.changes.hmmm %}<li>{{ item }}</li>{% endfor %}</ul>
+</section>
