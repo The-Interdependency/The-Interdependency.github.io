@@ -1,9 +1,16 @@
+import { existsSync } from 'node:fs';
 import markdownIt from 'markdown-it';
 
 export default function(eleventyConfig) {
   const md = markdownIt({ html: false, linkify: true, typographer: true });
   eleventyConfig.setLibrary('md', md);
-  eleventyConfig.addPassthroughCopy({ 'src/assets': 'assets', CNAME: 'CNAME' });
+
+  eleventyConfig.addPassthroughCopy({ 'src/assets': 'assets' });
+  for (const legacyPath of ['CNAME', 'robots.txt', 'images', 'pages', 'artifacts']) {
+    if (existsSync(legacyPath)) eleventyConfig.addPassthroughCopy(legacyPath);
+  }
+  eleventyConfig.addPassthroughCopy('*.html');
+
   eleventyConfig.addFilter('json', v => JSON.stringify(v));
   eleventyConfig.addFilter('dateOnly', v => v ? String(v).slice(0,10) : 'hmmm');
   eleventyConfig.addFilter('where', (arr, key, val) => (arr || []).filter(item => item?.[key] === val));
