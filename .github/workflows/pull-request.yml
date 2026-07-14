@@ -27,7 +27,16 @@ jobs:
       - name: Validate generated content contracts
         run: npm run validate
       - name: Generate Eleventy site
-        run: npx eleventy
+        run: |
+          set -o pipefail
+          npx eleventy 2>&1 | tee eleventy-build.log
+      - name: Preserve Eleventy failure log
+        if: failure()
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
+        with:
+          name: eleventy-failure-${{ github.sha }}
+          path: eleventy-build.log
+          retention-days: 3
       - name: Generate Pagefind search index
         run: npx pagefind --site _site
       - name: Run Node contract tests
