@@ -12,6 +12,8 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
+      - name: Run clean-checkout tests
+        run: npm test
       - name: Refresh canonical and organization data
         run: npm run refresh:data
         env:
@@ -39,5 +41,5 @@ jobs:
           retention-days: 3
       - name: Generate Pagefind search index
         run: npx pagefind --site _site
-      - name: Run Node contract tests
-        run: npm test
+      - name: Run generated-site tests
+        run: npm run test:generated
