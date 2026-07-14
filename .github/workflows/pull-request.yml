@@ -13,7 +13,16 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Run clean-checkout tests
-        run: npm test
+        run: |
+          set -o pipefail
+          npm test 2>&1 | tee clean-test.log
+      - name: Preserve clean-checkout test failure log
+        if: failure()
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
+        with:
+          name: clean-test-failure-${{ github.sha }}
+          path: clean-test.log
+          retention-days: 3
       - name: Refresh canonical and organization data
         run: npm run refresh:data
         env:
