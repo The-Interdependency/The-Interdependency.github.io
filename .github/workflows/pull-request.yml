@@ -16,6 +16,14 @@ jobs:
         run: npm run refresh:data
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Verify canon authority
+        run: node -e "const c=require('./src/_data/generated/canon.json'); if(c.source.repository!=='wayseer00/wayseer.github.io'||c.source.path!=='canon/the_interdependent_way.md') process.exit(1)"
+      - name: Verify canon unit evidence
+        run: node -e "const c=require('./src/_data/generated/canon.json'); if(!c.source.contentSha256||c.source.contentSha256.length!==64||!c.units.length||c.units.some(u=>!u.id||!u.hash)) process.exit(1)"
+      - name: Verify repository route coverage
+        run: node -e "const r=require('./src/_data/generated/repos.json'); if(r.publicRepoCount!==r.generatedRouteCount||new Set(r.repositories.map(x=>x.slug)).size!==r.repositories.length) process.exit(1)"
+      - name: Verify recovery inputs
+        run: test -s fallback/index.html && test -s four-cuts-1.html
       - name: Validate generated content contracts
         run: npm run validate
       - name: Generate Eleventy site
