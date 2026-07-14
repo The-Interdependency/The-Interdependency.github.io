@@ -16,5 +16,5 @@ if (!canon.units.length || canon.units.some(unit => !unit.hash || !unit.id)) thr
 if (repos.publicRepoCount !== repos.generatedRouteCount) throw new Error('repo route mismatch');
 if (new Set(repos.repositories.map(repo => repo.slug)).size !== repos.repositories.length) throw new Error('duplicate project slug');
 await access('fallback/index.html');
-await access('four-cuts-1.html');
+await access('artifacts/four-cuts-1.html');
 console.log(`validated ${canon.units.length} canon units, ${canon.notes.length} notes, and ${repos.publicRepoCount} repositories`);
