@@ -1,0 +1,9 @@
+category: Public doctrine & publishing
+status: implemented
+summary: The static-first public entry point for The Interdependent Way and The Interdependency project constellation.
+purpose: Orient visitors, preserve canon provenance, host layered companion readings, and generate one public space for every organization repository.
+primary_artifact: https://interdependentway.org
+docs: https://github.com/The-Interdependency/The-Interdependency.github.io/tree/main/docs
+relationships:
+  - Reads the Wayseer canon mirror while preserving the wayseer00 canonical identity.
+  - Generates project pages from public GitHub facts and repository manifests.
