@@ -12,6 +12,15 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
-      - run: npm run check
+      - name: Refresh canonical and organization data
+        run: npm run refresh:data
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Validate generated content contracts
+        run: npm run validate
+      - name: Generate Eleventy site
+        run: npx eleventy
+      - name: Generate Pagefind search index
+        run: npx pagefind --site _site
+      - name: Run Node contract tests
+        run: npm test
