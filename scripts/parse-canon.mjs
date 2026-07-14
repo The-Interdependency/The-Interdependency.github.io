@@ -4,12 +4,12 @@ import slugify from 'slugify';
 
 // === MODULE_BUILD ===
 // id: canon_structure_parser
-//   purpose: Derive stable sections, units, note text, links, and hashes from the canonical snapshot.
+//   purpose: Derive stable sections, units, note text, bounded routes, links, and hashes from the canonical snapshot.
 //   entrypoint: npm run refresh:canon
 //   tests: tests/canon-integrity.test.mjs
 // === END MODULE_BUILD ===
 
-const parserVersion = '0.2.0';
+const parserVersion = '0.3.0';
 const provenance = JSON.parse(await readFile('src/_data/snapshots/canon.provenance.json', 'utf8'));
 const raw = await readFile('src/_data/snapshots/canon.last-known-good.md', 'utf8');
 const text = raw.replace(/^---\n[\s\S]*?\n---\n/, '');
@@ -23,6 +23,12 @@ const articleBySection = new Map();
 
 function slug(value) {
   return slugify(value, { lower: true, strict: true }) || 'unit';
+}
+function boundedRouteSlug(id) {
+  const candidate = slug(id);
+  if (candidate.length <= 96) return candidate;
+  const suffix = createHash('sha256').update(id).digest('hex').slice(0, 10);
+  return `${candidate.slice(0, 84).replace(/-+$/, '')}-${suffix}`;
 }
 function finish(endLine) {
   if (!current) return;
@@ -72,6 +78,8 @@ if (duplicateIds.length) {
     units.filter(unit => unit.id === duplicate).forEach((unit, index) => { unit.id = `${unit.id}-${index + 1}`; });
   }
 }
+for (const unit of units) unit.routeSlug = boundedRouteSlug(unit.id);
+if (new Set(units.map(unit => unit.routeSlug)).size !== units.length) throw new Error('canon route slug collision');
 const notes = units.flatMap(unit => unit.notes.map(note => ({ id: `${unit.id}.note-${slug(note.marker)}`, unit_id: unit.id, ...note })));
 const data = {
   source: { ...provenance, contentSha256: documentHash, parserVersion },
@@ -82,4 +90,4 @@ const data = {
 };
 await mkdir('src/_data/generated', { recursive: true });
 await writeFile('src/_data/generated/canon.json', JSON.stringify(data, null, 2));
-console.log(`units ${units.length}; notes ${notes.length}`);
+console.log(`units ${units.length}; notes ${notes.length}; longest route ${Math.max(...units.map(unit => unit.routeSlug.length))}`);
