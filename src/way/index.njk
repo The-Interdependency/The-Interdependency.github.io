@@ -1,5 +1,9 @@
 ---
 layout: layouts/base.njk
 title: Explore The Way
+description: A sectioned companion map of The Interdependent Way, with exact source available one deliberate layer deeper.
 ---
-<h1>Explore The Way</h1><p>Every discovered canonical unit receives a companion entry. Exact source is one intentional step deeper.</p><div class="grid">{% for unit in generated.canon.units %}<article class="card"><h2><a href="/way/{{ unit.id | slug }}/">{{ unit.title }}</a></h2><p>Status: <span class="label">canonical-derived</span></p><p>{{ unit.section }}</p></article>{% endfor %}</div>
+<header class="page-head"><p class="eyebrow">Canon-derived map</p><h1>Explore The Way</h1><p class="lede">This layer identifies the shape and relations of the source. It does not replace the canon. Open a unit for orientation, then choose its Lab conversation or exact source.</p></header>
+{% for section in generated.canon.sections %}
+<section class="category"><p class="eyebrow">{{ section.id }}</p><h2>{{ section.title }}</h2><ul class="index-list">{% for unit in generated.canon.units %}{% if unit.section == section.id %}<li><a href="/way/{{ unit.routeSlug }}/"><small>lines {{ unit.startLine }}–{{ unit.endLine }}</small><strong>{{ unit.title }}</strong><span class="status status-canon">canon-derived</span></a></li>{% endif %}{% endfor %}</ul></section>
+{% endfor %}

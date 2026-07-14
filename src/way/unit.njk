@@ -4,7 +4,11 @@ pagination:
   data: generated.canon.units
   size: 1
   alias: unit
-permalink: "/way/{{ unit.id | slug }}/"
+permalink: "/way/{{ unit.routeSlug }}/"
 title: "{{ unit.title }}"
 ---
-<nav aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/way/">The Way</a> / {{ unit.title }}</nav><h1>{{ unit.title }}</h1><p class="label">{{ unit.id }}</p><p>This companion page identifies the unit's place in the document and offers a cautious reading without replacing the canonical text.</p><h2>What this section is doing</h2><p class="hmmm">hmmm — interpretive summaries for this unit require review before they should sound confident.</p><p><a class="card" href="/lab/{{ unit.id | slug }}/">Enter the Lab for this unit</a></p><p><a href="/source/{{ unit.id | slug }}/">Read the exact source</a></p>
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/way/">The Way</a> / {{ unit.title }}</nav>
+<header class="page-head"><p class="eyebrow">Canon-derived companion · {{ unit.section }}</p><h1>{{ unit.title }}</h1><div class="status-row"><span class="status status-canon">canon-derived</span><span class="status status-interpretation">orientation pending review</span></div><p class="lede">This page preserves the unit’s identity and location while offering paths into interpretation and exact source. It does not rewrite the canonical text.</p></header>
+<section class="panel"><h2>Place in the document</h2><dl class="meta"><dt>Unit ID</dt><dd><code>{{ unit.id }}</code></dd><dt>Stable route</dt><dd><code>{{ unit.routeSlug }}</code></dd><dt>Source lines</dt><dd>{{ unit.startLine }}–{{ unit.endLine }}</dd><dt>Detected notes</dt><dd>{{ unit.notes.length }}</dd><dt>Unit digest</dt><dd><code>{{ unit.hash }}</code></dd></dl></section>
+<section class="hmmm"><h2>Companion reading</h2><p>A reviewed plain-language reading has not yet been admitted for this unit. The source operators, conditions, exceptions, and obligations must remain intact before this field is populated.</p></section>
+<div class="actions"><a class="button" href="/lab/{{ unit.routeSlug }}/">Enter this unit’s Lab</a><a class="button secondary" href="/source/{{ unit.routeSlug }}/">Read exact source</a></div>

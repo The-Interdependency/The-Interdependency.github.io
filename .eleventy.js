@@ -1,11 +1,29 @@
 import markdownIt from 'markdown-it';
 
-export default function(eleventyConfig) {
+// === MODULE_BUILD ===
+// id: eleventy_site_configuration
+//   purpose: Build the static-first public knowledge system and copy deliberate fallback artifacts.
+//   entrypoint: npm run build
+//   tests: tests/site-contract.test.mjs
+// === END MODULE_BUILD ===
+
+export default function configureEleventy(eleventyConfig) {
   const md = markdownIt({ html: false, linkify: true, typographer: true });
   eleventyConfig.setLibrary('md', md);
-  eleventyConfig.addPassthroughCopy({ 'src/assets': 'assets', CNAME: 'CNAME' });
-  eleventyConfig.addFilter('json', v => JSON.stringify(v));
-  eleventyConfig.addFilter('dateOnly', v => v ? String(v).slice(0,10) : 'hmmm');
-  eleventyConfig.addFilter('where', (arr, key, val) => (arr || []).filter(item => item?.[key] === val));
-  return { dir: { input: 'src', output: '_site', includes: '_includes', data: '_data' }, markdownTemplateEngine: 'njk', htmlTemplateEngine: 'njk' };
+  eleventyConfig.addPassthroughCopy({
+    'src/assets': 'assets',
+    'CNAME': 'CNAME',
+    'artifacts/four-cuts-1.html': 'artifacts/four-cuts/index.html',
+    'fallback': 'fallback'
+  });
+  eleventyConfig.addFilter('json', value => JSON.stringify(value));
+  eleventyConfig.addFilter('dateOnly', value => value ? String(value).slice(0, 10) : 'hmmm');
+  eleventyConfig.addFilter('where', (items, key, value) => (items || []).filter(item => item?.[key] === value));
+  eleventyConfig.addFilter('statusClass', value => `status-${String(value || 'hmmm').toLowerCase().replace(/[^a-z0-9]+/g, '-')}`);
+
+  return {
+    dir: { input: 'src', output: '_site', includes: '_includes', data: '_data' },
+    markdownTemplateEngine: 'njk',
+    htmlTemplateEngine: 'njk'
+  };
 }

@@ -1,33 +1,59 @@
-# a0p — Agent Zero Platform
+# The Interdependent Way public knowledge system
 
-a0p is a mobile-first autonomous AI agent application. It leverages Gemini function-calling and a mathematically rigorous orchestration engine (EDCMBONE) to execute tasks autonomously. It integrates with Google infrastructure (Gmail, Drive), provides file management with direct phone upload, and includes robust features like cryptographic audit logging and real-time cost tracking.
+This repository builds `interdependentway.org`: a static-first, progressively layered entrance to The Interdependent Way, its deliberate tensions, surrounding research, public artifacts, and the repositories attempting implementation.
 
-**Key Design Principles:**
-*   **Mobile-first**: Optimized for phone browsers and PWA-like experience.
-*   **Autonomous**: Agent determines tool usage without manual intervention.
-*   **Auditable**: Every engine action is hash-chained and timestamped.
-*   **Cost-aware**: Tracks per-token usage with estimated USD costs.
-*   **Fail-closed**: No silent fallback for critical operations.
+## What is authoritative
 
-The core of a0p's intelligence lies in its EDCMBONE engine, utilizing Prime Tensor Circular Architecture (PTCA) and Prime Circular Neural Architecture (PCNA) for sophisticated AI orchestration and decision-making.
+The canonical identity remains `wayseer00/wayseer.github.io:canon/the_interdependent_way.md`. The repository copy at `canon/the_interdependent_way.md` is a recovery mirror. Build output records whether the remote source or recovery mirror supplied the current snapshot, together with SHA-256 provenance.
 
----
+## Architecture
 
-# A0
+- Eleventy generates complete HTML into `_site`.
+- Pagefind supplies static search.
+- GitHub organization and canon data are retrieved at build time, never in a visitor’s browser.
+- Every public organization repository receives a generated project page.
+- `.interdependency/project.yml` supplies reviewed project purpose, maturity, relationships, and links.
+- `fallback/` is a dependency-free emergency edition.
+- `artifacts/four-cuts-1.html` is deliberately published at `/artifacts/four-cuts/` through Eleventy passthrough.
 
-A0 is the instantiated runtime embodiment of PTCA.
+## Usage guidance
 
-## Core split
-- Heartbeat: world-facing cadence, scheduling, sensing, deployment rhythm
-- Psi: interpretation, synthesis, discernment, council coordination
-- Omega: commitment, integration, release, terminal authority layer
+```bash
+npm install
+npm run dev
+npm run check
+```
 
----
+Use the recovery snapshots without network access:
 
-# TIW Addendum Package: Fiddly Bits (Thread)
+```bash
+OFFLINE=1 npm run build
+```
 
-This package contains the canonicalized thread addendum.
+Add reviewed project metadata to a repository:
 
-- `canon/addenda/ADDENDUM_FIDDLY_BITS_THREAD.md`
+```yaml
+category: Mathematics & verification
+status: frontier
+summary: One-sentence public description.
+purpose: The repository's role within the project constellation.
+primary_artifact: https://example.org
+docs: https://github.com/org/repo/tree/main/docs
+relationships:
+  - Depends on another named project for a specific function.
+```
 
-hmm — unresolved constraint marker: If you want this merged into the full canon zip, say so and I will rebuild a combined package.
+Place that file at `.interdependency/project.yml`. Until it exists, the public project page keeps the missing editorial layer visible as `hmmm`.
+
+## Status language
+
+- **canon** — exact or mechanically derived from the canonical source
+- **interpretation** — explanatory material subject to review
+- **research** — externally sourced support, dissent, or context
+- **implemented** — a working public surface exists
+- **frontier** — experimental, incomplete, or not externally established
+- **hmmm** — an unresolved constraint with enough context for continuation
+
+## Release discipline
+
+GitHub Actions runs the build, validation, tests, static search generation, and deployment. Failed builds do not replace the last successful Pages artifact. Emergency fallback deployment is explicit rather than automatic.
