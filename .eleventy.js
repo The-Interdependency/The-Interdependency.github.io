@@ -13,7 +13,7 @@ export default function configureEleventy(eleventyConfig) {
   eleventyConfig.addPassthroughCopy({
     'src/assets': 'assets',
     'CNAME': 'CNAME',
-    'four-cuts-1.html': 'artifacts/four-cuts/index.html',
+    'artifacts/four-cuts-1.html': 'artifacts/four-cuts/index.html',
     'fallback': 'fallback'
   });
   eleventyConfig.addFilter('json', value => JSON.stringify(value));
