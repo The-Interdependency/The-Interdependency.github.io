@@ -14,7 +14,7 @@ The canonical identity remains `wayseer00/wayseer.github.io:canon/the_interdepen
 - Every public organization repository receives a generated project page.
 - `.interdependency/project.yml` supplies reviewed project purpose, maturity, relationships, and links.
 - `fallback/` is a dependency-free emergency edition.
-- `four-cuts-1.html` is deliberately published at `/artifacts/four-cuts/` through Eleventy passthrough.
+- `artifacts/four-cuts-1.html` is deliberately published at `/artifacts/four-cuts/` through Eleventy passthrough.
 
 ## Usage guidance
 
