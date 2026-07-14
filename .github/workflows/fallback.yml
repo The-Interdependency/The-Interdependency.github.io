@@ -22,11 +22,13 @@ jobs:
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
       - name: Verify explicit fallback artifact
+        env:
+          DEPLOY_REASON: ${{ inputs.reason }}
         run: |
           test -s fallback/index.html
           test -s fallback/fallback.css
           ! grep -qi '<script' fallback/index.html
-          printf '%s\n' '${{ inputs.reason }}' > fallback/DEPLOYMENT_REASON.txt
+          printf '%s\n' "$DEPLOY_REASON" > fallback/DEPLOYMENT_REASON.txt
       - uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b
       - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b
         with:
