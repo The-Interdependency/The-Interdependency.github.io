@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { access, readFile } from 'node:fs/promises';
 
 test('one static-first build owns public routes', async () => {
   const config = await readFile('.eleventy.js', 'utf8');
@@ -20,4 +20,13 @@ test('emergency static edition has no script or external dependency', async () =
   assert.doesNotMatch(html, /<script/i);
   assert.doesNotMatch(html, /https:\/\/[^"']+\.(css|js)/i);
   assert.match(html, /Emergency static edition/);
+});
+
+test('generated deployment artifact contains the unified routes', async () => {
+  await access('_site/index.html');
+  await access('_site/artifacts/index.html');
+  await access('_site/artifacts/four-cuts/index.html');
+  await access('_site/fallback/index.html');
+  const home = await readFile('_site/index.html', 'utf8');
+  assert.match(home, /A way through complexity/);
 });
