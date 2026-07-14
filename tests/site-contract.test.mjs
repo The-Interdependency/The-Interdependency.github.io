@@ -4,7 +4,7 @@ import { access, readFile } from 'node:fs/promises';
 
 test('one static-first build owns public routes', async () => {
   const config = await readFile('.eleventy.js', 'utf8');
-  assert.match(config, /four-cuts-1\.html.*artifacts\/four-cuts\/index\.html/s);
+  assert.match(config, /artifacts\/four-cuts-1\.html.*artifacts\/four-cuts\/index\.html/s);
   assert.match(config, /fallback/);
 });
 
