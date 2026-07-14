@@ -1,0 +1,24 @@
+---
+layout: layouts/base.njk
+title: Deprecated legacy pages
+permalink: /legacy/
+---
+<h1>Deprecated legacy pages</h1>
+<p>
+  These older standalone URLs are intentionally deprecated in favor of the unified
+  site navigation. They remain as redirects so bookmarks do not break, but the
+  primary experience now flows through Start, The Way, Article Lab, Projects,
+  Artifacts, Research Method, and Search.
+</p>
+<dl class="provenance">
+  <dt>Generated</dt><dd>{{ generated.legacyRoutes.generatedAt }}</dd>
+  <dt>Deprecated routes</dt><dd>{{ generated.legacyRoutes.count }}</dd>
+</dl>
+{% if generated.legacyRoutes.hmmm and generated.legacyRoutes.hmmm.length %}
+<section class="hmmm"><h2>hmmm</h2><ul>{% for item in generated.legacyRoutes.hmmm %}<li>{{ item }}</li>{% endfor %}</ul></section>
+{% endif %}
+<ol>
+{% for route in generated.legacyRoutes.routes %}
+  <li><code>{{ route.source }}</code> → <a href="{{ route.target }}">{{ route.target }}</a></li>
+{% endfor %}
+</ol>

@@ -1,0 +1,10 @@
+---
+layout: layouts/base.njk
+pagination:
+  data: generated.canon.units
+  size: 1
+  alias: unit
+permalink: "/way/{{ unit.routeSlug }}/"
+title: "{{ unit.title }}"
+---
+<nav aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/way/">The Way</a> / {{ unit.title }}</nav><h1>{{ unit.title }}</h1><p class="label">{{ unit.id }}</p><p>This companion page identifies the unit's place in the document and offers a cautious reading without replacing the canonical text.</p><h2>What this section is doing</h2><p class="hmmm">hmmm — interpretive summaries for this unit require review before they should sound confident.</p><p><a class="card" href="/lab/{{ unit.routeSlug }}/">Enter the Lab for this unit</a></p><p><a href="/source/{{ unit.routeSlug }}/">Read the exact source</a></p>

@@ -1,0 +1,28 @@
+{
+  "builtAt": "2026-07-11T00:40:44.021Z",
+  "siteCommit": "9a519dab1cd6cd9af77156ebe743874eb73979f0",
+  "node": "v22.22.2",
+  "canon": {
+    "repository": "wayseer00/main",
+    "path": "canon/INTERDEPENDENT_WAY.txt",
+    "branch": "main",
+    "commit": "055009486a3e3feaba9cb7a88214ba33de89fc4e",
+    "blob": "f4952a1c56d96acb989c6bc593aa1f57f806a515",
+    "retrievedAt": "2026-07-11T00:40:42.235Z",
+    "contentSha256": "b7dd222912e878fbd817111e71637d0feaf3a376eb54dfd72f31ccbde3ef8c81",
+    "parserVersion": "0.2.0-markdown-it-tokens"
+  },
+  "counts": {
+    "canonUnits": 24,
+    "canonSections": 9,
+    "publicRepos": 21,
+    "projectRoutes": 21
+  },
+  "fallback": {
+    "repos": false,
+    "canon": false
+  },
+  "hmmm": [
+    "Canon fetch is wired to wayseer00/main on main; fallback is not allowed for canonical text."
+  ]
+}

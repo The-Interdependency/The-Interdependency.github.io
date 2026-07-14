@@ -1,0 +1,26 @@
+---
+pagination:
+  data: generated.legacyRoutes.routes
+  size: 1
+  alias: legacy
+permalink: "{{ legacy.source }}"
+eleventyExcludeFromCollections: true
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex">
+  <meta http-equiv="refresh" content="0; url={{ legacy.target }}">
+  <title>Deprecated page moved</title>
+  <link rel="canonical" href="{{ legacy.target }}">
+</head>
+<body>
+  <main>
+    <h1>Deprecated page moved</h1>
+    <p>This older page is deprecated in favor of the unified site navigation.</p>
+    <p><a href="{{ legacy.target }}">Continue to the current page.</a></p>
+    <p>hmmm — old paths are ghosts with forwarding addresses.</p>
+  </main>
+</body>
+</html>

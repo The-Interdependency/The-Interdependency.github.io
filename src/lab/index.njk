@@ -1,0 +1,5 @@
+---
+layout: layouts/base.njk
+title: Article Lab
+---
+<h1>Article Lab</h1><p>The Lab treats main text and footnotes as speakers in a deliberate conversation. Reviewed research is not yet complete, so gaps are visible.</p><div class="grid">{% for unit in generated.canon.units %}<a class="card" href="/lab/{{ unit.routeSlug }}/">{{ unit.title }}</a>{% endfor %}</div>

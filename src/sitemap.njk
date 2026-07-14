@@ -1,0 +1,22 @@
+---
+permalink: /sitemap.xml
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>{{ site.url }}/</loc></url>
+  <url><loc>{{ site.url }}/way/</loc></url>
+  <url><loc>{{ site.url }}/lab/</loc></url>
+  <url><loc>{{ site.url }}/projects/</loc></url>
+  <url><loc>{{ site.url }}/artifacts/</loc></url>
+  <url><loc>{{ site.url }}/research/method/</loc></url>
+  <url><loc>{{ site.url }}/legacy/</loc></url>
+  {% for unit in generated.canon.units %}
+  <url><loc>{{ site.url }}/way/{{ unit.routeSlug }}/</loc></url>
+  <url><loc>{{ site.url }}/lab/{{ unit.routeSlug }}/</loc></url>
+  <url><loc>{{ site.url }}/source/{{ unit.routeSlug }}/</loc></url>
+  {% endfor %}
+  {% for repo in generated.repos.repositories %}
+  <url><loc>{{ site.url }}/projects/{{ repo.slug }}/</loc></url>
+  {% endfor %}
+</urlset>

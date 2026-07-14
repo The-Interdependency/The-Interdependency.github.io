@@ -1,0 +1,42 @@
+{
+  "generatedAt": "2026-07-11T00:40:43.886Z",
+  "canon": {
+    "sourceCommit": "055009486a3e3feaba9cb7a88214ba33de89fc4e",
+    "sourceHash": "b7dd222912e878fbd817111e71637d0feaf3a376eb54dfd72f31ccbde3ef8c81",
+    "unitCount": 24,
+    "changedUnitsRequiringReview": [
+      "interdependent-way.the-interdependent-way-1",
+      "awakening.awakening-3",
+      "interdefinables.the-interdefinables-9",
+      "human-consciousness-emerges-from.human-consciousness-emerges-from-19",
+      "human-consciousness-emerges-from.binary-essences-meaningfully-divided-then-rooted-20",
+      "human-consciousness-emerges-from.trinary-perceptual-focal-states-of-complex-system-spirals-mind-body-soul-pastpresentfutures-loveapathyfear-25",
+      "human-consciousness-emerges-from.trinary-states-of-social-perception-27",
+      "preamble.preamble-34",
+      "rights-and-definitions-of-the-way.rights-and-definitions-of-the-way-37",
+      "rights-and-definitions-of-the-way.article-one-43",
+      "rights-and-definitions-of-the-way.article-two-51",
+      "rights-and-definitions-of-the-way.article-two-low-density-62",
+      "rights-and-definitions-of-the-way.article-three-73",
+      "rights-and-definitions-of-the-way.article-four-80",
+      "rights-and-definitions-of-the-way.article-five-87",
+      "rights-and-definitions-of-the-way.article-six-100",
+      "rights-and-definitions-of-the-way.article-seven-109",
+      "rights-and-definitions-of-the-way.article-eight-115",
+      "etiquette-of-the-body-politic.etiquette-of-the-body-politic-126",
+      "etiquette-of-the-body-politic.article-one-134",
+      "etiquette-of-the-body-politic.article-two-140",
+      "etiquette-of-the-body-politic.article-three-148",
+      "addendum-etiquette-of-the-electronic-element.addendum-etiquette-of-the-electronic-element-154",
+      "addendum-consciousness.addendum-consciousness-172"
+    ]
+  },
+  "repositories": {
+    "publicRepoCount": 21,
+    "generatedRouteCount": 21,
+    "fallback": false
+  },
+  "hmmm": [
+    "No previous canonical manifest comparison is implemented yet; all generated Lab interpretations remain review-needed."
+  ]
+}

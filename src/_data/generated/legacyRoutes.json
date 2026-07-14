@@ -1,0 +1,210 @@
+{
+  "generatedAt": "2026-07-11T00:40:43.774Z",
+  "count": 29,
+  "routes": [
+    {
+      "source": "/a0p.html",
+      "file": "a0p.html",
+      "target": "/start/",
+      "status": "deprecated",
+      "hmmm": "Legacy standalone page preserved as a redirect into the unified navigation system."
+    },
+    {
+      "source": "/about-a0.html",
+      "file": "about-a0.html",
+      "target": "/about/",
+      "status": "deprecated",
+      "hmmm": "Legacy standalone page preserved as a redirect into the unified navigation system."
+    },
+    {
+      "source": "/canon/53.html",
+      "file": "canon/53.html",
+      "target": "/way/",
+      "status": "deprecated",
+      "hmmm": "Legacy standalone page preserved as a redirect into the unified navigation system."
+    },
+    {
+      "source": "/canon/agent-protocols.html",
+      "file": "canon/agent-protocols.html",
+      "target": "/way/",
+      "status": "deprecated",
+      "hmmm": "Legacy standalone page preserved as a redirect into the unified navigation system."
+    },
+    {
+      "source": "/canon/article-1.html",
+      "file": "canon/article-1.html",
+      "target": "/lab/",
+      "status": "deprecated",
+      "hmmm": "Legacy standalone page preserved as a redirect into the unified navigation system."
+    },
+    {
+      "source": "/canon/article-2.html",
+      "file": "canon/article-2.html",
+      "target": "/lab/",
+      "status": "deprecated",
+      "hmmm": "Legacy standalone page preserved as a redirect into the unified navigation system."
+    },
+    {
+      "source": "/canon/article-3.html",
+      "file": "canon/article-3.html",
+      "target": "/lab/",
+      "status": "deprecated",
+      "hmmm": "Legacy standalone page preserved as a redirect into the unified navigation system."
+    },
+    {
+      "source": "/canon/article-4.html",
+      "file": "canon/article-4.html",
+      "target": "/lab/",
+      "status": "deprecated",
+      "hmmm": "Legacy standalone page preserved as a redirect into the unified navigation system."
+    },
+    {
+      "source": "/canon/article-5.html",
+      "file": "canon/article-5.html",
+      "target": "/lab/",
+      "status": "deprecated",
+      "hmmm": "Legacy standalone page preserved as a redirect into the unified navigation system."
+    },
+    {
+      "source": "/canon/article-research-index.html",
+      "file": "canon/article-research-index.html",
+      "target": "/lab/",
+      "status": "deprecated",
+      "hmmm": "Legacy standalone page preserved as a redirect into the unified navigation system."
+    },
+    {
+      "source": "/canon/articles-explained.html",
+      "file": "canon/articles-explained.html",
+      "target": "/way/",
+      "status": "deprecated",
+      "hmmm": "Legacy standalone page preserved as a redirect into the unified navigation system."
+    },
+    {
+      "source": "/canon/hmmm.html",
+      "file": "canon/hmmm.html",
+      "target": "/way/",
+      "status": "deprecated",
+      "hmmm": "Legacy standalone page preserved as a redirect into the unified navigation system."
+    },
+    {
+      "source": "/canon/index.html",
+      "file": "canon/index.html",
+      "target": "/way/",
+      "status": "deprecated",
+      "hmmm": "Legacy standalone page preserved as a redirect into the unified navigation system."
+    },
+    {
+      "source": "/canon/prime-tensor-animations.html",
+      "file": "canon/prime-tensor-animations.html",
+      "target": "/way/",
+      "status": "deprecated",
+      "hmmm": "Legacy standalone page preserved as a redirect into the unified navigation system."
+    },
+    {
+      "source": "/canon/prime-tensor-progression.html",
+      "file": "canon/prime-tensor-progression.html",
+      "target": "/way/",
+      "status": "deprecated",
+      "hmmm": "Legacy standalone page preserved as a redirect into the unified navigation system."
+    },
+    {
+      "source": "/canon/ptca.html",
+      "file": "canon/ptca.html",
+      "target": "/way/",
+      "status": "deprecated",
+      "hmmm": "Legacy standalone page preserved as a redirect into the unified navigation system."
+    },
+    {
+      "source": "/canon/search-for-prime-generation.html",
+      "file": "canon/search-for-prime-generation.html",
+      "target": "/search/",
+      "status": "deprecated",
+      "hmmm": "Legacy standalone page preserved as a redirect into the unified navigation system."
+    },
+    {
+      "source": "/canon/transcript-analyzer-v0.html",
+      "file": "canon/transcript-analyzer-v0.html",
+      "target": "/way/",
+      "status": "deprecated",
+      "hmmm": "Legacy standalone page preserved as a redirect into the unified navigation system."
+    },
+    {
+      "source": "/canon/twin-prime-tensor.html",
+      "file": "canon/twin-prime-tensor.html",
+      "target": "/way/",
+      "status": "deprecated",
+      "hmmm": "Legacy standalone page preserved as a redirect into the unified navigation system."
+    },
+    {
+      "source": "/canon/variable-compression-spiral.html",
+      "file": "canon/variable-compression-spiral.html",
+      "target": "/way/",
+      "status": "deprecated",
+      "hmmm": "Legacy standalone page preserved as a redirect into the unified navigation system."
+    },
+    {
+      "source": "/concepts.html",
+      "file": "concepts.html",
+      "target": "/start/",
+      "status": "deprecated",
+      "hmmm": "Legacy standalone page preserved as a redirect into the unified navigation system."
+    },
+    {
+      "source": "/living-tensor-node.html",
+      "file": "living-tensor-node.html",
+      "target": "/start/",
+      "status": "deprecated",
+      "hmmm": "Legacy standalone page preserved as a redirect into the unified navigation system."
+    },
+    {
+      "source": "/notes.html",
+      "file": "notes.html",
+      "target": "/start/",
+      "status": "deprecated",
+      "hmmm": "Legacy standalone page preserved as a redirect into the unified navigation system."
+    },
+    {
+      "source": "/pages/interdependency-cloud.html",
+      "file": "pages/interdependency-cloud.html",
+      "target": "/start/",
+      "status": "deprecated",
+      "hmmm": "Legacy standalone page preserved as a redirect into the unified navigation system."
+    },
+    {
+      "source": "/pages/living-tensor-node.html",
+      "file": "pages/living-tensor-node.html",
+      "target": "/start/",
+      "status": "deprecated",
+      "hmmm": "Legacy standalone page preserved as a redirect into the unified navigation system."
+    },
+    {
+      "source": "/pictures.html",
+      "file": "pictures.html",
+      "target": "/start/",
+      "status": "deprecated",
+      "hmmm": "Legacy standalone page preserved as a redirect into the unified navigation system."
+    },
+    {
+      "source": "/projects.html",
+      "file": "projects.html",
+      "target": "/projects/",
+      "status": "deprecated",
+      "hmmm": "Legacy standalone page preserved as a redirect into the unified navigation system."
+    },
+    {
+      "source": "/ptca.html",
+      "file": "ptca.html",
+      "target": "/start/",
+      "status": "deprecated",
+      "hmmm": "Legacy standalone page preserved as a redirect into the unified navigation system."
+    },
+    {
+      "source": "/support.html",
+      "file": "support.html",
+      "target": "/about/",
+      "status": "deprecated",
+      "hmmm": "Legacy standalone page preserved as a redirect into the unified navigation system."
+    }
+  ],
+  "hmmm": []
+}

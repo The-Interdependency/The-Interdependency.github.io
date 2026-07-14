@@ -1,0 +1,10 @@
+---
+layout: layouts/base.njk
+pagination:
+  data: generated.repos.repositories
+  size: 1
+  alias: repo
+permalink: "/projects/{{ repo.slug }}/"
+title: "Project: {{ repo.name }}"
+---
+<h1>{{ repo.name }}</h1><p>{% if repo.archived %}<span class="label">archived</span>{% endif %}{% if repo.fork %}<span class="label">fork</span>{% endif %}<span class="label">{{ repo.visibility }}</span></p><p>{{ repo.description or 'No GitHub description supplied.' }}</p><section class="hmmm"><h2>Editorial project map</h2><p>hmmm — this repository has not yet declared its organization-level role in structured metadata.</p></section><dl><dt>Default branch</dt><dd>{{ repo.default_branch or 'hmmm' }}</dd><dt>Primary language</dt><dd>{{ repo.language or 'hmmm' }}</dd><dt>License</dt><dd>{{ repo.license or 'hmmm' }}</dd><dt>Last push</dt><dd>{{ repo.pushed_at or 'hmmm' }}</dd><dt>Snapshot</dt><dd>{{ generated.repos.snapshotAt }}</dd></dl><p><a href="{{ repo.html_url }}" rel="noopener noreferrer">Open on GitHub</a></p>
