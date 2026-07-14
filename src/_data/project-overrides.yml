@@ -1,0 +1,30 @@
+The-Interdependency.github.io:
+  category: Public doctrine & publishing
+  status: implemented
+  summary: The static-first public entry point for The Interdependent Way and The Interdependency project constellation.
+  purpose: Orient visitors, preserve canon provenance, host layered companion readings, and generate one public space for every organization repository.
+  primary_artifact: https://interdependentway.org
+  docs: https://github.com/The-Interdependency/The-Interdependency.github.io/tree/main/docs
+  relationships:
+    - Reads the Wayseer canon mirror while preserving the wayseer00 canonical identity.
+    - Generates project pages from public GitHub facts and repository manifests.
+ucns:
+  category: Mathematics & verification
+  status: frontier
+  summary: Unit Circle Number System mathematics, constructors, tests, and theorem-status work.
+  purpose: Supply the carrier geometry used by EDCM-related measurement work without allowing substrate proof status to leak into measurement claims.
+skill-lib:
+  category: Skills & tooling
+  status: implemented
+  summary: Portable agent skills and msdmd conventions used across The Interdependency repositories.
+  purpose: Preserve structure, usage guidance, declared contracts, and visible gaps across builds and agent workflows.
+a0:
+  category: Agent infrastructure
+  status: frontier
+  summary: Agent-oriented runtime, orchestration, and integration workbench.
+  purpose: Coordinate model, tool, memory, and audit surfaces while keeping execution boundaries visible.
+edcmbone:
+  category: Measurement & evaluation
+  status: frontier
+  summary: Energy Dissonance Circuit Model measurement and evaluation support work.
+  purpose: Translate constrained interaction traces into provenance-bearing measurement candidates without inheriting proof status from UCNS geometry.
