@@ -1,22 +1,85 @@
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import slugify from 'slugify';
-const parserVersion='0.1.0';
-const raw=await readFile('src/_data/snapshots/canon.last-known-good.md','utf8');
-const text=raw.replace(/^---[\s\S]*?---\n/,'');
-const contentSha256=createHash('sha256').update(text).digest('hex');
-const lines=text.split(/\r?\n/);
-const units=[]; const sections=[]; const notes=[]; let current=null; let top='source'; let article=0;
-function slug(s){return slugify(s,{lower:true,strict:true}) || 'unit';}
-function push(end){ if(current){ current.endLine=end; current.content=current.lines.join('\n').trim(); current.hash=createHash('sha256').update(current.content).digest('hex'); units.push(current); }}
-for (let i=0;i<lines.length;i++){
- const m=/^(#{1,6})\s+(.+?)\s*$/.exec(lines[i]);
- if(m){ push(i); const level=m[1].length; const title=m[2].replace(/#+$/,'').trim(); if(level<=2){top=slug(title).replace(/^the-/, ''); sections.push({id:top,title,level,line:i+1}); article=0;} if(/article\s+[ivxlcdm0-9]+/i.test(title)) article++; const id=/article/i.test(title)?`${top}.article-${article||slug(title)}`:slug(title); current={id:`${id}-${i+1}`,title,section:top,level,startLine:i+1,lines:[lines[i]]}; }
- else if(current) current.lines.push(lines[i]);
+
+// === MODULE_BUILD ===
+// id: canon_structure_parser
+//   purpose: Derive stable sections, units, note text, links, and hashes from the canonical snapshot.
+//   entrypoint: npm run refresh:canon
+//   tests: tests/canon-integrity.test.mjs
+// === END MODULE_BUILD ===
+
+const parserVersion = '0.2.0';
+const provenance = JSON.parse(await readFile('src/_data/snapshots/canon.provenance.json', 'utf8'));
+const raw = await readFile('src/_data/snapshots/canon.last-known-good.md', 'utf8');
+const text = raw.replace(/^---\n[\s\S]*?\n---\n/, '');
+const lines = text.split(/\r?\n/);
+const documentHash = createHash('sha256').update(text).digest('hex');
+const units = [];
+const sections = [];
+let current = null;
+let sectionId = 'source';
+const articleBySection = new Map();
+
+function slug(value) {
+  return slugify(value, { lower: true, strict: true }) || 'unit';
 }
-push(lines.length);
-if(!units.length){ units.push({id:'source.full-text',title:'The Interdependent Way',section:'source',level:1,startLine:1,endLine:lines.length,content:text,hash:contentSha256}); sections.push({id:'source',title:'Source',level:1,line:1});}
-for (const u of units){ const matches=[...u.content.matchAll(/\[(\d+|[a-z])\]/gi)]; for (const match of matches) notes.push({id:`${u.id}.note-${match[1]}`,unit_id:u.id,marker:match[0]}); }
-const data={source:{repository:'The-Interdependency/a0',path:'interdependent_way.md',commit:process.env.CANON_COMMIT || 'local-snapshot',blob:null,retrievedAt:new Date().toISOString(),contentSha256,parserVersion},sections,units:units.map(({lines,...u})=>u),notes,edges:units.map(u=>({from:u.id,to:u.section,type:'unit-parent'}))};
-await mkdir('src/_data/generated',{recursive:true}); await writeFile('src/_data/generated/canon.json',JSON.stringify(data,null,2));
-console.log(`units ${units.length}`);
+function finish(endLine) {
+  if (!current) return;
+  current.endLine = endLine;
+  current.content = current.lines.join('\n').trim();
+  current.hash = createHash('sha256').update(current.content).digest('hex');
+  const notePattern = /^\s*\[([^\]]+)\]\s+(.+)$/gm;
+  current.notes = [...current.content.matchAll(notePattern)].map(match => ({ marker: `[${match[1]}]`, text: match[2].trim() }));
+  current.noteMarkers = [...new Set([...current.content.matchAll(/\[([^\]]+)\]/g)].map(match => `[${match[1]}]`))];
+  units.push(current);
+}
+
+for (let index = 0; index < lines.length; index += 1) {
+  const heading = /^(#{1,6})\s+(.+?)\s*$/.exec(lines[index]);
+  if (!heading) {
+    if (current) current.lines.push(lines[index]);
+    continue;
+  }
+  finish(index);
+  const level = heading[1].length;
+  const title = heading[2].replace(/#+$/, '').trim();
+  if (level <= 3) {
+    sectionId = slug(title).replace(/^the-/, '');
+    if (!sections.some(section => section.id === sectionId)) sections.push({ id: sectionId, title, level, line: index + 1 });
+  }
+  let localId = slug(title);
+  if (/^article\s+/i.test(title)) {
+    const count = (articleBySection.get(sectionId) || 0) + 1;
+    articleBySection.set(sectionId, count);
+    localId = `article-${count}`;
+  }
+  current = {
+    id: `${sectionId}.${localId}`,
+    title,
+    section: sectionId,
+    level,
+    startLine: index + 1,
+    lines: [lines[index]]
+  };
+}
+finish(lines.length);
+if (!units.length) throw new Error('canon parser produced no units');
+
+const duplicateIds = units.map(unit => unit.id).filter((id, index, all) => all.indexOf(id) !== index);
+if (duplicateIds.length) {
+  for (const duplicate of new Set(duplicateIds)) {
+    units.filter(unit => unit.id === duplicate).forEach((unit, index) => { unit.id = `${unit.id}-${index + 1}`; });
+  }
+}
+const notes = units.flatMap(unit => unit.notes.map(note => ({ id: `${unit.id}.note-${slug(note.marker)}`, unit_id: unit.id, ...note })));
+const data = {
+  source: { ...provenance, contentSha256: documentHash, parserVersion },
+  sections,
+  units: units.map(({ lines: ignored, ...unit }) => unit),
+  notes,
+  edges: units.map(unit => ({ from: unit.id, to: unit.section, type: 'unit-parent' }))
+};
+await mkdir('src/_data/generated', { recursive: true });
+await writeFile('src/_data/generated/canon.json', JSON.stringify(data, null, 2));
+console.log(`units ${units.length}; notes ${notes.length}`);
