@@ -4,7 +4,7 @@ This repository builds `interdependentway.org`: a static-first, progressively la
 
 ## What is authoritative
 
-The canonical identity remains `wayseer00/wayseer.github.io:canon/the_interdependent_way.md`. The repository copy at `canon/the_interdependent_way.md` is a recovery mirror. Build output records whether the remote source or recovery mirror supplied the current snapshot, together with SHA-256 provenance.
+The canonical text lives in `wayseer00/main:canon/INTERDEPENDENT_WAY.txt`, and nowhere in this repository supersedes it. The repository copy at `canon/the_interdependent_way.md` is a recovery mirror only. Build output records whether the remote source or recovery mirror supplied the current snapshot, together with SHA-256 provenance; successful remote retrieval also records the resolved source commit and blob SHA.
 
 ## Architecture
 
