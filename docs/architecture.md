@@ -4,8 +4,8 @@ The production site is generated into `_site` by Eleventy. Pages are complete HT
 
 ## Data paths
 
-- `scripts/fetch-canon.mjs` retrieves the Wayseer canonical alias `wayseer00/wayseer.github.io:canon/the_interdependent_way.md`. The transferred repository copy at `canon/the_interdependent_way.md` is recovery-only and is recorded as a fallback when used.
-- `scripts/parse-canon.mjs` generates units, line ranges, note text, relationships, and SHA-256 digests.
+- `scripts/fetch-canon.mjs` retrieves the Wayseer text canon from `wayseer00/main:canon/INTERDEPENDENT_WAY.txt`. The transferred repository copy at `canon/the_interdependent_way.md` is recovery-only and is recorded as a fallback when used.
+- `scripts/parse-canon.mjs` generates units, line ranges, note text, relationships, and SHA-256 digests from either Markdown-style recovery mirrors or the plain-text canonical file.
 - `scripts/fetch-github-org.mjs` discovers every public organization repository and merges GitHub facts with `.interdependency/project.yml` or reviewed central overrides.
 - Pagefind indexes the generated site after Eleventy finishes.
 
