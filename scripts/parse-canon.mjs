@@ -9,7 +9,7 @@ import slugify from 'slugify';
 //   tests: tests/canon-integrity.test.mjs
 // === END MODULE_BUILD ===
 
-const parserVersion = '0.4.0';
+const parserVersion = '0.4.1';
 const provenance = JSON.parse(await readFile('src/_data/snapshots/canon.provenance.json', 'utf8'));
 const raw = await readFile('src/_data/snapshots/canon.last-known-good.md', 'utf8');
 const text = raw.replace(/^---\n[\s\S]*?\n---\n/, '');
@@ -54,8 +54,13 @@ function extractNotes(content) {
       notes.push({ marker: `[${bracket[1]}]`, text: bracket[2].trim() });
       continue;
     }
-    const numbered = /^\s*>?\s*([⁰¹²³⁴⁵⁶⁷⁸⁹]+|\d+)\s+(.+)$/.exec(line);
-    if (numbered) notes.push({ marker: numbered[1], text: numbered[2].trim() });
+    const superscript = /^\s*>?\s*([⁰¹²³⁴⁵⁶⁷⁸⁹]+)\s*(.+)$/.exec(line);
+    if (superscript) {
+      notes.push({ marker: superscript[1], text: superscript[2].trim() });
+      continue;
+    }
+    const digit = /^\s*>?\s*(\d+)\s+(.+)$/.exec(line);
+    if (digit) notes.push({ marker: digit[1], text: digit[2].trim() });
   }
   return notes;
 }
