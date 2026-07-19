@@ -9,9 +9,10 @@ import { access, readFile } from 'node:fs/promises';
 
 const canon = JSON.parse(await readFile('src/_data/generated/canon.json', 'utf8'));
 const repos = JSON.parse(await readFile('src/_data/generated/repos.json', 'utf8'));
-if (canon.source.repository !== 'wayseer00/wayseer.github.io') throw new Error(`unexpected canon repository: ${canon.source.repository}`);
-if (canon.source.path !== 'canon/the_interdependent_way.md') throw new Error(`unexpected canon path: ${canon.source.path}`);
+if (canon.source.repository !== 'wayseer00/main') throw new Error(`unexpected canon repository: ${canon.source.repository}`);
+if (canon.source.path !== 'canon/INTERDEPENDENT_WAY.txt') throw new Error(`unexpected canon path: ${canon.source.path}`);
 if (!canon.source.contentSha256 || canon.source.contentSha256.length !== 64) throw new Error('canon missing SHA-256 digest');
+if (!canon.source.fallback && (!canon.source.commit || !canon.source.blob)) throw new Error('remote canon provenance missing commit or blob SHA');
 if (!canon.units.length || canon.units.some(unit => !unit.hash || !unit.id)) throw new Error('canon units missing identity or hash');
 if (repos.publicRepoCount !== repos.generatedRouteCount) throw new Error('repo route mismatch');
 if (new Set(repos.repositories.map(repo => repo.slug)).size !== repos.repositories.length) throw new Error('duplicate project slug');
