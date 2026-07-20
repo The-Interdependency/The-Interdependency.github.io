@@ -1,4 +1,5 @@
 name: Pages
+
 on:
   push:
     branches: [main]
@@ -7,41 +8,69 @@ on:
     types: [org-repo-updated]
   schedule:
     - cron: '24 5 * * *'
+
 permissions:
   contents: read
   pages: write
   id-token: write
+
 concurrency:
   group: pages
   cancel-in-progress: false
+
 jobs:
   build:
+    name: Build verified site
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
         with:
           node-version-file: .nvmrc
           cache: npm
-      - run: npm ci
-      - run: npm run check
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build, validate, and test
+        run: npm run check
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-artifact@v4
+
+      - name: Verify Pages artifact root
+        run: |
+          test -s _site/index.html
+          test -s _site/CNAME
+          test "$(cat _site/CNAME)" = "interdependentway.org"
+          test -d _site/pagefind
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v6
+
+      - name: Upload verified site artifact
+        uses: actions/upload-artifact@v7
         with:
           name: verified-site-${{ github.sha }}
           path: _site
           retention-days: 30
-      - uses: actions/upload-pages-artifact@v3
+          if-no-files-found: error
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v5
         with:
           path: _site
+
   deploy:
+    name: Deploy verified site
     needs: build
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
     steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
