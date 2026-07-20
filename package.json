@@ -9,6 +9,7 @@
     "refresh:canon": "node scripts/fetch-canon.mjs && node scripts/parse-canon.mjs",
     "refresh:github": "node scripts/fetch-github-org.mjs",
     "research:enrich": "node scripts/enrich-citations.mjs",
+    "audit:workflows": "node scripts/audit-workflows.mjs",
     "validate": "node scripts/validate-content.mjs && node scripts/verify-generated-routes.mjs",
     "build": "npm run refresh:data && npm run validate && eleventy && pagefind --site _site",
     "pretest": "node scripts/prepare-tests.mjs",
@@ -18,7 +19,7 @@
     "test:a11y": "playwright test tests/accessibility.spec.mjs",
     "test:links": "node tests/links.test.mjs",
     "test:performance": "node scripts/performance-placeholder.mjs",
-    "check": "npm run build && npm test && npm run test:generated"
+    "check": "npm run audit:workflows && npm run build && npm test && npm run test:generated"
   },
   "dependencies": {
     "@11ty/eleventy": "3.1.2",
