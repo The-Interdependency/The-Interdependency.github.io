@@ -56,4 +56,4 @@ Place that file at `.interdependency/project.yml`. Until it exists, the public p
 
 ## Release discipline
 
-GitHub Actions runs the workflow action audit, build, validation, tests, static search generation, and deployment. The workflow audit rejects SHA-pinned or Node-20-era GitHub-owned actions. Failed builds do not replace the last successful Pages artifact. Emergency fallback deployment is explicit rather than automatic.
+GitHub Actions runs the workflow action audit, build, validation, tests, static search generation, and deployment. The workflow audit requires full-length commit SHA pins and rejects tag refs, short SHAs, stale SHAs, or unapproved pins for the GitHub-owned actions used by this site. Failed builds do not replace the last successful Pages artifact. Emergency fallback deployment is explicit rather than automatic.
