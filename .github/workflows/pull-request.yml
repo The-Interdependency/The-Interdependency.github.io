@@ -12,10 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6, node24
 
       - name: Setup Node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5, node24
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -33,7 +33,7 @@ jobs:
 
       - name: Preserve clean-checkout test failure log
         if: failure()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7, node24
         with:
           name: clean-test-failure-${{ github.sha }}
           path: clean-test.log
@@ -67,7 +67,7 @@ jobs:
 
       - name: Preserve Eleventy failure log
         if: failure()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7, node24
         with:
           name: eleventy-failure-${{ github.sha }}
           path: eleventy-build.log
