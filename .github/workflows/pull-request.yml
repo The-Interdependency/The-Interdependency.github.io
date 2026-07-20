@@ -1,54 +1,81 @@
 name: Pull Request
-on: [pull_request]
+
+on:
+  pull_request:
+
 permissions:
   contents: read
+
 jobs:
   check:
+    name: Verify generated site
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
         with:
           node-version-file: .nvmrc
           cache: npm
-      - run: npm ci
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Audit workflow action versions
+        run: npm run audit:workflows
+
       - name: Run clean-checkout tests
         run: |
           set -o pipefail
           npm test 2>&1 | tee clean-test.log
+
       - name: Preserve clean-checkout test failure log
         if: failure()
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
+        uses: actions/upload-artifact@v7
         with:
           name: clean-test-failure-${{ github.sha }}
           path: clean-test.log
           retention-days: 3
+          if-no-files-found: ignore
+
       - name: Refresh canonical and organization data
         run: npm run refresh:data
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Verify canon authority
         run: node -e "const c=require('./src/_data/generated/canon.json'); if(c.source.repository!=='wayseer00/main'||c.source.path!=='canon/INTERDEPENDENT_WAY.txt') process.exit(1)"
+
       - name: Verify canon unit evidence
         run: node -e "const c=require('./src/_data/generated/canon.json'); if(!c.source.contentSha256||c.source.contentSha256.length!==64||(!c.source.fallback&&(!c.source.commit||!c.source.blob))||!c.units.length||c.units.some(u=>!u.id||!u.hash)) process.exit(1)"
+
       - name: Verify repository route coverage
         run: node -e "const r=require('./src/_data/generated/repos.json'); if(r.publicRepoCount!==r.generatedRouteCount||new Set(r.repositories.map(x=>x.slug)).size!==r.repositories.length) process.exit(1)"
+
       - name: Verify recovery inputs
         run: test -s fallback/index.html && test -s artifacts/four-cuts-1.html
+
       - name: Validate generated content contracts
         run: npm run validate
+
       - name: Generate Eleventy site
         run: |
           set -o pipefail
           npx eleventy 2>&1 | tee eleventy-build.log
+
       - name: Preserve Eleventy failure log
         if: failure()
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
+        uses: actions/upload-artifact@v7
         with:
           name: eleventy-failure-${{ github.sha }}
           path: eleventy-build.log
           retention-days: 3
+          if-no-files-found: ignore
+
       - name: Generate Pagefind search index
         run: npx pagefind --site _site
+
       - name: Run generated-site tests
         run: npm run test:generated
