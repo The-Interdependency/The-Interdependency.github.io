@@ -18,8 +18,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -27,13 +27,13 @@ jobs:
       - run: npm run check
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b
-      - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-artifact@v4
         with:
           name: verified-site-${{ github.sha }}
           path: _site
           retention-days: 30
-      - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
   deploy:
@@ -44,4 +44,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: deployment
-        uses: actions/deploy-pages@d74e976d0eb5d900a0cef4b369a9d84a9b222a53
+        uses: actions/deploy-pages@v4
