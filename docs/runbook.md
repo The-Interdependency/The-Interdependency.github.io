@@ -21,13 +21,13 @@ Do not point Pages at repository root as the long-term source; that path bypasse
 
 ## Workflow action policy
 
-Use maintained Node 24 action generations only:
+The repository policy requires every workflow action to be pinned to a full-length commit SHA. The allowed pins below are the current non-deprecated Node 24-safe action generation for each GitHub-owned action used here:
 
-- `actions/checkout@v5`
-- `actions/setup-node@v5`
-- `actions/configure-pages@v6`
-- `actions/upload-artifact@v7`
-- `actions/upload-pages-artifact@v5`
-- `actions/deploy-pages@v5`
+- `actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10` — v6, node24
+- `actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444` — v5, node24
+- `actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d` — v6, node24
+- `actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a` — v7, node24
+- `actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9` — v5 composite; internally uses upload-artifact v7
+- `actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128` — v5, node24
 
-Run `npm run audit:workflows` before editing workflow files. The audit rejects SHA-pinned GitHub-owned actions and known old majors that depend on deprecated Node runtimes.
+Run `npm run audit:workflows` before editing workflow files. The audit rejects tag refs, short SHAs, stale SHAs, and any unapproved pin for the GitHub-owned actions listed above.
