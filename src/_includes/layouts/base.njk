@@ -24,6 +24,7 @@
       <a href="/start/">Start</a>
       <a href="/preamble/">Preamble</a>
       <a href="/way/">The Way</a>
+      <a href="/chapters/">Textbook</a>
       <a href="/lab/">Article Lab</a>
       <a href="/projects/">Projects</a>
       <a href="/artifacts/">Artifacts</a>
@@ -36,12 +37,13 @@
   <footer class="site-footer">
     <div>
       <strong>The Interdependent Way</strong>
-      <p>Canon, interpretation, research, implementation, and frontier claims are kept visibly distinct.</p>
+      <p>Canon, distributed textbook, interpretation, research, implementation, and frontier claims are kept visibly distinct.</p>
     </div>
     <div class="footer-provenance">
       <span>Canon alias: {{ generated.canon.source.repository }}</span>
       <span>Path: {{ generated.canon.source.path }}</span>
       <span>Digest: <code>{{ generated.canon.source.contentSha256 | truncate(18, true, '…') }}</code></span>
+      <span>Textbook: {{ generated.textbook.chapterCount }} distributed chapters</span>
     </div>
     <div class="hmmm-boundary"><strong>hmmm</strong><span>Honest incompletion remains visible so the next action has somewhere true to begin.</span></div>
   </footer>

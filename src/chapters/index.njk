@@ -1,0 +1,43 @@
+---
+layout: layouts/base.njk
+title: The Interdependency Textbook
+description: Chapters zero through seven of the distributed Interdependency textbook, displayed together with exact repository provenance and status boundaries.
+permalink: /chapters/
+---
+<header class="page-head">
+  <p class="eyebrow">Zero through Seven · eight repositories · one reading sequence</p>
+  <h1>The Interdependency Textbook</h1>
+  <p class="lede">The textbook is distributed by design. Each chapter lives with the repository whose subject it teaches, while this surface restores the complete reading order. The source repository retains its own license, status vocabulary, and authority; citation does not transfer theorem, proof, empirical, or canonical status between chapters.</p>
+</header>
+<section class="panel">
+  <h2>Reading boundary</h2>
+  <p>This textbook is distinct from the canonical text of <em>The Interdependent Way</em>, which remains in <code>wayseer00/main:canon/INTERDEPENDENT_WAY.txt</code>. These chapters explain the wider Interdependency technical architecture and preserve their repository-local claims.</p>
+</section>
+<section>
+  <p class="eyebrow">Complete sequence</p>
+  <h2>Chapters Zero through Seven</h2>
+  <ol class="chapter-grid">
+    {% for chapter in generated.textbook.chapters %}
+    <li>
+      <a class="card chapter-card" href="/chapters/{{ chapter.slug }}/">
+        <span class="chapter-number">{{ chapter.display_number }}</span>
+        <span class="status {% if chapter.number == 7 %}status-frontier{% else %}status-research{% endif %}">{{ chapter.status }}</span>
+        <h3>{{ chapter.title }}</h3>
+        <p>{{ chapter.summary }}</p>
+        <small>{{ chapter.repository }} · {{ chapter.path }}</small>
+      </a>
+    </li>
+    {% endfor %}
+  </ol>
+</section>
+<section class="provenance">
+  <h2>Source state</h2>
+  <dl class="meta">
+    <dt>Schema</dt><dd><code>{{ generated.textbook.schema }}</code></dd>
+    <dt>Generated</dt><dd>{{ generated.textbook.generatedAt }}</dd>
+    <dt>Chapter count</dt><dd>{{ generated.textbook.chapterCount }}</dd>
+    <dt>Complete</dt><dd>{{ generated.textbook.complete }}</dd>
+    <dt>Fallback used</dt><dd>{{ generated.textbook.fallback }}</dd>
+  </dl>
+</section>
+<section class="hmmm"><h2>hmmm</h2><p>The chapters now share a public reading surface, not a merged authority. Corrections still belong first in the repository that owns the chapter; this site should then refresh and display the new exact source identity.</p></section>

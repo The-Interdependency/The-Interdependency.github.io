@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import { test, expect } from '@playwright/test';
 
 const canon = JSON.parse(readFileSync('src/_data/generated/canon.json', 'utf8'));
+const textbook = JSON.parse(readFileSync('src/_data/generated/textbook.json', 'utf8'));
 const articleLab = JSON.parse(readFileSync('src/_data/article_lab.json', 'utf8'));
 const labRoutes = articleLab.map(record => {
   const unit = canon.units.find(candidate => candidate.id === record.unit_id);
@@ -15,6 +16,9 @@ const routes = [
   ['/', /You are not alone/],
   ['/home/', /A way through complexity/],
   ['/preamble/', /Humanity faces extinction/],
+  ['/chapters/', /The Interdependency Textbook/],
+  ['/chapters/chapter-zero/', /Zero is not nothing/],
+  ['/chapters/chapter-seven/', /theory under development/],
   ['/articles/', /Publication drafts/],
   ['/articles/article-two/', /Freedom without abandonment/],
   ['/way/', /The Way/],
@@ -51,11 +55,30 @@ test('Awakening is the public splash and preserves one-click continuation', asyn
   await expect(page.locator('.source-block')).toContainText('Humanity faces extinction');
 });
 
-test('the knowledge-system home links back through Awakening and keeps Preamble in primary navigation', async ({ page }) => {
+test('the knowledge-system home links to Awakening, Preamble, and the distributed textbook', async ({ page }) => {
   await page.goto('/home/');
   await expect(page.locator('a.brand')).toHaveAttribute('href', '/home/');
   await expect(page.locator('nav[aria-label="Primary navigation"] a[href="/"]', { hasText: 'Awakening' })).toBeVisible();
   await expect(page.locator('nav[aria-label="Primary navigation"] a[href="/preamble/"]', { hasText: 'Preamble' })).toBeVisible();
+  await expect(page.locator('nav[aria-label="Primary navigation"] a[href="/chapters/"]', { hasText: 'Textbook' })).toBeVisible();
+  await expect(page.locator('main a[href="/chapters/"]').first()).toBeVisible();
+});
+
+test('chapters zero through seven are indexed, source-bound, and sequentially navigable', async ({ page }) => {
+  await page.goto('/chapters/');
+  for (const chapter of textbook.chapters) {
+    await expect(page.locator(`a[href="/chapters/${chapter.slug}/"]`)).toBeVisible();
+  }
+
+  await page.goto('/chapters/chapter-zero/');
+  await expect(page.locator('.textbook-chapter')).toContainText('Zero is not nothing');
+  await expect(page.locator('.chapter-provenance')).toContainText('The-Interdependency/metapat');
+  await expect(page.locator('.chapter-pagination a', { hasText: 'Next chapter' })).toBeVisible();
+
+  await page.goto('/chapters/chapter-seven/');
+  await expect(page.locator('.textbook-chapter')).toContainText('theory under development');
+  await expect(page.locator('.chapter-provenance')).toContainText('The-Interdependency/zfae');
+  await expect(page.locator('.status-frontier')).toContainText('theory under development');
 });
 
 test('all eight rights articles are reachable from the article index', async ({ page }) => {

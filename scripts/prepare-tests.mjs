@@ -2,9 +2,9 @@ import { execFileSync } from 'node:child_process';
 
 // === MODULE_BUILD ===
 // id: offline_test_data_preparation
-//   purpose: Regenerate canon and project data deterministically before npm test without requiring network access or a full site build.
+//   purpose: Regenerate canon, project, and distributed-textbook data deterministically before npm test without requiring network access or a full site build.
 //   entrypoint: npm test via the pretest lifecycle
-//   tests: tests/canon-integrity.test.mjs, tests/repo-coverage.test.mjs
+//   tests: tests/canon-integrity.test.mjs, tests/textbook-integrity.test.mjs, tests/repo-coverage.test.mjs
 // === END MODULE_BUILD ===
 // === BOUNDARIES ===
 // id: offline_test_preparation
@@ -17,7 +17,8 @@ const env = { ...process.env, OFFLINE: '1', GITHUB_TOKEN: '' };
 for (const script of [
   'scripts/fetch-canon.mjs',
   'scripts/parse-canon.mjs',
-  'scripts/fetch-github-org.mjs'
+  'scripts/fetch-github-org.mjs',
+  'scripts/fetch-textbook.mjs'
 ]) {
   execFileSync(process.execPath, [script], { env, stdio: 'inherit' });
 }
