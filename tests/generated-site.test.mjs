@@ -46,6 +46,22 @@ test('generated deployment artifact contains the unified routes', async () => {
   ]) assert.match(articles, new RegExp(title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
 });
 
+test('Way map renders Human consciousness beneath Interdefinables and before Preamble', async () => {
+  const way = await readFile('_site/way/index.html', 'utf8');
+  const interdefinablesSection = way.indexOf('<h2>The Interdefinables</h2>');
+  const humanHeading = way.indexOf('Human consciousness emerges from');
+  const binaryHeading = way.indexOf('Binary essences meaningfully');
+  const preambleSection = way.indexOf('<h2>Preamble</h2>');
+
+  assert.ok(interdefinablesSection >= 0, 'Interdefinables section missing');
+  assert.ok(humanHeading > interdefinablesSection, 'Human consciousness must appear inside Interdefinables');
+  assert.ok(binaryHeading > humanHeading, 'Human consciousness child headings must follow their parent');
+  assert.ok(preambleSection > binaryHeading, 'Preamble must be the next major section after Interdefinables');
+  assert.match(way, /class="unit-level-3"[^>]*>[\s\S]*?Human consciousness emerges from/);
+  assert.match(way, /class="unit-level-4"[^>]*>[\s\S]*?Binary essences meaningfully/);
+  assert.doesNotMatch(way, /<h2>Human consciousness emerges from:?<\/h2>/);
+});
+
 test('generated deployment artifact contains all rights article vertical slices', async () => {
   const pages = [
     ['article-one', /Contribution without contempt/, /From each as they will/],
