@@ -1,0 +1,44 @@
+---
+layout: layouts/base.njk
+pagination:
+  data: generated.textbook.chapters
+  size: 1
+  alias: chapter
+permalink: "/chapters/{{ chapter.slug }}/"
+title: "Chapter {{ chapter.display_number }} · {{ chapter.title }}"
+---
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/home/">Home</a> / <a href="/chapters/">Textbook</a> / Chapter {{ chapter.display_number }}</nav>
+<header class="page-head chapter-head">
+  <p class="eyebrow">Distributed textbook · Chapter {{ chapter.display_number }}</p>
+  <div class="status-row">
+    <span class="status status-canon">exact repository source</span>
+    <span class="status {% if chapter.number == 7 %}status-frontier{% else %}status-research{% endif %}">{{ chapter.status }}</span>
+    {% if chapter.fallback %}<span class="status status-hmmm">fallback</span>{% endif %}
+  </div>
+  <p class="lede">This chapter is displayed from <code>{{ chapter.repository }}:{{ chapter.path }}</code>. Its repository retains its license, status vocabulary, and claim authority; this reader does not transfer those statuses to any other chapter or to The Interdependent Way canon.</p>
+</header>
+<section class="provenance chapter-provenance">
+  <h2>Source evidence</h2>
+  <dl class="meta">
+    <dt>Repository</dt><dd><code>{{ chapter.repository }}</code></dd>
+    <dt>Path</dt><dd><code>{{ chapter.path }}</code></dd>
+    <dt>Commit</dt><dd>{% if chapter.commit %}<code>{{ chapter.commit }}</code>{% else %}hmmm{% endif %}</dd>
+    <dt>Blob</dt><dd>{% if chapter.blob %}<code>{{ chapter.blob }}</code>{% else %}hmmm{% endif %}</dd>
+    <dt>Digest</dt><dd>{% if chapter.contentSha256 %}<code>{{ chapter.contentSha256 }}</code>{% else %}hmmm{% endif %}</dd>
+    <dt>Retrieved</dt><dd>{{ chapter.retrievedAt or "hmmm" }}</dd>
+  </dl>
+  <div class="actions"><a class="button secondary" href="{{ chapter.sourceUrl }}">Open exact source in GitHub</a></div>
+</section>
+{% if chapter.content %}
+<article class="textbook-chapter" data-chapter-number="{{ chapter.number }}" data-source-repository="{{ chapter.repository }}">
+  {{ chapter.content | markdown | safe }}
+</article>
+{% else %}
+<section class="hmmm"><h1>Chapter {{ chapter.display_number }} source unavailable</h1><p>The offline build has no retained content snapshot for this chapter. Its declared source remains available through the repository link above; no substitute text has been invented.</p><p>{{ chapter.retrievalError }}</p></section>
+{% endif %}
+<nav class="chapter-pagination" aria-label="Textbook chapters">
+  {% if pagination.href.previous %}<a class="button secondary" href="{{ pagination.href.previous }}">Previous chapter</a>{% endif %}
+  <a class="button secondary" href="/chapters/">All chapters</a>
+  {% if pagination.href.next %}<a class="button" href="{{ pagination.href.next }}">Next chapter</a>{% endif %}
+</nav>
+<section class="hmmm"><h2>hmmm</h2><p>Questions, corrections, and status changes belong to <code>{{ chapter.repository }}</code>. This page will follow the source on the next verified build.</p></section>
