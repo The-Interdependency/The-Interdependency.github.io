@@ -5,7 +5,8 @@ pagination:
   size: 1
   alias: chapter
 permalink: "/chapters/{{ chapter.slug }}/"
-title: "Chapter {{ chapter.display_number }} · {{ chapter.title }}"
+eleventyComputed:
+  title: "Chapter {{ chapter.display_number }} · {{ chapter.title }}"
 ---
 <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/home/">Home</a> / <a href="/chapters/">Textbook</a> / Chapter {{ chapter.display_number }}</nav>
 <header class="page-head chapter-head">
