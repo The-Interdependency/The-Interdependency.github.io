@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>The Interdependent Way</title>
-  <meta name="description" content="Canon-safe public entrance for The Interdependent Way while the full generated site deployment is repaired.">
+  <meta name="description" content="Canon-safe public entrance for The Interdependent Way when the verified generated site is unavailable.">
   <style>
     :root { color-scheme: dark; --bg:#07090d; --panel:#111827; --ink:#edf2ff; --muted:#b8c2d6; --line:#2c3446; --accent:#8fd3ff; --warn:#ffd479; }
     * { box-sizing: border-box; }
@@ -21,7 +21,6 @@
     .actions { display: flex; flex-wrap: wrap; gap: .75rem; margin: 1.5rem 0; }
     .button { border: 1px solid var(--accent); border-radius: 999px; padding: .75rem 1rem; text-decoration: none; font-weight: 700; }
     code { background: #05070a; border: 1px solid var(--line); border-radius: .4rem; padding: .1rem .35rem; }
-    ul { padding-left: 1.2rem; }
     footer { color: var(--muted); border-top: 1px solid var(--line); }
   </style>
 </head>
@@ -29,7 +28,7 @@
   <header>
     <p class="eyebrow">Canon-safe entrance · branch-source fallback</p>
     <h1>The Interdependent Way</h1>
-    <p class="lede">This page replaces the stale raw-text homepage while the full generated Eleventy / Article Lab deployment is being repaired. It does not replace the canon.</p>
+    <p class="lede">This is the recovery floor. The preferred public experience is the verified Eleventy artifact, whose machine-readable build identity must match the repository commit that deployed it.</p>
     <div class="actions" aria-label="Primary links">
       <a class="button" href="https://github.com/wayseer00/main/blob/main/canon/INTERDEPENDENT_WAY.txt">Read the canonical text</a>
       <a class="button" href="https://github.com/The-Interdependency/The-Interdependency.github.io">Website repository</a>
@@ -44,16 +43,16 @@
       </article>
       <article class="card">
         <h2>Website</h2>
-        <p>The generated static site has a passing build-and-validation path. This root page exists because the public domain is still serving branch-root content rather than the verified generated artifact.</p>
+        <p>The generated site now publishes <code>/build.json</code> with its site commit and canonical provenance. Deployment is green only when the public endpoint reports the expected commit.</p>
       </article>
       <article class="card">
-        <h2>Next</h2>
-        <p>Repair the GitHub Pages source/deployment setting, then publish the Article Two vertical slice: orientation, exact source, companion reading, Lab conversation, research field, and script/handbook derivatives.</p>
+        <h2>Next platform action</h2>
+        <p>GitHub Pages must use GitHub Actions, attach <code>interdependentway.org</code>, verify DNS, and enforce HTTPS. Those settings live outside this branch and require repository administration.</p>
       </article>
     </section>
     <section class="hmmm" style="margin-top:1rem">
       <h2>hmmm</h2>
-      <p>This is a recovery floor, not the preferred public experience. If you are seeing this page, the old raw-text homepage has been displaced, but the full layered site still needs the Pages deployment path corrected.</p>
+      <p>If you are seeing this page, the recovery floor is doing its job but the generated deployment is not yet proven current. Check the Pages environment and compare the live <code>/build.json</code> commit with <code>main</code>.</p>
     </section>
   </main>
   <footer>

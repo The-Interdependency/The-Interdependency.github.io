@@ -11,11 +11,15 @@ yarn-error.log*
 # Dependency directories
 node_modules/
 
-# Build output (if using bundlers)
+# Build output
+_dist/
 dist/
 build/
 _site/
 .cache/
+
+# Build-time generated data
+/src/_data/generated/canon.json
 
 # Python
 __pycache__/

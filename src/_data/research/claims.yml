@@ -1,1 +1,35 @@
-[]
+- id: article-two-autonomy-and-duty
+  article: rights.article-two
+  stance: support
+  status: defended-component
+  claim: "Necessary health or survival work is more likely to be sustained when people experience volition, competence, and supportive connection rather than pressure or coercion."
+  source_ids:
+    - patrick-williams-2012-sdt-health
+  limitation: "This supports the page's autonomy-preserving interpretation, not every duty named in the canon."
+
+- id: article-two-sanitation-is-health-work
+  article: rights.article-two
+  stance: support
+  status: evidence-informed
+  claim: "Safe sanitation is material health infrastructure rather than merely an aesthetic preference."
+  source_ids:
+    - who-2018-sanitation-health
+  limitation: "The guideline does not settle who owes the work or how responsibility should be distributed."
+
+- id: article-two-will-under-scarcity
+  article: rights.article-two
+  stance: dissent
+  status: defended-risk
+  claim: "Poverty and scarcity can consume cognitive resources, so compliance, refusal, or poor performance cannot automatically be treated as evidence of free will or character."
+  source_ids:
+    - mani-et-al-2013-poverty-cognition
+  limitation: "The study does not measure consent directly; the application to voluntariness is a bounded inference."
+
+- id: article-two-trauma-evidence-limit
+  article: rights.article-two
+  stance: limit
+  status: evidence-open
+  claim: "Trauma-informed care is widely implemented, but comparative evidence remains insufficient to determine effects across patient and client outcomes."
+  source_ids:
+    - ahrq-2025-trauma-informed-care
+  limitation: "The page may defend attention to trauma while keeping intervention effectiveness explicitly unresolved."
