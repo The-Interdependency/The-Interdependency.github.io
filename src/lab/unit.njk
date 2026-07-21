@@ -9,7 +9,7 @@ title: "Lab: {{ unit.title }}"
 ---
 {% set labMatches = article_lab | where("unit_id", unit.id) %}
 {% set lab = labMatches[0] %}
-{% set claims = research.claims | where("article", unit.id) %}
+{% set claims = research_data.claims | where("article", unit.id) %}
 <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/lab/">Article Lab</a> / {{ unit.title }}</nav>
 <header class="page-head">
   <p class="eyebrow">Interpretive laboratory</p>
@@ -64,13 +64,13 @@ title: "Lab: {{ unit.title }}"
           <span class="status {{ stanceClass }}">{{ claim.stance }} · {{ claim.status }}</span>
           <h3>{{ claim.claim }}</h3>
           <p><strong>Evidence boundary:</strong> {{ claim.limitation }}</p>
-          <p><strong>Sources:</strong>
+          <div class="source-list"><strong>Sources:</strong><ul>
             {% for sourceId in claim.source_ids %}
-              {% for source in research.sources %}
-                {% if source.id == sourceId %}<a href="{{ source.url }}">{{ source.title }}</a>{% if not loop.last %}{% endif %}{% endif %}
+              {% for source in research_data.sources %}
+                {% if source.id == sourceId %}<li><a href="{{ source.url }}">{{ source.title }}</a><br><small>{{ source.type }} · reviewed {{ source.reviewed_on }}</small></li>{% endif %}
               {% endfor %}
             {% endfor %}
-          </p>
+          </ul></div>
         </article>
       {% endfor %}
     </div>
