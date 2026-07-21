@@ -6,10 +6,11 @@ import { readFile } from 'node:fs/promises';
 
 // Usage: run only after Eleventy has generated _site, normally through npm run test:generated or npm run check.
 test('generated deployment artifact contains the unified routes', async () => {
-  const [splash, home, preamble, artifacts, fourCuts, fallback, articles] = await Promise.all([
+  const [splash, home, preamble, chapters, artifacts, fourCuts, fallback, articles] = await Promise.all([
     readFile('_site/index.html', 'utf8'),
     readFile('_site/home/index.html', 'utf8'),
     readFile('_site/preamble/index.html', 'utf8'),
+    readFile('_site/chapters/index.html', 'utf8'),
     readFile('_site/artifacts/index.html', 'utf8'),
     readFile('_site/artifacts/four-cuts/index.html', 'utf8'),
     readFile('_site/fallback/index.html', 'utf8'),
@@ -25,11 +26,15 @@ test('generated deployment artifact contains the unified routes', async () => {
   assert.doesNotMatch(splash, /primary-nav/);
   assert.match(home, /A way through complexity/);
   assert.match(home, /href="\/preamble\/"[^>]*>Read the Preamble/);
+  assert.match(home, /href="\/chapters\/"/);
+  assert.match(home, /Chapters Zero through Seven/);
   assert.match(home, /href="\/"/);
   assert.match(home, /Return to Awakening/);
   assert.match(preamble, /One-click canon entrance/);
   assert.match(preamble, /Humanity faces extinction/);
   assert.match(preamble, /Canonical repository/);
+  assert.match(chapters, /The Interdependency Textbook/);
+  assert.match(chapters, /Chapters Zero through Seven/);
   assert.match(artifacts, /Artifacts/);
   assert.match(fourCuts, /Wealth and tax/);
   assert.match(fallback, /Emergency static edition/);
@@ -44,6 +49,35 @@ test('generated deployment artifact contains the unified routes', async () => {
     'Article Seven: Definitions before governance',
     'Article Eight: Rights with living limits'
   ]) assert.match(articles, new RegExp(title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+});
+
+test('distributed textbook displays all eight exact chapter sources', async () => {
+  const textbook = JSON.parse(await readFile('src/_data/generated/textbook.json', 'utf8'));
+  const index = await readFile('_site/chapters/index.html', 'utf8');
+  const contact = [
+    /Zero is not nothing/,
+    /directed twofold branched angular cover/,
+    /NA != 0/,
+    /Modules That Speak for Themselves/,
+    /meta-package/,
+    /Prime Tensor Circled Neural Architecture/,
+    /research instrument, not a product/,
+    /theory under development/
+  ];
+
+  assert.equal(textbook.chapters.length, 8);
+  for (const chapter of textbook.chapters) {
+    assert.match(index, new RegExp(`href="/chapters/${chapter.slug}/"`));
+    assert.match(index, new RegExp(chapter.title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+    const html = await readFile(`_site/chapters/${chapter.slug}/index.html`, 'utf8');
+    assert.match(html, /class="textbook-chapter"/);
+    assert.match(html, new RegExp(chapter.repository.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+    assert.match(html, new RegExp(chapter.path.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+    assert.match(html, /Open exact source in GitHub/);
+    assert.match(html, /Source evidence/);
+    assert.match(html, contact[chapter.number]);
+  }
+  assert.match(await readFile('_site/chapters/chapter-seven/index.html', 'utf8'), /theory under development/);
 });
 
 test('Way map renders Human consciousness beneath Interdefinables and before Preamble', async () => {
