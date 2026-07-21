@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
-test('canon data preserves Wayseer identity, provenance, and stable unit evidence', async () => {
+test('canon data preserves Wayseer identity, provenance, stable unit evidence, and nested heading parents', async () => {
   const canon = JSON.parse(await readFile('src/_data/generated/canon.json', 'utf8'));
   assert.equal(canon.source.repository, 'wayseer00/main');
   assert.equal(canon.source.path, 'canon/INTERDEPENDENT_WAY.txt');
@@ -23,4 +23,14 @@ test('canon data preserves Wayseer identity, provenance, and stable unit evidenc
     assert.equal(routes.has(unit.routeSlug), false);
     routes.add(unit.routeSlug);
   }
+
+  const interdefinables = canon.units.find(unit => unit.title === 'The Interdefinables');
+  const human = canon.units.find(unit => /^Human consciousness emerges from:?$/i.test(unit.title));
+  assert.ok(interdefinables);
+  assert.ok(human);
+  assert.equal(human.level, 3);
+  assert.equal(human.section, interdefinables.section);
+  assert.equal(human.parentId, interdefinables.id);
+  assert.equal(canon.sections.some(section => /^Human consciousness emerges from:?$/i.test(section.title)), false);
+  assert.ok(canon.edges.some(edge => edge.type === 'heading-parent' && edge.from === human.id && edge.to === interdefinables.id));
 });
