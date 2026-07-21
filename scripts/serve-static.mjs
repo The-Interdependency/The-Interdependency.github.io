@@ -1,6 +1,6 @@
 import { createServer } from 'node:http';
-import { readFile, stat } from 'node:fs/promises';
-import { extname, join, normalize } from 'node:path';
+import { readFile } from 'node:fs/promises';
+import { extname, isAbsolute, join, relative, resolve } from 'node:path';
 
 // === MODULE_BUILD ===
 // id: generated_site_test_server
@@ -36,7 +36,7 @@ import { extname, join, normalize } from 'node:path';
 //   owner: Erin Spencer
 // === END BOUNDARIES ===
 
-const root = normalize(join(process.cwd(), '_site'));
+const root = resolve(process.cwd(), '_site');
 const port = Number(process.env.PORT || 4173);
 const types = {
   '.css': 'text/css; charset=utf-8',
@@ -49,18 +49,17 @@ const types = {
 
 function safePath(urlPath) {
   const decoded = decodeURIComponent(urlPath.split('?')[0]);
-  const relative = normalize(decoded).replace(/^([/\\])+/, '');
-  const candidate = normalize(join(root, relative));
-  if (!candidate.startsWith(root)) throw new Error('path traversal refused');
+  const candidate = resolve(root, decoded.replace(/^([/\\])+/, ''));
+  const fromRoot = relative(root, candidate);
+  if (fromRoot.startsWith('..') || isAbsolute(fromRoot)) throw new Error('path traversal refused');
   return candidate;
 }
 
 const server = createServer(async (request, response) => {
   try {
-    let path = safePath(request.url || '/');
-    const fileStat = await stat(path).catch(() => null);
-    if (fileStat?.isDirectory()) path = join(path, 'index.html');
-    if (!fileStat && !extname(path)) path = join(path, 'index.html');
+    const requestPath = (request.url || '/').split('?')[0];
+    let path = safePath(requestPath);
+    if (requestPath.endsWith('/') || !extname(path)) path = join(path, 'index.html');
     const body = await readFile(path);
     response.writeHead(200, {
       'content-type': types[extname(path)] || 'application/octet-stream',
