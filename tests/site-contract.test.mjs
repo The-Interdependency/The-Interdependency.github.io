@@ -15,6 +15,23 @@ test('base layout remains readable without javascript', async () => {
   assert.doesNotMatch(layout, /fetch\(/);
 });
 
+test('Awakening owns the static public threshold and routes inward', async () => {
+  const [layout, splash, home] = await Promise.all([
+    readFile('src/_includes/layouts/splash.njk', 'utf8'),
+    readFile('src/index.njk', 'utf8'),
+    readFile('src/home/index.njk', 'utf8')
+  ]);
+  assert.match(layout, /class="awakening-body"/);
+  assert.match(layout, /class="awakening-splash"/);
+  assert.doesNotMatch(layout, /<script/i);
+  assert.match(splash, /generated\.canon\.units/);
+  assert.match(splash, /<h1>Awakening<\/h1>/);
+  assert.match(splash, /href="\/preamble\/"/);
+  assert.match(splash, /href="\/home\/"/);
+  assert.match(home, /permalink: \/home\//);
+  assert.match(home, /Return to Awakening/);
+});
+
 test('emergency static edition has no script or external dependency', async () => {
   const html = await readFile('fallback/index.html', 'utf8');
   assert.doesNotMatch(html, /<script/i);

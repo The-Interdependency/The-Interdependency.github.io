@@ -1,38 +1,26 @@
 ---
-layout: layouts/base.njk
-title: The Interdependent Way
-description: A calm, layered entrance to the canon, its deliberate tensions, the research around it, and the projects attempting implementation.
+layout: layouts/splash.njk
+title: Awakening · The Interdependent Way
+description: The canonical Awakening of The Interdependent Way, presented as the public threshold into the Preamble and living knowledge system.
 ---
-<section class="hero">
-  <div>
-    <p class="eyebrow">Canon · interpretation · research · implementation · frontier</p>
-    <h1>A way through complexity without pretending the tension is gone.</h1>
-    <p class="lede">The Interdependent Way is a dense living text and a constellation of attempts to test, explain, implement, challenge, and preserve it. The Preamble is directly available here; deeper orientation and exact source remain available without hiding the entrance.</p>
-    <div class="actions"><a class="button" href="/preamble/">Read the Preamble</a><a class="button secondary" href="/start/">Begin with orientation</a><a class="button secondary" href="/way/">Explore the Way</a></div>
-  </div>
-  <div class="hero-field" aria-label="Three concentric fields around a thirteenth center"><span></span><strong>12 + 1</strong></div>
-</section>
-<section class="panel">
-  <p class="eyebrow">Eight rights-article vertical slices</p>
-  <h2>From canon excerpt to public practice</h2>
-  <p>All eight Rights articles now have a canon-bounded path through exact excerpt, companion reading, note conversation, application, handbook seed, and 60–90 second script. Article Two contains the first reviewed support, dissent, and limits evidence pack.</p>
-  <div class="actions"><a class="button" href="/articles/">View rights articles</a><a class="button secondary" href="/articles/article-two/">Open Article Two research</a></div>
-</section>
-<section>
-  <p class="eyebrow">Choose a depth</p>
-  <h2>One body of work, several honest entrances</h2>
-  <div class="grid">
-    <a class="card" href="/preamble/"><span class="status status-canon">Canon-derived</span><h3>Read the Preamble</h3><p>Enter the opening civic claim directly through a stable route generated from the selected canon.</p></a>
-    <a class="card" href="/way/"><span class="status status-canon">Canon-derived</span><h3>Read the Way</h3><p>Move through the preamble, articles, etiquette, addenda, and their internal structure without beginning at the raw wall of text.</p></a>
-    <a class="card" href="/lab/"><span class="status status-interpretation">Interpretation</span><h3>Enter the Article Lab</h3><p>Read the main text and its notes as two speakers. Supporting, dissenting, mixed, and missing research remain visibly separate.</p></a>
-    <a class="card" href="/articles/"><span class="status status-interpretation">Publication</span><h3>Read public articles</h3><p>Follow selected canon units through companion readings, applications, handbook seeds, and script drafts without losing source boundaries.</p></a>
-    <a class="card" href="/projects/"><span class="status status-implemented">Implementation</span><h3>Map the Projects</h3><p>Every public organization repository receives a generated space, grouped by function and refreshed at build time.</p></a>
-    <a class="card" href="/artifacts/"><span class="status status-frontier">Frontier</span><h3>Use the Artifacts</h3><p>Interactive explanations, visual studies, public experiments, and compact publications live here without fragmenting the site identity.</p></a>
+{% set awakenings = generated.canon.units | where("title", "Awakening") %}
+{% set awakening = awakenings[0] %}
+<section class="awakening-stage">
+  <div class="awakening-orbit" aria-hidden="true"><span></span></div>
+  <div class="awakening-copy">
+    <p class="eyebrow">The Interdependent Way</p>
+    <h1>Awakening</h1>
+    {% if awakening %}
+      <div class="awakening-text">{{ awakening.content | replace("Awakening \n", "") | replace("Awakening\n", "") }}</div>
+      <div class="awakening-actions" aria-label="Continue from Awakening">
+        <a class="button" href="/preamble/">Read the Preamble</a>
+        <a class="button secondary" href="/home/">Enter the living system</a>
+        <a class="awakening-source" href="/source/{{ awakening.routeSlug }}/">Exact source and provenance</a>
+      </div>
+      <p class="awakening-provenance">Canon <code>{{ generated.canon.source.repository }}:{{ generated.canon.source.path }}</code> · lines {{ awakening.startLine }}–{{ awakening.endLine }} · digest <code>{{ awakening.hash | truncate(18, true, '…') }}</code></p>
+    {% else %}
+      <section class="hmmm"><h2>hmmm</h2><p>The selected canon did not produce an Awakening unit. The release gate must treat the missing threshold as a broken public contract.</p></section>
+      <div class="awakening-actions"><a class="button" href="/preamble/">Read the Preamble</a><a class="button secondary" href="/home/">Enter the living system</a></div>
+    {% endif %}
   </div>
 </section>
-<section class="panel">
-  <p class="eyebrow">Current field snapshot</p>
-  <h2>{{ generated.repos.publicRepoCount }} public repositories · {{ generated.canon.units.length }} canonical units</h2>
-  <p>Project data was generated {{ generated.repos.snapshotAt | dateOnly }}{% if generated.repos.fallback %} from the last verified snapshot{% endif %}. Canon digest <code>{{ generated.canon.source.contentSha256 }}</code>.</p>
-</section>
-<section class="hmmm"><h2>hmmm</h2><p>Reviewed evidence is now attached to Article Two; the other seven research fields remain intentionally open. Empty certainty would be a suspiciously tidy hat on a very alive octopus.</p></section>

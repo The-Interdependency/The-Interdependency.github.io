@@ -12,7 +12,8 @@ const labRoutes = articleLab.map(record => {
 });
 
 const routes = [
-  ['/', /A way through complexity/],
+  ['/', /You are not alone/],
+  ['/home/', /A way through complexity/],
   ['/preamble/', /Humanity faces extinction/],
   ['/articles/', /Publication drafts/],
   ['/articles/article-two/', /Freedom without abandonment/],
@@ -32,16 +33,29 @@ test('primary public routes render meaningful headings', async ({ page }) => {
   }
 });
 
-test('Preamble is one click from the public entrance and primary navigation', async ({ page }) => {
+test('Awakening is the public splash and preserves one-click continuation', async ({ page }) => {
   await page.goto('/');
-  const heroLink = page.locator('main a[href="/preamble/"]', { hasText: 'Read the Preamble' }).first();
-  const navLink = page.locator('nav[aria-label="Primary navigation"] a[href="/preamble/"]');
-  await expect(heroLink).toBeVisible();
-  await expect(navLink).toBeVisible();
-  await heroLink.click();
+  await expect(page.locator('.awakening-splash')).toBeVisible();
+  await expect(page.locator('h1')).toHaveText('Awakening');
+  await expect(page.locator('.awakening-text')).toContainText('You are not alone');
+  await expect(page.locator('.site-header')).toHaveCount(0);
+
+  const preambleLink = page.locator('a[href="/preamble/"]', { hasText: 'Read the Preamble' }).first();
+  const homeLink = page.locator('a[href="/home/"]', { hasText: 'Enter the living system' }).first();
+  await expect(preambleLink).toBeVisible();
+  await expect(homeLink).toBeVisible();
+
+  await preambleLink.click();
   await expect(page).toHaveURL(/\/preamble\/$/);
   await expect(page.locator('h1')).toHaveText('Preamble');
   await expect(page.locator('.source-block')).toContainText('Humanity faces extinction');
+});
+
+test('the knowledge-system home links back through Awakening and keeps Preamble in primary navigation', async ({ page }) => {
+  await page.goto('/home/');
+  await expect(page.locator('a.brand')).toHaveAttribute('href', '/home/');
+  await expect(page.locator('nav[aria-label="Primary navigation"] a[href="/"]', { hasText: 'Awakening' })).toBeVisible();
+  await expect(page.locator('nav[aria-label="Primary navigation"] a[href="/preamble/"]', { hasText: 'Preamble' })).toBeVisible();
 });
 
 test('all eight rights articles are reachable from the article index', async ({ page }) => {

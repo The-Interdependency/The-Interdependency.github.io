@@ -1,0 +1,137 @@
+/* === MODULE_BUILD ===
+ * id: awakening_splash_presentation
+ *   module_name: awakening-splash-presentation
+ *   module_kind: ui_panel
+ *   summary: Presents the canon-derived Awakening as a full-screen public threshold without hiding readable text behind animation or JavaScript.
+ *   owner: Erin Spencer
+ *   public_surface: root Awakening splash presentation
+ *   internal_surface: awakening-body, awakening-splash, awakening-stage, awakening-orbit, awakening-copy, awakening-text
+ *   auth_boundary: none
+ *   storage_boundary: none
+ *   network_boundary: none
+ *   user_data_boundary: none
+ *   admin_only: false
+ *   tests: tests/generated-site.test.mjs, tests/site.spec.mjs, tests/accessibility.spec.mjs
+ *   rollout: loaded only by layouts/splash.njk for the public threshold
+ *   rollback: remove the splash stylesheet link and restore the prior root template
+ * === END MODULE_BUILD ===
+ * Usage: loaded by src/_includes/layouts/splash.njk; verify with npm run check and npm run test:browser.
+ * Limits: visual rings are decorative; all canon text and continuation links remain ordinary readable HTML.
+ */
+.awakening-body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: #050711;
+}
+.awakening-body::before {
+  opacity: .7;
+  background:
+    radial-gradient(circle at 50% 44%, rgba(123, 201, 216, .12), transparent 0 18rem),
+    radial-gradient(circle at 50% 44%, transparent 0 22rem, rgba(155, 135, 245, .18) 22.08rem 22.15rem, transparent 22.22rem 31rem, rgba(42, 56, 87, .55) 31.08rem 31.15rem, transparent 31.22rem),
+    linear-gradient(180deg, #050711, #090d18 68%, #050711);
+}
+.awakening-splash {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: clamp(1.25rem, 4vw, 4rem);
+  overflow: hidden;
+  isolation: isolate;
+}
+.awakening-stage {
+  position: relative;
+  width: min(76rem, 100%);
+  min-height: min(88vh, 58rem);
+  display: grid;
+  place-items: center;
+}
+.awakening-orbit {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(92vw, 70rem);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  opacity: .7;
+  pointer-events: none;
+}
+.awakening-orbit::before,
+.awakening-orbit::after,
+.awakening-orbit span {
+  content: "";
+  position: absolute;
+  border: 1px solid rgba(174, 187, 210, .26);
+  border-radius: 50%;
+}
+.awakening-orbit::before { inset: 4%; }
+.awakening-orbit::after { inset: 19%; border-color: rgba(155, 135, 245, .5); }
+.awakening-orbit span { inset: 36%; border-color: rgba(123, 201, 216, .62); box-shadow: 0 0 7rem rgba(155, 135, 245, .16); }
+.awakening-copy {
+  position: relative;
+  z-index: 2;
+  width: min(68rem, 100%);
+  text-align: center;
+}
+.awakening-copy .eyebrow { margin: 0; }
+.awakening-copy h1 {
+  margin: .2rem 0 clamp(1.25rem, 3vw, 2.4rem);
+  font-size: clamp(4.25rem, 15vw, 11rem);
+  font-weight: 500;
+  line-height: .88;
+  letter-spacing: -.065em;
+  text-shadow: 0 0 4rem rgba(155, 135, 245, .22);
+}
+.awakening-text {
+  max-width: 70ch;
+  margin: 0 auto;
+  padding: clamp(1.1rem, 3vw, 2rem);
+  white-space: pre-line;
+  text-align: left;
+  color: #dce6fa;
+  background: rgba(5, 7, 17, .72);
+  border: 1px solid rgba(174, 187, 210, .2);
+  border-left: .3rem solid var(--cyan);
+  border-radius: var(--radius);
+  box-shadow: 0 2rem 6rem rgba(0, 0, 0, .3);
+  font: clamp(1.02rem, 1.7vw, 1.3rem)/1.7 Georgia, "Times New Roman", serif;
+  backdrop-filter: blur(14px);
+}
+.awakening-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: .75rem;
+  margin-top: clamp(1.2rem, 3vw, 2rem);
+}
+.awakening-source {
+  padding: .7rem .2rem;
+  color: var(--silver);
+  font-size: .9rem;
+}
+.awakening-provenance {
+  max-width: 70ch;
+  margin: 1.2rem auto 0;
+  color: rgba(174, 187, 210, .75);
+  font: .72rem/1.7 ui-monospace, SFMono-Regular, Consolas, monospace;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 640px) {
+  .awakening-splash { align-items: start; padding-top: 9vh; }
+  .awakening-stage { min-height: auto; }
+  .awakening-copy h1 { font-size: clamp(3.6rem, 20vw, 6rem); }
+  .awakening-text { font-size: 1rem; line-height: 1.62; }
+  .awakening-actions { align-items: stretch; flex-direction: column; }
+  .awakening-actions .button { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .awakening-orbit { opacity: .55; }
+}
+@media print {
+  .awakening-body { background: white; color: black; }
+  .awakening-body::before, .awakening-orbit { display: none; }
+  .awakening-splash { display: block; min-height: auto; padding: 0; }
+  .awakening-text { color: black; background: white; border-color: black; box-shadow: none; }
+  .awakening-provenance { color: black; }
+}
