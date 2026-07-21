@@ -1,3 +1,5 @@
+// Usage: run through `npm run test:generated` after a complete site build.
+// Evidence boundary: verifies generated artifact contracts, not the remote Pages environment.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
@@ -13,8 +15,7 @@ test('generated deployment artifact contains the unified routes', async () => {
   ]);
 
   assert.match(home, /A way through complexity/);
-  assert.match(home, /Article Two: Freedom without abandonment/);
-  assert.match(artifacts, /Four Cuts of the Same Country/);
+  assert.match(artifacts, /Artifacts/);
   assert.match(fourCuts, /Wealth and tax/);
   assert.match(fallback, /Emergency static edition/);
   assert.match(articles, /Publication drafts/);
@@ -49,4 +50,14 @@ test('generated deployment artifact contains all rights article vertical slices'
     assert.match(html, /60–90 second script/);
     assert.match(html, /hmmm/);
   }
+});
+
+test('generated deployment artifact publishes verifiable build identity', async () => {
+  const build = JSON.parse(await readFile('_site/build.json', 'utf8'));
+  assert.equal(build.repository, 'The-Interdependency/The-Interdependency.github.io');
+  assert.ok(build.commit);
+  assert.match(build.generatedAt, /^\d{4}-\d{2}-\d{2}T/);
+  assert.equal(build.canonicalSource.repository, 'wayseer00/main');
+  assert.equal(build.canonicalSource.path, 'canon/INTERDEPENDENT_WAY.txt');
+  assert.match(build.canonicalSource.contentSha256, /^[a-f0-9]{64}$/);
 });

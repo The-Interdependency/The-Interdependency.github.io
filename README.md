@@ -15,6 +15,7 @@ The canonical text lives in `wayseer00/main:canon/INTERDEPENDENT_WAY.txt`, and n
 - `.interdependency/project.yml` supplies reviewed project purpose, maturity, relationships, and links.
 - `fallback/` is a dependency-free emergency edition.
 - `artifacts/four-cuts-1.html` is deliberately published at `/artifacts/four-cuts/` through Eleventy passthrough.
+- `_site/build.json` publishes the site commit and canonical source identity for live deployment verification.
 
 ## Usage guidance
 
@@ -56,4 +57,6 @@ Place that file at `.interdependency/project.yml`. Until it exists, the public p
 
 ## Release discipline
 
-GitHub Actions runs the workflow action audit, build, validation, tests, static search generation, and deployment. The workflow audit requires full-length commit SHA pins and rejects tag refs, short SHAs, stale SHAs, or unapproved pins for the GitHub-owned actions used by this site. Failed builds do not replace the last successful Pages artifact. Emergency fallback deployment is explicit rather than automatic.
+GitHub Actions runs the workflow action audit, provenance refresh, article-to-canon exactness gate, build, validation, tests, static search generation, browser checks, accessibility checks, deployment, and live build-identity verification. The workflow audit requires full-length commit SHA pins and rejects tag refs, short SHAs, stale SHAs, or unapproved pins for the GitHub-owned actions used by this site. Failed builds do not replace the last successful Pages artifact. Emergency fallback deployment is explicit rather than automatic.
+
+Repository source cannot configure the Pages source, custom domain, DNS, HTTPS, or branch protection. The required administrative settings and the release-truth contract are documented in [`docs/pages-release.md`](docs/pages-release.md).

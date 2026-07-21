@@ -1,1 +1,47 @@
-[]
+- id: patrick-williams-2012-sdt-health
+  title: "Self-determination theory: its application to health behavior and complementarity with motivational interviewing"
+  authors: "Heather Patrick; Geoffrey C. Williams"
+  year: 2012
+  publication: "International Journal of Behavioral Nutrition and Physical Activity 9:18"
+  type: peer-reviewed review
+  doi: "10.1186/1479-5868-9-18"
+  url: "https://doi.org/10.1186/1479-5868-9-18"
+  reviewed_on: "2026-07-21"
+  relevance: "Distinguishes autonomous motivation from pressured or coerced behavior and identifies autonomy, competence, and relatedness as central conditions for sustained health behavior."
+  boundary: "Supports an autonomy-preserving design principle; does not validate Article Two as a whole."
+
+- id: who-2018-sanitation-health
+  title: "Guidelines on sanitation and health"
+  authors: "World Health Organization"
+  year: 2018
+  publication: "World Health Organization guideline"
+  type: evidence-informed guideline
+  isbn: "978-92-4-151470-5"
+  url: "https://www.who.int/publications/i/item/9789241514705"
+  reviewed_on: "2026-07-21"
+  relevance: "Synthesizes evidence connecting safe sanitation with infection prevention and mental and social well-being."
+  boundary: "Supports treating sanitation as survival work; does not determine how duties should be allocated."
+
+- id: mani-et-al-2013-poverty-cognition
+  title: "Poverty impedes cognitive function"
+  authors: "Anandi Mani; Sendhil Mullainathan; Eldar Shafir; Jiaying Zhao"
+  year: 2013
+  publication: "Science 341(6149):976-980"
+  type: peer-reviewed empirical study
+  doi: "10.1126/science.1238041"
+  url: "https://doi.org/10.1126/science.1238041"
+  reviewed_on: "2026-07-21"
+  relevance: "Finds that poverty-related concerns consume cognitive resources and reduce performance, including within the same people under different financial conditions."
+  boundary: "Warns that apparent willingness, refusal, or competence may be distorted by scarcity and should not be read as unconstrained choice."
+
+- id: ahrq-2025-trauma-informed-care
+  title: "Trauma Informed Care: A Systematic Review"
+  authors: "Viann N. Nguyen-Feng et al."
+  year: 2025
+  publication: "Agency for Healthcare Research and Quality, Report 25-EHC007"
+  type: systematic review
+  doi: "10.23970/AHRQEPCSRTRAUMA"
+  url: "https://www.ncbi.nlm.nih.gov/books/NBK614496/"
+  reviewed_on: "2026-07-21"
+  relevance: "Assesses trauma-informed care models and patient or client outcomes across healthcare and social-service settings."
+  boundary: "Evidence was insufficient for clear outcome determinations; trauma-informed language must not be presented as evidence-closed."

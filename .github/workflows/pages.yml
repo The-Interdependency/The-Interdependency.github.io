@@ -40,12 +40,20 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Verify Pages artifact root
+      - name: Install Chromium release dependency
+        run: npx playwright install --with-deps chromium
+
+      - name: Run browser and accessibility release checks
+        run: npm run test:browser
+
+      - name: Verify Pages artifact root and identity
         run: |
           test -s _site/index.html
           test -s _site/CNAME
           test "$(cat _site/CNAME)" = "interdependentway.org"
           test -d _site/pagefind
+          test -s _site/build.json
+          node -e "const b=require('./_site/build.json'); if(b.commit!==process.env.GITHUB_SHA) process.exit(1)"
 
       - name: Configure Pages
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6, node24
@@ -64,7 +72,7 @@ jobs:
           path: _site
 
   deploy:
-    name: Deploy verified site
+    name: Deploy and verify site
     needs: build
     runs-on: ubuntu-latest
     environment:
@@ -74,3 +82,9 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5, node24
+
+      - name: Verify Pages deployment identity
+        run: node scripts/verify-live-deployment.mjs "${{ steps.deployment.outputs.page_url }}" "${{ github.sha }}"
+
+      - name: Verify custom-domain deployment identity
+        run: node scripts/verify-live-deployment.mjs "https://interdependentway.org" "${{ github.sha }}"
