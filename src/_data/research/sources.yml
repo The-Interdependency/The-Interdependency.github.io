@@ -45,3 +45,119 @@
   reviewed_on: "2026-07-21"
   relevance: "Assesses trauma-informed care models and patient or client outcomes across healthcare and social-service settings."
   boundary: "Evidence was insufficient for clear outcome determinations; trauma-informed language must not be presented as evidence-closed."
+
+- id: gundersen-ziliak-2015-food-insecurity
+  title: "Food insecurity and health outcomes"
+  authors: "Craig Gundersen; James P. Ziliak"
+  year: 2015
+  publication: "Health Affairs 34(11):1830-1839"
+  type: peer-reviewed review
+  doi: "10.1377/hlthaff.2015.0645"
+  url: "https://doi.org/10.1377/hlthaff.2015.0645"
+  reviewed_on: "2026-07-21"
+  relevance: "Reviews evidence linking food insecurity with adverse health outcomes and describes nutrition assistance as an important means of reducing food insecurity."
+  boundary: "Supports a material survival floor; it does not determine contribution rules, sanctions, or allocation under acute scarcity."
+
+- id: andersson-pearson-1999-incivility
+  title: "Tit for Tat? The Spiraling Effect of Incivility in the Workplace"
+  authors: "Lynne M. Andersson; Christine M. Pearson"
+  year: 1999
+  publication: "Academy of Management Review 24(3):452-471"
+  type: peer-reviewed theoretical article
+  doi: "10.5465/AMR.1999.2202131"
+  url: "https://doi.org/10.5465/AMR.1999.2202131"
+  reviewed_on: "2026-07-21"
+  relevance: "Models how low-intensity incivility can pass tipping points and spiral into increasingly aggressive reciprocal behavior."
+  boundary: "Supports treating automatic reciprocity as an escalation risk; it does not establish that every conflict follows the proposed spiral."
+
+- id: ahrq-2023-teamstepps
+  title: "TeamSTEPPS 3.0"
+  authors: "Agency for Healthcare Research and Quality"
+  year: 2023
+  publication: "AHRQ evidence-based teamwork and patient-safety curriculum"
+  type: evidence-based implementation framework
+  url: "https://www.ahrq.gov/teamstepps-program/index.html"
+  reviewed_on: "2026-07-21"
+  relevance: "Organizes communication, team leadership, situation monitoring, mutual support, and active patient involvement into trainable tools."
+  boundary: "Supports structured high-consequence communication in healthcare; transfer to other domains requires contextual validation."
+
+- id: nagin-telep-2017-procedural-justice
+  title: "Procedural Justice and Legal Compliance"
+  authors: "Daniel S. Nagin; Cody W. Telep"
+  year: 2017
+  publication: "Annual Review of Law and Social Science 13:5-28"
+  type: peer-reviewed review
+  doi: "10.1146/annurev-lawsocsci-110316-113310"
+  url: "https://doi.org/10.1146/annurev-lawsocsci-110316-113310"
+  reviewed_on: "2026-07-21"
+  relevance: "Finds consistent associations among perceived procedural justice, legitimacy, and compliance in perception-based studies."
+  boundary: "The review explicitly states that a causal chain from changed institutional practice to changed compliance had not been established."
+
+- id: who-2001-icf
+  title: "International Classification of Functioning, Disability and Health"
+  authors: "World Health Organization"
+  year: 2001
+  publication: "WHO international classification and framework"
+  type: international standard framework
+  url: "https://www.who.int/standards/classifications/international-classification-of-functioning-disability-and-health"
+  reviewed_on: "2026-07-21"
+  relevance: "Treats functioning and disability as contextual, including environmental factors rather than locating capacity only inside the person."
+  boundary: "Provides a framework for describing functioning; it does not define civic adulthood or authorize removal of legal status."
+
+- id: who-2022-uhc-competency
+  title: "Global Competency and Outcomes Framework for Universal Health Coverage"
+  authors: "World Health Organization"
+  year: 2022
+  publication: "World Health Organization technical document"
+  type: competency framework
+  isbn: "978-92-4-003466-2"
+  url: "https://www.who.int/publications/i/item/9789240034662"
+  reviewed_on: "2026-07-21"
+  relevance: "Defines role-relevant competency domains and connects outcomes with curricula, learning activities, and assessment approaches."
+  boundary: "Supports field-specific demonstrated competence; it applies to health-worker education, not universal political standing."
+
+- id: fema-2017-nims
+  title: "National Incident Management System, Third Edition"
+  authors: "Federal Emergency Management Agency"
+  year: 2017
+  publication: "FEMA incident-management doctrine"
+  type: official operational framework
+  url: "https://training.fema.gov/is/coursematerials.aspx?code=IS-700.b"
+  reviewed_on: "2026-07-21"
+  relevance: "Defines common terminology, command and coordination structures, resource management, transfer, and demobilization for incidents."
+  boundary: "Supports bounded emergency authority and interoperable command; incident doctrine is not a general constitution for ordinary governance."
+
+- id: ietf-1997-rfc2119
+  title: "RFC 2119: Key words for use in RFCs to Indicate Requirement Levels"
+  authors: "Scott Bradner"
+  year: 1997
+  publication: "Internet Engineering Task Force Best Current Practice 14"
+  type: technical standard
+  doi: "10.17487/RFC2119"
+  url: "https://www.rfc-editor.org/info/rfc2119/"
+  reviewed_on: "2026-07-21"
+  relevance: "Defines consistent meanings for MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY in technical specifications."
+  boundary: "Demonstrates the value of controlled normative language; it does not settle moral, legal, or ordinary-language definitions."
+
+- id: ietf-2017-rfc8174
+  title: "RFC 8174: Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"
+  authors: "Barry Leiba"
+  year: 2017
+  publication: "Internet Engineering Task Force Best Current Practice 14"
+  type: technical standard clarification
+  doi: "10.17487/RFC8174"
+  url: "https://www.rfc-editor.org/info/rfc8174/"
+  reviewed_on: "2026-07-21"
+  relevance: "Clarifies when standardized requirement words carry their defined force and reduces ambiguity caused by inconsistent capitalization."
+  boundary: "The clarification is limited to documents invoking BCP 14 and should not be projected onto all speech."
+
+- id: hhs-1979-belmont-report
+  title: "The Belmont Report: Ethical Principles and Guidelines for the Protection of Human Subjects of Research"
+  authors: "National Commission for the Protection of Human Subjects of Biomedical and Behavioral Research"
+  year: 1979
+  publication: "United States Department of Health and Human Services"
+  type: foundational ethics report
+  url: "https://www.hhs.gov/ohrp/regulations-and-policy/belmont-report/read-the-belmont-report/index.html"
+  reviewed_on: "2026-07-21"
+  relevance: "Connects respect for persons with information, comprehension, and voluntariness; also requires risk-benefit assessment and protection for diminished autonomy."
+  boundary: "Governs human-subject research ethics and supplies a strong consent model; not every civil or private interaction is research."
