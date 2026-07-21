@@ -6,7 +6,7 @@ import { test, expect } from '@playwright/test';
 const require = createRequire(import.meta.url);
 const axePath = require.resolve('axe-core/axe.min.js');
 
-for (const route of ['/', '/articles/', '/articles/article-two/', '/way/', '/projects/']) {
+for (const route of ['/', '/preamble/', '/articles/', '/articles/article-two/', '/way/', '/projects/']) {
   test(`${route} has no serious or critical automated accessibility violations`, async ({ page }) => {
     await page.goto(route);
     await page.addScriptTag({ path: axePath });
