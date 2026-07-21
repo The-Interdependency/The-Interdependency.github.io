@@ -1,5 +1,6 @@
+import { constants } from 'node:fs';
 import { createServer } from 'node:http';
-import { readFile } from 'node:fs/promises';
+import { open } from 'node:fs/promises';
 import { extname, isAbsolute, join, relative, resolve } from 'node:path';
 
 // === MODULE_BUILD ===
@@ -60,12 +61,17 @@ const server = createServer(async (request, response) => {
     const requestPath = (request.url || '/').split('?')[0];
     let path = safePath(requestPath);
     if (requestPath.endsWith('/') || !extname(path)) path = join(path, 'index.html');
-    const body = await readFile(path);
-    response.writeHead(200, {
-      'content-type': types[extname(path)] || 'application/octet-stream',
-      'cache-control': 'no-store'
-    });
-    response.end(body);
+    const handle = await open(path, constants.O_RDONLY | constants.O_NOFOLLOW);
+    try {
+      const body = await handle.readFile();
+      response.writeHead(200, {
+        'content-type': types[extname(path)] || 'application/octet-stream',
+        'cache-control': 'no-store'
+      });
+      response.end(body);
+    } finally {
+      await handle.close();
+    }
   } catch {
     response.writeHead(404, { 'content-type': 'text/plain; charset=utf-8' });
     response.end('Not found');
