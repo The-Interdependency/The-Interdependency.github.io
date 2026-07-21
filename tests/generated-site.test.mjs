@@ -6,8 +6,9 @@ import { readFile } from 'node:fs/promises';
 
 // Usage: run only after Eleventy has generated _site, normally through npm run test:generated or npm run check.
 test('generated deployment artifact contains the unified routes', async () => {
-  const [home, artifacts, fourCuts, fallback, articles] = await Promise.all([
+  const [home, preamble, artifacts, fourCuts, fallback, articles] = await Promise.all([
     readFile('_site/index.html', 'utf8'),
+    readFile('_site/preamble/index.html', 'utf8'),
     readFile('_site/artifacts/index.html', 'utf8'),
     readFile('_site/artifacts/four-cuts/index.html', 'utf8'),
     readFile('_site/fallback/index.html', 'utf8'),
@@ -15,6 +16,10 @@ test('generated deployment artifact contains the unified routes', async () => {
   ]);
 
   assert.match(home, /A way through complexity/);
+  assert.match(home, /href="\/preamble\/"[^>]*>Read the Preamble/);
+  assert.match(preamble, /One-click canon entrance/);
+  assert.match(preamble, /Humanity faces extinction/);
+  assert.match(preamble, /Canonical repository/);
   assert.match(artifacts, /Artifacts/);
   assert.match(fourCuts, /Wealth and tax/);
   assert.match(fallback, /Emergency static edition/);

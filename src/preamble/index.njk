@@ -1,0 +1,33 @@
+---
+layout: layouts/base.njk
+title: Preamble
+description: The canonical Preamble of The Interdependent Way, directly accessible from the public entrance.
+permalink: /preamble/
+---
+{% set preambles = generated.canon.units | where("title", "Preamble") %}
+{% set preamble = preambles[0] %}
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> / Preamble</nav>
+<header class="page-head">
+  <p class="eyebrow">One-click canon entrance</p>
+  <h1>Preamble</h1>
+  <div class="status-row"><span class="status status-canon">exact canon-derived unit</span></div>
+  <p class="lede">The Preamble is a first-order entrance to The Interdependent Way. This stable route is generated from the selected canonical source and does not maintain a separate copy.</p>
+</header>
+{% if preamble %}
+<section>
+  <h2>Canonical text</h2>
+  <pre class="source-block">{{ preamble.content }}</pre>
+</section>
+<section class="panel">
+  <h2>Source evidence</h2>
+  <dl class="meta">
+    <dt>Canonical repository</dt><dd><code>{{ generated.canon.source.repository }}</code></dd>
+    <dt>Canonical path</dt><dd><code>{{ generated.canon.source.path }}</code></dd>
+    <dt>Source lines</dt><dd>{{ preamble.startLine }}–{{ preamble.endLine }}</dd>
+    <dt>Unit digest</dt><dd><code>{{ preamble.hash }}</code></dd>
+  </dl>
+</section>
+<div class="actions"><a class="button" href="/source/{{ preamble.routeSlug }}/">Read exact source view</a><a class="button secondary" href="/way/">Continue through The Way</a></div>
+{% else %}
+<section class="hmmm"><h2>hmmm</h2><p>The selected canon did not produce a Preamble unit. The release tests must treat this as a broken public contract.</p></section>
+{% endif %}
