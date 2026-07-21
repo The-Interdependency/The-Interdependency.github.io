@@ -84,6 +84,28 @@ h3 { font-size: clamp(1.2rem, 2vw, 1.55rem); }
 .canon-outline .unit-level-4 { margin-left: clamp(2rem, 6vw, 5rem); }
 .canon-outline .unit-level-3 a { border-left: .25rem solid var(--violet); }
 .canon-outline .unit-level-4 a { border-left: .25rem solid var(--cyan); background: rgba(9, 13, 24, .76); }
+.chapter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); gap: 1rem; padding: 0; margin: 1.5rem 0 3rem; list-style: none; }
+.chapter-grid li { min-width: 0; }
+.chapter-card { height: 100%; }
+.chapter-number { display: block; margin-bottom: .4rem; color: rgba(174, 187, 210, .42); font: 800 clamp(2.8rem, 7vw, 5rem)/1 Georgia, "Times New Roman", serif; letter-spacing: -.04em; }
+.chapter-card small { display: block; margin-top: 1rem; color: var(--silver); overflow-wrap: anywhere; }
+.chapter-head { margin-bottom: 1.5rem; }
+.chapter-provenance { margin: 0 0 2rem; }
+.textbook-chapter { max-width: 55rem; margin: 3rem auto; padding: clamp(1.1rem, 4vw, 3.2rem); border: 1px solid var(--line); border-radius: var(--radius); background: linear-gradient(180deg, rgba(16,24,42,.96), rgba(7,10,18,.96)); box-shadow: var(--shadow); }
+.textbook-chapter > :first-child { margin-top: 0; }
+.textbook-chapter h1 { font-size: clamp(2.2rem, 5vw, 4.6rem); }
+.textbook-chapter h1 + h1 { margin-top: .6rem; color: var(--cyan); font-size: clamp(1.55rem, 3.5vw, 2.9rem); letter-spacing: -.025em; }
+.textbook-chapter h2 { margin-top: 3.5rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+.textbook-chapter h3 { margin-top: 2.2rem; }
+.textbook-chapter p, .textbook-chapter li { max-width: 76ch; }
+.textbook-chapter blockquote { margin: 1.5rem 0; padding: .2rem 1.2rem; border-left: .3rem solid var(--violet); color: var(--silver); }
+.textbook-chapter pre { max-width: 100%; padding: 1rem; overflow: auto; border: 1px solid var(--line); border-radius: .7rem; background: #05070c; }
+.textbook-chapter code { overflow-wrap: anywhere; }
+.textbook-chapter table { display: block; width: 100%; overflow-x: auto; border-collapse: collapse; }
+.textbook-chapter th, .textbook-chapter td { padding: .65rem .8rem; border: 1px solid var(--line); text-align: left; vertical-align: top; }
+.textbook-chapter th { background: var(--night-soft); }
+.textbook-chapter hr { margin: 3rem 0; border: 0; border-top: 1px solid var(--line); }
+.chapter-pagination { display: flex; align-items: center; justify-content: space-between; gap: .75rem; flex-wrap: wrap; margin: 3rem 0; }
 .source-block { white-space: pre-wrap; overflow-wrap: anywhere; padding: 1rem; border: 1px solid var(--line); border-radius: .8rem; background: #070a12; color: #dce6fa; font: .92rem/1.6 ui-monospace, SFMono-Regular, Consolas, monospace; }
 dl.meta { display: grid; grid-template-columns: minmax(9rem, .35fr) 1fr; gap: .45rem 1rem; }
 dl.meta dt { color: var(--silver); }
@@ -110,8 +132,10 @@ summary { cursor: pointer; font-weight: 800; }
   .index-list a { grid-template-columns: 1fr; gap: .15rem; }
   .canon-outline .unit-level-3 { margin-left: .65rem; }
   .canon-outline .unit-level-4 { margin-left: 1.3rem; }
+  .textbook-chapter { padding: 1rem; }
+  .chapter-pagination .button { flex: 1 1 100%; }
   .site-footer { grid-template-columns: 1fr; }
   .hmmm-boundary { grid-column: auto; grid-template-columns: 1fr; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; } }
-@media print { body { background: white; color: black; } body::before, .site-header, .actions, .noscript { display: none; } .site-main { max-width: none; padding: 0; } .card, .panel, .provenance, .hmmm, details { background: white; color: black; box-shadow: none; } a { color: black; } }
+@media print { body { background: white; color: black; } body::before, .site-header, .actions, .noscript { display: none; } .site-main { max-width: none; padding: 0; } .card, .panel, .provenance, .hmmm, details, .textbook-chapter { background: white; color: black; box-shadow: none; } a { color: black; } }
