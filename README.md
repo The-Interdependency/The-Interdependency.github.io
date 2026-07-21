@@ -8,6 +8,9 @@ The canonical text lives in `wayseer00/main:canon/INTERDEPENDENT_WAY.txt`, and n
 
 ## Architecture
 
+- `/` is the canon-derived **Awakening** splash page and public threshold.
+- `/home/` is the complete living knowledge-system entrance.
+- `/preamble/` remains one click from Awakening and from the primary navigation.
 - Eleventy generates complete HTML into `_site`.
 - Pagefind supplies static search.
 - GitHub organization and canon data are retrieved at build time, never in a visitor’s browser.
@@ -29,6 +32,14 @@ Use the recovery snapshots without network access:
 
 ```bash
 OFFLINE=1 npm run build
+```
+
+Route checks after a build:
+
+```text
+/          Awakening threshold
+/home/    knowledge-system entrance
+/preamble/ direct canonical Preamble
 ```
 
 Add reviewed project metadata to a repository:
