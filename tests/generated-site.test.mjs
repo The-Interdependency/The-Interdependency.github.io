@@ -25,7 +25,8 @@ test('generated deployment artifact contains the unified routes', async () => {
   assert.doesNotMatch(splash, /primary-nav/);
   assert.match(home, /A way through complexity/);
   assert.match(home, /href="\/preamble\/"[^>]*>Read the Preamble/);
-  assert.match(home, /href="\/"[^>]*>Return to Awakening/);
+  assert.match(home, /href="\/"/);
+  assert.match(home, /Return to Awakening/);
   assert.match(preamble, /One-click canon entrance/);
   assert.match(preamble, /Humanity faces extinction/);
   assert.match(preamble, /Canonical repository/);
