@@ -1,5 +1,14 @@
+- id: article-one-food-insecurity-health
+  article: rights-and-definitions-of-the-way.article-one
+  stance: support
+  status: defended-component
+  claim: "Food insecurity is associated with adverse health outcomes, and reducing food insecurity is a material health intervention rather than merely charitable preference."
+  source_ids:
+    - gundersen-ziliak-2015-food-insecurity
+  limitation: "The review supports a survival floor but does not determine contribution rules, exclusions, or allocation under acute scarcity."
+
 - id: article-two-autonomy-and-duty
-  article: rights.article-two
+  article: rights-and-definitions-of-the-way.article-two
   stance: support
   status: defended-component
   claim: "Necessary health or survival work is more likely to be sustained when people experience volition, competence, and supportive connection rather than pressure or coercion."
@@ -8,7 +17,7 @@
   limitation: "This supports the page's autonomy-preserving interpretation, not every duty named in the canon."
 
 - id: article-two-sanitation-is-health-work
-  article: rights.article-two
+  article: rights-and-definitions-of-the-way.article-two
   stance: support
   status: evidence-informed
   claim: "Safe sanitation is material health infrastructure rather than merely an aesthetic preference."
@@ -17,7 +26,7 @@
   limitation: "The guideline does not settle who owes the work or how responsibility should be distributed."
 
 - id: article-two-will-under-scarcity
-  article: rights.article-two
+  article: rights-and-definitions-of-the-way.article-two
   stance: dissent
   status: defended-risk
   claim: "Poverty and scarcity can consume cognitive resources, so compliance, refusal, or poor performance cannot automatically be treated as evidence of free will or character."
@@ -26,10 +35,92 @@
   limitation: "The study does not measure consent directly; the application to voluntariness is a bounded inference."
 
 - id: article-two-trauma-evidence-limit
-  article: rights.article-two
+  article: rights-and-definitions-of-the-way.article-two
   stance: limit
   status: evidence-open
   claim: "Trauma-informed care is widely implemented, but comparative evidence remains insufficient to determine effects across patient and client outcomes."
   source_ids:
     - ahrq-2025-trauma-informed-care
   limitation: "The page may defend attention to trauma while keeping intervention effectiveness explicitly unresolved."
+
+- id: article-three-reciprocity-escalation
+  article: rights-and-definitions-of-the-way.article-three
+  stance: dissent
+  status: defended-risk
+  claim: "Automatic tit-for-tat responses can turn low-intensity incivility into reciprocal escalation and increasingly aggressive conduct."
+  source_ids:
+    - andersson-pearson-1999-incivility
+  limitation: "The article is theoretical and workplace-focused; it warns against automatic reciprocity but does not model every conflict."
+
+- id: article-three-structured-communication
+  article: rights-and-definitions-of-the-way.article-three
+  stance: support
+  status: evidence-informed
+  claim: "High-consequence communication can be made safer through shared tools for explicit messages, team leadership, situation monitoring, mutual support, and patient involvement."
+  source_ids:
+    - ahrq-2023-teamstepps
+  limitation: "TeamSTEPPS is a healthcare implementation framework; transfer to other domains requires adaptation and evaluation."
+
+- id: article-four-procedural-justice-association
+  article: rights-and-definitions-of-the-way.article-four
+  stance: mixed
+  status: defended-association
+  claim: "Perceived procedural justice is consistently associated with perceived legitimacy, and legitimacy is usually associated with legal compliance."
+  source_ids:
+    - nagin-telep-2017-procedural-justice
+  limitation: "The review found that a causal chain from changed institutional practice to changed compliance had not been established."
+
+- id: article-five-contextual-functioning
+  article: rights-and-definitions-of-the-way.article-five
+  stance: limit
+  status: framework-backed
+  claim: "Functioning and disability should be described in context, including environmental supports and barriers, rather than treated as a fixed global property of the person."
+  source_ids:
+    - who-2001-icf
+  limitation: "The ICF is descriptive and health-related; it does not define political adulthood or authorize removal of civil status."
+
+- id: article-five-field-specific-competence
+  article: rights-and-definitions-of-the-way.article-five
+  stance: support
+  status: framework-backed
+  claim: "Competency can be defined by role-relevant outcomes and connected to curricula, practice activities, and assessment rather than inferred from title alone."
+  source_ids:
+    - who-2022-uhc-competency
+  limitation: "The framework concerns health-worker education and cannot be generalized into a universal civic competence test without new validation."
+
+- id: article-six-bounded-incident-authority
+  article: rights-and-definitions-of-the-way.article-six
+  stance: support
+  status: operational-framework
+  claim: "Emergency authority can be structured through common terminology, explicit command and coordination, resource management, transfer, and demobilization."
+  source_ids:
+    - fema-2017-nims
+  limitation: "Incident management doctrine supports bounded emergency coordination, not permanent or general political authority."
+
+- id: article-seven-normative-language
+  article: rights-and-definitions-of-the-way.article-seven
+  stance: support
+  status: standard-backed
+  claim: "Controlled definitions for requirement words can reduce ambiguity and make obligations and exceptions more interoperable."
+  source_ids:
+    - ietf-1997-rfc2119
+    - ietf-2017-rfc8174
+  limitation: "BCP 14 applies to technical documents that invoke it; ordinary, moral, and legal language requires additional contextual definition."
+
+- id: article-eight-informed-consent-elements
+  article: rights-and-definitions-of-the-way.article-eight
+  stance: support
+  status: doctrine-backed
+  claim: "Valid informed consent requires information, comprehension, and voluntariness rather than a signature or nominal permission alone."
+  source_ids:
+    - hhs-1979-belmont-report
+  limitation: "The Belmont Report governs human-subject research; extending its consent model to other domains is an argued analogy, not direct jurisdiction."
+
+- id: article-eight-vulnerability-and-risk
+  article: rights-and-definitions-of-the-way.article-eight
+  stance: limit
+  status: doctrine-backed
+  claim: "Respect for persons includes both autonomy and protection for diminished autonomy, while beneficence requires explicit assessment of risks, benefits, alternatives, and vulnerable populations."
+  source_ids:
+    - hhs-1979-belmont-report
+  limitation: "Protection must not be converted into total erasure of agency, and the report does not resolve every conflict among autonomy, harm, and public duty."

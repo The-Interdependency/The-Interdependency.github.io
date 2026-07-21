@@ -1,0 +1,274 @@
+[
+  {
+    "unit_id": "rights-and-definitions-of-the-way.article-one",
+    "public_title": "Article One — Contribution without contempt",
+    "ad_absurdum": {
+      "overextension": "If ‘so all may eat’ is treated as an unlimited claim on finite stores, contribution and stewardship disappear; the common table is consumed until nobody can eat.",
+      "counter_overextension": "If contribution is made an absolute precondition for food, incapacity, scarcity, caregiving, injury, childhood, and temporary dependence become punishable by hunger.",
+      "boundary": "Provide the survival floor first, then distinguish inability, refusal, fraud, and active harm through evidence, proportion, and review."
+    },
+    "worst_practices": [
+      "Require degrading proof of deservingness before meeting an immediate survival need.",
+      "Treat disability, exhaustion, caregiving, unemployment, or scarcity as deliberate refusal.",
+      "Let the person controlling supplies define contribution and harm without appeal.",
+      "Confuse equal human worth with identical allocation regardless of need or resource limits."
+    ],
+    "best_practices": [
+      "Stabilize hunger or immediate danger before conducting eligibility or accountability review.",
+      "Separate need, capacity, contribution, refusal, and harmful conduct in the record.",
+      "Publish resource limits, allocation rules, exceptions, and an appeal path.",
+      "Use the least destructive response that protects the shared capacity to provide."
+    ],
+    "applications": {
+      "Medical": "Provide stabilizing care before billing, compliance, or character judgments; determine whether nonparticipation reflects incapacity, fear, access barriers, or refusal.",
+      "Construction": "Treat water, sanitation, rest, fall protection, and protective equipment as a floor while assigning work according to demonstrated capacity.",
+      "Engineering": "Reserve minimum safe operating resources before optimization and design graceful degradation so the least powerful user is not the first excluded.",
+      "Agriculture": "Protect seed, water, soil, feed, and subsistence reserves before market allocation; distinguish crop failure from neglect and extraction.",
+      "Jurisprudence": "Do not condition food, shelter, emergency medicine, or access to process on confession, status performance, or inability to pay.",
+      "Transportation and distribution": "Publish priority rules for scarce deliveries, preserve emergency stock and cold chain, and record why loads were rerouted or refused.",
+      "Child craft": "Meals, safety, affection, and basic learning materials remain unconditional; contribution is age-appropriate participation, not payment for care.",
+      "Information systems": "Maintain a minimum service level, accessible recovery path, and fair rate limits before premium optimization or anti-abuse escalation.",
+      "Emergency response": "Triage life threats first, then document conduct, capacity, and resource claims for later accountability.",
+      "Hospitality and sanitation": "Guarantee potable water, toilets, handwashing, waste removal, and basic food safety before aesthetic upgrades.",
+      "Community governance": "Maintain a visible survival floor and a transparent contribution ledger that includes care, maintenance, teaching, and risk-bearing work."
+    }
+  },
+  {
+    "unit_id": "rights-and-definitions-of-the-way.article-two",
+    "public_title": "Article Two — Freedom without abandonment",
+    "ad_absurdum": {
+      "overextension": "If ‘do nothing against your will’ means no obligation can ever survive reluctance, essential care, maintenance, sanitation, and teaching are abandoned whenever they become difficult.",
+      "counter_overextension": "If every necessary task creates an enforceable duty on any available person, necessity becomes a universal excuse for forced labor.",
+      "boundary": "Make necessary work visible, preserve refusal and exit, develop competence, distribute burdens, and escalate only when a specific preventable harm cannot otherwise be covered."
+    },
+    "worst_practices": [
+      "Rename coercion as teamwork, professionalism, family duty, or emergency whenever consent is inconvenient.",
+      "Hide essential labor until the same low-status person repeatedly absorbs it.",
+      "Treat trauma, poverty, dependence, or threat as irrelevant to whether a choice is voluntary.",
+      "Assign responsibility without tools, time, authority, training, or a safe way to decline."
+    ],
+    "best_practices": [
+      "List the necessary tasks, capacities, risks, and unclaimed burdens before assigning people.",
+      "Use voluntary selection, rotation, mutual aid, training, and compensation before compulsion.",
+      "Preserve a meaningful refusal path and record the actual consequence of an uncovered task.",
+      "Separate immediate stabilization from redesign of the system producing repeated emergencies."
+    ],
+    "applications": {
+      "Medical": "Use informed choice, shared decision-making, team role clarity, and escalation paths while ensuring urgent symptoms are not ignored.",
+      "Construction": "Make task hazards and qualifications visible, allow stop-work authority, rotate undesirable work, and correct missing tools before blaming labor.",
+      "Engineering": "Define essential maintenance ownership, on-call limits, fallback capacity, and handoff requirements before failure.",
+      "Agriculture": "Plan labor, water, animal care, harvest, and repair duties around seasonal necessity while protecting rest, refusal, and contingency coverage.",
+      "Jurisprudence": "Use narrowly tailored civic duties with notice, competence support, exemptions, review, and proportional consequences.",
+      "Transportation and distribution": "Publish essential-route coverage, fatigue limits, relief crews, and refusal procedures for unsafe loads or conditions.",
+      "Child craft": "Teach necessary household and social skills through participation, modeling, choice within boundaries, and developmentally appropriate responsibility.",
+      "Information systems": "Define service ownership, incident rotation, maintenance windows, and user-impact priorities with sustainable staffing.",
+      "Emergency response": "Use predeclared roles, mutual-aid agreements, relief cycles, and lawful emergency authority with after-action review.",
+      "Hospitality and sanitation": "Make cleaning, food safety, laundry, and waste work visible, staffed, equipped, compensated, and rotatable.",
+      "Community governance": "Maintain a public task board showing what survival work exists, what is covered, what is unclaimed, and what support would make participation possible."
+    }
+  },
+  {
+    "unit_id": "rights-and-definitions-of-the-way.article-three",
+    "public_title": "Article Three — Speech as demonstrated consent",
+    "ad_absurdum": {
+      "overextension": "If every hostile word authorizes identical treatment in return, one insult becomes a license for an escalating chain of retaliation.",
+      "counter_overextension": "If no conduct may shape the response it receives, chronic intimidation and manipulation gain protection from proportionate boundaries.",
+      "boundary": "Treat speech and conduct as evidence about interaction—not blanket consent. Clarify the mode, respond proportionately, preserve non-escalatory exits, and distinguish boundary-setting from revenge."
+    },
+    "worst_practices": [
+      "Infer consent to violence, humiliation, sex, punishment, or permanent exclusion from tone or prior conduct.",
+      "Mirror aggression automatically and call retaliation reciprocity.",
+      "Use politeness demands to silence accurate warnings, anger, grief, or dissent.",
+      "Judge wording without accounting for disability, language, culture, trauma, urgency, or power."
+    ],
+    "best_practices": [
+      "Name the interaction mode: question, request, command, warning, accusation, joke, negotiation, or emergency direction.",
+      "Confirm meaning and desired response before escalating ambiguous speech.",
+      "Use the smallest proportionate boundary that stops harm and keeps repair possible.",
+      "Record threats, commands, consent, refusals, and handoffs in high-consequence settings."
+    ],
+    "applications": {
+      "Medical": "Use closed-loop communication, teach-back, escalation phrases, and explicit consent; treat distress speech as clinical information rather than permission to retaliate.",
+      "Construction": "Standardize stop-work calls, hazard warnings, hand signals, read-backs, and supervisor acknowledgment.",
+      "Engineering": "Label requirements, assumptions, objections, decisions, and unresolved risks; separate critique of a design from attack on a person.",
+      "Agriculture": "Use clear animal-handling, machinery, chemical, weather, and harvest signals across language and literacy differences.",
+      "Jurisprudence": "Distinguish protected speech, threat, instruction, consent, confession, and coercion with context and evidentiary standards.",
+      "Transportation and distribution": "Use standardized dispatch, load, route, exception, and emergency messages with read-back for consequential changes.",
+      "Child craft": "Teach children to name feelings, boundaries, requests, refusals, and repair while adults retain responsibility for proportional response.",
+      "Information systems": "Separate alerts, warnings, errors, approvals, and destructive confirmations; preserve logs and explicit user intent.",
+      "Emergency response": "Use plain command language, role identifiers, repeat-backs, and explicit transfer of command.",
+      "Hospitality and sanitation": "Standardize allergy, contamination, shortage, spill, and harassment reporting with no-retaliation acknowledgment.",
+      "Community governance": "Publish conversation rules that protect dissent, require definition of serious accusations, and distinguish debate from threat."
+    }
+  },
+  {
+    "unit_id": "rights-and-definitions-of-the-way.article-four",
+    "public_title": "Article Four — Law as teachable duty",
+    "ad_absurdum": {
+      "overextension": "If every person must fully know every rule before acting, lawful participation becomes impossible and specialists monopolize ordinary life.",
+      "counter_overextension": "If institutions have no duty to teach the rules they enforce, secret, shifting, or unintelligible law becomes a trap.",
+      "boundary": "Teach the rules relevant to a person’s role and risk in language they can use; preserve notice, questions, examples, version history, and a defense when the system failed to make the duty knowable."
+    },
+    "worst_practices": [
+      "Punish first and explain the governing rule afterward.",
+      "Publish rules only in technical language, inaccessible formats, or scattered locations.",
+      "Change requirements silently while continuing enforcement.",
+      "Treat a signature, checkbox, or posted notice as proof of comprehension."
+    ],
+    "best_practices": [
+      "Use plain language, examples, nonexamples, translated and accessible formats.",
+      "Require teach-back or demonstrated use for high-consequence duties.",
+      "Version rules, announce changes, and preserve the rule that applied at the time.",
+      "Create a question, correction, and appeal path before escalating punishment."
+    ],
+    "applications": {
+      "Medical": "Explain diagnosis, options, risks, discharge duties, medication use, and return precautions in usable language with teach-back.",
+      "Construction": "Teach site rules through orientation, demonstration, signage, toolbox talks, and supervisor verification.",
+      "Engineering": "Make standards, interfaces, assumptions, tolerances, change control, and safety constraints available at the point of work.",
+      "Agriculture": "Teach chemical, animal, machinery, water, labor, and food-safety rules in the languages and media workers actually use.",
+      "Jurisprudence": "Provide notice of charges, applicable rules, process, consequences, representation, and appeal in plain language.",
+      "Transportation and distribution": "Train and verify route, load, hours, dangerous-goods, customs, and exception procedures before assignment.",
+      "Child craft": "State boundaries and reasons in developmentally appropriate language, model them, and revisit them as capacity grows.",
+      "Information systems": "Put permissions, data use, security duties, destructive actions, and recovery steps where decisions occur.",
+      "Emergency response": "Use preincident training, quick-reference job aids, briefings, and just-in-time instruction under a common command vocabulary.",
+      "Hospitality and sanitation": "Teach food temperatures, allergens, cleaning chemistry, exposure response, and reporting through demonstration and visible job aids.",
+      "Community governance": "Publish rules, definitions, meeting procedure, decision authority, records, and remedies in one accessible place."
+    }
+  },
+  {
+    "unit_id": "rights-and-definitions-of-the-way.article-five",
+    "public_title": "Article Five — Adulthood as demonstrated competence",
+    "ad_absurdum": {
+      "overextension": "If a single competence test defines adulthood everywhere, one institution can erase adult standing through cultural bias, disability exclusion, or irrelevant performance.",
+      "counter_overextension": "If age or title alone establishes competence, people may wield consequential authority without the skills to avoid foreseeable harm.",
+      "boundary": "Assess competence by field, task, context, and consequence using multiple demonstrations, support, accommodations, transparent criteria, and periodic reevaluation."
+    },
+    "worst_practices": [
+      "Use one test, one language, one body type, or one educational pathway as the universal adult standard.",
+      "Confuse credentials, confidence, seniority, wealth, or obedience with competence.",
+      "Make failure permanent or hide what successful demonstration requires.",
+      "Remove support in order to test independence and then label predictable harm incapacity."
+    ],
+    "best_practices": [
+      "Define observable field-specific competencies and the harms they are meant to prevent.",
+      "Allow portfolios, simulation, supervised practice, oral, written, physical, and assistive demonstrations as appropriate.",
+      "Provide instruction, accommodations, retesting, and bounded scopes of practice.",
+      "Reevaluate competence when the task, environment, technology, health, or consequence changes."
+    ],
+    "applications": {
+      "Medical": "Use role-specific competencies, supervised practice, continuing assessment, and scope limits while incorporating patient-centred communication and contextual functioning.",
+      "Construction": "Verify task-specific skills for equipment, fall protection, excavation, electrical work, lifting, and emergency response.",
+      "Engineering": "Require traceable design judgment, review, testing, failure analysis, and domain-specific authorization.",
+      "Agriculture": "Demonstrate seasonal, machinery, animal, soil, water, chemical, preservation, and market competencies in context.",
+      "Jurisprudence": "Separate legal capacity, task competence, representation needs, and authority; use periodic, contextual evaluation rather than global status labels.",
+      "Transportation and distribution": "Verify vehicle, route, load, fatigue, documentation, maintenance, and emergency competencies by role.",
+      "Child craft": "Use developmental progression: model, practice, supervised demonstration, expanding autonomy, and revisable responsibility.",
+      "Information systems": "Use least privilege tied to demonstrated operational, security, privacy, and recovery competence.",
+      "Emergency response": "Credential roles before incidents, verify perishable skills, and assign authority only within demonstrated capability.",
+      "Hospitality and sanitation": "Recognize food safety, cleaning chemistry, infection control, de-escalation, maintenance, and guest-care competencies as skilled work.",
+      "Community governance": "Require demonstrated comprehension of duties, conflicts, records, budgets, consent, and consequences before granting public authority."
+    }
+  },
+  {
+    "unit_id": "rights-and-definitions-of-the-way.article-six",
+    "public_title": "Article Six — Authority as burden",
+    "ad_absurdum": {
+      "overextension": "If authority is justified whenever force can impose an outcome, successful violence becomes self-legitimating tyranny.",
+      "counter_overextension": "If nobody may hold bounded authority even during imminent danger, coordination collapses and the most forceful unofficial actor governs anyway.",
+      "boundary": "Name who may decide, by what selection, for which scope, for how long, with what records, relief, oversight, liability, and transfer of authority."
+    },
+    "worst_practices": [
+      "Declare a permanent emergency or let temporary command expand into ordinary governance.",
+      "Select authority opaquely, by confidence, proximity to force, or personal loyalty.",
+      "Hide decisions, casualties, exceptions, and conflicts from later review.",
+      "Glorify decisiveness while treating doubt, humor, consultation, or relief as weakness."
+    ],
+    "best_practices": [
+      "Predeclare scope, triggers, succession, limits, and termination conditions.",
+      "Separate command authority from investigation, review, and adjudication.",
+      "Log material decisions and preserve challenge, whistleblowing, and after-action review.",
+      "Rotate, relieve, support, and hold the authority-bearer accountable for foreseeable misuse."
+    ],
+    "applications": {
+      "Medical": "Clarify attending, nursing, specialist, patient, surrogate, ethics, and emergency decision authority with escalation and handoff.",
+      "Construction": "Name competent persons, stop-work authority, lift directors, safety leads, and incident command before hazardous work.",
+      "Engineering": "Assign design authority, independent review, change approval, safety sign-off, and rollback ownership.",
+      "Agriculture": "Define authority for animal emergencies, chemical incidents, fire, water allocation, harvest decisions, and equipment shutdown.",
+      "Jurisprudence": "Constrain coercive authority through jurisdiction, evidence, hearing, reasons, appeal, recusal, and liability.",
+      "Transportation and distribution": "Define dispatch, captain, driver, maintenance, loadmaster, customs, and emergency authority with explicit handoff.",
+      "Child craft": "Adults carry protective authority as a burden bounded by development, explanation, proportionality, and the child’s growing agency.",
+      "Information systems": "Use scoped administrative roles, dual control for destructive actions, immutable logs, incident command, and timely revocation.",
+      "Emergency response": "Apply common command, span of control, unified coordination, transfer briefings, resource tracking, and demobilization.",
+      "Hospitality and sanitation": "Name who can close service, discard food, isolate contamination, remove a dangerous person, or summon emergency help.",
+      "Community governance": "Select bounded decision-makers through visible process, record mandate and dissent, and require periodic return of authority."
+    }
+  },
+  {
+    "unit_id": "rights-and-definitions-of-the-way.article-seven",
+    "public_title": "Article Seven — Definitions before governance",
+    "ad_absurdum": {
+      "overextension": "If every word must be finally defined before conversation begins, discussion never starts and living language is frozen by gatekeepers.",
+      "counter_overextension": "If consequential terms never need definition, power can change their meaning midstream and make agreement, consent, or accountability impossible.",
+      "boundary": "Define the terms that control rights, duties, evidence, thresholds, and outcomes; include examples, exclusions, versioning, and a visible path for principled disagreement."
+    },
+    "worst_practices": [
+      "Use dictionary selection as an ambush after the other party has relied on a different meaning.",
+      "Let the most powerful participant define contested terms unilaterally.",
+      "Hide value judgments inside apparently neutral technical definitions.",
+      "Demand exhaustive definition of ordinary speech to delay or derail action."
+    ],
+    "best_practices": [
+      "Identify which terms are load-bearing for the present decision.",
+      "State scope, examples, nonexamples, thresholds, and who may revise the definition.",
+      "Distinguish descriptive, technical, legal, moral, and local senses.",
+      "Record dissent and test whether different definitions would change the outcome."
+    ],
+    "applications": {
+      "Medical": "Define diagnosis, risk, benefit, success, capacity, emergency, standard care, and patient goals before consequential decisions.",
+      "Construction": "Define competent person, qualified person, acceptable condition, completion, defect, hazard, and stop-work threshold in contract and field use.",
+      "Engineering": "Use controlled vocabularies, units, interface contracts, requirement levels, assumptions, and acceptance criteria.",
+      "Agriculture": "Define organic, regenerative, humane, drought, pest threshold, yield, soil health, water right, and contamination for the local system.",
+      "Jurisprudence": "Define elements, burdens, standards, jurisdiction, harm, consent, reasonableness, and remedy before applying sanctions.",
+      "Transportation and distribution": "Define delivered, accepted, damaged, delayed, hazardous, perishable, secure, custody, and transfer timestamps.",
+      "Child craft": "Define family rules with concrete examples and revisit meanings as language and developmental capacity change.",
+      "Information systems": "Adopt explicit requirement words, schemas, threat definitions, severity levels, data ownership, availability targets, and done criteria.",
+      "Emergency response": "Use common terminology for command, resources, locations, priorities, triage, evacuation, and status.",
+      "Hospitality and sanitation": "Define clean, sanitized, allergen-free, safe temperature, ready, occupied, contaminated, and closed.",
+      "Community governance": "Maintain a public glossary for authority, adult, citizen, harm, consent, quorum, majority, conflict, and appeal, with revision history."
+    }
+  },
+  {
+    "unit_id": "rights-and-definitions-of-the-way.article-eight",
+    "public_title": "Article Eight — Rights with living limits",
+    "ad_absurdum": {
+      "overextension": "If ‘harm none’ means zero possible risk, movement, medicine, construction, agriculture, transport, speech, and ordinary life become impermissible.",
+      "counter_overextension": "If consent alone makes any action right, coercion, misinformation, dependency, externalized harm, and irreversible effects disappear behind a checkbox.",
+      "boundary": "Define relevant harms, affected parties, probabilities, reversibility, alternatives, ecological effects, comprehension, voluntariness, and withdrawal; protect diminished autonomy without erasing agency."
+    },
+    "worst_practices": [
+      "Use harm as an undefined accusation or require certainty before acknowledging foreseeable risk.",
+      "Treat a signature, click, silence, payment, dependency, or prior behavior as sufficient informed consent.",
+      "Invoke nature to excuse preventable suffering or ignore human-caused externalities.",
+      "Count only direct immediate harm to consenting parties while exporting costs to others or the future."
+    ],
+    "best_practices": [
+      "Specify who may be harmed, how, with what likelihood, duration, reversibility, and evidence.",
+      "Separate information, comprehension, voluntariness, capacity, permission, and continuing assent.",
+      "Use least-harm alternatives, monitoring, stop conditions, remedy, and withdrawal.",
+      "Include indirect, cumulative, ecological, and distributional effects in the rights analysis."
+    ],
+    "applications": {
+      "Medical": "Use informed consent, capacity support, surrogate protection, risk-benefit review, alternatives, continuing assent, and withdrawal.",
+      "Construction": "Balance property, schedule, worker safety, public exposure, environmental effects, and stop-work rights through documented risk controls.",
+      "Engineering": "Build safety, privacy, security, accessibility, environmental, misuse, and rollback analysis into requirements and verification.",
+      "Agriculture": "Assess worker, animal, soil, water, biodiversity, consumer, neighbor, and future-season effects alongside owner consent and yield.",
+      "Jurisprudence": "Define protected interests, coercion, necessity, proportionality, informed waiver, standing, remedy, and the rights of affected nonparties.",
+      "Transportation and distribution": "Balance mobility and commerce against worker fatigue, public safety, emissions, access, dangerous goods, and community burden.",
+      "Child craft": "Use age-appropriate information, assent, protective limits, privacy, bodily autonomy, and periodic reevaluation as capacity grows.",
+      "Information systems": "Use specific, revocable, comprehensible consent plus data minimization, purpose limits, security, accessibility, and protection from dark patterns.",
+      "Emergency response": "Use necessity and proportionality, document rights restrictions, preserve humane treatment, and terminate extraordinary measures promptly.",
+      "Hospitality and sanitation": "Protect bodily safety, privacy, accessibility, food safety, worker rights, and environmental health while preserving reasonable guest choice.",
+      "Community governance": "Require public harm definitions, affected-party voice, minority protections, reversible pilots where possible, and remedies for imposed costs."
+    }
+  }
+]

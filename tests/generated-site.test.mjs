@@ -57,6 +57,29 @@ test('generated deployment artifact contains all rights article vertical slices'
   }
 });
 
+test('every Rights Article Lab renders absurd-limit, practice, domain, and research sections', async () => {
+  const canon = JSON.parse(await readFile('src/_data/generated/canon.json', 'utf8'));
+  const articleLab = JSON.parse(await readFile('src/_data/article_lab.json', 'utf8'));
+  const requiredDomains = [
+    'Medical', 'Construction', 'Engineering', 'Agriculture', 'Jurisprudence',
+    'Transportation and distribution', 'Child craft', 'Information systems',
+    'Emergency response', 'Hospitality and sanitation', 'Community governance'
+  ];
+
+  for (const record of articleLab) {
+    const unit = canon.units.find(candidate => candidate.id === record.unit_id);
+    assert.ok(unit, `missing canon unit ${record.unit_id}`);
+    const html = await readFile(`_site/lab/${unit.routeSlug}/index.html`, 'utf8');
+    assert.match(html, /Reductio ad absurdum/);
+    assert.match(html, /Worst practices and best practices/);
+    assert.match(html, /Applications by domain/);
+    assert.match(html, /Research field/);
+    assert.match(html, /Evidence boundary/);
+    assert.match(html, /href="https?:\/\//);
+    for (const domain of requiredDomains) assert.match(html, new RegExp(domain.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  }
+});
+
 test('generated deployment artifact publishes verifiable build identity', async () => {
   const build = JSON.parse(await readFile('_site/build.json', 'utf8'));
   assert.equal(build.repository, 'The-Interdependency/The-Interdependency.github.io');
