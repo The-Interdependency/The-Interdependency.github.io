@@ -50,8 +50,8 @@ test('distributed textbook routes are data-backed and source-bound', async () =>
   assert.match(chapter, /pagination:[\s\S]*generated\.textbook\.chapters/);
   assert.match(chapter, /chapter\.content \| markdown \| safe/);
   assert.match(chapter, /Open exact source in GitHub/);
-  assert.match(fetcher, /api\.github\.com/);
-  assert.match(fetcher, /raw\.githubusercontent\.com/);
+  assert.ok(fetcher.includes("const apiOrigin = 'https://api.github.com';"));
+  assert.ok(fetcher.includes("const rawOrigin = 'https://raw.githubusercontent.com';"));
   assert.match(fetcher, /refusing non-allowlisted textbook target/);
   assert.match(fetcher, /contentSha256/);
 });
