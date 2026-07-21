@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#050711">
+  <title>{{ title or site.title }}</title>
+  <meta name="description" content="{{ description or site.description }}">
+  <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+  <link rel="stylesheet" href="/assets/css/site.css">
+</head>
+<body class="awakening-body">
+  <a class="skip-link" href="#content">Skip to Awakening</a>
+  <main id="content" class="awakening-splash">{{ content | safe }}</main>
+</body>
+</html>
