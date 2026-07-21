@@ -14,7 +14,7 @@ description: A structured conversation between canonical body text, notes, resea
     {% for record in article_lab %}
       {% for unit in generated.canon.units %}
         {% if unit.id == record.unit_id %}
-          {% set claims = research.claims | where("article", unit.id) %}
+          {% set claims = research_data.claims | where("article", unit.id) %}
           <a class="card" href="/lab/{{ unit.routeSlug }}/">
             <span class="status status-interpretation">Lab</span>
             <h3>{{ record.public_title }}</h3>
