@@ -61,7 +61,7 @@ test('distributed textbook displays all eight exact chapter sources', async () =
     /Modules That Speak for Themselves/,
     /meta-package/,
     /Prime Tensor Circled Neural Architecture/,
-    /research instrument, not a product/,
+    /research[\s\S]*instrument, not a product/,
     /theory under development/
   ];
 
@@ -71,6 +71,7 @@ test('distributed textbook displays all eight exact chapter sources', async () =
     assert.match(index, new RegExp(chapter.title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
     const html = await readFile(`_site/chapters/${chapter.slug}/index.html`, 'utf8');
     assert.match(html, /class="textbook-chapter"/);
+    assert.match(html, new RegExp(`<title>Chapter ${chapter.display_number} · ${chapter.title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}<\\/title>`));
     assert.match(html, new RegExp(chapter.repository.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
     assert.match(html, new RegExp(chapter.path.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
     assert.match(html, /Open exact source in GitHub/);
