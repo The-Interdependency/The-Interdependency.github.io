@@ -22,8 +22,6 @@ import slugify from 'slugify';
 // Limits: heading recognition is canon-specific; unknown headings remain body text and must surface as hmmm during editorial review.
 
 export const parserVersion = '0.5.0';
-const superscriptDigits = '⁰¹²³⁴⁵⁶⁷⁸⁹';
-const subsequentNoteMarkerSource = `(?:\[[^\]]+\]|[${superscriptDigits}]+)`;
 
 function slug(value) {
   return slugify(value, { lower: true, strict: true }) || 'unit';
@@ -58,7 +56,7 @@ export function detectHeading(line) {
   if (/^(Awakening|The Interdefinables|Human consciousness emerges from|Preamble|Etiquette of the Body Politic)$/i.test(title)) {
     return { level: 2, sourceLevel: 2, title, syntax: 'plain' };
   }
-  if (/^Rights[\w\s’'&\-⁰¹²³⁴⁵⁶⁷⁸⁹]+of The Way[⁰¹²³⁴⁵⁶⁷⁸⁹]*$/i.test(title)) {
+  if (/^Rights[\w\s’'&⁰¹²³⁴⁵⁶⁷⁸⁹-]+of The Way[⁰¹²³⁴⁵⁶⁷⁸⁹]*$/i.test(title)) {
     return { level: 2, sourceLevel: 2, title, syntax: 'plain' };
   }
   if (/^Addendum:\s+.+$/i.test(title)) return { level: 2, sourceLevel: 2, title, syntax: 'plain' };
@@ -74,15 +72,15 @@ export function detectHeading(line) {
 function parseDefinitionLine(line) {
   const normalized = line.replace(/^\s*>?\s*/, '').trim();
   const first =
-    /^(\[[^\]]+\])\s+(.+)$/.exec(normalized) ||
-    new RegExp(`^([${superscriptDigits}]+)\s*(.+)$`).exec(normalized) ||
+    /^(\[.+?])\s+(.+)$/.exec(normalized) ||
+    /^([⁰¹²³⁴⁵⁶⁷⁸⁹]+)\s*(.+)$/.exec(normalized) ||
     /^(\d+)\s+(.+)$/.exec(normalized);
   if (!first) return [];
 
   const notes = [];
   let marker = first[1];
   let remaining = first[2];
-  const nextPattern = new RegExp(`\s+(${subsequentNoteMarkerSource})\s*`);
+  const nextPattern = /\s+(\[.+?]|[⁰¹²³⁴⁵⁶⁷⁸⁹]+)\s*/;
 
   while (true) {
     const next = nextPattern.exec(remaining);
@@ -104,7 +102,7 @@ export function extractNotes(content) {
 
 function extractNoteMarkers(content) {
   const markers = [];
-  for (const match of content.matchAll(/\[[^\]]+\]|[⁰¹²³⁴⁵⁶⁷⁸⁹]+/g)) markers.push(match[0]);
+  for (const match of content.matchAll(/\[.+?]|[⁰¹²³⁴⁵⁶⁷⁸⁹]+/g)) markers.push(match[0]);
   return [...new Set(markers)];
 }
 
