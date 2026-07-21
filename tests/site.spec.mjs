@@ -1,6 +1,15 @@
 // Usage: run `npm run test:e2e` after `npm run build`; Playwright starts the loopback static server.
 // Evidence boundary: checks route reachability and visible content, not external DNS or Pages freshness.
+import { readFileSync } from 'node:fs';
 import { test, expect } from '@playwright/test';
+
+const canon = JSON.parse(readFileSync('src/_data/generated/canon.json', 'utf8'));
+const articleLab = JSON.parse(readFileSync('src/_data/article_lab.json', 'utf8'));
+const labRoutes = articleLab.map(record => {
+  const unit = canon.units.find(candidate => candidate.id === record.unit_id);
+  if (!unit) throw new Error(`missing Lab canon unit ${record.unit_id}`);
+  return { ...record, route: `/lab/${unit.routeSlug}/` };
+});
 
 const routes = [
   ['/', /A way through complexity/],
@@ -8,7 +17,7 @@ const routes = [
   ['/articles/', /Publication drafts/],
   ['/articles/article-two/', /Freedom without abandonment/],
   ['/way/', /The Way/],
-  ['/lab/', /Article Lab/],
+  ['/lab/', /Rights Article laboratories/],
   ['/source/', /Source/],
   ['/projects/', /Projects/],
   ['/artifacts/', /Artifacts/],
@@ -41,4 +50,16 @@ test('all eight rights articles are reachable from the article index', async ({ 
     const link = page.locator(`a[href="/articles/article-${word}/"]`).first();
     await expect(link).toBeVisible();
   }
+});
+
+test('all eight Rights Article Labs are indexed and expose the shared contact structure', async ({ page }) => {
+  await page.goto('/lab/');
+  for (const record of labRoutes) await expect(page.locator(`a[href="${record.route}"]`)).toBeVisible();
+
+  await page.goto(labRoutes[0].route);
+  await expect(page.locator('body')).toContainText('Reductio ad absurdum');
+  await expect(page.locator('body')).toContainText('Worst practices and best practices');
+  await expect(page.locator('body')).toContainText('Applications by domain');
+  await expect(page.locator('body')).toContainText('Child craft');
+  await expect(page.locator('body')).toContainText('Research field');
 });
