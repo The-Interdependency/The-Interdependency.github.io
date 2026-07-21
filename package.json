@@ -16,7 +16,7 @@
     "build": "npm run validate && eleventy && pagefind --site _site && node scripts/write-build-info.mjs",
     "pretest": "node scripts/prepare-tests.mjs",
     "test": "node --test tests/canon-parser.test.mjs tests/canon-integrity.test.mjs tests/textbook-integrity.test.mjs tests/offline-project-snapshot.test.mjs tests/repo-coverage.test.mjs tests/research-ledger.test.mjs tests/site-contract.test.mjs",
-    "test:generated": "node --test tests/generated-site.test.mjs && node tests/links.test.mjs",
+    "test:generated": "node --test tests/generated-site.test.mjs tests/textbook-generated.test.mjs && node tests/links.test.mjs",
     "test:browser": "playwright test",
     "test:e2e": "playwright test tests/site.spec.mjs",
     "test:a11y": "playwright test tests/accessibility.spec.mjs",
