@@ -7,9 +7,79 @@ pagination:
 permalink: "/lab/{{ unit.routeSlug }}/"
 title: "Lab: {{ unit.title }}"
 ---
+{% set labMatches = article_lab | where("unit_id", unit.id) %}
+{% set lab = labMatches[0] %}
+{% set claims = research.claims | where("article", unit.id) %}
 <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/lab/">Article Lab</a> / {{ unit.title }}</nav>
-<header class="page-head"><p class="eyebrow">Interpretive laboratory</p><h1>{{ unit.title }}</h1><p class="lede">The body text and its notes are treated as distinct speakers. This is a review surface, not a substitute canon and not an edcmbone metric runtime.</p></header>
-<section><h2>Conversation</h2><article class="panel turn"><span class="status status-canon">Speaker A · main text</span><p>The exact canonical unit is one interaction away so this interpretive layer cannot quietly replace it.</p><p><a href="/source/{{ unit.routeSlug }}/">Open exact source and provenance</a></p></article>{% if unit.notes.length %}{% for note in unit.notes %}<article class="panel turn note"><span class="status status-interpretation">Speaker B · note {{ note.marker }}</span><p>{{ note.text }}</p></article>{% endfor %}{% else %}<article class="hmmm"><h3>No separately parsed note text</h3><p>This unit may contain no numbered annotations, or its tension may be structural rather than footnoted.</p></article>{% endif %}</section>
-<section><h2>What the tension prevents</h2><div class="hmmm"><p>A reviewed synthesis has not yet been admitted. The Lab records the gap rather than inventing a clean reconciliation.</p></div></section>
-<section><h2>Research field</h2><div class="grid"><article class="card"><span class="status status-research">Support</span><h3>Reviewed support</h3><p>hmmm — no reviewed source is attached to this unit yet.</p></article><article class="card"><span class="status status-risk">Dissent</span><h3>Reviewed dissent</h3><p>hmmm — no reviewed dissenting source is attached yet.</p></article><article class="card"><span class="status status-frontier">Mixed</span><h3>Context and limits</h3><p>hmmm — context classification awaits editorial review.</p></article></div></section>
+<header class="page-head">
+  <p class="eyebrow">Interpretive laboratory</p>
+  <h1>{% if lab %}{{ lab.public_title }}{% else %}{{ unit.title }}{% endif %}</h1>
+  <p class="lede">The body text, notes, research, failure tests, and applications remain separate layers. This is a review surface, not substitute canon and not an edcmbone metric runtime.</p>
+</header>
+<section>
+  <h2>Conversation</h2>
+  <article class="panel turn"><span class="status status-canon">Speaker A · main text</span><p>The exact canonical unit is one interaction away so this interpretive layer cannot quietly replace it.</p><p><a href="/source/{{ unit.routeSlug }}/">Open exact source and provenance</a></p></article>
+  {% if unit.notes.length %}
+    {% for note in unit.notes %}<article class="panel turn note"><span class="status status-interpretation">Speaker B · note {{ note.marker }}</span><p>{{ note.text }}</p></article>{% endfor %}
+  {% else %}
+    <article class="hmmm"><h3>No separately parsed note text</h3><p>This unit may contain no numbered annotations, or its tension may be structural rather than footnoted.</p></article>
+  {% endif %}
+</section>
+{% if lab %}
+<section>
+  <p class="eyebrow">Limit testing</p>
+  <h2>Reductio ad absurdum</h2>
+  <div class="grid">
+    <article class="card"><span class="status status-risk">Overextension</span><h3>Read without its counterweight</h3><p>{{ lab.ad_absurdum.overextension }}</p></article>
+    <article class="card"><span class="status status-risk">Inverse collapse</span><h3>Reject the Article absolutely</h3><p>{{ lab.ad_absurdum.counter_overextension }}</p></article>
+    <article class="card"><span class="status status-interpretation">Working boundary</span><h3>What survives both failures</h3><p>{{ lab.ad_absurdum.boundary }}</p></article>
+  </div>
+</section>
+<section>
+  <p class="eyebrow">Operational contrast</p>
+  <h2>Worst practices and best practices</h2>
+  <div class="grid">
+    <article class="card"><span class="status status-risk">Worst practices</span><h3>How the Article becomes harmful</h3><ul>{% for practice in lab.worst_practices %}<li>{{ practice }}</li>{% endfor %}</ul></article>
+    <article class="card"><span class="status status-implemented">Best practices</span><h3>How the tension becomes usable</h3><ul>{% for practice in lab.best_practices %}<li>{{ practice }}</li>{% endfor %}</ul></article>
+  </div>
+</section>
+<section>
+  <p class="eyebrow">Contact across kinds of work</p>
+  <h2>Applications by domain</h2>
+  <p class="section-intro">These are bounded application hypotheses. A domain must preserve its own standards, evidence, lawful duties, and safety constraints rather than importing the Article as a slogan.</p>
+  <div class="grid">
+    {% for domain, application in lab.applications %}<article class="card"><span class="status status-public">{{ domain }}</span><p>{{ application }}</p></article>{% endfor %}
+  </div>
+</section>
+<section>
+  <p class="eyebrow">Reviewed contact</p>
+  <h2>Research field</h2>
+  {% if claims.length %}
+    <div class="grid">
+      {% for claim in claims %}
+        {% set stanceClass = "status-research" %}
+        {% if claim.stance == "dissent" %}{% set stanceClass = "status-risk" %}{% endif %}
+        {% if claim.stance == "limit" or claim.stance == "mixed" %}{% set stanceClass = "status-frontier" %}{% endif %}
+        <article class="card">
+          <span class="status {{ stanceClass }}">{{ claim.stance }} · {{ claim.status }}</span>
+          <h3>{{ claim.claim }}</h3>
+          <p><strong>Evidence boundary:</strong> {{ claim.limitation }}</p>
+          <p><strong>Sources:</strong>
+            {% for sourceId in claim.source_ids %}
+              {% for source in research.sources %}
+                {% if source.id == sourceId %}<a href="{{ source.url }}">{{ source.title }}</a>{% if not loop.last %}{% endif %}{% endif %}
+              {% endfor %}
+            {% endfor %}
+          </p>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="hmmm"><p>No reviewed claim is attached to this unit yet.</p></div>
+  {% endif %}
+</section>
+{% else %}
+<section><h2>What the tension prevents</h2><div class="hmmm"><p>A reviewed synthesis, absurd-limit test, practice contrast, and domain application set have not yet been admitted for this non-Rights unit.</p></div></section>
+<section><h2>Research field</h2><div class="hmmm"><p>No reviewed source is attached to this unit yet.</p></div></section>
+{% endif %}
 <details><summary>Open EDCM-style heuristic boundary</summary><p>This page may later expose transparent text-comparison heuristics such as constraint mismatch, drift, dissonance, divergence, and turn balance. Those readings must remain labeled illustrative and may not claim edcmbone runtime status.</p></details>
