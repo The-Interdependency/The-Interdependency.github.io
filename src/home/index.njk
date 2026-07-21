@@ -1,17 +1,23 @@
 ---
 layout: layouts/base.njk
 title: The Interdependent Way
-description: The living public knowledge system for the canon, its deliberate tensions, research, applications, and implementation projects.
+description: The living public knowledge system for the canon, distributed textbook, deliberate tensions, research, applications, and implementation projects.
 permalink: /home/
 ---
 <section class="hero">
   <div>
-    <p class="eyebrow">Canon · interpretation · research · implementation · frontier</p>
+    <p class="eyebrow">Canon · textbook · interpretation · research · implementation · frontier</p>
     <h1>A way through complexity without pretending the tension is gone.</h1>
-    <p class="lede">The Interdependent Way is a dense living text and a constellation of attempts to test, explain, implement, challenge, and preserve it. The Preamble is directly available here; deeper orientation and exact source remain available without hiding the entrance.</p>
-    <div class="actions"><a class="button" href="/preamble/">Read the Preamble</a><a class="button secondary" href="/lab/">Enter the Article Lab</a><a class="button secondary" href="/way/">Explore the Way</a></div>
+    <p class="lede">The Interdependent Way is a dense living text and a constellation of attempts to test, explain, implement, challenge, and preserve it. The Preamble is directly available here; the distributed Interdependency textbook now restores chapters Zero through Seven into one reading sequence.</p>
+    <div class="actions"><a class="button" href="/preamble/">Read the Preamble</a><a class="button secondary" href="/chapters/">Read the Textbook</a><a class="button secondary" href="/lab/">Enter the Article Lab</a></div>
   </div>
   <div class="hero-field" aria-label="Three concentric fields around a thirteenth center"><span></span><strong>12 + 1</strong></div>
+</section>
+<section class="panel">
+  <p class="eyebrow">Distributed Interdependency textbook</p>
+  <h2>Chapters Zero through Seven</h2>
+  <p>Eight chapters now form one continuous technical reading path across <code>metapat</code>, <code>ucns</code>, <code>edcm</code>, <code>skill-lib</code>, <code>interdependent-lib</code>, <code>ptcna</code>, <code>a0</code>, and <code>zfae</code>. Each chapter remains bound to the license, status vocabulary, and authority of the repository that carries it.</p>
+  <div class="actions"><a class="button" href="/chapters/">Open all eight chapters</a><a class="button secondary" href="/chapters/chapter-zero/">Begin at Chapter Zero</a></div>
 </section>
 <section class="panel">
   <p class="eyebrow">Eight rights-article laboratories</p>
@@ -26,6 +32,7 @@ permalink: /home/
     <a class="card" href="/"><span class="status status-canon">Canon-derived</span><h3>Return to Awakening</h3><p>Re-enter the opening threshold and its reminder that you are not alone.</p></a>
     <a class="card" href="/preamble/"><span class="status status-canon">Canon-derived</span><h3>Read the Preamble</h3><p>Enter the opening civic claim directly through a stable route generated from the selected canon.</p></a>
     <a class="card" href="/way/"><span class="status status-canon">Canon-derived</span><h3>Read the Way</h3><p>Move through the preamble, articles, etiquette, addenda, and their internal structure without beginning at the raw wall of text.</p></a>
+    <a class="card" href="/chapters/"><span class="status status-research">Distributed textbook</span><h3>Read Chapters Zero–Seven</h3><p>Follow the technical architecture from root ontology through carrier, measurement, self-declaration, canon placement, architecture, instrument, and echo.</p></a>
     <a class="card" href="/lab/"><span class="status status-interpretation">Interpretation</span><h3>Enter the Article Lab</h3><p>Test each Rights article through its notes, absurd limits, practice contrasts, domain applications, research support, dissent, and limits.</p></a>
     <a class="card" href="/articles/"><span class="status status-interpretation">Publication</span><h3>Read public articles</h3><p>Follow selected canon units through companion readings, applications, handbook seeds, and script drafts without losing source boundaries.</p></a>
     <a class="card" href="/projects/"><span class="status status-implemented">Implementation</span><h3>Map the Projects</h3><p>Every public organization repository receives a generated space, grouped by function and refreshed at build time.</p></a>
@@ -34,7 +41,7 @@ permalink: /home/
 </section>
 <section class="panel">
   <p class="eyebrow">Current field snapshot</p>
-  <h2>{{ generated.repos.publicRepoCount }} public repositories · {{ generated.canon.units.length }} canonical units</h2>
-  <p>Project data was generated {{ generated.repos.snapshotAt | dateOnly }}{% if generated.repos.fallback %} from the last verified snapshot{% endif %}. Canon digest <code>{{ generated.canon.source.contentSha256 }}</code>.</p>
+  <h2>{{ generated.repos.publicRepoCount }} public repositories · {{ generated.canon.units.length }} canonical units · {{ generated.textbook.chapterCount }} textbook chapters</h2>
+  <p>Project data was generated {{ generated.repos.snapshotAt | dateOnly }}{% if generated.repos.fallback %} from the last verified snapshot{% endif %}. Canon digest <code>{{ generated.canon.source.contentSha256 }}</code>. Textbook complete: <code>{{ generated.textbook.complete }}</code>.</p>
 </section>
-<section class="hmmm"><h2>hmmm</h2><p>Reviewed research now makes initial contact with all eight Rights articles, but coverage remains uneven and deliberately open to stronger dissent, replication, field studies, disability-led critique, and non-Western evidence.</p></section>
+<section class="hmmm"><h2>hmmm</h2><p>The textbook now has a complete public reading spine, while each chapter remains independently revisable in its source repository. The Article Lab research remains deliberately open to stronger dissent, replication, field studies, disability-led critique, and non-Western evidence.</p></section>
