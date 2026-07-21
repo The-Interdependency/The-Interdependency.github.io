@@ -1,3 +1,23 @@
+/* === MODULE_BUILD ===
+ * id: awakening_splash_presentation
+ *   module_name: awakening-splash-presentation
+ *   module_kind: ui_panel
+ *   summary: Presents the canon-derived Awakening as a full-screen public threshold without hiding readable text behind animation or JavaScript.
+ *   owner: Erin Spencer
+ *   public_surface: root Awakening splash presentation
+ *   internal_surface: awakening-body, awakening-splash, awakening-stage, awakening-orbit, awakening-copy, awakening-text
+ *   auth_boundary: none
+ *   storage_boundary: none
+ *   network_boundary: none
+ *   user_data_boundary: none
+ *   admin_only: false
+ *   tests: tests/generated-site.test.mjs, tests/site.spec.mjs, tests/accessibility.spec.mjs
+ *   rollout: loaded only by layouts/splash.njk for the public threshold
+ *   rollback: remove the splash stylesheet link and restore the prior root template
+ * === END MODULE_BUILD ===
+ * Usage: loaded by src/_includes/layouts/splash.njk; verify with npm run check and npm run test:browser.
+ * Limits: visual rings are decorative; all canon text and continuation links remain ordinary readable HTML.
+ */
 .awakening-body {
   min-height: 100vh;
   overflow-x: hidden;
