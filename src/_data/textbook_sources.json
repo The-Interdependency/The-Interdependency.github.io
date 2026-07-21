@@ -1,0 +1,90 @@
+[
+  {
+    "number": 0,
+    "display_number": "Zero",
+    "slug": "chapter-zero",
+    "title": "Meta Energy Theory — Axioms, Postulates, and Theorems",
+    "repository": "The-Interdependency/metapat",
+    "path": "CHAPTER_ZERO.md",
+    "branch": "main",
+    "status": "root ontology and theory",
+    "summary": "The invariant vocabulary of distinction, boundary, simplex, tensor, energy-state, registration, and question."
+  },
+  {
+    "number": 1,
+    "display_number": "One",
+    "slug": "chapter-one",
+    "title": "The Subtractive Foundations of the Unit Carrier",
+    "repository": "The-Interdependency/ucns",
+    "path": "docs/chapter-1.md",
+    "branch": "main",
+    "status": "carrier foundations",
+    "summary": "The directed 720° carrier, Structural Null, separated zeros, valuation triad, pairing, typed dispatch, and retained memory."
+  },
+  {
+    "number": 2,
+    "display_number": "Two",
+    "slug": "chapter-two",
+    "title": "Measurement Without Transfer",
+    "repository": "The-Interdependency/edcm",
+    "path": "docs/chapter-2.md",
+    "branch": "main",
+    "status": "measurement discipline",
+    "summary": "Typed absence, frozen canon, evidence compartments, proof-transfer firewalls, identity epochs, and an honest measurement frontier."
+  },
+  {
+    "number": 3,
+    "display_number": "Three",
+    "slug": "chapter-three",
+    "title": "Modules That Speak for Themselves",
+    "repository": "The-Interdependency/skill-lib",
+    "path": "docs/chapter-3.md",
+    "branch": "main",
+    "status": "self-declaration method",
+    "summary": "Module Self-Declared Metadata in Markdown: declarations beside implementation, machine reconciliation, and drift-resistant evidence."
+  },
+  {
+    "number": 4,
+    "display_number": "Four",
+    "slug": "chapter-four",
+    "title": "Canon Without Inversion",
+    "repository": "The-Interdependency/interdependent-lib",
+    "path": "docs/chapter-4.md",
+    "branch": "main",
+    "status": "cross-repository canon placement",
+    "summary": "How a meta-package carries family-level canon without inverting runtime dependencies or duplicating authority."
+  },
+  {
+    "number": 5,
+    "display_number": "Five",
+    "slug": "chapter-five",
+    "title": "One Architecture, Four Layers",
+    "repository": "The-Interdependency/ptcna",
+    "path": "docs/chapter-5.md",
+    "branch": "main",
+    "status": "architecture",
+    "summary": "The Prime Tensor Circled Neural Architecture as one package with neural, circle, seed, and core layers."
+  },
+  {
+    "number": 6,
+    "display_number": "Six",
+    "slug": "chapter-six",
+    "title": "The Instrument",
+    "repository": "The-Interdependency/a0",
+    "path": "docs/chapter-6.md",
+    "branch": "main",
+    "status": "research instrument",
+    "summary": "a0 as the codebase, a0p as the public instrument, and persistent agent structure distinct from interchangeable model providers."
+  },
+  {
+    "number": 7,
+    "display_number": "Seven",
+    "slug": "chapter-seven",
+    "title": "The Echo",
+    "repository": "The-Interdependency/zfae",
+    "path": "docs/chapter-7.md",
+    "branch": "main",
+    "status": "theory under development",
+    "summary": "Zeta Function Alpha Echo as an emergent event claim, explicitly bounded as theory with a falsifiable prediction."
+  }
+]
