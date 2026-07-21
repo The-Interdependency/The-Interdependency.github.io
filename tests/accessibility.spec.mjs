@@ -11,7 +11,7 @@ const articleLab = JSON.parse(readFileSync('src/_data/article_lab.json', 'utf8')
 const firstLabUnit = canon.units.find(unit => unit.id === articleLab[0].unit_id);
 if (!firstLabUnit) throw new Error(`missing Lab canon unit ${articleLab[0].unit_id}`);
 
-for (const route of ['/', '/preamble/', '/articles/', '/articles/article-two/', '/way/', '/lab/', `/lab/${firstLabUnit.routeSlug}/`, '/projects/']) {
+for (const route of ['/', '/home/', '/preamble/', '/articles/', '/articles/article-two/', '/way/', '/lab/', `/lab/${firstLabUnit.routeSlug}/`, '/projects/']) {
   test(`${route} has no serious or critical automated accessibility violations`, async ({ page }) => {
     await page.goto(route);
     await page.addScriptTag({ path: axePath });
