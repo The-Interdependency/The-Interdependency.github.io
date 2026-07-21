@@ -1,8 +1,32 @@
 ---
 layout: layouts/base.njk
 title: Article Lab
-description: A structured conversation between canonical body text, notes, research, dissent, and unresolved evidence gaps.
+description: A structured conversation between canonical body text, notes, research, absurd-limit tests, practice failures, practice strengths, and domain applications.
 ---
-<header class="page-head"><p class="eyebrow">Interpretation with visible seams</p><h1>Article Lab</h1><p class="lede">The Lab treats the body text and its annotations as speakers in a deliberate conversation. It records what the tension may prevent, what research supports or challenges the claim, and where evidence is still absent. It does not rewrite the canon or claim edcmbone measurement status.</p></header>
-<div class="grid">{% for unit in generated.canon.units %}<a class="card" href="/lab/{{ unit.routeSlug }}/"><span class="status status-interpretation">Lab</span><h2>{{ unit.title }}</h2><p>{{ unit.notes.length }} separately parsed note{% if unit.notes.length != 1 %}s{% endif %} · source lines {{ unit.startLine }}–{{ unit.endLine }}</p></a>{% endfor %}</div>
-<section class="hmmm"><h2>Research coverage</h2><p>The Lab route exists for every discovered canonical unit. Reviewed support, dissent, mixed evidence, and synthesis are intentionally published unit by unit rather than mass-invented.</p></section>
+<header class="page-head">
+  <p class="eyebrow">Interpretation with visible seams</p>
+  <h1>Article Lab</h1>
+  <p class="lede">Each Rights article is tested from several directions: the body text and notes remain distinct speakers; reductio ad absurdum exposes destructive overextensions; worst and best practices translate the tension into operations; domain applications test whether the reading survives contact with different kinds of work; reviewed research remains visibly bounded.</p>
+</header>
+<section>
+  <h2>Rights Article laboratories</h2>
+  <div class="grid">
+    {% for record in article_lab %}
+      {% for unit in generated.canon.units %}
+        {% if unit.id == record.unit_id %}
+          {% set claims = research.claims | where("article", unit.id) %}
+          <a class="card" href="/lab/{{ unit.routeSlug }}/">
+            <span class="status status-interpretation">Lab</span>
+            <h3>{{ record.public_title }}</h3>
+            <p>{{ unit.notes.length }} separately parsed note{% if unit.notes.length != 1 %}s{% endif %} · {{ claims.length }} reviewed claim{% if claims.length != 1 %}s{% endif %} · {{ record.applications | length }} application domains</p>
+          </a>
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+  </div>
+</section>
+<section class="panel">
+  <h2>Method boundary</h2>
+  <p>Applications are operational hypotheses, not claims that one rule transfers unchanged across domains. Research sources support, dissent from, or limit a particular component; they do not prove an Article as a whole. Other canonical units retain generated Lab routes, but this index begins with the eight Rights articles as the first complete comparative set.</p>
+</section>
+<section class="hmmm"><h2>Research coverage</h2><p>The initial pack establishes reviewed contact for all eight Rights articles. It is not exhaustive: each claim remains open to stronger replication, domain-specific evidence, direct dissent, and evidence from outside United States and institutional settings.</p></section>
