@@ -161,3 +161,85 @@
   reviewed_on: "2026-07-21"
   relevance: "Connects respect for persons with information, comprehension, and voluntariness; also requires risk-benefit assessment and protection for diminished autonomy."
   boundary: "Governs human-subject research ethics and supplies a strong consent model; not every civil or private interaction is research."
+
+- id: ndumele-et-al-2025-snap-work-requirements
+  title: "Supplemental Nutrition Assistance Program Work Requirements and Safety-Net Program Participation"
+  authors: "Chima D. Ndumele; Hannah Factor; Matthew Lavallee; Anthony Lollo Jr.; Jacob Wallace"
+  year: 2025
+  publication: "JAMA Internal Medicine 185(1):92-100"
+  type: peer-reviewed quasi-experimental cohort study
+  doi: "10.1001/jamainternmed.2024.5932"
+  url: "https://doi.org/10.1001/jamainternmed.2024.5932"
+  reviewed_on: "2026-07-23"
+  relevance: "Finds that reinstated SNAP work requirements in Connecticut were associated with a substantial enrollment decline concentrated among clinically and socioeconomically vulnerable beneficiaries, without evidence of transition off the broader safety net."
+  boundary: "Studies one state policy and program-enrollment outcomes; it does not determine moral contribution, global food allocation, or the effects of every work requirement."
+
+- id: talevski-et-al-2020-teach-back
+  title: "Teach-back: A systematic review of implementation and impacts"
+  authors: "Jason Talevski; Anna Wong Shee; Bodil Rasmussen; Georgie Kemp; Alison Beauchamp"
+  year: 2020
+  publication: "PLOS ONE 15(4):e0231350"
+  type: peer-reviewed systematic review
+  doi: "10.1371/journal.pone.0231350"
+  url: "https://doi.org/10.1371/journal.pone.0231350"
+  reviewed_on: "2026-07-23"
+  relevance: "Reviews evidence that teach-back can improve health-related knowledge, recall, self-management, and some outcomes by requiring an explanation in the recipient's own words."
+  boundary: "The included studies were heterogeneous and generally moderate quality; health education evidence does not establish that teach-back generalizes to all law or makes enforcement legitimate."
+
+- id: webb-2020-legislative-complexity
+  title: "The Drafters’ Dance: The Complexity of Drafting Legislation and the Limitations of ‘Plain Language’ and ‘Good Law’ Initiatives"
+  authors: "Thomas E. Webb"
+  year: 2020
+  publication: "Statute Law Review 41(2):129-158"
+  type: peer-reviewed legal analysis
+  doi: "10.1093/slr/hmz008"
+  url: "https://doi.org/10.1093/slr/hmz008"
+  reviewed_on: "2026-07-23"
+  relevance: "Argues that legislative drafting contains irreducible technical and institutional complexity that plain-language and good-law initiatives can obscure or displace."
+  boundary: "A theoretical legal analysis of drafting complexity; it does not excuse avoidable opacity, secret rules, inadequate notice, or failure to teach applicable duties."
+
+- id: un-crpd-2014-legal-capacity
+  title: "General comment No. 1 (2014), Article 12: Equal recognition before the law"
+  authors: "United Nations Committee on the Rights of Persons with Disabilities"
+  year: 2014
+  publication: "United Nations document CRPD/C/GC/1"
+  type: treaty-body interpretive guidance
+  url: "https://cambodia.ohchr.org/en/content/general-comment-no-1-committee-rights-persons-disabilities-equal-recognition-law"
+  reviewed_on: "2026-07-23"
+  relevance: "Distinguishes universal legal capacity from variable mental capacity and requires support for exercising rights rather than status removal based on impairment or functional assessment."
+  boundary: "Authoritative human-rights interpretation rather than an empirical outcome study; it does not prohibit task-specific competency requirements for hazardous professional roles or supported-decision safeguards."
+
+- id: stephan-chenoweth-2008-civil-resistance
+  title: "Why Civil Resistance Works: The Strategic Logic of Nonviolent Conflict"
+  authors: "Maria J. Stephan; Erica Chenoweth"
+  year: 2008
+  publication: "International Security 33(1):7-44"
+  type: peer-reviewed comparative empirical study
+  doi: "10.1162/isec.2008.33.1.7"
+  url: "https://doi.org/10.1162/isec.2008.33.1.7"
+  reviewed_on: "2026-07-23"
+  relevance: "Compares major violent and nonviolent campaigns and identifies participation, legitimacy, and loyalty shifts as mechanisms through which nonviolent collective power can prevail."
+  boundary: "Campaign-level historical evidence is not a complete theory of authority, does not show that violence is never decisive, and does not replace bounded emergency command."
+
+- id: rosch-1975-semantic-categories
+  title: "Cognitive representations of semantic categories"
+  authors: "Eleanor Rosch"
+  year: 1975
+  publication: "Journal of Experimental Psychology: General 104(3):192-233"
+  type: peer-reviewed experimental study
+  doi: "10.1037/0096-3445.104.3.192"
+  url: "https://doi.org/10.1037/0096-3445.104.3.192"
+  reviewed_on: "2026-07-23"
+  relevance: "Shows that many ordinary semantic categories have graded internal structure and that typicality affects how people learn and process category members."
+  boundary: "Experiments on semantic categories do not govern legal drafting or technical interface standards; stipulative definitions remain useful for consequential load-bearing terms."
+
+- id: solove-2013-consent-dilemma
+  title: "Privacy Self-Management and the Consent Dilemma"
+  authors: "Daniel J. Solove"
+  year: 2013
+  publication: "Harvard Law Review 126:1880-1903"
+  type: legal analysis grounded in empirical and social-science literature
+  url: "https://harvardlawreview.org/print/vol-126/introduction-privacy-self-management-and-the-consent-dilemma/"
+  reviewed_on: "2026-07-23"
+  relevance: "Explains how cognitive limits, information volume, aggregation, downstream uses, and collective effects make notice-and-consent insufficient as the sole governance mechanism for personal data."
+  boundary: "Addresses information privacy; it does not negate informed consent in medicine or research and does not establish that consent is irrelevant in other domains."
