@@ -124,3 +124,66 @@
   source_ids:
     - hhs-1979-belmont-report
   limitation: "Protection must not be converted into total erasure of agency, and the report does not resolve every conflict among autonomy, harm, and public duty."
+
+- id: article-one-work-requirements-access
+  article: rights-and-definitions-of-the-way.article-one
+  stance: dissent
+  status: quasi-experimental
+  claim: "Conditioning food assistance on work and reporting requirements can sharply reduce access among clinically and socioeconomically vulnerable recipients without producing a measurable transition off the broader safety net."
+  source_ids:
+    - ndumele-et-al-2025-snap-work-requirements
+  limitation: "The Connecticut study measures safety-net enrollment rather than moral contribution, long-term employment, or resource allocation under acute scarcity."
+
+- id: article-four-teach-back-comprehension
+  article: rights-and-definitions-of-the-way.article-four
+  stance: support
+  status: review-backed
+  claim: "Teaching consequential instructions in usable language and asking the recipient to explain them back can improve comprehension, recall, self-management, and some health outcomes."
+  source_ids:
+    - talevski-et-al-2020-teach-back
+  limitation: "The review concerns heterogeneous health-education studies; it does not prove that teach-back generalizes to all law or that comprehension alone makes enforcement legitimate."
+
+- id: article-four-legislative-complexity
+  article: rights-and-definitions-of-the-way.article-four
+  stance: dissent
+  status: theory-backed
+  claim: "Plain-language publication and teaching cannot by themselves make every legal duty simple or fully knowable because legislation carries irreducible technical and institutional complexity."
+  source_ids:
+    - webb-2020-legislative-complexity
+  limitation: "The legal analysis identifies limits of simplification but does not excuse avoidable opacity, secret rules, inadequate notice, or failure to teach applicable duties."
+
+- id: article-five-legal-capacity
+  article: rights-and-definitions-of-the-way.article-five
+  stance: dissent
+  status: rights-doctrine
+  claim: "Legal capacity and equal civic standing cannot be made contingent on passing a generalized mental-capacity or functional-competence test; decision support should protect the exercise of rights."
+  source_ids:
+    - un-crpd-2014-legal-capacity
+  limitation: "The treaty-body interpretation does not prohibit task-specific competency rules for hazardous professional roles or supported-decision safeguards."
+
+- id: article-six-nonviolent-power
+  article: rights-and-definitions-of-the-way.article-six
+  stance: dissent
+  status: empirical-challenge
+  claim: "Collective political power is not reducible to violence: nonviolent campaigns have often achieved political goals by widening participation, gaining legitimacy, and inducing loyalty shifts."
+  source_ids:
+    - stephan-chenoweth-2008-civil-resistance
+  limitation: "Historical campaign evidence is not a complete theory of authority, does not show violence is never decisive, and does not replace bounded emergency command."
+
+- id: article-seven-graded-categories
+  article: rights-and-definitions-of-the-way.article-seven
+  stance: dissent
+  status: experimental-limit
+  claim: "Many natural-language categories have graded internal structure rather than a single sharp boundary, so imposing a fixed definition before conversation can misrepresent ordinary meaning."
+  source_ids:
+    - rosch-1975-semantic-categories
+  limitation: "Semantic-category experiments do not govern legal drafting or technical interfaces; stipulative definitions remain useful for consequential load-bearing terms."
+
+- id: article-eight-consent-insufficiency
+  article: rights-and-definitions-of-the-way.article-eight
+  stance: dissent
+  status: doctrinal-challenge
+  claim: "Notice and individual consent cannot by themselves legitimize every data practice because cognitive limits, scale, aggregation, downstream uses, and collective harms can defeat meaningful self-management."
+  source_ids:
+    - solove-2013-consent-dilemma
+  limitation: "The analysis concerns information privacy; it does not negate informed consent in medicine or research or establish that consent is irrelevant in other domains."
