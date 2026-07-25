@@ -42,12 +42,8 @@ c &= d
 });
 
 test('does not interpret TeX delimiters inside fenced code', () => {
-  const html = renderer().render(String.raw`\`\`\`
-\[
-x = 1
-\]
-\`\`\`
-`);
+  const source = ['```', '\\[', 'x = 1', '\\]', '```', ''].join('\n');
+  const html = renderer().render(source);
 
   assert.doesNotMatch(html, /<math\b/);
   assert.match(html, /<pre><code>/);
