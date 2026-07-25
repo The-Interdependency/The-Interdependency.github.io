@@ -41,20 +41,10 @@ async function readYamlList(path) {
   return parsed;
 }
 
-async function readOptionalYamlList(path) {
-  try {
-    return await readYamlList(path);
-  } catch (error) {
-    if (error?.code === 'ENOENT') return [];
-    throw error;
-  }
-}
-
 export default async function researchData() {
-  const [sources, supplementalSources, claims] = await Promise.all([
+  const [sources, claims] = await Promise.all([
     readYamlList('src/_data/research/sources.yml'),
-    readOptionalYamlList('src/_data/research/source_supplements.yml'),
     readYamlList('src/_data/research/claims.yml')
   ]);
-  return { sources: [...sources, ...supplementalSources], claims };
+  return { sources, claims };
 }
