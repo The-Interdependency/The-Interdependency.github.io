@@ -1,0 +1,60 @@
+/* === MODULE_BUILD ===
+ id: static_mathml_presentation
+   module_name: math-css
+   module_kind: presentation
+   summary: Presents build-time Temml MathML accessibly across desktop, mobile, and print without requiring client JavaScript or external fonts.
+   owner: Erin Spencer
+   public_surface: /assets/css/math.css
+   internal_surface: native MathML font selection, display overflow containment, print behavior
+   auth_boundary: none
+   storage_boundary: none
+   network_boundary: none
+   user_data_boundary: none
+   admin_only: false
+   tests: tests/generated-site.test.mjs, tests/site.spec.mjs, tests/accessibility.spec.mjs
+   rollout: linked by layouts/base.njk
+   rollback: remove the stylesheet link; semantic MathML remains in generated HTML
+=== END MODULE_BUILD === */
+/* Usage: loaded on the generated knowledge-system pages; Temml emits the semantic <math> tree during the build. */
+/* Limits: uses locally available math fonts and does not bundle or fetch a font file. */
+
+math {
+  color: inherit;
+  direction: ltr;
+  font-family: "Cambria Math", "STIX Two Math", "Noto Sans Math", math;
+  font-size-adjust: none;
+  font-style: normal;
+  font-weight: normal;
+  letter-spacing: normal;
+  line-height: normal;
+  text-indent: 0;
+  text-transform: none;
+  word-wrap: normal;
+  font-feature-settings: "dtls" off;
+}
+
+math * {
+  border-color: currentColor;
+}
+
+math.tml-display {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin: 1.4rem 0;
+  padding: .35rem 0 .55rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-inline: contain;
+}
+
+.textbook-chapter math:not(.tml-display) {
+  white-space: nowrap;
+}
+
+@media print {
+  math.tml-display {
+    overflow: visible;
+    break-inside: avoid;
+  }
+}
