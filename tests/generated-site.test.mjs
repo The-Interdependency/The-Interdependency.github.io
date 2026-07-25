@@ -97,7 +97,7 @@ test('Way map renders Human consciousness beneath Interdefinables and before Pre
   assert.doesNotMatch(way, /<h2>Human consciousness emerges from:?<\/h2>/);
 });
 
-test('generated deployment artifact contains all rights article vertical slices', async () => {
+test('generated deployment artifact contains all rights article vertical slices with research attachment', async () => {
   const pages = [
     ['article-one', /Contribution without contempt/, /From each as they will/],
     ['article-two', /Freedom without abandonment/, /None shall be enslaved/],
@@ -114,6 +114,8 @@ test('generated deployment artifact contains all rights article vertical slices'
     assert.match(html, titlePattern);
     assert.match(html, canonPattern);
     assert.match(html, /60–90 second script/);
+    assert.match(html, /Reviewed research attachment/);
+    assert.match(html, /Evidence boundary/);
     assert.match(html, /hmmm/);
   }
 });
