@@ -1,0 +1,10 @@
+{
+  "sources": [
+    "src/_data/research/sources.yml",
+    "src/_data/research/sources-2026-07-23.yml"
+  ],
+  "claims": [
+    "src/_data/research/claims.yml",
+    "src/_data/research/claims-2026-07-23.yml"
+  ]
+}

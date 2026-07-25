@@ -1,0 +1,131 @@
+- id: doocy-tappis-2017-humanitarian-cash
+  title: "Cash-based approaches in humanitarian emergencies: a systematic review"
+  authors: "Shannon Doocy; Hannah Tappis"
+  year: 2017
+  publication: "Campbell Systematic Reviews"
+  type: systematic review
+  doi: "10.4073/csr.2017.17"
+  url: "https://doi.org/10.4073/csr.2017.17"
+  reviewed_on: "2026-07-23"
+  relevance: "Reviews effectiveness, efficiency, and implementation evidence for cash transfers, vouchers, and in-kind assistance in humanitarian emergencies, including food-security outcomes and context-dependent delivery tradeoffs."
+  boundary: "The effectiveness evidence was sparse and generally low quality, with searches ending in November 2014; no transfer modality was universally superior across emergencies."
+
+- id: ng-et-al-2012-sdt-meta-analysis
+  title: "Self-Determination Theory Applied to Health Contexts: A Meta-Analysis"
+  authors: "Johan Y. Y. Ng; Nikos Ntoumanis; Cecilie Thøgersen-Ntoumani; Edward L. Deci; Richard M. Ryan; Joan L. Duda; Geoffrey C. Williams"
+  year: 2012
+  publication: "Perspectives on Psychological Science 7(4):325-340"
+  type: peer-reviewed meta-analysis
+  doi: "10.1177/1745691612447309"
+  url: "https://doi.org/10.1177/1745691612447309"
+  reviewed_on: "2026-07-23"
+  relevance: "Synthesizes 184 independent data sets connecting practitioner autonomy support, psychological-need satisfaction, autonomous motivation, health behavior, and mental and physical health outcomes."
+  boundary: "The evidence is heterogeneous and concentrated in healthcare and health-promotion settings; it does not validate every duty in Article Two or make coercion effective elsewhere."
+
+- id: magana-et-al-2020-unpaid-caregivers-lmic
+  title: "Health outcomes of unpaid caregivers in low- and middle-income countries: A systematic review and meta-analysis"
+  authors: "Irene Magaña; Pablo Martínez; María-Soledad Loyola"
+  year: 2020
+  publication: "Journal of Clinical Nursing 29(21-22):3950-3965"
+  type: systematic review and meta-analysis of observational studies
+  doi: "10.1111/jocn.15450"
+  url: "https://doi.org/10.1111/jocn.15450"
+  reviewed_on: "2026-07-23"
+  relevance: "Reviews 14 studies from Africa, Asia, and South America and finds that unpaid caregivers of people with ill-health were generally more anxious and depressed than noncaregivers, with important regional and gender variation."
+  boundary: "The evidence is observational, geographically sparse, and culturally heterogeneous; it does not show that care is intrinsically harmful or determine how necessary care should be shared."
+
+- id: rossetti-hilbe-2024-direct-reciprocity
+  title: "Direct reciprocity among humans"
+  authors: "Charlotte S. L. Rossetti; Christian Hilbe"
+  year: 2024
+  publication: "Ethology"
+  type: peer-reviewed theory-and-evidence review
+  doi: "10.1111/eth.13407"
+  url: "https://doi.org/10.1111/eth.13407"
+  reviewed_on: "2026-07-23"
+  relevance: "Compares repeated-game theory with experiments involving human participants, finding that models often predict when cooperation occurs better than the particular reciprocal strategies people use."
+  boundary: "The reviewed experiments use stylized games and incentives; they do not establish real-world consent to retaliation or justify mirroring harmful conduct."
+
+- id: reiter-et-al-2018-reciprocity-crosstalk
+  title: "Crosstalk in concurrent repeated games impedes direct reciprocity and requires stronger levels of forgiveness"
+  authors: "Johannes G. Reiter; Christian Hilbe; David G. Rand; Krishnendu Chatterjee; Martin A. Nowak"
+  year: 2018
+  publication: "Nature Communications 9:555"
+  type: peer-reviewed mathematical and simulation study
+  doi: "10.1038/s41467-017-02721-8"
+  url: "https://doi.org/10.1038/s41467-017-02721-8"
+  reviewed_on: "2026-07-23"
+  relevance: "Models how experience in one concurrent relationship can spill into another, spreading defection and making strict Tit-for-Tat brittle while bounded forgiveness can preserve cooperation."
+  boundary: "This is a formal model supported by simulations, not a direct field trial; forgiveness in a repeated game is not an instruction to remain exposed to abuse."
+
+- id: masson-waldron-1994-legal-contract-comprehension
+  title: "Comprehension of legal contracts by non-experts: Effectiveness of plain language redrafting"
+  authors: "Michael E. J. Masson; Mary Anne Waldron"
+  year: 1994
+  publication: "Applied Cognitive Psychology 8(1):67-85"
+  type: peer-reviewed experiment
+  doi: "10.1002/acp.2350080107"
+  url: "https://doi.org/10.1002/acp.2350080107"
+  reviewed_on: "2026-07-23"
+  relevance: "Finds that simplified words and sentence structure improved non-experts' paraphrasing and question-answering about legal contracts."
+  boundary: "Absolute comprehension remained low and complex legal concepts still conflicted with prior beliefs; contract experiments do not establish comprehension of every law."
+
+- id: zietlow-et-al-2022-guardianship-capacity
+  title: "Guardianship: A medicolegal review for clinicians"
+  authors: "Kahli Zietlow; Leslie Dubin; Alethia Battles; Caroline Vitale"
+  year: 2022
+  publication: "Journal of the American Geriatrics Society"
+  type: peer-reviewed medicolegal review
+  doi: "10.1111/jgs.17797"
+  url: "https://doi.org/10.1111/jgs.17797"
+  reviewed_on: "2026-07-23"
+  relevance: "Describes decision-making capacity as task-specific and dynamic, requiring understanding, appreciation, reasoning, and a consistent choice free from coercion, while emphasizing alternatives to and reassessment of guardianship."
+  boundary: "The review concerns United States clinical and guardianship practice, where state law varies; medical capacity is not identical to legal capacity or political adulthood."
+
+- id: woolley-et-al-2010-collective-intelligence
+  title: "Evidence for a collective intelligence factor in the performance of human groups"
+  authors: "Anita Williams Woolley; Christopher F. Chabris; Alex Pentland; Nada Hashmi; Thomas W. Malone"
+  year: 2010
+  publication: "Science 330(6004):686-688"
+  type: peer-reviewed group experiments
+  doi: "10.1126/science.1193147"
+  url: "https://doi.org/10.1126/science.1193147"
+  reviewed_on: "2026-07-23"
+  relevance: "In two studies with 699 people working in groups of two to five, identifies a general group-performance factor associated with social sensitivity and more equal conversational turn-taking."
+  boundary: "The experiments used small groups and selected tasks; the proposed predictors were challenged by later replication work and do not validate any fixed circle size or authority structure."
+
+- id: bates-gupta-2017-group-intelligence
+  title: "Smart groups of smart people: Evidence for IQ as the origin of collective intelligence in the performance of human groups"
+  authors: "Timothy C. Bates; Shivani Gupta"
+  year: 2017
+  publication: "Intelligence 60:46-56"
+  type: peer-reviewed replication and model test
+  doi: "10.1016/j.intell.2016.11.004"
+  url: "https://doi.org/10.1016/j.intell.2016.11.004"
+  reviewed_on: "2026-07-23"
+  relevance: "Across three studies with 312 people, reports that individual cognitive ability explained most group-performance differences while gender balance, turn-taking, and social sensitivity did not explain the latent group factor."
+  boundary: "These studies challenge rather than erase the original findings; they use small experimental groups and do not establish that interaction processes are irrelevant in real institutions."
+
+- id: bertocchi-et-al-2023-standardized-terminologies
+  title: "Impact of standardized nursing terminologies on patient and organizational outcomes: A systematic review and meta-analysis"
+  authors: "Luca Bertocchi; Angelo Dante; Carmen La Cerra; Vittorio Masotta; Alessia Marcotullio; Dorothy Jones; Cristina Petrucci; Loreto Lancia"
+  year: 2023
+  publication: "Journal of Nursing Scholarship 55(6):1126-1153"
+  type: systematic review and meta-analysis
+  doi: "10.1111/jnu.12894"
+  url: "https://doi.org/10.1111/jnu.12894"
+  reviewed_on: "2026-07-23"
+  relevance: "Reviews 53 reports on recognized standardized nursing terminologies and finds associations or improvements across documentation, prediction, knowledge, self-efficacy, readmission, and other patient or organizational outcomes."
+  boundary: "GRADE certainty was very low to low, most studies were observational, and terminology was often embedded in larger interventions; causal effects remain uncertain."
+
+- id: stacey-et-al-2024-decision-aids
+  title: "Decision aids for people facing health treatment or screening decisions"
+  authors: "Dawn Stacey et al."
+  year: 2024
+  publication: "Cochrane Database of Systematic Reviews 2024(1):CD001431"
+  type: Cochrane systematic review of randomized controlled trials
+  doi: "10.1002/14651858.CD001431.pub6"
+  url: "https://doi.org/10.1002/14651858.CD001431.pub6"
+  reviewed_on: "2026-07-23"
+  relevance: "Synthesizes 209 trials with 107,698 adults and finds that decision aids increase knowledge, accurate risk perceptions, active participation, and informed values-congruent choices without increasing decision regret."
+  boundary: "The review concerns health treatment and screening decisions, with evidence current to March 2022; adherence, resource effects, and representation of resource-limited countries remain incomplete."

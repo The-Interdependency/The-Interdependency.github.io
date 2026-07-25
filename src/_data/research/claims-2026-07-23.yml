@@ -1,0 +1,82 @@
+- id: article-one-assistance-modality
+  article: rights-and-definitions-of-the-way.article-one
+  stance: mixed
+  status: systematic-review
+  claim: "Cash, vouchers, and in-kind food can each support emergency food security, while their relative effectiveness and efficiency depend on markets, security, delivery capacity, recipient selection, and the outcome being optimized."
+  source_ids:
+    - doocy-tappis-2017-humanitarian-cash
+  limitation: "The review found sparse, generally low-quality effectiveness evidence through November 2014 and does not establish a universal assistance modality, contribution rule, or justified exclusion."
+
+- id: article-two-autonomy-meta-analysis
+  article: rights-and-definitions-of-the-way.article-two
+  stance: support
+  status: meta-analytic
+  claim: "Across health contexts, autonomy support, psychological-need satisfaction, and autonomous motivation are positively related to sustained health behavior and beneficial mental and physical health outcomes."
+  source_ids:
+    - ng-et-al-2012-sdt-meta-analysis
+  limitation: "The meta-analysis concerns heterogeneous healthcare and health-promotion settings; it does not prove every duty in Article Two or make coercion compatible with autonomous motivation."
+
+- id: article-two-care-duty-burden
+  article: rights-and-definitions-of-the-way.article-two
+  stance: dissent
+  status: meta-analytic-limit
+  claim: "Necessary unpaid care can transfer anxiety and depression risk to caregivers, so survival duties cannot be allocated as though caregivers possess unlimited time, health, or support."
+  source_ids:
+    - magana-et-al-2020-unpaid-caregivers-lmic
+  limitation: "The review includes 14 observational studies across diverse low- and middle-income settings; it does not show that caregiving is intrinsically harmful or prescribe one allocation system."
+
+- id: article-three-forgiving-reciprocity
+  article: rights-and-definitions-of-the-way.article-three
+  stance: mixed
+  status: theory-evidence-synthesis
+  claim: "Repeated interaction can sustain cooperative reciprocity, but strict act-for-act retaliation is error-sensitive; concurrent social crosstalk can spread defection and require bounded forgiveness or other error-correcting strategies."
+  source_ids:
+    - rossetti-hilbe-2024-direct-reciprocity
+    - reiter-et-al-2018-reciprocity-crosstalk
+  limitation: "The evidence comes mainly from stylized games, mathematical models, and simulations; it neither establishes consent to retaliation nor instructs anyone to forgive or remain exposed to abuse."
+
+- id: article-four-plain-language-boundary
+  article: rights-and-definitions-of-the-way.article-four
+  stance: mixed
+  status: experimental
+  claim: "Plain-language redrafting can improve non-expert comprehension of legal contracts, but language simplification alone leaves substantial misunderstanding when complex concepts conflict with prior knowledge and beliefs."
+  source_ids:
+    - masson-waldron-1994-legal-contract-comprehension
+  limitation: "The controlled study concerns legal contracts rather than all law; it supports instruction and comprehension checks, not the assumption that publication or simplified wording guarantees knowledge."
+
+- id: article-five-task-specific-capacity
+  article: rights-and-definitions-of-the-way.article-five
+  stance: limit
+  status: medicolegal-review
+  claim: "Decision-making capacity is ordinarily task-specific and dynamic, requiring understanding, appreciation, reasoning, and a consistent choice free from coercion; global status tests can erase retained capacities and autonomy."
+  source_ids:
+    - zietlow-et-al-2022-guardianship-capacity
+  limitation: "The review concerns United States clinical and guardianship practice, not political adulthood; medical decision-making capacity and equal legal status remain distinct questions."
+
+- id: article-six-collective-intelligence-dispute
+  article: rights-and-definitions-of-the-way.article-six
+  stance: mixed
+  status: contested-replication
+  claim: "Small groups show stable differences in collective performance, but experiments conflict over whether conversational equality and social sensitivity or the cognitive ability of members best explains those differences."
+  source_ids:
+    - woolley-et-al-2010-collective-intelligence
+    - bates-gupta-2017-group-intelligence
+  limitation: "Both research programs use small experimental groups and selected tasks; their disagreement does not validate twelve-person circles, singular emergency leadership, or any authority derived from violence."
+
+- id: article-seven-standard-terminology-outcomes
+  article: rights-and-definitions-of-the-way.article-seven
+  stance: mixed
+  status: low-certainty-meta-analysis
+  claim: "Shared professional terminology can improve documentation, coordination, prediction, knowledge, self-efficacy, and some outcomes, while current causal evidence remains low-certainty and methodologically heterogeneous."
+  source_ids:
+    - bertocchi-et-al-2023-standardized-terminologies
+  limitation: "The review concerns recognized nursing terminologies usually embedded in larger interventions; it does not establish that imposed definitions are neutral or sufficient in ordinary conversation."
+
+- id: article-eight-decision-aids
+  article: rights-and-definitions-of-the-way.article-eight
+  stance: support
+  status: high-certainty-review
+  claim: "Decision aids that make options explicit and communicate benefits, harms, probabilities, and personal values help adults make more informed, active, values-congruent health choices without increasing decision regret."
+  source_ids:
+    - stacey-et-al-2024-decision-aids
+  limitation: "The review concerns health treatment and screening decisions; it does not create a universal consent standard, and evidence on adherence, resource effects, and resource-limited settings remains incomplete."
