@@ -15,7 +15,7 @@
     "validate": "node scripts/validate-content.mjs && node scripts/verify-generated-routes.mjs && node scripts/verify-article-canon.mjs",
     "build": "npm run validate && eleventy && pagefind --site _site && node scripts/write-build-info.mjs",
     "pretest": "node scripts/prepare-tests.mjs",
-    "test": "node --test tests/canon-parser.test.mjs tests/canon-integrity.test.mjs tests/textbook-integrity.test.mjs tests/offline-project-snapshot.test.mjs tests/repo-coverage.test.mjs tests/research-ledger.test.mjs tests/site-contract.test.mjs",
+    "test": "node --test tests/canon-parser.test.mjs tests/canon-integrity.test.mjs tests/textbook-integrity.test.mjs tests/math-rendering.test.mjs tests/offline-project-snapshot.test.mjs tests/repo-coverage.test.mjs tests/research-ledger.test.mjs tests/site-contract.test.mjs",
     "test:generated": "node --test tests/generated-site.test.mjs tests/textbook-generated.test.mjs && node tests/links.test.mjs",
     "test:browser": "playwright test",
     "test:e2e": "playwright test tests/site.spec.mjs",
@@ -31,7 +31,8 @@
     "js-yaml": "4.1.0",
     "markdown-it": "14.1.0",
     "sanitize-html": "2.17.0",
-    "slugify": "1.6.6"
+    "slugify": "1.6.6",
+    "temml": "0.13.3"
   },
   "devDependencies": {
     "@playwright/test": "1.54.1",
