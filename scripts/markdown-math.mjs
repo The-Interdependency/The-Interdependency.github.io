@@ -17,7 +17,7 @@ import temml from 'temml';
 //   rollout: installed into the repository-owned markdown-it instance in .eleventy.js
 //   rollback: remove installMathRenderer and the Temml dependency; exact chapter Markdown remains available through provenance links
 // === END MODULE_BUILD ===
-// Usage: call installMathRenderer(md) before rendering source Markdown containing \(...\), \[...\], $$...$$, or supported AMS display environments.
+// Usage: call installMathRenderer(md) before rendering source Markdown containing \(...\), \[...\], $$...$$, or supported AMS display environments; emitted MathML is final HTML and needs no browser renderer.
 // Limits: renders TeX math syntax only; it does not evaluate equations, validate mathematical claims, or alter owning-repository source text.
 
 // === BOUNDARIES ===
