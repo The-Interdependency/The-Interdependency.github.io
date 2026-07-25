@@ -25,23 +25,12 @@ async function readYamlList(path) {
   return parsed;
 }
 
-async function readOptionalYamlList(path) {
-  try {
-    return await readYamlList(path);
-  } catch (error) {
-    if (error?.code === 'ENOENT') return [];
-    throw error;
-  }
-}
-
 test('research ledgers parse and claims resolve to reviewed sources', async () => {
-  const [baseSources, supplementalSources, claims, articleLab] = await Promise.all([
+  const [sources, claims, articleLab] = await Promise.all([
     readYamlList('src/_data/research/sources.yml'),
-    readOptionalYamlList('src/_data/research/source_supplements.yml'),
     readYamlList('src/_data/research/claims.yml'),
     readFile('src/_data/article_lab.json', 'utf8').then(JSON.parse)
   ]);
-  const sources = [...baseSources, ...supplementalSources];
   assert.ok(Array.isArray(sources) && sources.length > 0);
   assert.ok(Array.isArray(claims) && claims.length > 0);
   assert.ok(Array.isArray(articleLab) && articleLab.length === 8);
