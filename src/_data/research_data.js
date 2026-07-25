@@ -23,7 +23,7 @@ import yaml from 'js-yaml';
 
 // === BOUNDARIES ===
 // id: article_lab_research_data_storage_boundary
-//   summary: Reads two repository-owned YAML ledgers during static-site generation and returns parsed arrays.
+//   summary: Reads repository-owned YAML ledgers during static-site generation and returns parsed arrays.
 //   auth_boundary: none
 //   storage_boundary: read
 //   network_boundary: none
@@ -41,10 +41,20 @@ async function readYamlList(path) {
   return parsed;
 }
 
+async function readOptionalYamlList(path) {
+  try {
+    return await readYamlList(path);
+  } catch (error) {
+    if (error?.code === 'ENOENT') return [];
+    throw error;
+  }
+}
+
 export default async function researchData() {
-  const [sources, claims] = await Promise.all([
+  const [sources, supplementalSources, claims] = await Promise.all([
     readYamlList('src/_data/research/sources.yml'),
+    readOptionalYamlList('src/_data/research/source_supplements.yml'),
     readYamlList('src/_data/research/claims.yml')
   ]);
-  return { sources, claims };
+  return { sources: [...sources, ...supplementalSources], claims };
 }
