@@ -1,0 +1,45 @@
+- id: un-crpd-2014-legal-capacity
+  title: "General comment No. 1 (2014), Article 12: Equal recognition before the law"
+  authors: "UN Committee on the Rights of Persons with Disabilities"
+  year: 2014
+  publication: "CRPD/C/GC/1"
+  type: treaty-body general comment
+  url: "https://digitallibrary.un.org/record/812024"
+  reviewed_on: "2026-07-24"
+  relevance: "Clarifies that legal capacity and mental capacity are distinct and that disabled people have equal recognition before the law, with support for exercising legal capacity."
+  boundary: "Supports a legal-capacity safeguard against generalized competence tests; it does not prohibit task-specific qualifications for hazardous roles."
+
+- id: stephan-chenoweth-2008-civil-resistance
+  title: "Why Civil Resistance Works: The Strategic Logic of Nonviolent Conflict"
+  authors: "Maria J. Stephan; Erica Chenoweth"
+  year: 2008
+  publication: "International Security 33(1):7-44"
+  type: peer-reviewed empirical study
+  doi: "10.1162/isec.2008.33.1.7"
+  url: "https://doi.org/10.1162/isec.2008.33.1.7"
+  reviewed_on: "2026-07-24"
+  relevance: "Compares major nonviolent and violent resistance campaigns from 1900 to 2006 and argues that nonviolent campaigns often succeed by widening participation, legitimacy, and loyalty shifts."
+  boundary: "Challenges reduction of political power to violence; it does not prove violence is never decisive or remove the need for bounded emergency authority."
+
+- id: rosch-1975-semantic-categories
+  title: "Cognitive Representations of Semantic Categories"
+  authors: "Eleanor Rosch"
+  year: 1975
+  publication: "Journal of Experimental Psychology: General 104(3):192-233"
+  type: peer-reviewed empirical study
+  doi: "10.1037/0096-3445.104.3.192"
+  url: "https://doi.org/10.1037/0096-3445.104.3.192"
+  reviewed_on: "2026-07-24"
+  relevance: "Shows that many semantic categories have graded internal structure, with better and worse exemplars rather than only sharp boundaries."
+  boundary: "Challenges overconfident fixed definitions in ordinary language; it does not negate stipulated definitions for legal, technical, or safety-critical terms."
+
+- id: solove-2013-consent-dilemma
+  title: "Privacy Self-Management and the Consent Dilemma"
+  authors: "Daniel J. Solove"
+  year: 2013
+  publication: "Harvard Law Review 126:1880-1903"
+  type: peer-reviewed legal scholarship
+  url: "https://harvardlawreview.org/print/vol-126/introduction-privacy-self-management-and-the-consent-dilemma/"
+  reviewed_on: "2026-07-24"
+  relevance: "Argues that notice and consent are often insufficient for privacy self-management because data practices are too numerous, cumulative, and downstream to be individually managed well."
+  boundary: "Challenges consent as a complete legitimacy model in information privacy; it does not reject informed consent in medicine, research, sexuality, or other domains."
