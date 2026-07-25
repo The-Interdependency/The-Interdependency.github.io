@@ -6,7 +6,7 @@ import MarkdownIt from 'markdown-it';
 import { installMathRenderer } from '../scripts/markdown-math.mjs';
 
 function renderer() {
-  return installMathRenderer(markdownIt({ html: false, linkify: true, typographer: true }));
+  return installMathRenderer(new MarkdownIt({ html: false, linkify: true, typographer: true }));
 }
 
 test('renders inline and display textbook LaTeX as annotated static MathML', () => {
