@@ -4,7 +4,7 @@
 // id: generated_site_browser_harness
 //   module_name: playwright-config
 //   module_kind: instrument
-//   summary: Configures browser, route, and automated accessibility checks against the generated site.
+//   summary: Configures browser, route, static-math, and automated accessibility checks against the generated site.
 //   owner: Erin Spencer
 //   public_surface: npm run test:browser, npm run test:e2e, npm run test:a11y
 //   internal_surface: Playwright webServer and Chromium test configuration
@@ -13,7 +13,7 @@
 //   network_boundary: internal
 //   user_data_boundary: none
 //   admin_only: false
-//   tests: tests/site.spec.mjs, tests/accessibility.spec.mjs
+//   tests: tests/site.spec.mjs, tests/math.spec.mjs, tests/accessibility.spec.mjs
 //   rollout: required by pull-request and Pages workflows
 //   rollback: remove browser scripts, workflow steps, and static test server together
 // === END MODULE_BUILD ===

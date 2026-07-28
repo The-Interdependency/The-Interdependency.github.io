@@ -1,0 +1,36 @@
+<!doctype html>
+<!-- === MODULE_BUILD ===
+ id: awakening_splash_layout
+   module_name: splash-layout
+   module_kind: route
+   summary: Renders the canon-derived Awakening as a dependency-light public threshold before the full knowledge-system chrome.
+   owner: Erin Spencer
+   public_surface: root HTML shell for Awakening
+   internal_surface: title, description, canonical URL, site.css, awakening.css, content slot
+   auth_boundary: none
+   storage_boundary: none
+   network_boundary: none
+   user_data_boundary: none
+   admin_only: false
+   tests: tests/site-contract.test.mjs, tests/generated-site.test.mjs, tests/site.spec.mjs, tests/accessibility.spec.mjs
+   rollout: selected by src/index.njk
+   rollback: restore layouts/base.njk on src/index.njk and remove this layout
+=== END MODULE_BUILD === -->
+<!-- Usage: src/index.njk supplies the canon-derived Awakening content. The page remains readable with CSS disabled and uses no JavaScript. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#050711">
+  <title>{{ title or site.title }}</title>
+  <meta name="description" content="{{ description or site.description }}">
+  <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="/assets/css/awakening.css">
+</head>
+<body class="awakening-body">
+  <a class="skip-link" href="#content">Skip to Awakening</a>
+  <main id="content" class="awakening-splash">{{ content | safe }}</main>
+</body>
+</html>

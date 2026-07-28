@@ -5,10 +5,10 @@ import slugify from 'slugify';
 // id: canon_parser_core
 //   module_name: canon-parser
 //   module_kind: engine
-//   summary: Parses canonical or recovery text into stable sections, units, notes, routes, and provenance-bearing hashes.
+//   summary: Parses canonical or recovery text into stable sections, nested heading units, notes, routes, and provenance-bearing hashes.
 //   owner: Erin Spencer
 //   public_surface: parseCanon, detectHeading, extractNotes
-//   internal_surface: slug, boundedRouteSlug, parseDefinitionLine, extractNoteMarkers
+//   internal_surface: slug, boundedRouteSlug, canonicalHeadingLevel, parseDefinitionLine, extractNoteMarkers
 //   auth_boundary: none
 //   storage_boundary: none
 //   network_boundary: none
@@ -16,12 +16,12 @@ import slugify from 'slugify';
 //   admin_only: false
 //   tests: tests/canon-parser.test.mjs, tests/canon-integrity.test.mjs
 //   rollout: imported by scripts/parse-canon.mjs during every canon refresh
-//   rollback: restore the prior inline parser and remove this import
+//   rollback: restore the prior parser version and remove nested heading-parent edges
 // === END MODULE_BUILD ===
-// Usage: import parseCanon(text, provenance); run `node --test tests/canon-parser.test.mjs` for recovery and note fixtures.
-// Limits: heading recognition is canon-specific; unknown headings remain body text and must surface as hmmm during editorial review.
+// Usage: import parseCanon(text, provenance); run `node --test tests/canon-parser.test.mjs` for hierarchy, recovery, and note fixtures.
+// Limits: heading recognition is canon-specific; unknown headings retain normalized source levels and must surface as hmmm during editorial review.
 
-export const parserVersion = '0.5.0';
+export const parserVersion = '0.6.0';
 
 function slug(value) {
   return slugify(value, { lower: true, strict: true }) || 'unit';
@@ -34,39 +34,40 @@ function boundedRouteSlug(id) {
   return `${candidate.slice(0, 84).replace(/-+$/, '')}-${suffix}`;
 }
 
+function canonicalHeadingLevel(value) {
+  const title = value.trim().replace(/:\s*$/, '');
+  if (/^The Interdependent Way$/i.test(title)) return 1;
+  if (/^(Awakening|The Interdefinables|Preamble|Etiquette of the Body Politic)$/i.test(title)) return 2;
+  if (/^Rights.+of The Way[⁰¹²³⁴⁵⁶⁷⁸⁹]*$/i.test(title)) return 2;
+  if (/^Addendum:\s+.+$/i.test(value.trim())) return 2;
+  if (/^Human consciousness emerges from$/i.test(title)) return 3;
+  if (/^Article\s+(One|Two|Three|Four|Five|Six|Seven|Eight)(?:\s+\([^)]+\))?$/i.test(title)) return 3;
+  if (/^Binary essences meaningfully.*rooted[.]?$/i.test(title)) return 4;
+  if (/^Trinary perceptual focal (?:states|constructs) of complex system spirals/i.test(title)) return 4;
+  if (/^Trinary (?:states of social perception|social perception focal states)/i.test(title)) return 4;
+  if (/^(?:Five dominant )?Archetype passions of possession/i.test(title)) return 4;
+  if (/^(Summary|One-sentence takeaway \(exactly as previously given\))$/i.test(title)) return 3;
+  return null;
+}
+
 export function detectHeading(line) {
   const markdown = /^(#{1,6})\s+(.+?)\s*$/.exec(line);
   if (markdown) {
     const sourceLevel = markdown[1].length;
-    // The recovery mirror uses H3 for the same major divisions that the plain-text
-    // canon expresses as level 2, and H4 for article units. Normalize those levels
-    // before assigning parents so offline and remote builds have the same structure.
-    const level = sourceLevel >= 3 ? sourceLevel - 1 : sourceLevel;
-    return {
-      level,
-      sourceLevel,
-      title: markdown[2].replace(/#+$/, '').trim(),
-      syntax: 'markdown'
-    };
+    const title = markdown[2].replace(/#+$/, '').trim();
+    const declaredLevel = canonicalHeadingLevel(title);
+    // Recovery Markdown historically used H3 for both major sections and the
+    // Human-consciousness subheading. Canonical title semantics take priority;
+    // unknown headings retain the established H3→2 / H4→3 normalization.
+    const level = declaredLevel ?? (sourceLevel >= 3 ? sourceLevel - 1 : sourceLevel);
+    return { level, sourceLevel, title, syntax: 'markdown' };
   }
 
   const title = line.trim();
   if (!title) return null;
-  if (title === 'The Interdependent Way') return { level: 1, sourceLevel: 1, title, syntax: 'plain' };
-  if (/^(Awakening|The Interdefinables|Human consciousness emerges from|Preamble|Etiquette of the Body Politic)$/i.test(title)) {
-    return { level: 2, sourceLevel: 2, title, syntax: 'plain' };
-  }
-  if (/^Rights[\w\s’'&⁰¹²³⁴⁵⁶⁷⁸⁹-]+of The Way[⁰¹²³⁴⁵⁶⁷⁸⁹]*$/i.test(title)) {
-    return { level: 2, sourceLevel: 2, title, syntax: 'plain' };
-  }
-  if (/^Addendum:\s+.+$/i.test(title)) return { level: 2, sourceLevel: 2, title, syntax: 'plain' };
-  if (/^Article\s+(One|Two|Three|Four|Five|Six|Seven|Eight)(?:\s+\([^)]+\))?$/i.test(title)) {
-    return { level: 3, sourceLevel: 3, title, syntax: 'plain' };
-  }
-  if (/^(Binary essences meaningfully, divided; then, rooted\.|Trinary perceptual focal states of complex system spirals:.+|Trinary states of social perception:|Archetype passions of possession\..+|Summary|One-sentence takeaway \(exactly as previously given\))$/i.test(title)) {
-    return { level: 3, sourceLevel: 3, title, syntax: 'plain' };
-  }
-  return null;
+  const level = canonicalHeadingLevel(title);
+  if (!level) return null;
+  return { level, sourceLevel: level, title, syntax: 'plain' };
 }
 
 function parseDefinitionLine(line) {
@@ -111,6 +112,7 @@ export function parseCanon(text, provenance = {}) {
   const documentHash = createHash('sha256').update(text).digest('hex');
   const units = [];
   const sections = [];
+  const headingStack = [];
   let current = null;
   let sectionId = 'source';
 
@@ -140,16 +142,22 @@ export function parseCanon(text, provenance = {}) {
       }
     }
 
+    const parent = [...headingStack].reverse().find(entry => entry.level < level) ?? null;
+    const id = `${sectionId}.${slug(title)}`;
     current = {
-      id: `${sectionId}.${slug(title)}`,
+      id,
       title,
       section: sectionId,
+      parentId: parent?.id ?? null,
       level,
       sourceLevel,
       syntax,
       startLine: index + 1,
       lines: [lines[index]]
     };
+
+    while (headingStack.length && headingStack.at(-1).level >= level) headingStack.pop();
+    headingStack.push({ id, level });
   }
   finish(lines.length);
 
@@ -178,6 +186,9 @@ export function parseCanon(text, provenance = {}) {
     sections,
     units: units.map(({ lines: ignored, ...unit }) => unit),
     notes,
-    edges: units.map(unit => ({ from: unit.id, to: unit.section, type: 'unit-parent' }))
+    edges: [
+      ...units.map(unit => ({ from: unit.id, to: unit.section, type: 'unit-parent' })),
+      ...units.filter(unit => unit.parentId).map(unit => ({ from: unit.id, to: unit.parentId, type: 'heading-parent' }))
+    ]
   };
 }

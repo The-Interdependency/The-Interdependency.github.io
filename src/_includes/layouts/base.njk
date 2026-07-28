@@ -9,20 +9,23 @@
   <meta name="description" content="{{ description or site.description }}">
   <link rel="canonical" href="{{ site.url }}{{ page.url }}">
   <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="/assets/css/math.css">
   <script src="/assets/js/site.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#content">Skip to content</a>
   <header class="site-header" data-site-header>
-    <a class="brand" href="/" aria-label="The Interdependent Way home">
+    <a class="brand" href="/home/" aria-label="The Interdependent Way knowledge-system home">
       <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
       <span><strong>The Interdependent Way</strong><small>living public knowledge system</small></span>
     </a>
     <button class="nav-toggle" type="button" hidden aria-expanded="false" aria-controls="primary-nav">Menu</button>
     <nav id="primary-nav" class="primary-nav" aria-label="Primary navigation">
+      <a href="/">Awakening</a>
       <a href="/start/">Start</a>
       <a href="/preamble/">Preamble</a>
       <a href="/way/">The Way</a>
+      <a href="/chapters/">Textbook</a>
       <a href="/lab/">Article Lab</a>
       <a href="/projects/">Projects</a>
       <a href="/artifacts/">Artifacts</a>
@@ -30,17 +33,18 @@
       <a href="/search/">Search</a>
     </nav>
   </header>
-  <noscript><p class="noscript">The complete reading experience remains available without JavaScript. Only the compact mobile menu enhancement is disabled.</p></noscript>
+  <noscript><p class="noscript">The complete reading experience, including textbook mathematics, remains available without JavaScript. Only the compact mobile menu enhancement is disabled.</p></noscript>
   <main id="content" class="site-main">{{ content | safe }}</main>
   <footer class="site-footer">
     <div>
       <strong>The Interdependent Way</strong>
-      <p>Canon, interpretation, research, implementation, and frontier claims are kept visibly distinct.</p>
+      <p>Canon, distributed textbook, interpretation, research, implementation, and frontier claims are kept visibly distinct.</p>
     </div>
     <div class="footer-provenance">
       <span>Canon alias: {{ generated.canon.source.repository }}</span>
       <span>Path: {{ generated.canon.source.path }}</span>
       <span>Digest: <code>{{ generated.canon.source.contentSha256 | truncate(18, true, '…') }}</code></span>
+      <span>Textbook: {{ generated.textbook.chapterCount }} distributed chapters</span>
     </div>
     <div class="hmmm-boundary"><strong>hmmm</strong><span>Honest incompletion remains visible so the next action has somewhere true to begin.</span></div>
   </footer>

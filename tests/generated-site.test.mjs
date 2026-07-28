@@ -6,20 +6,35 @@ import { readFile } from 'node:fs/promises';
 
 // Usage: run only after Eleventy has generated _site, normally through npm run test:generated or npm run check.
 test('generated deployment artifact contains the unified routes', async () => {
-  const [home, preamble, artifacts, fourCuts, fallback, articles] = await Promise.all([
+  const [splash, home, preamble, chapters, artifacts, fourCuts, fallback, articles] = await Promise.all([
     readFile('_site/index.html', 'utf8'),
+    readFile('_site/home/index.html', 'utf8'),
     readFile('_site/preamble/index.html', 'utf8'),
+    readFile('_site/chapters/index.html', 'utf8'),
     readFile('_site/artifacts/index.html', 'utf8'),
     readFile('_site/artifacts/four-cuts/index.html', 'utf8'),
     readFile('_site/fallback/index.html', 'utf8'),
     readFile('_site/articles/index.html', 'utf8')
   ]);
 
+  assert.match(splash, /class="awakening-splash"/);
+  assert.match(splash, /<h1>Awakening<\/h1>/);
+  assert.match(splash, /5d explodes out of 4d/);
+  assert.match(splash, /You are not alone/);
+  assert.match(splash, /href="\/preamble\/"[^>]*>Read the Preamble/);
+  assert.match(splash, /href="\/home\/"[^>]*>Enter the living system/);
+  assert.doesNotMatch(splash, /primary-nav/);
   assert.match(home, /A way through complexity/);
   assert.match(home, /href="\/preamble\/"[^>]*>Read the Preamble/);
+  assert.match(home, /href="\/chapters\/"/);
+  assert.match(home, /Chapters Zero through Seven/);
+  assert.match(home, /href="\/"/);
+  assert.match(home, /Return to Awakening/);
   assert.match(preamble, /One-click canon entrance/);
   assert.match(preamble, /Humanity faces extinction/);
   assert.match(preamble, /Canonical repository/);
+  assert.match(chapters, /The Interdependency Textbook/);
+  assert.match(chapters, /Chapters Zero through Seven/);
   assert.match(artifacts, /Artifacts/);
   assert.match(fourCuts, /Wealth and tax/);
   assert.match(fallback, /Emergency static edition/);
@@ -36,7 +51,53 @@ test('generated deployment artifact contains the unified routes', async () => {
   ]) assert.match(articles, new RegExp(title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
 });
 
-test('generated deployment artifact contains all rights article vertical slices', async () => {
+test('distributed textbook displays all eight exact chapter sources', async () => {
+  const textbook = JSON.parse(await readFile('src/_data/generated/textbook.json', 'utf8'));
+  const index = await readFile('_site/chapters/index.html', 'utf8');
+  const contact = [
+    /Zero is not nothing/,
+    /directed twofold branched angular cover/,
+    /NA != 0/,
+    /Modules That Speak for Themselves/,
+    /meta-package/,
+    /Prime Tensor Circled Neural Architecture/,
+    /research[\s\S]*instrument, not a product/,
+    /theory under development/
+  ];
+
+  assert.equal(textbook.chapters.length, 8);
+  for (const chapter of textbook.chapters) {
+    assert.match(index, new RegExp(`href="/chapters/${chapter.slug}/"`));
+    assert.match(index, new RegExp(chapter.title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+    const html = await readFile(`_site/chapters/${chapter.slug}/index.html`, 'utf8');
+    assert.match(html, /class="textbook-chapter"/);
+    assert.match(html, new RegExp(`<title>Chapter ${chapter.display_number} · ${chapter.title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}<\\/title>`));
+    assert.match(html, new RegExp(chapter.repository.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+    assert.match(html, new RegExp(chapter.path.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+    assert.match(html, /Open exact source in GitHub/);
+    assert.match(html, /Source evidence/);
+    assert.match(html, contact[chapter.number]);
+  }
+  assert.match(await readFile('_site/chapters/chapter-seven/index.html', 'utf8'), /theory under development/);
+});
+
+test('Way map renders Human consciousness beneath Interdefinables and before Preamble', async () => {
+  const way = await readFile('_site/way/index.html', 'utf8');
+  const interdefinablesSection = way.indexOf('<h2>The Interdefinables</h2>');
+  const humanHeading = way.indexOf('Human consciousness emerges from');
+  const binaryHeading = way.indexOf('Binary essences meaningfully');
+  const preambleSection = way.indexOf('<h2>Preamble</h2>');
+
+  assert.ok(interdefinablesSection >= 0, 'Interdefinables section missing');
+  assert.ok(humanHeading > interdefinablesSection, 'Human consciousness must appear inside Interdefinables');
+  assert.ok(binaryHeading > humanHeading, 'Human consciousness child headings must follow their parent');
+  assert.ok(preambleSection > binaryHeading, 'Preamble must be the next major section after Interdefinables');
+  assert.match(way, /class="unit-level-3"[^>]*>[\s\S]*?Human consciousness emerges from/);
+  assert.match(way, /class="unit-level-4"[^>]*>[\s\S]*?Binary essences meaningfully/);
+  assert.doesNotMatch(way, /<h2>Human consciousness emerges from:?<\/h2>/);
+});
+
+test('generated deployment artifact contains all rights article vertical slices with research attachment', async () => {
   const pages = [
     ['article-one', /Contribution without contempt/, /From each as they will/],
     ['article-two', /Freedom without abandonment/, /None shall be enslaved/],
@@ -53,6 +114,8 @@ test('generated deployment artifact contains all rights article vertical slices'
     assert.match(html, titlePattern);
     assert.match(html, canonPattern);
     assert.match(html, /60–90 second script/);
+    assert.match(html, /Reviewed research attachment/);
+    assert.match(html, /Evidence boundary/);
     assert.match(html, /hmmm/);
   }
 });

@@ -5,16 +5,16 @@ import { readFile, writeFile } from 'node:fs/promises';
 // id: public_build_identity
 //   module_name: write-build-info
 //   module_kind: worker
-//   summary: Publishes machine-readable site and canon identities for post-deployment verification.
+//   summary: Publishes machine-readable site, canon, and distributed-textbook identities for post-deployment verification.
 //   owner: Erin Spencer
 //   public_surface: _site/build.json
-//   internal_surface: git commit resolution and canonical provenance projection
+//   internal_surface: git commit resolution, canonical provenance projection, chapter-source identity projection
 //   auth_boundary: none
 //   storage_boundary: write
 //   network_boundary: none
 //   user_data_boundary: none
 //   admin_only: false
-//   tests: tests/generated-site.test.mjs
+//   tests: tests/generated-site.test.mjs, tests/textbook-integrity.test.mjs
 //   rollout: runs at the end of npm run build
 //   rollback: remove build.json and both live identity checks together
 // === END MODULE_BUILD ===
@@ -23,7 +23,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 
 // === BOUNDARIES ===
 // id: public_build_identity_boundary
-//   summary: Reads canon provenance and writes public build identity into the generated site.
+//   summary: Reads canon and textbook provenance and writes public build identity into the generated site.
 //   auth_boundary: none
 //   storage_boundary: write
 //   network_boundary: none
@@ -44,6 +44,7 @@ function localCommit() {
 }
 
 const canon = JSON.parse(await readFile('src/_data/generated/canon.json', 'utf8'));
+const textbook = JSON.parse(await readFile('src/_data/generated/textbook.json', 'utf8'));
 const commit = process.env.GITHUB_SHA || localCommit();
 const info = {
   repository: process.env.GITHUB_REPOSITORY || 'The-Interdependency/The-Interdependency.github.io',
@@ -56,8 +57,26 @@ const info = {
     blob: canon.source.blob,
     contentSha256: canon.source.contentSha256,
     fallback: Boolean(canon.source.fallback)
+  },
+  distributedTextbook: {
+    schema: textbook.schema,
+    chapterCount: textbook.chapterCount,
+    complete: Boolean(textbook.complete),
+    fallback: Boolean(textbook.fallback),
+    chapters: textbook.chapters.map(chapter => ({
+      number: chapter.number,
+      slug: chapter.slug,
+      title: chapter.title,
+      repository: chapter.repository,
+      path: chapter.path,
+      commit: chapter.commit,
+      blob: chapter.blob,
+      contentSha256: chapter.contentSha256,
+      status: chapter.status,
+      fallback: Boolean(chapter.fallback)
+    }))
   }
 };
 
 await writeFile('_site/build.json', `${JSON.stringify(info, null, 2)}\n`);
-console.log(`build identity ${commit}`);
+console.log(`build identity ${commit} textbook-chapters=${textbook.chapterCount}`);
