@@ -18,7 +18,9 @@ title: "Lab: {{ unit.title }}"
 </header>
 <section>
   <h2>Conversation</h2>
-  <article class="panel turn"><span class="status status-canon">Speaker A · main text</span><p>The exact canonical unit is one interaction away so this interpretive layer cannot quietly replace it.</p><p><a href="/source/{{ unit.routeSlug }}/">Open exact source and provenance</a></p></article>
+  <article class="panel turn"><span class="status status-canon">Speaker A · main text</span>
+    <blockquote class="reading">{% for line in unit.content | canonUnitBody %}<p>{{ line }}</p>{% endfor %}</blockquote>
+    <p><a href="/source/{{ unit.routeSlug }}/">Open exact source and provenance</a></p></article>
   {% if unit.notes.length %}
     {% for note in unit.notes %}<article class="panel turn note"><span class="status status-interpretation">Speaker B · note {{ note.marker }}</span><p>{{ note.text }}</p></article>{% endfor %}
   {% else %}
