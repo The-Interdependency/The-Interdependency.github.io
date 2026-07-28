@@ -19,6 +19,8 @@ import { readFile } from 'node:fs/promises';
 // === END MODULE_BUILD ===
 // Usage: run `node scripts/verify-article-canon.mjs` after `npm run refresh:canon`.
 // Limits: exactness covers quoted canon and notes; companion interpretation remains editorial.
+// Footnote-marker notation (superscript digits vs bracketed [n]) is presentation and is
+// normalized out of both sides before comparison; word-level drift still fails.
 
 // === BOUNDARIES ===
 // id: article_canon_verification_boundary
@@ -61,11 +63,23 @@ function canonicalBody(unit) {
   const body = [];
   for (const line of lines) {
     if (/^\s*>?\s*(?:\[[^\]]+\]|[⁰¹²³⁴⁵⁶⁷⁸⁹]+|\d+)\s+/.test(line)) break;
+    if (/^\s*\*\*\[Notes/.test(line)) break;
+    if (/^\s*---\s*$/.test(line)) break;
+    if (/^\s*#{2,}\s/.test(line)) break;
     if (line.trim()) body.push(line.trim());
   }
   return body.join(' ').replace(/\s+/g, ' ').trim();
 }
 
+function stripFootnoteMarkers(value) {
+  return value
+    .replace(/\s*\[\d+\]/g, '')
+    .replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]+/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+const failures = [];
 for (const [word, slug] of articles) {
   const title = `Article ${word}`;
   const unit = canon.units.find(candidate => candidate.title === title && candidate.section === rightsSection.id);
@@ -75,18 +89,22 @@ for (const [word, slug] of articles) {
   const blockquote = /<blockquote class="reading">([\s\S]*?)<\/blockquote>/.exec(source);
   if (!blockquote) throw new Error(`${title} page missing canonical reading blockquote`);
 
-  const expected = canonicalBody(unit);
-  const actual = plainHtml(blockquote[1]);
+  const expected = stripFootnoteMarkers(canonicalBody(unit));
+  const actual = stripFootnoteMarkers(plainHtml(blockquote[1]));
   if (actual !== expected) {
-    throw new Error(`${title} canonical excerpt drift\nexpected: ${expected}\nactual:   ${actual}`);
+    failures.push(`${title} canonical excerpt drift\nexpected: ${expected}\nactual:   ${actual}`);
   }
 
   const pageText = plainHtml(source);
   for (const note of unit.notes) {
     if (!pageText.includes(note.text.replace(/\s+/g, ' ').trim())) {
-      throw new Error(`${title} missing complete canon note ${note.marker}: ${note.text}`);
+      failures.push(`${title} missing complete canon note ${note.marker}: ${note.text}`);
     }
   }
+}
+
+if (failures.length > 0) {
+  throw new Error(`${failures.length} canon drift finding(s)\n\n${failures.join('\n\n')}`);
 }
 
 console.log('verified complete canon excerpts and notes for all eight rights articles');

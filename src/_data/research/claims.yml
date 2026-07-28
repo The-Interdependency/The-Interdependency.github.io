@@ -187,3 +187,66 @@
   source_ids:
     - solove-2013-consent-dilemma
   limitation: "The analysis concerns information privacy; it does not negate informed consent in medicine or research or establish that consent is irrelevant in other domains."
+
+- id: article-one-sanctioned-contribution-norms
+  article: rights-and-definitions-of-the-way.article-one
+  stance: support
+  status: evidence-informed
+  claim: "Shared provision is more likely to be sustained when a community can visibly sanction free riding, and people will bear personal cost to enforce contribution norms."
+  source_ids:
+    - fehr-gachter-2000-cooperation-punishment
+  limitation: "Laboratory evidence about monetary sanctions; it supports the existence of a contribution-enforcement instinct, not the specific act of withholding food or safety."
+
+- id: article-one-exclusion-clause-harms
+  article: rights-and-definitions-of-the-way.article-one
+  stance: dissent
+  status: defended-risk
+  claim: "Where sanctions withdrawing material support have been studied at scale, they moved people into worse and less stable work while producing material hardship, health problems, and poorer child wellbeing."
+  source_ids:
+    - pattaro-et-al-2022-benefit-sanctions
+  limitation: "The evidence concerns state benefit-sanction regimes; the article's exclusion clause operates at a different scale and the analogy is a bounded inference."
+
+- id: article-four-teaching-law-works
+  article: rights-and-definitions-of-the-way.article-four
+  stance: support
+  status: evidence-informed
+  claim: "Legal empowerment interventions that teach law to laypeople — legal literacy education, community paralegals — most commonly increase legal knowledge and people's willingness and ability to act."
+  source_ids:
+    - goodwin-maru-2017-legal-empowerment
+  limitation: "The mapped evidence base is uneven in rigor; it supports the duty to teach the law without validating any particular teaching mechanism the article implies."
+
+- id: article-four-honest-violence-risk
+  article: rights-and-definitions-of-the-way.article-four
+  stance: dissent
+  status: defended-risk
+  claim: "Public-health evidence treats violence as a preventable cause of death, injury, and lasting psychological harm, which weighs against framing 'honestly violent' resolution as preferable to nonviolent alternatives."
+  source_ids:
+    - who-2002-world-report-violence
+  limitation: "The report addresses population-level violence; it does not directly study supervised, consensual, parity-matched contests between willing adults."
+
+- id: article-five-maturity-gap
+  article: rights-and-definitions-of-the-way.article-five
+  stance: dissent
+  status: defended-risk
+  claim: "Cognitive capacity reaches adult levels years before psychosocial maturity, so demonstrated competence in a field can be present while impulse control and resistance to peer influence are still developing — an empirical basis for the age-based lines the article replaces."
+  source_ids:
+    - icenogle-et-al-2019-maturity-gap
+  limitation: "The study supports caution about competence-only adulthood tests; it does not evaluate the article's portfolio process, which may capture more than cognitive capacity."
+
+- id: article-seven-deliberation-polarization
+  article: rights-and-definitions-of-the-way.article-seven
+  stance: dissent
+  status: defended-risk
+  claim: "Deliberating groups tend to shift toward more extreme versions of their members' initial leanings, so a jury convened to settle a disputed definition may polarize rather than converge, and a thirteenth decider inherits the group's amplified tendency."
+  source_ids:
+    - sunstein-2002-group-polarization
+  limitation: "Polarization is strongest in like-minded groups; requiring heterogeneous jurors and structured procedure can mitigate the mechanism the claim warns about."
+
+- id: article-eight-harm-principle-indeterminacy
+  article: rights-and-definitions-of-the-way.article-eight
+  stance: dissent
+  status: defended-risk
+  claim: "Because competing harm claims have proliferated on all sides of morals debates, 'what action harms none is a right' cannot function as a self-executing test without an explicit account of which harms count and who decides."
+  source_ids:
+    - harcourt-1999-collapse-harm-principle
+  limitation: "A legal-theory argument about the principle's determinacy, not empirical measurement; the canon's own footnote ('Without debate, freedom is dead') anticipates exactly this contestation."

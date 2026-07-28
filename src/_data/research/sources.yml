@@ -243,3 +243,86 @@
   reviewed_on: "2026-07-23"
   relevance: "Explains how cognitive limits, information volume, aggregation, downstream uses, and collective effects make notice-and-consent insufficient as the sole governance mechanism for personal data."
   boundary: "Addresses information privacy; it does not negate informed consent in medicine or research and does not establish that consent is irrelevant in other domains."
+
+- id: fehr-gachter-2000-cooperation-punishment
+  title: "Cooperation and Punishment in Public Goods Experiments"
+  authors: "Ernst Fehr; Simon Gächter"
+  year: 2000
+  publication: "American Economic Review 90(4):980-994"
+  type: peer-reviewed experimental study
+  doi: "10.1257/aer.90.4.980"
+  url: "https://doi.org/10.1257/aer.90.4.980"
+  reviewed_on: "2026-07-28"
+  relevance: "Shows that contributors will pay to sanction free riders, and that the availability of such sanctions raises and sustains cooperation in public-goods experiments where standard theory predicts none."
+  boundary: "Laboratory monetary sanctions among anonymous players; it does not test excluding people from food or safety, and it does not license any specific real-world sanction."
+
+- id: pattaro-et-al-2022-benefit-sanctions
+  title: "The Impacts of Benefit Sanctions: A Scoping Review of the Quantitative Research Evidence"
+  authors: "Serena Pattaro; Nick Bailey; Evan Williams; Marcia Gibson; Valerie Wells; Mark Tranmer; Chris Dibben"
+  year: 2022
+  publication: "Journal of Social Policy 51(3):611-653"
+  type: peer-reviewed scoping review
+  doi: "10.1017/S0047279421001069"
+  url: "https://doi.org/10.1017/S0047279421001069"
+  reviewed_on: "2026-07-28"
+  relevance: "Reviews quantitative evidence that welfare benefit sanctions raise short-term exits into work but into lower-quality, less stable jobs, while producing material hardship, health problems, and poorer child wellbeing."
+  boundary: "Studies state welfare-conditionality regimes; it does not directly evaluate the article's community-scale provision or its specific exclusion clause."
+
+- id: goodwin-maru-2017-legal-empowerment
+  title: "What Do We Know about Legal Empowerment? Mapping the Evidence"
+  authors: "Laura Goodwin; Vivek Maru"
+  year: 2017
+  publication: "Hague Journal on the Rule of Law 9(1):157-194"
+  type: peer-reviewed evidence review
+  doi: "10.1007/s40803-016-0047-5"
+  url: "https://doi.org/10.1007/s40803-016-0047-5"
+  reviewed_on: "2026-07-28"
+  relevance: "Maps 199 studies of legal empowerment interventions such as legal literacy education and community paralegals, most commonly reporting increased legal knowledge and stronger agency."
+  boundary: "A mapping of an uneven evidence base, not a meta-analysis; it supports teaching law to laypeople without establishing any single program's effectiveness."
+
+- id: who-2002-world-report-violence
+  title: "World report on violence and health"
+  authors: "Etienne G. Krug; Linda L. Dahlberg; James A. Mercy; Anthony B. Zwi; Rafael Lozano (eds.)"
+  year: 2002
+  publication: "World Health Organization"
+  type: global public-health report
+  isbn: "92-4-154561-5"
+  url: "https://www.who.int/publications/i/item/9241545615"
+  reviewed_on: "2026-07-28"
+  relevance: "Frames violence as a preventable public-health problem with documented physical, psychological, and social sequelae across settings, and recommends prevention over normalization."
+  boundary: "Addresses population-level violence and prevention; it does not directly study consensual, regulated contests between willing adults."
+
+- id: icenogle-et-al-2019-maturity-gap
+  title: "Adolescents' cognitive capacity reaches adult levels prior to their psychosocial maturity: Evidence for a \"maturity gap\" in a multinational, cross-sectional sample"
+  authors: "Grace Icenogle; Laurence Steinberg; Natasha Duell; Jason Chein; et al."
+  year: 2019
+  publication: "Law and Human Behavior 43(1):69-85"
+  type: peer-reviewed empirical study
+  doi: "10.1037/lhb0000315"
+  url: "https://doi.org/10.1037/lhb0000315"
+  reviewed_on: "2026-07-28"
+  relevance: "Finds across eleven countries that cognitive capacity reaches adult levels around age sixteen while psychosocial maturity — impulse control, resistance to peer influence — continues developing past eighteen."
+  boundary: "Cross-sectional self-report and task measures; it identifies a maturity gap but does not evaluate the article's specific portfolio-and-proclamation process."
+
+- id: sunstein-2002-group-polarization
+  title: "The Law of Group Polarization"
+  authors: "Cass R. Sunstein"
+  year: 2002
+  publication: "Journal of Political Philosophy 10(2):175-195"
+  type: peer-reviewed theoretical article
+  doi: "10.1111/1467-9760.00148"
+  url: "https://doi.org/10.1111/1467-9760.00148"
+  reviewed_on: "2026-07-28"
+  relevance: "Synthesizes evidence that deliberating groups tend to move toward more extreme versions of their members' pre-deliberation tendencies rather than converging on moderate consensus."
+  boundary: "Polarization is strongest in like-minded groups; heterogeneous membership and structured procedure can mitigate it, so the risk is conditional, not fatal."
+
+- id: harcourt-1999-collapse-harm-principle
+  title: "The Collapse of the Harm Principle"
+  authors: "Bernard E. Harcourt"
+  year: 1999
+  publication: "Journal of Criminal Law and Criminology 90(1):109-194"
+  type: peer-reviewed law review article
+  url: "https://scholarlycommons.law.northwestern.edu/jclc/vol90/iss1/3/"
+  reviewed_on: "2026-07-28"
+  relevance: "Argues that competing harm claims have proliferated on all sides of morals debates, so the bare harm principle no longer does determinate gatekeeping work without an explicit account of which harms count."
+  boundary: "A legal-theory analysis of United States debates, not an empirical measurement; it challenges the principle's determinacy, not the value of harm-based reasoning."
