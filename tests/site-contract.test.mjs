@@ -32,8 +32,7 @@ test('Awakening owns the static public threshold and routes inward', async () =>
   assert.match(splash, /href="\/preamble\/"/);
   assert.match(splash, /href="\/home\/"/);
   assert.match(home, /permalink: \/home\//);
-  assert.match(home, /Return to Awakening/);
-  assert.match(home, /href="\/chapters\/"/);
+  assert.match(home, /href="\/lab\/"/);
 });
 
 test('distributed textbook routes are data-backed and source-bound', async () => {
