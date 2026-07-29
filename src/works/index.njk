@@ -1,0 +1,58 @@
+---
+layout: layouts/base.njk
+title: Related Works
+description: Community-submitted works engaging The Interdependent Way — moderated listings with attribution, provenance, and explicit non-endorsement boundaries.
+permalink: /works/
+---
+{% set registry = generated.works %}
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> / Related Works</nav>
+<header class="page-head">
+  <p class="eyebrow">Community registry</p>
+  <h1>Related Works</h1>
+  <p class="lede">Works by others that engage The Interdependent Way — essays, papers, art, music, video, code, and responses. Every listing was submitted publicly and approved by the maintainer.</p>
+</header>
+<section class="panel">
+  <h2>Add your work</h2>
+  <p>Submissions run through a public, structured GitHub issue. Fill in the form; the maintainer reviews it; approval publishes the listing here on the next site build. Removal is the same review in reverse.</p>
+  <p><a href="https://github.com/The-Interdependency/The-Interdependency.github.io/issues/new?template=related-work.yml">Submit a related work</a> · no GitHub account? Email <a href="mailto:wayseer@interdependentway.org">wayseer@interdependentway.org</a> with the same details (title, creator, link, type, relation, description).</p>
+</section>
+<section class="panel">
+  <h2>Boundary</h2>
+  <p>Listing is moderation, not review. A listing transfers no endorsement, no research or review status, and no theorem, proof, or empirical status; it does not modify the canon or the Article Lab research ledgers. Each work speaks for its creator, at its own link, under its own license.</p>
+</section>
+<section>
+  <p class="eyebrow">Approved submissions</p>
+  <h2>The registry</h2>
+  {% if registry.fallback %}
+    <div class="hmmm"><p>This build could not refresh the registry ({{ registry.retrievalError }}). Listings below are the last known good state{% if not registry.generatedAt %} — none retained yet{% endif %}.</p></div>
+  {% endif %}
+  {% if registry.works.length %}
+    <div class="grid">
+      {% for work in registry.works %}
+        <article class="card">
+          <span class="status status-public">{{ work.type }}</span>
+          <h3><a href="{{ work.url }}">{{ work.title }}</a></h3>
+          <p><strong>{{ work.creator }}</strong></p>
+          <p>{{ work.description }}</p>
+          <p><em>Relation:</em> {{ work.relation }}</p>
+          {% if work.license %}<p><small>License: {{ work.license }}</small></p>{% endif %}
+          <p><small>Submitted by {{ work.submittedBy }} · <a href="{{ work.issueUrl }}">provenance #{{ work.issueNumber }}</a></small></p>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="hmmm"><p>No approved works are listed yet. The registry opens with its first accepted submission.</p></div>
+  {% endif %}
+</section>
+{% if registry.excluded.length %}
+<section>
+  <p class="eyebrow">Visible gaps</p>
+  <h2>Approved but not listable</h2>
+  <p class="section-intro">These submissions carry the approval label but failed validation; they stay visible here rather than disappearing silently.</p>
+  <ul>
+    {% for entry in registry.excluded %}
+      <li><a href="{{ entry.issueUrl }}">#{{ entry.issueNumber }}</a> — {{ entry.problems | join('; ') }}</li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}

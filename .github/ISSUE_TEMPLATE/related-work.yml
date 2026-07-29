@@ -1,0 +1,77 @@
+name: Submit a related work
+description: Propose a work (essay, paper, art, music, video, code, response, …) for the site's Related Works registry.
+title: "[work] "
+labels: ["related-work"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for engaging with The Interdependent Way. Submissions are reviewed by the
+        maintainer; approval lists the work on the public Related Works page with your
+        attribution. Listing is not endorsement, transfers no review or theorem status, and
+        never modifies canon or the research ledgers. Your GitHub username and everything you
+        write here are public.
+  - type: input
+    id: title
+    attributes:
+      label: Work title
+      description: The title of the work being submitted.
+    validations:
+      required: true
+  - type: input
+    id: creator
+    attributes:
+      label: Creator
+      description: Who made it — the name that should be credited.
+    validations:
+      required: true
+  - type: input
+    id: link
+    attributes:
+      label: Link
+      description: An https URL where the work lives (page, repository, video, gallery, …).
+    validations:
+      required: true
+  - type: dropdown
+    id: type
+    attributes:
+      label: Work type
+      options:
+        - essay
+        - paper
+        - art
+        - music
+        - video
+        - code
+        - response
+        - other
+    validations:
+      required: true
+  - type: textarea
+    id: relation
+    attributes:
+      label: Relation to The Interdependent Way
+      description: Which Article, chapter, or concept does this work engage, and how?
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A short description for the listing (a few sentences).
+    validations:
+      required: true
+  - type: input
+    id: license
+    attributes:
+      label: License note
+      description: Optional — the work's license or usage terms, if you want them shown.
+    validations:
+      required: false
+  - type: checkboxes
+    id: rights
+    attributes:
+      label: Rights and permission
+      options:
+        - label: I have the right to share this link, and I consent to it being listed publicly with the details above.
+          required: true

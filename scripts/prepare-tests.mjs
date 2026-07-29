@@ -18,7 +18,8 @@ for (const script of [
   'scripts/fetch-canon.mjs',
   'scripts/parse-canon.mjs',
   'scripts/fetch-github-org.mjs',
-  'scripts/fetch-textbook.mjs'
+  'scripts/fetch-textbook.mjs',
+  'scripts/fetch-works.mjs'
 ]) {
   execFileSync(process.execPath, [script], { env, stdio: 'inherit' });
 }
