@@ -12,9 +12,11 @@ body:
         never modifies canon or the research ledgers. Your GitHub username and everything you
         write here are public.
 
-        **The site displays, it does not host.** Your work stays wherever you host it; a
-        listing is only the metadata you enter below, linking to it. Removal requests go to
-        wayseer@interdependentway.org and take effect on the next site build.
+        **The site displays, it does not host.** Your work stays wherever you host it. If you
+        provide a display source below, visitors' browsers load the work directly from your
+        hosting to show it inline; the site itself stores only the metadata you enter here.
+        Removal requests go to wayseer@interdependentway.org and take effect on the next
+        site build.
   - type: input
     id: title
     attributes:
@@ -65,6 +67,13 @@ body:
       description: A short description for the listing (a few sentences).
     validations:
       required: true
+  - type: input
+    id: display
+    attributes:
+      label: Display source
+      description: Optional — an https URL for displaying the work inline on the page, loaded straight from your hosting (a direct image/audio/PDF file URL, or an embed URL from YouTube, Vimeo, Bandcamp, SoundCloud, or archive.org). Leave blank to list as a link only.
+    validations:
+      required: false
   - type: input
     id: license
     attributes:

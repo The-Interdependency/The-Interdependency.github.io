@@ -19,7 +19,7 @@ permalink: /works/
 <section class="panel">
   <h2>Boundary</h2>
   <p>Listing is moderation, not review. A listing transfers no endorsement, no research or review status, and no theorem, proof, or empirical status; it does not modify the canon or the Article Lab research ledgers. Each work speaks for its creator, at its own link, under its own license.</p>
-  <p><strong>Display only — nothing is hosted here.</strong> This site never stores, copies, or embeds submitted works. A listing is bibliographic metadata voluntarily provided by its submitter (title, creator, link, short description) pointing to the work wherever its creator hosts it. Responsibility for a work's content, and for the accuracy and lawfulness of the submitted details, rests with the submitter and creator. To request removal of a listing, email <a href="mailto:wayseer@interdependentway.org">wayseer@interdependentway.org</a> — delisting takes effect on the next site build.</p>
+  <p><strong>Displayed, not hosted.</strong> This site stores no copies of any work. Where a work appears inline — an image, a track, a video, a document — the visitor's browser loads it directly from the creator's own hosting at view time; this site holds only the submitted metadata and the pointer. Responsibility for a work's content, and for the accuracy and lawfulness of the submitted details, rests with the submitter and creator. To request removal of a listing, email <a href="mailto:wayseer@interdependentway.org">wayseer@interdependentway.org</a> — delisting takes effect on the next site build, and no copy remains because none was ever made.</p>
 </section>
 <section>
   <p class="eyebrow">Approved submissions</p>
@@ -34,6 +34,18 @@ permalink: /works/
           <span class="status status-public">{{ work.type }}</span>
           <h3><a href="{{ work.url }}">{{ work.title }}</a></h3>
           <p><strong>{{ work.creator }}</strong></p>
+          {% if work.display %}
+            {% if work.display.kind == 'image' %}
+              <img src="{{ work.display.url }}" alt="{{ work.title }} — {{ work.creator }}" loading="lazy" referrerpolicy="no-referrer" style="max-width:100%;height:auto;">
+            {% elif work.display.kind == 'audio' %}
+              <audio controls preload="none" src="{{ work.display.url }}" style="width:100%;">Your browser cannot play this audio; use the work's link above.</audio>
+            {% elif work.display.kind == 'pdf' %}
+              <iframe src="{{ work.display.url }}" title="{{ work.title }} — {{ work.creator }}" loading="lazy" referrerpolicy="no-referrer" style="width:100%;aspect-ratio:3/4;border:0;"></iframe>
+            {% elif work.display.kind == 'iframe' %}
+              <iframe src="{{ work.display.url }}" title="{{ work.title }} — {{ work.creator }}" loading="lazy" referrerpolicy="no-referrer" allowfullscreen sandbox="allow-scripts allow-same-origin allow-presentation allow-popups" style="width:100%;aspect-ratio:16/9;border:0;"></iframe>
+            {% endif %}
+            <p><small>Displayed from the creator's own hosting — no copy is stored on this site.</small></p>
+          {% endif %}
           <p>{{ work.description }}</p>
           <p><em>Relation:</em> {{ work.relation }}</p>
           {% if work.license %}<p><small>License: {{ work.license }}</small></p>{% endif %}

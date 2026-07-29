@@ -24,18 +24,24 @@ Listing is moderation, not review: it transfers no endorsement, no research or r
 status, and no theorem/proof/empirical status, and it never modifies canon or the
 Article Lab research ledgers. Works remain at their own links under their own licenses.
 
-## Display-only posture (legal boundary)
+## Display, not host (legal boundary)
 
-The registry **displays; it never hosts**. Hard rules for anyone touching this feature:
+The registry **displays works without hosting them**. Hard rules for anyone touching
+this feature:
 
-- No file uploads, no copies, no mirrors: the fetcher retrieves issue metadata only and
-  never downloads a submitted work.
-- No embedding on the works page — no iframes, media embeds, inline players, or hotlinked
-  images of submitted works. Listings are text metadata plus an outbound hyperlink, ever.
-- The submitter affirms rights, consent, and responsibility for accuracy and lawfulness in
-  the required checkbox; the site's role is limited to moderated display of that metadata.
+- The site stores no copies: the fetcher retrieves issue metadata only and never
+  downloads a submitted work. Inline display uses pointers — the visitor's browser loads
+  the image/audio/PDF/embed directly from the creator's own hosting at view time.
+- Display sources are validated fail-closed: https only; direct image/audio/PDF file
+  URLs, or iframe embeds from the deliberate allowlist in `scripts/fetch-works.mjs`
+  (`IFRAME_EMBED_HOSTS`). Extending the allowlist is a deliberate decision — every entry
+  means third-party script runs on the works page for approved listings.
+- A work with no (or an invalid) display source lists as metadata plus an outbound link;
+  invalid display sources exclude the submission visibly so the submitter can fix it.
+- The submitter affirms rights, consent, and responsibility for accuracy and lawfulness
+  in the required checkbox; the site's role is limited to moderated display.
 - Takedown: removal requests go to wayseer@interdependentway.org; the maintainer removes
   the `approved` label (or the listing's issue), and the listing disappears on the next
-  build. Delisting requires no code change.
+  build. No copy remains because none was ever made.
 
 This is design-level mitigation, not legal advice.

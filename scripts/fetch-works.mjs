@@ -54,7 +54,34 @@ export const REQUIRED_FIELDS = {
   'Description': 'description'
 };
 
-const OPTIONAL_FIELDS = { 'License note': 'license' };
+const OPTIONAL_FIELDS = { 'License note': 'license', 'Display source': 'displayUrl' };
+
+// Hosts whose player/embed URLs may be iframed. Extend deliberately; every
+// entry means third-party script runs on the works page for approved listings.
+export const IFRAME_EMBED_HOSTS = new Set([
+  'www.youtube.com',
+  'www.youtube-nocookie.com',
+  'player.vimeo.com',
+  'bandcamp.com',
+  'w.soundcloud.com',
+  'archive.org'
+]);
+
+const IMAGE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg', '.avif'];
+const AUDIO_EXTENSIONS = ['.mp3', '.ogg', '.wav', '.m4a', '.flac', '.opus'];
+
+// Derive how a display source is shown. The site never fetches or stores the
+// bytes — these are pointers the visitor's browser loads from the creator's
+// own hosting at view time (display, not host).
+export function deriveDisplay(displayUrl) {
+  const url = new URL(displayUrl);
+  const pathname = url.pathname.toLowerCase();
+  if (IMAGE_EXTENSIONS.some(ext => pathname.endsWith(ext))) return { kind: 'image', url: url.href };
+  if (AUDIO_EXTENSIONS.some(ext => pathname.endsWith(ext))) return { kind: 'audio', url: url.href };
+  if (pathname.endsWith('.pdf')) return { kind: 'pdf', url: url.href };
+  if (IFRAME_EMBED_HOSTS.has(url.hostname)) return { kind: 'iframe', url: url.href };
+  return null;
+}
 
 // GitHub issue forms render each field as "### <Label>" followed by the value;
 // empty optional fields arrive as "_No response_".
@@ -98,6 +125,21 @@ export function validateSubmission(fields) {
   }
   if (work.description.length > 1200) problems.push('description exceeds 1200 characters');
   if (work.relation.length > 1200) problems.push('relation exceeds 1200 characters');
+  work.display = null;
+  if (work.displayUrl) {
+    try {
+      const displayTarget = new URL(work.displayUrl);
+      if (displayTarget.protocol !== 'https:') {
+        problems.push('display source must be https');
+      } else {
+        work.display = deriveDisplay(displayTarget.href);
+        if (!work.display) problems.push(`display source is not a direct image/audio/pdf file or an allowlisted embed host (${[...IFRAME_EMBED_HOSTS].join(', ')})`);
+      }
+    } catch {
+      problems.push(`display source is not a valid URL: ${work.displayUrl}`);
+    }
+  }
+  delete work.displayUrl;
   return { work, problems };
 }
 

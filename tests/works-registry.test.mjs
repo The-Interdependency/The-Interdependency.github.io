@@ -3,7 +3,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { parseIssueForm, validateSubmission, buildRegistry, WORK_TYPES } from '../scripts/fetch-works.mjs';
+import { parseIssueForm, validateSubmission, buildRegistry, deriveDisplay, WORK_TYPES } from '../scripts/fetch-works.mjs';
 
 const validBody = [
   '### Work title\n\nOn Interdependent Systems\n',
@@ -62,6 +62,25 @@ test('registry lists only doubly-labeled issues, excludes invalid ones visibly, 
   assert.equal(excluded.length, 1);
   assert.equal(excluded[0].issueNumber, 3);
   assert.ok(excluded[0].problems.length > 0);
+});
+
+test('display sources derive to pointer kinds and never to copies', () => {
+  assert.deepEqual(deriveDisplay('https://example.org/piece.PNG'.toLowerCase()), { kind: 'image', url: 'https://example.org/piece.png' });
+  assert.equal(deriveDisplay('https://example.org/track.mp3').kind, 'audio');
+  assert.equal(deriveDisplay('https://example.org/paper.pdf').kind, 'pdf');
+  assert.equal(deriveDisplay('https://www.youtube-nocookie.com/embed/abc123').kind, 'iframe');
+  assert.equal(deriveDisplay('https://random.example/embed/thing'), null);
+
+  const withDisplay = validateSubmission(parseIssueForm(validBody + '\n### Display source\n\nhttps://example.org/piece.png\n'));
+  assert.equal(withDisplay.problems.length, 0);
+  assert.deepEqual(withDisplay.work.display, { kind: 'image', url: 'https://example.org/piece.png' });
+  assert.ok(!('displayUrl' in withDisplay.work));
+
+  const badDisplay = validateSubmission(parseIssueForm(validBody + '\n### Display source\n\nhttps://random.example/embed/thing\n'));
+  assert.ok(badDisplay.problems.some(p => p.includes('display source')));
+
+  const noDisplay = validateSubmission(parseIssueForm(validBody));
+  assert.equal(noDisplay.work.display, null);
 });
 
 test('generated works dataset exists with valid schema after offline preparation', async () => {
