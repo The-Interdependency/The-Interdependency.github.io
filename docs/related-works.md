@@ -34,8 +34,11 @@ this feature:
   the image/audio/PDF/embed directly from the creator's own hosting at view time.
 - Display sources are validated fail-closed: https only; direct image/audio/PDF file
   URLs, or iframe embeds from the deliberate allowlist in `scripts/fetch-works.mjs`
-  (`IFRAME_EMBED_HOSTS`). Extending the allowlist is a deliberate decision — every entry
-  means third-party script runs on the works page for approved listings.
+  (`IFRAME_EMBED_HOSTS` — grouped by medium: video, audio/music/podcasts,
+  documents/archives/slides, code/interactive/3D). Extending the allowlist is a
+  deliberate per-host decision — every entry means third-party script runs on the works
+  page for approved listings — but it is expected to grow: submitters can request a
+  missing platform in their submission, and adding it is a one-line change plus review.
 - A work with no (or an invalid) display source lists as metadata plus an outbound link;
   invalid display sources exclude the submission visibly so the submitter can fix it.
 - The submitter affirms rights, consent, and responsibility for accuracy and lawfulness

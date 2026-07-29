@@ -58,13 +58,42 @@ const OPTIONAL_FIELDS = { 'License note': 'license', 'Display source': 'displayU
 
 // Hosts whose player/embed URLs may be iframed. Extend deliberately; every
 // entry means third-party script runs on the works page for approved listings.
+// Grouped by medium; unlisted hosts (e.g. a PeerTube instance) can be added on
+// request via an ordinary issue.
 export const IFRAME_EMBED_HOSTS = new Set([
+  // video
   'www.youtube.com',
   'www.youtube-nocookie.com',
   'player.vimeo.com',
-  'bandcamp.com',
+  'www.dailymotion.com',
+  'player.twitch.tv',
+  'rumble.com',
+  'odysee.com',
+  'streamable.com',
+  'www.loom.com',
+  'embed.ted.com',
+  // audio, music, podcasts
   'w.soundcloud.com',
-  'archive.org'
+  'bandcamp.com',
+  'open.spotify.com',
+  'embed.music.apple.com',
+  'embed.podcasts.apple.com',
+  'www.mixcloud.com',
+  'audiomack.com',
+  'www.podbean.com',
+  // documents, archives, slides
+  'archive.org',
+  'docs.google.com',
+  'onedrive.live.com',
+  'e.issuu.com',
+  'www.scribd.com',
+  'www.slideshare.net',
+  // code, games, interactive, 3D
+  'codepen.io',
+  'codesandbox.io',
+  'jsfiddle.net',
+  'itch.io',
+  'sketchfab.com'
 ]);
 
 const IMAGE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg', '.avif'];
@@ -133,7 +162,7 @@ export function validateSubmission(fields) {
         problems.push('display source must be https');
       } else {
         work.display = deriveDisplay(displayTarget.href);
-        if (!work.display) problems.push(`display source is not a direct image/audio/pdf file or an allowlisted embed host (${[...IFRAME_EMBED_HOSTS].join(', ')})`);
+        if (!work.display) problems.push('display source is not a direct image/audio/pdf file URL or an embed URL from a supported host (see IFRAME_EMBED_HOSTS in scripts/fetch-works.mjs; new hosts can be requested via an issue)');
       }
     } catch {
       problems.push(`display source is not a valid URL: ${work.displayUrl}`);

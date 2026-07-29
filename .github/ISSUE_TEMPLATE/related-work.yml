@@ -71,7 +71,7 @@ body:
     id: display
     attributes:
       label: Display source
-      description: Optional — an https URL for displaying the work inline on the page, loaded straight from your hosting (a direct image/audio/PDF file URL, or an embed URL from YouTube, Vimeo, Bandcamp, SoundCloud, or archive.org). Leave blank to list as a link only.
+      description: Optional — an https URL for displaying the work inline on the page, loaded straight from your hosting. Either a direct image/audio/PDF file URL, or an embed URL from a supported platform (YouTube, Vimeo, Dailymotion, Twitch, Rumble, Odysee, Streamable, Loom, TED, SoundCloud, Bandcamp, Spotify, Apple Music/Podcasts, Mixcloud, Audiomack, Podbean, archive.org, Google Docs, OneDrive, Issuu, Scribd, SlideShare, CodePen, CodeSandbox, JSFiddle, itch.io, Sketchfab). Missing your platform? Mention it in the description and it can be added. Leave blank to list as a link only.
     validations:
       required: false
   - type: input
