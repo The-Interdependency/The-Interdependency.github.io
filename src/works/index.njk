@@ -1,0 +1,71 @@
+---
+layout: layouts/base.njk
+title: Related Works
+description: Community-submitted works engaging The Interdependent Way — moderated listings with attribution, provenance, and explicit non-endorsement boundaries.
+permalink: /works/
+---
+{% set registry = generated.works %}
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> / Related Works</nav>
+<header class="page-head">
+  <p class="eyebrow">Community registry</p>
+  <h1>Related Works</h1>
+  <p class="lede">Works by others that engage The Interdependent Way — essays, papers, art, music, video, code, and responses. Every listing was submitted publicly and approved by the maintainer.</p>
+</header>
+<section class="panel">
+  <h2>Add your work</h2>
+  <p>Submissions run through a public, structured GitHub issue. Fill in the form; the maintainer reviews it; approval publishes the listing here on the next site build. Removal is the same review in reverse.</p>
+  <p><a href="https://github.com/The-Interdependency/The-Interdependency.github.io/issues/new?template=related-work.yml">Submit a related work</a> · no GitHub account? Email <a href="mailto:wayseer@interdependentway.org">wayseer@interdependentway.org</a> with the same details (title, creator, link, type, relation, description).</p>
+</section>
+<section class="panel">
+  <h2>Boundary</h2>
+  <p>Listing is moderation, not review. A listing transfers no endorsement, no research or review status, and no theorem, proof, or empirical status; it does not modify the canon or the Article Lab research ledgers. Each work speaks for its creator, at its own link, under its own license.</p>
+  <p><strong>Displayed, not hosted.</strong> This site stores no copies of any work. Where a work appears inline — an image, a track, a video, a document — the visitor's browser loads it directly from the creator's own hosting at view time; this site holds only the submitted metadata and the pointer. Responsibility for a work's content, and for the accuracy and lawfulness of the submitted details, rests with the submitter and creator. To request removal of a listing, email <a href="mailto:wayseer@interdependentway.org">wayseer@interdependentway.org</a> — delisting takes effect on the next site build, and no copy remains because none was ever made.</p>
+</section>
+<section>
+  <p class="eyebrow">Approved submissions</p>
+  <h2>The registry</h2>
+  {% if registry.fallback %}
+    <div class="hmmm"><p>This build could not refresh the registry ({{ registry.retrievalError }}). Listings below are the last known good state{% if not registry.generatedAt %} — none retained yet{% endif %}.</p></div>
+  {% endif %}
+  {% if registry.works.length %}
+    <div class="grid">
+      {% for work in registry.works %}
+        <article class="card">
+          <span class="status status-public">{{ work.type }}</span>
+          <h3><a href="{{ work.url }}">{{ work.title }}</a></h3>
+          <p><strong>{{ work.creator }}</strong></p>
+          {% if work.display %}
+            {% if work.display.kind == 'image' %}
+              <img src="{{ work.display.url }}" alt="{{ work.title }} — {{ work.creator }}" loading="lazy" referrerpolicy="no-referrer" style="max-width:100%;height:auto;">
+            {% elif work.display.kind == 'audio' %}
+              <audio controls preload="none" src="{{ work.display.url }}" style="width:100%;">Your browser cannot play this audio; use the work's link above.</audio>
+            {% elif work.display.kind == 'pdf' %}
+              <iframe src="{{ work.display.url }}" title="{{ work.title }} — {{ work.creator }}" loading="lazy" referrerpolicy="no-referrer" style="width:100%;aspect-ratio:3/4;border:0;"></iframe>
+            {% elif work.display.kind == 'iframe' %}
+              <iframe src="{{ work.display.url }}" title="{{ work.title }} — {{ work.creator }}" loading="lazy" referrerpolicy="no-referrer" allowfullscreen sandbox="allow-scripts allow-same-origin allow-presentation allow-popups" style="width:100%;aspect-ratio:16/9;border:0;"></iframe>
+            {% endif %}
+            <p><small>Displayed from the creator's own hosting — no copy is stored on this site.</small></p>
+          {% endif %}
+          <p>{{ work.description }}</p>
+          <p><em>Relation:</em> {{ work.relation }}</p>
+          {% if work.license %}<p><small>License: {{ work.license }}</small></p>{% endif %}
+          <p><small>Submitted by {{ work.submittedBy }} · <a href="{{ work.issueUrl }}">provenance #{{ work.issueNumber }}</a></small></p>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="hmmm"><p>No approved works are listed yet. The registry opens with its first accepted submission.</p></div>
+  {% endif %}
+</section>
+{% if registry.excluded.length %}
+<section>
+  <p class="eyebrow">Visible gaps</p>
+  <h2>Approved but not listable</h2>
+  <p class="section-intro">These submissions carry the approval label but failed validation; they stay visible here rather than disappearing silently.</p>
+  <ul>
+    {% for entry in registry.excluded %}
+      <li><a href="{{ entry.issueUrl }}">#{{ entry.issueNumber }}</a> — {{ entry.problems | join('; ') }}</li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
