@@ -11,6 +11,10 @@ body:
         attribution. Listing is not endorsement, transfers no review or theorem status, and
         never modifies canon or the research ledgers. Your GitHub username and everything you
         write here are public.
+
+        **The site displays, it does not host.** Your work stays wherever you host it; a
+        listing is only the metadata you enter below, linking to it. Removal requests go to
+        wayseer@interdependentway.org and take effect on the next site build.
   - type: input
     id: title
     attributes:
@@ -73,5 +77,5 @@ body:
     attributes:
       label: Rights and permission
       options:
-        - label: I have the right to share this link, and I consent to it being listed publicly with the details above.
+        - label: I have the right to share this link, I consent to the details above being displayed publicly, and I accept responsibility for the accuracy and lawfulness of this submission. I understand the site displays this metadata only and does not host the work.
           required: true

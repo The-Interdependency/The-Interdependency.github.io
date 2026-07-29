@@ -23,3 +23,19 @@ Public submissions of works engaging The Interdependent Way, moderated by label.
 Listing is moderation, not review: it transfers no endorsement, no research or review
 status, and no theorem/proof/empirical status, and it never modifies canon or the
 Article Lab research ledgers. Works remain at their own links under their own licenses.
+
+## Display-only posture (legal boundary)
+
+The registry **displays; it never hosts**. Hard rules for anyone touching this feature:
+
+- No file uploads, no copies, no mirrors: the fetcher retrieves issue metadata only and
+  never downloads a submitted work.
+- No embedding on the works page — no iframes, media embeds, inline players, or hotlinked
+  images of submitted works. Listings are text metadata plus an outbound hyperlink, ever.
+- The submitter affirms rights, consent, and responsibility for accuracy and lawfulness in
+  the required checkbox; the site's role is limited to moderated display of that metadata.
+- Takedown: removal requests go to wayseer@interdependentway.org; the maintainer removes
+  the `approved` label (or the listing's issue), and the listing disappears on the next
+  build. Delisting requires no code change.
+
+This is design-level mitigation, not legal advice.
