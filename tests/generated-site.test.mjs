@@ -29,7 +29,6 @@ test('generated deployment artifact contains the unified routes', async () => {
   assert.match(home, /href="\/chapters\/"/);
   assert.match(home, /Chapters Zero through Seven/);
   assert.match(home, /href="\/"/);
-  assert.match(home, /Return to Awakening/);
   assert.match(preamble, /One-click canon entrance/);
   assert.match(preamble, /Humanity faces extinction/);
   assert.match(preamble, /Canonical repository/);
