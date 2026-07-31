@@ -101,9 +101,7 @@ test('clicking a Way row reveals its bounded canon text without leaving the tree
   await articleFive.locator('summary').click();
   await expect(articleFive).toHaveAttribute('open', '');
   await expect(articleFive.locator('.source-block')).toHaveText(articleFiveUnit.content);
-  await expect(articleFive.locator('a', { hasText: 'Open unit page' })).toBeVisible();
-  await expect(articleFive.locator('a', { hasText: 'Enter Lab' })).toBeVisible();
-  await expect(articleFive.locator('a', { hasText: 'Source and provenance' })).toBeVisible();
+  await expect(articleFive.locator('a')).toHaveCount(0);
   await expect(page).toHaveURL(/\/way\/$/);
 });
 
