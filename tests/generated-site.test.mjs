@@ -103,6 +103,10 @@ test('Way map renders Human consciousness beneath Interdefinables and before Pre
   assert.match(way, /class="unit-level-3"[^>]*>[\s\S]*?Human consciousness emerges from/);
   assert.match(way, /class="unit-level-4"[^>]*>[\s\S]*?Binary essences meaningfully/);
   assert.doesNotMatch(way, /<h2>Human consciousness emerges from:?<\/h2>/);
+  assert.match(way, /<details class="canon-unit"/);
+  assert.match(way, /<summary class="canon-unit-summary">/);
+  assert.match(way, /Tap any unit to reveal its exact bounded text here/);
+  assert.match(way, /Human consciousness emerges from[\s\S]*?Source and provenance/);
 });
 
 test('generated deployment artifact contains all rights article vertical slices with research attachment', async () => {
