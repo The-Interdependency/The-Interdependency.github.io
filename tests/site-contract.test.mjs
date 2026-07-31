@@ -19,14 +19,12 @@ test('base layout remains readable without javascript and exposes the textbook a
   assert.doesNotMatch(layout, /fetch\(/);
 });
 
-test('Way map uses native disclosure and keeps deeper routes separate', async () => {
+test('Way map disclosures contain only a title and exact canon text', async () => {
   const way = await readFile('src/way/index.njk', 'utf8');
   assert.match(way, /<details class="canon-unit"/);
-  assert.match(way, /<summary class="canon-unit-summary">/);
+  assert.match(way, /<summary class="canon-unit-summary"><strong>{{ unit\.title }}<\/strong><\/summary>/);
   assert.match(way, /<pre class="source-block">{{ unit\.content }}<\/pre>/);
-  assert.match(way, /href="\/way\/{{ unit\.routeSlug }}\/"/);
-  assert.match(way, /href="\/lab\/{{ unit\.routeSlug }}\/"/);
-  assert.match(way, /href="\/source\/{{ unit\.routeSlug }}\/"/);
+  assert.doesNotMatch(way, /Open unit page|Enter Lab|Source and provenance|tap to read|text open/);
   assert.doesNotMatch(way, /<script/i);
 });
 

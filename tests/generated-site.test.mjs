@@ -91,10 +91,10 @@ test('distributed textbook displays all eight exact chapter sources', async () =
 
 test('Way map renders Human consciousness beneath Interdefinables and before Preamble', async () => {
   const way = await readFile('_site/way/index.html', 'utf8');
-  const interdefinablesSection = way.indexOf('<h2>The Interdefinables</h2>');
+  const interdefinablesSection = way.indexOf('<strong>The Interdefinables</strong>');
   const humanHeading = way.indexOf('Human consciousness emerges from');
   const binaryHeading = way.indexOf('Binary essences meaningfully');
-  const preambleSection = way.indexOf('<h2>Preamble</h2>');
+  const preambleSection = way.indexOf('<strong>Preamble</strong>');
 
   assert.ok(interdefinablesSection >= 0, 'Interdefinables section missing');
   assert.ok(humanHeading > interdefinablesSection, 'Human consciousness must appear inside Interdefinables');
@@ -105,8 +105,8 @@ test('Way map renders Human consciousness beneath Interdefinables and before Pre
   assert.doesNotMatch(way, /<h2>Human consciousness emerges from:?<\/h2>/);
   assert.match(way, /<details class="canon-unit"/);
   assert.match(way, /<summary class="canon-unit-summary">/);
-  assert.match(way, /Tap any unit to reveal its exact bounded text here/);
-  assert.match(way, /Human consciousness emerges from[\s\S]*?Source and provenance/);
+  assert.match(way, /Select a title to display that canon unit's exact text/);
+  assert.doesNotMatch(way, /Open unit page|Enter Lab|Source and provenance|tap to read|text open/);
 });
 
 test('generated deployment artifact contains all rights article vertical slices with research attachment', async () => {
