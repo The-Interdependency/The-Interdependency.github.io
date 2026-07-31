@@ -5,7 +5,7 @@ import { installMathRenderer } from './scripts/markdown-math.mjs';
 // id: eleventy_site_configuration
 //   purpose: Build the static-first public knowledge system, render exact distributed-textbook Markdown and LaTeX as static MathML, and copy deliberate fallback artifacts.
 //   entrypoint: npm run build
-//   tests: tests/site-contract.test.mjs, tests/math-rendering.test.mjs, tests/generated-site.test.mjs
+//   tests: tests/site-contract.test.mjs, tests/math-rendering.test.mjs, tests/narratives.test.mjs, tests/generated-site.test.mjs
 // === END MODULE_BUILD ===
 
 export default function configureEleventy(eleventyConfig) {

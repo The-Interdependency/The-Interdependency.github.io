@@ -7,7 +7,7 @@ export default defineMsdmdCollection({
       "fields": {
         "entrypoint": "npm run build",
         "purpose": "Build the static-first public knowledge system, render exact distributed-textbook Markdown and LaTeX as static MathML, and copy deliberate fallback artifacts.",
-        "tests": "tests/site-contract.test.mjs, tests/math-rendering.test.mjs, tests/generated-site.test.mjs"
+        "tests": "tests/site-contract.test.mjs, tests/math-rendering.test.mjs, tests/narratives.test.mjs, tests/generated-site.test.mjs"
       },
       "file": ".eleventy.js",
       "id": "eleventy_site_configuration"

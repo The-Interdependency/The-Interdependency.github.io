@@ -21,6 +21,8 @@ const routes = [
   ['/chapters/chapter-seven/', /theory under development/],
   ['/articles/', /Publication drafts/],
   ['/articles/article-two/', /Freedom without abandonment/],
+  ['/narratives/', /Living Narratives/],
+  ['/narratives/jack-and-diane/', /The Longhand Journal/],
   ['/way/', /The Way/],
   ['/lab/', /Rights Article laboratories/],
   ['/source/', /Source/],
@@ -88,6 +90,18 @@ test('all eight rights articles are reachable from the article index', async ({ 
     const link = page.locator(`a[href="/articles/article-${word}/"]`).first();
     await expect(link).toBeVisible();
   }
+});
+
+test('living narratives keep fiction and adulthood boundaries visible', async ({ page }) => {
+  await page.goto('/narratives/');
+  await expect(page.locator('a[href="/narratives/jack-and-diane/"]')).toBeVisible();
+
+  await page.goto('/narratives/jack-and-diane/');
+  await expect(page.locator('h1')).toHaveText('Jack & Diane: The Longhand Threshold');
+  await expect(page.locator('.status-risk')).toContainText('not canon');
+  await expect(page.locator('body')).toContainText('Jack and Diane remain minors');
+  await expect(page.locator('.journal-entry')).toHaveCount(9);
+  await expect(page.locator('.hmmm')).toContainText('Neither adulthood, interdependence, physical maturity, nor a Political Circle has been declared complete');
 });
 
 test('all eight Rights Article Labs are indexed and expose the shared contact structure', async ({ page }) => {
