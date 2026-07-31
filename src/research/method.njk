@@ -1,45 +1,73 @@
 ---
 layout: layouts/base.njk
 title: Research method
-description: How The Interdependent Way site distinguishes support, dissent, mixed evidence, implementation, and unresolved research gaps.
+description: The study-only admission, claim-review, citation, and visible-gap rules for The Interdependent Way website.
 ---
 <header class="page-head">
   <p class="eyebrow">Research method</p>
-  <h1>Evidence is not a decorative citation layer.</h1>
-  <p class="lede">Sources are attached to specific claims and units. A metadata service may help locate or normalize a source, but it does not decide whether the source supports, dissents from, limits, or merely contextualizes a claim.</p>
+  <h1>Legislation is not science.</h1>
+  <p class="lede">|∆| This site counts only primary research studies and systematic evidence-synthesis studies as Research. |∆| Non-study material may matter as legal, normative, implementation, or historical context, but it cannot supply research coverage, stance, or evidentiary weight.</p>
 </header>
 <section>
-  <h2>Classification rules</h2>
+  <h2>Admission boundary</h2>
   <div class="grid">
-    <article class="card"><span class="status status-research">Support</span><h3>Substantive agreement</h3><p>The source supplies evidence or reasoning that materially strengthens the identified claim.</p></article>
-    <article class="card"><span class="status status-risk">Dissent</span><h3>Substantive challenge</h3><p>The source disputes a premise, mechanism, prediction, interpretation, or consequence.</p></article>
-    <article class="card"><span class="status status-frontier">Mixed</span><h3>Conditional or partial result</h3><p>The source supports one part while limiting another, or shows the claim depends on context.</p></article>
-    <article class="card"><span class="status status-hmmm">Gap</span><h3>No qualifying source found</h3><p>The site says so directly. It does not manufacture false balance or cite a weak source to fill visual symmetry.</p></article>
+    <article class="card"><span class="status status-research">Admitted</span><h3>Research studies</h3><p>Empirical experiments and trials, observational studies, qualitative or mixed-methods studies, quasi-experiments, replications, and explicitly labeled formal or simulation studies may qualify when they report a research question, reproducible method, analysis, results, and limitations.</p></article>
+    <article class="card"><span class="status status-research">Admitted synthesis</span><h3>Systematic evidence studies</h3><p>Systematic reviews, scoping reviews, evidence maps, and meta-analyses may qualify when they declare search, selection, appraisal or mapping, and synthesis methods.</p></article>
+    <article class="card"><span class="status status-risk">Excluded</span><h3>Non-study context</h3><p>Legislation, regulation, cases, treaties, policy, doctrine, ethics declarations, technical standards, practice guidelines, frameworks, advocacy reports, journalism, legal analysis, editorials, opinion, theory essays, narrative reviews, protocols without results, and AI summaries do not count as Research.</p></article>
+    <article class="card"><span class="status status-hmmm">hmmm</span><h3>Unclear record class</h3><p>An unclear source stays out of Research until its full text establishes a qualifying method and result. Prestige, institutional authority, citation count, and peer review alone do not establish that it is a study.</p></article>
+  </div>
+</section>
+<section class="panel">
+  <h2>Current migration audit</h2>
+  <p><strong>{{ research_data.stats.screenedSourceCount }}</strong> candidate sources were screened: <strong>{{ research_data.stats.admittedStudyCount }}</strong> admitted studies and <strong>{{ research_data.stats.excludedNonstudyCount }}</strong> non-study records excluded from Research.</p>
+  <p><strong>{{ research_data.stats.publishedStudyClaimCount }}</strong> study-only claim contacts remain from <strong>{{ research_data.stats.candidateClaimCount }}</strong> candidates. <strong>{{ research_data.stats.excludedContextClaimCount }}</strong> claims were removed from the Research surface because one or more cited records were not studies.</p>
+  <p><strong>Verified full-text claim citations:</strong> {{ research_data.stats.verifiedClaimCount }}. The retained legacy claims are visibly provisional until an exact page, table, figure, or Results-section locator and design-specific appraisal are recorded.</p>
+</section>
+<section>
+  <h2>Claim and citation contract</h2>
+  <div class="grid">
+    <article class="card"><span class="status status-research">Study result</span><h3>What the study found</h3><p>Record the design, sample or corpus, setting, method, result or effect, uncertainty, and limitations without turning association into causation.</p></article>
+    <article class="card"><span class="status status-interpretation">Article contact</span><h3>Why it bears on the text</h3><p>State the bounded support, dissent, mixed result, or limit separately from the study's own result. The canonical unit remains independent and controlling.</p></article>
+    <article class="card"><span class="status status-frontier">Inference gap</span><h3>What does not transfer</h3><p>Identify population, setting, measurement, design, time, cultural, scale, and analogy boundaries. One study is provisional contact, not a broad conclusion.</p></article>
+    <article class="card"><span class="status status-hmmm">Locator</span><h3>Where the result appears</h3><p>A verified claim needs a full-text page, table, figure, appendix, or Results-section locator. Abstract-only or indirect citation remains provisional and is shown as <code>hmmm</code>.</p></article>
+  </div>
+</section>
+<section class="panel">
+  <h2>Review requirements</h2>
+  <ol>
+    <li>Identify the exact canonical unit and write the smallest study-linked claim.</li>
+    <li>Search in both supporting and challenging directions; document the query, databases, dates, screening rules, and result.</li>
+    <li>Record authors, year, venue, DOI or stable identifier, study design, evidence mode, population, setting, methods, outcomes, uncertainty, limitations, funding, conflicts, preregistration, data or code availability, and correction or retraction status when available.</li>
+    <li>Use a design-appropriate risk-of-bias appraisal with reasons. Do not replace it with one universal score.</li>
+    <li>Separate the study result, the Article relation, and the inference gap. Preserve contradictory qualifying studies.</li>
+    <li>Recheck corrections and retractions at admission and during scheduled review.</li>
+    <li>Do not require visual support/dissent symmetry. “No qualifying study found” is a valid result and must render as <code>hmmm</code>.</li>
+  </ol>
+</section>
+<section>
+  <h2>Article-level study gaps</h2>
+  <div class="grid">
+    {% for gap in research_data.gaps %}
+      <article class="card">
+        <span class="status status-hmmm">{{ gap.search_status }}</span>
+        <h3>{{ gap.article }}</h3>
+        <p>Support: {{ gap.support_status }}<br>Dissent: {{ gap.dissent_status }}<br>Mixed or limit: {{ gap.mixed_or_limit_status }}</p>
+        <p>{{ gap.hmmm }}</p>
+        <small>Screened {{ gap.reviewed_on }}</small>
+      </article>
+    {% endfor %}
   </div>
 </section>
 <section class="panel">
   <h2>Usage guidance</h2>
   <ol>
-    <li>Open the exact canonical unit before reading the research cards; the cards test bounded claims and do not replace the source text.</li>
-    <li>Read support and dissent as claim-specific contact. A source may assent to one component while challenging another.</li>
-    <li>Compare source quality, relevance, method, and stated boundary. Never treat citation counts as a vote.</li>
-    <li>Use the two-sided coverage floor to expose each Rights Article to serious challenge, not to manufacture symmetry where evidence quality differs.</li>
-  </ol>
-  <p><strong>Coverage floor:</strong> Every Rights Article carries at least one reviewed support claim and one reviewed dissent claim. This proves contact with both directions of inquiry; it does not prove truth, falsity, balance, or comprehensive coverage.</p>
-</section>
-<section class="panel">
-  <h2>Publication requirements</h2>
-  <ol>
-    <li>Identify the exact canonical unit or project claim.</li>
-    <li>Record source title, authorship, date, stable identifier, and retrieval date.</li>
-    <li>Separate direct findings from editorial inference.</li>
-    <li>Label stance through review, not keyword sentiment.</li>
-    <li>Preserve contradictory high-quality evidence.</li>
-    <li>Mark retractions, corrections, and stale data.</li>
-    <li>Keep implementation evidence separate from theoretical validity.</li>
+    <li>Open the exact canonical unit first; research cards test bounded contact and never replace the source text.</li>
+    <li>Read the study result before the Article relation, then inspect the inference gap and locator.</li>
+    <li>Treat <code>provisional-full-text-locator-needed</code> as unfinished citation verification, not as a verified finding.</li>
+    <li>To add a source, append the candidate record, make one explicit source-admission decision, add or revise the bounded claim, record its claim review, update the Article gap, then run <code>npm run check</code> and <code>npm run test:browser</code>.</li>
   </ol>
 </section>
 <section class="hmmm">
   <h2>hmmm</h2>
-  <p>The version-controlled research ledger now provides two-sided contact for every Rights Article, but the reviewed corpus remains an opening tranche rather than a comprehensive literature review.</p>
+  <p>The study-only boundary is enforced in code and tests. The current corpus is a screened legacy candidate set, not a comprehensive systematic review; exact full-text result locators, duplicate independent screening, design-specific risk-of-bias appraisals, funding and conflict extraction, and scheduled correction/retraction checks remain to be completed.</p>
 </section>
