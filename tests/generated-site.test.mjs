@@ -6,7 +6,7 @@ import { readFile } from 'node:fs/promises';
 
 // Usage: run only after Eleventy has generated _site, normally through npm run test:generated or npm run check.
 test('generated deployment artifact contains the unified routes', async () => {
-  const [splash, home, preamble, chapters, artifacts, fourCuts, fallback, articles] = await Promise.all([
+  const [splash, home, preamble, chapters, artifacts, fourCuts, fallback, articles, narratives, jackAndDiane] = await Promise.all([
     readFile('_site/index.html', 'utf8'),
     readFile('_site/home/index.html', 'utf8'),
     readFile('_site/preamble/index.html', 'utf8'),
@@ -14,7 +14,9 @@ test('generated deployment artifact contains the unified routes', async () => {
     readFile('_site/artifacts/index.html', 'utf8'),
     readFile('_site/artifacts/four-cuts/index.html', 'utf8'),
     readFile('_site/fallback/index.html', 'utf8'),
-    readFile('_site/articles/index.html', 'utf8')
+    readFile('_site/articles/index.html', 'utf8'),
+    readFile('_site/narratives/index.html', 'utf8'),
+    readFile('_site/narratives/jack-and-diane/index.html', 'utf8')
   ]);
 
   assert.match(splash, /class="awakening-splash"/);
@@ -38,6 +40,13 @@ test('generated deployment artifact contains the unified routes', async () => {
   assert.match(fourCuts, /Wealth and tax/);
   assert.match(fallback, /Emergency static edition/);
   assert.match(articles, /Publication drafts/);
+  assert.match(narratives, /Living Narratives/);
+  assert.match(narratives, /Jack &amp; Diane: The Longhand Threshold/);
+  assert.match(jackAndDiane, /The story cannot bestow adulthood/);
+  assert.match(jackAndDiane, /Jack and Diane remain minors/);
+  assert.match(jackAndDiane, /status-risk">not canon/);
+  assert.match(jackAndDiane, /The Longhand Journal/);
+  assert.match(jackAndDiane, /The line we have not crossed/);
   for (const title of [
     'Article One: Contribution without contempt',
     'Article Two: Freedom without abandonment',

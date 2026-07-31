@@ -1,0 +1,82 @@
+---
+layout: layouts/base.njk
+title: "Jack & Diane: The Longhand Threshold"
+description: A fictional alternating journal about two young people testing what adulthood and interdependence require after completing handwritten copies of The Interdependent Way.
+permalink: /narratives/jack-and-diane/
+---
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/home/">Home</a> / <a href="/narratives/">Living Narratives</a> / Jack &amp; Diane</nav>
+<header class="page-head narrative-head">
+  <p class="eyebrow">{{ jack_and_diane.status }} · continuing serial</p>
+  <h1>{{ jack_and_diane.title }}</h1>
+  <p class="lede">{{ jack_and_diane.subtitle }}</p>
+  <div class="status-row"><span class="status status-interpretation">fiction</span><span class="status status-risk">not canon</span><span class="status status-hmmm">claim unfinished</span></div>
+</header>
+
+<section class="panel narrative-boundary" aria-labelledby="story-boundary">
+  <p class="eyebrow">Read before entering</p>
+  <h2 id="story-boundary">The story cannot bestow adulthood</h2>
+  <p>{{ jack_and_diane.editorialBoundary.threshold }}</p>
+  <p>{{ jack_and_diane.editorialBoundary.civil }}</p>
+  <p>{{ jack_and_diane.editorialBoundary.incompletion }}</p>
+  <p><strong>Canon contact:</strong> {{ jack_and_diane.canonContact.unit }} · <code>{{ jack_and_diane.canonContact.source }}</code>. {{ jack_and_diane.canonContact.boundary }}</p>
+</section>
+
+<section aria-labelledby="characters">
+  <p class="eyebrow">The journal keepers</p>
+  <h2 id="characters">Two voices, no shared mind</h2>
+  <p>{{ jack_and_diane.relationship }}</p>
+  <div class="grid character-grid">
+    {% for character in jack_and_diane.characters %}
+    <article class="panel character-card" data-character="{{ character.id }}">
+      <p class="eyebrow">Age {{ character.age }}</p>
+      <h3>{{ character.name }}</h3>
+      <p>{{ character.voice }}</p>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section aria-labelledby="criteria">
+  <p class="eyebrow">Opening ledger</p>
+  <h2 id="criteria">What the notebooks do—and do not—show</h2>
+  <div class="criteria-list">
+    {% for item in jack_and_diane.criteria %}
+    <article class="criterion">
+      <div><h3>{{ item.name }}</h3><p>{{ item.note }}</p></div>
+      <span class="status {% if item.status == 'complete' %}status-implemented{% elif item.status == 'not yet claimed' or item.status == 'not formed' %}status-hmmm{% else %}status-interpretation{% endif %}">{{ item.status }}</span>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section aria-labelledby="journal">
+  <p class="eyebrow">Alternating record</p>
+  <h2 id="journal">The Longhand Journal</h2>
+  <ol class="journal-list">
+    {% for entry in jack_and_diane.entries %}
+    <li id="entry-{{ entry.sequence }}">
+      <article class="journal-entry" data-author="{{ entry.author }}">
+        <header class="journal-meta">
+          <span>{{ entry.when }}</span>
+          <span>Entry {{ entry.sequence }}</span>
+        </header>
+        <p class="eyebrow">Journal of {{ entry.authorLabel }}</p>
+        <h3>{{ entry.title }}</h3>
+        {% for paragraph in entry.body %}<p>{{ paragraph }}</p>{% endfor %}
+        <details>
+          <summary>Evidence entered beside this page</summary>
+          <ul>{% for item in entry.evidence %}<li>{{ item }}</li>{% endfor %}</ul>
+        </details>
+      </article>
+    </li>
+    {% endfor %}
+  </ol>
+</section>
+
+<section class="panel" aria-labelledby="continue-journal">
+  <p class="eyebrow">Continuation hooks</p>
+  <h2 id="continue-journal">Questions for the next pages</h2>
+  <ul class="continuation-list">{% for prompt in jack_and_diane.continuationPrompts %}<li>{{ prompt }}</li>{% endfor %}</ul>
+</section>
+
+<section class="hmmm"><h2>hmmm</h2><p>Jack and Diane have completed the copying and begun the evidence. Neither adulthood, interdependence, physical maturity, nor a Political Circle has been declared complete. The next true entry begins where a plan fails without somebody hiding the failure.</p></section>

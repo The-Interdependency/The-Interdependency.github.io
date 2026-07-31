@@ -1,0 +1,221 @@
+{
+  "schema": "interdependency.living-narrative/1.0.0",
+  "id": "jack-and-diane",
+  "title": "Jack & Diane: The Longhand Threshold",
+  "subtitle": "Two fictional American kids keep an alternating record of what happens after the copying is finished and the demonstrating begins.",
+  "status": "fictional interpretation",
+  "relationship": "Friends and study partners; no romantic relationship is presumed.",
+  "canonContact": {
+    "unit": "Rights and Definitions of The Way — Article Five",
+    "source": "wayseer00/main:canon/INTERDEPENDENT_WAY.txt",
+    "boundary": "The canon supplies the adulthood criteria. The characters, events, voices, and judgments in this serial are fiction and cannot amend, complete, or speak for the canon."
+  },
+  "editorialBoundary": {
+    "threshold": "Completing a handwritten transcription demonstrates sustained attention; by itself, it does not establish adulthood or political adulthood.",
+    "civil": "Jack and Diane remain minors under applicable civil law. Nothing in this fiction removes child-protection, education, care, or guardian responsibilities.",
+    "incompletion": "The serial does not decide whether either character has reached physical maturity. Their claim remains unfinished until every required capacity can be demonstrated honestly."
+  },
+  "characters": [
+    {
+      "id": "jack",
+      "name": "Jack",
+      "age": 14,
+      "voice": "Fast to act, impatient with ceremony, and learning that asking for help can be evidence of competence rather than its opposite."
+    },
+    {
+      "id": "diane",
+      "name": "Diane",
+      "age": 13,
+      "voice": "Careful with language, alert to hidden assumptions, and learning that a plan becomes real only when it risks honest failure."
+    }
+  ],
+  "criteria": [
+    {
+      "name": "Handwritten Articles",
+      "status": "complete",
+      "note": "Both have completed their own longhand transcription."
+    },
+    {
+      "name": "Original personal Preamble",
+      "status": "in progress",
+      "note": "Each must describe the political reality they actually perceive, not repeat the source."
+    },
+    {
+      "name": "Survival and social competencies",
+      "status": "in progress",
+      "note": "Cooking, first aid, communication, sanitation, skill acquisition, and shelter maintenance must be demonstrated."
+    },
+    {
+      "name": "Lineaged skill portfolio",
+      "status": "in progress",
+      "note": "Claims need witnesses appropriate to the craft or domain."
+    },
+    {
+      "name": "Schedule of intended actions",
+      "status": "drafting",
+      "note": "The schedule must contain real commitments and visible points of failure."
+    },
+    {
+      "name": "Self-sufficient interdependency",
+      "status": "not yet claimed",
+      "note": "Neither isolation nor dependence disguised as cooperation satisfies the standard."
+    },
+    {
+      "name": "Political Circle",
+      "status": "not formed",
+      "note": "Two people are not a Circle of Twelve."
+    }
+  ],
+  "entries": [
+    {
+      "sequence": 1,
+      "when": "Day 1",
+      "author": "jack",
+      "authorLabel": "Jack",
+      "title": "The last page was not a finish line",
+      "body": [
+        "My hand cramped before I signed the last page. I expected something to happen when I put the pen down. Nothing did. The room stayed the room, and I was still fourteen.",
+        "Diane said that was probably the first honest result. We completed the copy. We did not complete ourselves. I wrote COMPLETE beside transcription and then crossed out COMPLETE beside adulthood. The ink looked like an argument I had lost to my own handwriting."
+      ],
+      "evidence": [
+        "Longhand transcription completed",
+        "No adulthood claim made"
+      ]
+    },
+    {
+      "sequence": 2,
+      "when": "Day 2",
+      "author": "diane",
+      "authorLabel": "Diane",
+      "title": "A Preamble cannot be borrowed",
+      "body": [
+        "Jack tried to start his Preamble with a sentence from the Way. I told him that would prove he could copy twice. He told me my first paragraph sounded like a school report. We were both right, which was annoying.",
+        "I started again with what I can actually see: adults make decisions children must live inside, but age does not make every decision competent. Children also make choices other people must survive. A fair system has to notice both facts without pretending they are the same fact."
+      ],
+      "evidence": [
+        "First Preamble draft rejected by its author",
+        "Current political reality named in original language"
+      ]
+    },
+    {
+      "sequence": 3,
+      "when": "Week 1",
+      "author": "jack",
+      "authorLabel": "Jack",
+      "title": "Competence is not never burning dinner",
+      "body": [
+        "I burned the rice because I was fixing the loose cabinet hinge while the pot was on. My first thought was that I had failed cooking. Diane asked whether I could explain why it burned, make the next batch safely, and clean up without somebody taking over.",
+        "The second batch worked. I wrote that competence might include catching your own failure before it becomes somebody else's permanent job. I still need three meals I can make from whatever is already available, not only when the kitchen is stocked for my plan."
+      ],
+      "evidence": [
+        "Prepared one complete meal after correcting a failed attempt",
+        "Cabinet hinge repaired and checked by an adult witness",
+        "Flexible meal planning remains open"
+      ]
+    },
+    {
+      "sequence": 4,
+      "when": "Week 2",
+      "author": "diane",
+      "authorLabel": "Diane",
+      "title": "Help that waits for consent",
+      "body": [
+        "We practiced first aid from the community-center course. Jack kept reaching for the bandage before I finished describing the pretend injury. I made him stop. Correct help at the wrong moment can still replace the person being helped.",
+        "Then I missed a sanitation step and he caught it without grabbing anything out of my hands. He asked, ‘Do you want the observation now or after the run?’ I wanted it now. That question was more useful than being rescued."
+      ],
+      "evidence": [
+        "First-aid practice completed under instruction",
+        "Missed sanitation step recorded rather than hidden",
+        "Consent check added to the practice routine"
+      ]
+    },
+    {
+      "sequence": 5,
+      "when": "Week 3",
+      "author": "jack",
+      "authorLabel": "Jack",
+      "title": "Communication after the clever sentence",
+      "body": [
+        "I made a joke while Diane was explaining why our checklist was unfair to somebody with one working hand. Everybody laughed except her. I said she knew I did not mean harm. She said intent was information about me, not repair for what happened to her point.",
+        "I restated her objection before defending mine. The checklist changed. We now record what a skill accomplishes and allow more than one way to demonstrate it. My joke is not in the portfolio. The correction is."
+      ],
+      "evidence": [
+        "Accessibility objection restated accurately",
+        "Checklist revised to test function rather than one performance method",
+        "Repair accepted without erasing the harm"
+      ]
+    },
+    {
+      "sequence": 6,
+      "when": "Month 1",
+      "author": "diane",
+      "authorLabel": "Diane",
+      "title": "A witness is not a fan",
+      "body": [
+        "I wanted Jack to sign my bicycle-repair page because he watched me patch a tube. He refused. He said watching one repair made him a witness to one repair, not someone qualified to lineage the skill. I was angry because the repair held.",
+        "The bicycle-shop mentor later watched me diagnose two different leaks, choose patches, explain the cure time, and inspect the tire. She signed only what she observed. The smaller claim feels heavier because it is true."
+      ],
+      "evidence": [
+        "Bicycle puncture diagnosis and repair witnessed by a domain mentor",
+        "Portfolio scope narrowed to observed competence",
+        "Additional maintenance skills remain unclaimed"
+      ]
+    },
+    {
+      "sequence": 7,
+      "when": "Month 2",
+      "author": "jack",
+      "authorLabel": "Jack",
+      "title": "Put failure on the calendar",
+      "body": [
+        "Our first schedule said we would ‘help the neighborhood.’ That sentence could never fail because it did not promise anything. We replaced it with one Saturday pantry shelf at the community center: inventory by Thursday, permissions by Friday, setup by ten, cleanup by two, and a public count of what was taken and what was wasted.",
+        "The first Saturday failed. We had food and volunteers but no approved storage bins. We wrote FAILED beside setup. Nobody died from the word. The next schedule names who confirms the bins and by when."
+      ],
+      "evidence": [
+        "Vague intention replaced by a bounded public commitment",
+        "First attempt failed visibly",
+        "Second schedule assigns verification responsibility"
+      ]
+    },
+    {
+      "sequence": 8,
+      "when": "Month 3",
+      "author": "diane",
+      "authorLabel": "Diane",
+      "title": "Two is not Twelve",
+      "body": [
+        "Jack said we should find ten more people and form a Circle. I asked whether we wanted ten signatures or ten adults able to tell us no. We made a rule for ourselves: we will not recruit anyone to complete our picture.",
+        "For now we meet with people who are testing their own competencies. Nobody owes us a Circle. If Twelve eventually stand together, it should be because each has a claim the others can question and evidence the others can inspect."
+      ],
+      "evidence": [
+        "Circle formation remains explicitly incomplete",
+        "Recruitment pressure rejected",
+        "Mutual inspection proposed as a condition of association"
+      ]
+    },
+    {
+      "sequence": 9,
+      "when": "Current page",
+      "author": "jack",
+      "authorLabel": "Jack",
+      "title": "The line we have not crossed",
+      "body": [
+        "We have more evidence than we had three months ago. That is not the same as enough evidence. We are still American kids under the laws and duties that protect kids. The Way does not make those disappear because we filled notebooks.",
+        "I used to think adulthood meant nobody could tell me what to do. Now I think it might mean I can show what I can carry, name what I cannot, choose who I rely on, and remain responsible for what happens when my plan meets reality. I am not writing CLAIMED yet."
+      ],
+      "evidence": [
+        "Progress distinguished from completion",
+        "Civil protections and responsibilities preserved",
+        "Adulthood claim remains open"
+      ]
+    }
+  ],
+  "continuationPrompts": [
+    "What happens when Jack and Diane disagree about whether a competency has been demonstrated?",
+    "Which forms of dependence increase agency, and which quietly transfer responsibility?",
+    "How does each revise the personal Preamble after encountering a political fact they had ignored?",
+    "Who may witness a skill, and what makes that witness competent for the claim?",
+    "What failure would force either character to delay or withdraw an adulthood claim?",
+    "Can they contribute to a Circle without treating the Circle as proof of themselves?"
+  ]
+}

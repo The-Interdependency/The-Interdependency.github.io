@@ -10,11 +10,12 @@ test('one static-first build owns public routes and exact Markdown rendering', a
   assert.match(config, /html: false/);
 });
 
-test('base layout remains readable without javascript and exposes the textbook', async () => {
+test('base layout remains readable without javascript and exposes the textbook and narratives', async () => {
   const layout = await readFile('src/_includes/layouts/base.njk', 'utf8');
   assert.match(layout, /<noscript>/);
   assert.match(layout, /<main id="content"/);
   assert.match(layout, /href="\/chapters\/"/);
+  assert.match(layout, /href="\/narratives\/"/);
   assert.doesNotMatch(layout, /fetch\(/);
 });
 

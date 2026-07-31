@@ -26,6 +26,12 @@ permalink: /home/
   <div class="actions"><a class="button" href="/lab/">Open the Article Lab</a><a class="button secondary" href="/articles/">Read publication drafts</a></div>
 </section>
 <section class="panel">
+  <p class="eyebrow">Living narratives · fiction under constraint</p>
+  <h2>What happens after the copying is finished?</h2>
+  <p>Jack and Diane begin an alternating journal after completing handwritten copies of the Way. Their fictional record tests adulthood, competence, consent, failure, and interdependence without becoming canon or research evidence.</p>
+  <div class="actions"><a class="button" href="/narratives/jack-and-diane/">Read Jack &amp; Diane</a><a class="button secondary" href="/narratives/">Enter Living Narratives</a></div>
+</section>
+<section class="panel">
   <p class="eyebrow">Current field snapshot</p>
   <h2>{{ generated.repos.publicRepoCount }} public repositories · {{ generated.canon.units.length }} canonical units · {{ generated.textbook.chapterCount }} textbook chapters</h2>
   <p>Project data was generated {{ generated.repos.snapshotAt | dateOnly }}{% if generated.repos.fallback %} from the last verified snapshot{% endif %}. Canon digest <code>{{ generated.canon.source.contentSha256 }}</code>. Textbook complete: <code>{{ generated.textbook.complete }}</code>.</p>
