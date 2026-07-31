@@ -19,6 +19,17 @@ test('base layout remains readable without javascript and exposes the textbook a
   assert.doesNotMatch(layout, /fetch\(/);
 });
 
+test('Way map uses native disclosure and keeps deeper routes separate', async () => {
+  const way = await readFile('src/way/index.njk', 'utf8');
+  assert.match(way, /<details class="canon-unit"/);
+  assert.match(way, /<summary class="canon-unit-summary">/);
+  assert.match(way, /<pre class="source-block">{{ unit\.content }}<\/pre>/);
+  assert.match(way, /href="\/way\/{{ unit\.routeSlug }}\/"/);
+  assert.match(way, /href="\/lab\/{{ unit\.routeSlug }}\/"/);
+  assert.match(way, /href="\/source\/{{ unit\.routeSlug }}\/"/);
+  assert.doesNotMatch(way, /<script/i);
+});
+
 test('Awakening owns the static public threshold and routes inward', async () => {
   const [layout, splash, home] = await Promise.all([
     readFile('src/_includes/layouts/splash.njk', 'utf8'),

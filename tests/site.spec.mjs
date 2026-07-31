@@ -92,6 +92,21 @@ test('all eight rights articles are reachable from the article index', async ({ 
   }
 });
 
+test('clicking a Way row reveals its bounded canon text without leaving the tree', async ({ page }) => {
+  const articleFiveUnit = canon.units.find(unit => unit.title === 'Article Five');
+  expect(articleFiveUnit, 'Article Five canon unit should exist').toBeTruthy();
+  await page.goto('/way/');
+  const articleFive = page.locator('details.canon-unit', { has: page.locator('summary', { hasText: 'Article Five' }) }).first();
+  await expect(articleFive).not.toHaveAttribute('open', '');
+  await articleFive.locator('summary').click();
+  await expect(articleFive).toHaveAttribute('open', '');
+  await expect(articleFive.locator('.source-block')).toHaveText(articleFiveUnit.content);
+  await expect(articleFive.locator('a', { hasText: 'Open unit page' })).toBeVisible();
+  await expect(articleFive.locator('a', { hasText: 'Enter Lab' })).toBeVisible();
+  await expect(articleFive.locator('a', { hasText: 'Source and provenance' })).toBeVisible();
+  await expect(page).toHaveURL(/\/way\/$/);
+});
+
 test('living narratives keep fiction and adulthood boundaries visible', async ({ page }) => {
   await page.goto('/narratives/');
   await expect(page.locator('a[href="/narratives/jack-and-diane/"]')).toBeVisible();
