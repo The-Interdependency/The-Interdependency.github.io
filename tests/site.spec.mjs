@@ -26,6 +26,7 @@ const routes = [
   ['/source/', /Source/],
   ['/projects/', /Projects/],
   ['/artifacts/', /Artifacts/],
+  ['/research/method/', /Legislation is not science/],
   ['/fallback/', /Emergency static edition/]
 ];
 
@@ -99,4 +100,18 @@ test('all eight Rights Article Labs are indexed and expose the shared contact st
   await expect(page.locator('body')).toContainText('Applications by domain');
   await expect(page.locator('body')).toContainText('Child craft');
   await expect(page.locator('body')).toContainText('Research field');
+});
+
+test('Research is study-only and exposes provisional citation gaps', async ({ page }) => {
+  await page.goto('/research/method/');
+  await expect(page.locator('h1')).toHaveText('Legislation is not science.');
+  await expect(page.locator('body')).toContainText('19 admitted studies');
+  await expect(page.locator('body')).toContainText('20 non-study records excluded');
+  await expect(page.locator('body')).toContainText('provisional-full-text-locator-needed');
+
+  await page.goto('/articles/article-three/');
+  await expect(page.locator('body')).toContainText('Study-only research attachment');
+  await expect(page.locator('body')).toContainText('support no-qualifying-study-found');
+  await expect(page.locator('body')).toContainText('dissent no-qualifying-study-found');
+  await expect(page.locator('body')).not.toContainText('TeamSTEPPS');
 });
