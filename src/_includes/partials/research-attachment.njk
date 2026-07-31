@@ -1,8 +1,10 @@
 {% set claims = research_data.claims | where("article", researchArticleId) %}
+{% set gapMatches = research_data.gaps | where("article", researchArticleId) %}
+{% set gap = gapMatches[0] %}
 <section>
-  <p class="eyebrow">Reviewed research attachment</p>
-  <h2>Support, dissent, and limits</h2>
-  <p class="section-intro">These records attach sources to bounded claims. They support, challenge, or limit the public reading without converting interpretation into canon.</p>
+  <p class="eyebrow">Study-only research attachment</p>
+  <h2>Study results, Article contact, and limits</h2>
+  <p class="section-intro">|∆| Only admitted research studies appear here. Legislation, treaties, standards, guidelines, frameworks, doctrine, legal analysis, and narrative reviews do not count as Research. |∆|</p>
   {% if claims.length %}
     <div class="grid">
       {% for claim in claims %}
@@ -10,13 +12,16 @@
         {% if claim.stance == "dissent" %}{% set stanceClass = "status-risk" %}{% endif %}
         {% if claim.stance == "limit" or claim.stance == "mixed" %}{% set stanceClass = "status-frontier" %}{% endif %}
         <article class="card">
-          <span class="status {{ stanceClass }}">{{ claim.stance }} · {{ claim.status }}</span>
+          <span class="status {{ stanceClass }}">{{ claim.stance }} · {{ claim.verification_status }}</span>
           <h3>{{ claim.claim }}</h3>
-          <p><strong>Evidence boundary:</strong> {{ claim.limitation }}</p>
+          <p><strong>Study result:</strong> {{ claim.study_result }}</p>
+          <p><strong>Article contact:</strong> {{ claim.article_relation }}</p>
+          <p><strong>Inference boundary:</strong> {{ claim.inference_gap }}</p>
+          <p><strong>Citation locator:</strong> {{ claim.locator }}</p>
           <div class="source-list"><strong>Sources:</strong><ul>
             {% for sourceId in claim.source_ids %}
               {% for source in research_data.sources %}
-                {% if source.id == sourceId %}<li><a href="{{ source.url }}">{{ source.title }}</a><br><small>{{ source.type }} · reviewed {{ source.reviewed_on }}</small><br><small>{{ source.boundary }}</small></li>{% endif %}
+                {% if source.id == sourceId %}<li><a href="{{ source.url }}">{{ source.title }}</a><br><small>{{ source.study_design }} · {{ source.evidence_mode }} · screened {{ source.screened_on }}</small><br><small>{{ source.boundary }}</small><br><small>Risk of bias: {{ source.risk_of_bias_status }} · funding/conflicts: {{ source.funding_conflicts_status }} · corrections/retractions: {{ source.correction_retraction_status }}</small></li>{% endif %}
               {% endfor %}
             {% endfor %}
           </ul></div>
@@ -24,6 +29,13 @@
       {% endfor %}
     </div>
   {% else %}
-    <div class="hmmm"><p>No reviewed claim is attached to this article yet.</p></div>
+    <div class="hmmm"><p>No qualifying research-study claim is attached to this article yet.</p></div>
+  {% endif %}
+  {% if gap %}
+    <aside class="hmmm">
+      <h3>hmmm · study coverage</h3>
+      <p><strong>Current candidate-ledger screen:</strong> support {{ gap.support_status }} · dissent {{ gap.dissent_status }} · mixed/limit {{ gap.mixed_or_limit_status }}.</p>
+      <p>{{ gap.hmmm }}</p>
+    </aside>
   {% endif %}
 </section>
