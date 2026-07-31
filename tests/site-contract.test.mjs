@@ -18,14 +18,17 @@ test('base layout remains readable without javascript and exposes the textbook a
   assert.match(layout, /href="\/narratives\/"/);
   assert.match(layout, /<a href="\/way\/">Start<\/a>/);
   assert.doesNotMatch(layout, />The Way<\/a>/);
+  assert.doesNotMatch(layout, />Article Lab<\/a>/);
   assert.doesNotMatch(layout, /fetch\(/);
 });
 
-test('Way map disclosures contain only a title and exact canon text', async () => {
+test('Way tree disclosures contain exact canon text and only reviewed Article Lab links', async () => {
   const way = await readFile('src/way/index.njk', 'utf8');
   assert.match(way, /<details class="canon-unit"/);
   assert.match(way, /<summary class="canon-unit-summary"><strong>{{ unit\.title }}<\/strong><\/summary>/);
   assert.match(way, /<pre class="source-block">{{ unit\.content }}<\/pre>/);
+  assert.match(way, /article_lab \| where\("unit_id", unit\.id\)/);
+  assert.match(way, /href="\/lab\/{{ unit\.routeSlug }}\/">Open Article Lab<\/a>/);
   assert.doesNotMatch(way, /Open unit page|Enter Lab|Source and provenance|tap to read|text open/);
   assert.doesNotMatch(way, /<script/i);
 });
@@ -44,7 +47,8 @@ test('Awakening owns the static public threshold and routes inward', async () =>
   assert.match(splash, /href="\/preamble\/"/);
   assert.match(splash, /href="\/home\/"/);
   assert.match(home, /permalink: \/home\//);
-  assert.match(home, /href="\/lab\/"/);
+  assert.match(home, /href="\/way\/"/);
+  assert.doesNotMatch(home, /href="\/lab\/"/);
 });
 
 test('distributed textbook routes are data-backed and source-bound', async () => {

@@ -100,16 +100,19 @@ test('all eight rights articles are reachable from the article index', async ({ 
 
 test('clicking a Way row reveals its bounded canon text without leaving the tree', async ({ page }) => {
   await page.goto('/way/');
-  const articleFive = page.locator('details.canon-unit', { has: page.locator('summary', { hasText: 'Article Five' }) }).first();
-  const sourceBlock = articleFive.locator('.source-block');
-  await expect(articleFive).not.toHaveAttribute('open', '');
+  await expect(page.locator('.canon-unit-lab a')).toHaveCount(articleLab.length);
+  const article = page.locator('details.canon-unit', { has: page.locator(`a[href="${labRoutes[0].route}"]`) }).first();
+  const sourceBlock = article.locator('.source-block');
+  const labLink = article.locator(`a[href="${labRoutes[0].route}"]`);
+  await expect(article).not.toHaveAttribute('open', '');
   await expect(sourceBlock).not.toBeVisible();
-  await articleFive.locator('summary').click();
-  await expect(articleFive).toHaveAttribute('open', '');
+  await expect(labLink).not.toBeVisible();
+  await article.locator('summary').click();
+  await expect(article).toHaveAttribute('open', '');
   await expect(sourceBlock).toBeVisible();
-  await expect(sourceBlock).toContainText('Article Five');
+  await expect(sourceBlock).toContainText('Article One');
   expect((await sourceBlock.textContent())?.trim().length).toBeGreaterThan(100);
-  await expect(articleFive.locator('a')).toHaveCount(0);
+  await expect(labLink).toBeVisible();
   await expect(page).toHaveURL(/\/way\/$/);
 });
 
@@ -125,9 +128,9 @@ test('living narratives keep fiction and adulthood boundaries visible', async ({
   await expect(page.locator('.hmmm')).toContainText('Neither adulthood, interdependence, physical maturity, nor a Political Circle has been declared complete');
 });
 
-test('all eight Rights Article Labs are indexed and expose the shared contact structure', async ({ page }) => {
-  await page.goto('/lab/');
-  for (const record of labRoutes) await expect(page.locator(`a[href="${record.route}"]`)).toBeVisible();
+test('all eight Rights Article Labs are linked from the Way tree and expose the shared contact structure', async ({ page }) => {
+  await page.goto('/way/');
+  for (const record of labRoutes) await expect(page.locator(`a[href="${record.route}"]`)).toHaveCount(1);
 
   await page.goto(labRoutes[0].route);
   await expect(page.locator('body')).toContainText('Reductio ad absurdum');

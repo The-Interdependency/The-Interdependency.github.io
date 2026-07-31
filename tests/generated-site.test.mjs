@@ -106,6 +106,8 @@ test('Way map renders Human consciousness beneath Interdefinables and before Pre
   assert.match(way, /<details class="canon-unit"/);
   assert.match(way, /<summary class="canon-unit-summary">/);
   assert.match(way, /Select a title to display that canon unit's exact text/);
+  assert.equal((way.match(/class="canon-unit-lab"/g) || []).length, 8);
+  assert.match(way, /Open Article Lab/);
   assert.doesNotMatch(way, /Open unit page|Enter Lab|Source and provenance|tap to read|text open/);
 });
 
