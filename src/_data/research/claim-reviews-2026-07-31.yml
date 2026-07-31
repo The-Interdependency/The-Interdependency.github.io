@@ -1,0 +1,143 @@
+- id: article-one-work-requirements-access
+  verification_status: provisional-full-text-locator-needed
+  locator: "hmmm — exact full-text result locator has not yet been recorded."
+  study_result: "A quasi-experimental cohort study associated reinstated SNAP work requirements with reduced program participation among vulnerable beneficiaries without evidence of transition off the broader safety net."
+  article_relation: "Challenges readings of contribution requirements that treat loss of food assistance as evidence of unwillingness or as a harmless enforcement device."
+  inference_gap: "One state policy and enrollment outcome cannot determine moral contribution, long-term employment, or allocation during acute scarcity."
+  reviewed_on: "2026-07-31"
+
+- id: article-one-sanctioned-contribution-norms
+  verification_status: provisional-full-text-locator-needed
+  locator: "hmmm — exact full-text result locator has not yet been recorded."
+  study_result: "Public-goods experiments found that participants paid to sanction free riders and that sanction availability increased cooperation."
+  article_relation: "Supports the narrower proposition that contribution-enforcement behavior can sustain cooperation."
+  inference_gap: "Laboratory monetary sanctions do not test withholding food, shelter, care, or safety and cannot license a specific real-world sanction."
+  reviewed_on: "2026-07-31"
+
+- id: article-one-exclusion-clause-harms
+  verification_status: provisional-full-text-locator-needed
+  locator: "hmmm — exact full-text result locator has not yet been recorded."
+  study_result: "A scoping review found benefit sanctions associated with hardship, adverse health and child outcomes, and movement into lower-quality, less stable work."
+  article_relation: "Challenges any presumption that withdrawing material support is a neutral or reliably beneficial response to noncontribution."
+  inference_gap: "State welfare regimes differ from the Article's community-scale clause, so the contact is analogical and bounded."
+  reviewed_on: "2026-07-31"
+
+- id: article-one-assistance-modality
+  verification_status: provisional-full-text-locator-needed
+  locator: "hmmm — exact full-text result locator has not yet been recorded."
+  study_result: "A systematic review found no universally superior emergency-assistance modality; cash, vouchers, and in-kind food varied with setting and outcome."
+  article_relation: "Limits any one-size-fits-all interpretation of how a survival floor must be delivered."
+  inference_gap: "Sparse, generally low-quality evidence through 2014 does not determine contribution rules or justified exclusion."
+  reviewed_on: "2026-07-31"
+
+- id: article-two-will-under-scarcity
+  verification_status: provisional-full-text-locator-needed
+  locator: "hmmm — exact full-text result locator has not yet been recorded."
+  study_result: "Laboratory and field experiments reported reduced cognitive performance when poverty-related financial concerns were salient."
+  article_relation: "Challenges readings that infer unconstrained will or character directly from refusal, compliance, or impaired performance under scarcity."
+  inference_gap: "The study did not measure consent directly; applying the result to voluntariness is an inference."
+  reviewed_on: "2026-07-31"
+
+- id: article-two-trauma-evidence-limit
+  verification_status: provisional-full-text-locator-needed
+  locator: "hmmm — exact full-text result locator has not yet been recorded."
+  study_result: "An AHRQ systematic review found insufficient comparative evidence for clear conclusions about trauma-informed-care outcomes."
+  article_relation: "Limits confident claims that trauma-informed labels establish intervention effectiveness."
+  inference_gap: "Insufficient evidence is not evidence of no effect, and results cannot resolve every duty in the Article."
+  reviewed_on: "2026-07-31"
+
+- id: article-two-autonomy-meta-analysis
+  verification_status: provisional-full-text-locator-needed
+  locator: "hmmm — exact full-text result locator has not yet been recorded."
+  study_result: "A meta-analysis linked autonomy support, need satisfaction, and autonomous motivation with sustained health behavior and beneficial health outcomes."
+  article_relation: "Supports an autonomy-preserving interpretation of necessary health and survival work."
+  inference_gap: "Heterogeneous health settings do not validate every duty in Article Two or make coercion autonomy-supportive."
+  reviewed_on: "2026-07-31"
+
+- id: article-two-care-duty-burden
+  verification_status: provisional-full-text-locator-needed
+  locator: "hmmm — exact full-text result locator has not yet been recorded."
+  study_result: "A systematic review and meta-analysis of observational studies found greater anxiety and depression among unpaid caregivers than noncaregivers in included settings."
+  article_relation: "Challenges allocation of necessary care as though caregivers have unlimited time, health, or support."
+  inference_gap: "Observational, geographically sparse evidence cannot show care is intrinsically harmful or prescribe one allocation system."
+  reviewed_on: "2026-07-31"
+
+- id: article-three-forgiving-reciprocity
+  verification_status: provisional-full-text-locator-needed
+  locator: "hmmm — exact full-text model/result locator has not yet been recorded."
+  study_result: "A mathematical and simulation study found that crosstalk across concurrent repeated games can spread defection and require stronger forgiveness for cooperation."
+  article_relation: "Limits strict act-for-act reciprocity by identifying an error-propagation mechanism and a formal corrective."
+  inference_gap: "A stylized non-empirical model does not establish real-world consent to retaliation or require anyone to remain exposed to abuse."
+  reviewed_on: "2026-07-31"
+
+- id: article-four-teach-back-comprehension
+  verification_status: provisional-full-text-locator-needed
+  locator: "hmmm — exact full-text result locator has not yet been recorded."
+  study_result: "A systematic review found teach-back can improve health knowledge, recall, self-management, and some outcomes across heterogeneous studies."
+  article_relation: "Supports teaching consequential instructions in usable language and checking comprehension."
+  inference_gap: "Health-education evidence does not prove generalization to all law or make enforcement legitimate by itself."
+  reviewed_on: "2026-07-31"
+
+- id: article-four-teaching-law-works
+  verification_status: provisional-full-text-locator-needed
+  locator: "hmmm — exact full-text result locator has not yet been recorded."
+  study_result: "A systematic evidence map found legal-literacy and community-paralegal studies most commonly reported improved knowledge and agency."
+  article_relation: "Supports testing the Article's duty-to-teach component through legal-empowerment interventions."
+  inference_gap: "The map did not establish a pooled causal effect or validate one teaching method, and the underlying evidence was uneven."
+  reviewed_on: "2026-07-31"
+
+- id: article-four-plain-language-boundary
+  verification_status: provisional-full-text-locator-needed
+  locator: "hmmm — exact full-text result locator has not yet been recorded."
+  study_result: "A controlled experiment found plain-language legal contracts improved nonexpert comprehension while substantial misunderstanding remained."
+  article_relation: "Supports simplification and instruction while limiting the claim that publication or plain wording guarantees knowledge."
+  inference_gap: "Contract comprehension in one experimental setting cannot establish comprehension of all laws or populations."
+  reviewed_on: "2026-07-31"
+
+- id: article-five-maturity-gap
+  verification_status: provisional-full-text-locator-needed
+  locator: "hmmm — exact full-text result locator has not yet been recorded."
+  study_result: "A multinational cross-sectional study found cognitive capacity reached adult levels earlier than psychosocial maturity."
+  article_relation: "Challenges a competence-only replacement for age thresholds by distinguishing demonstrated cognitive performance from impulse control and peer resistance."
+  inference_gap: "Cross-sectional measures do not evaluate the Article's portfolio process or determine a universal adulthood rule."
+  reviewed_on: "2026-07-31"
+
+- id: article-six-nonviolent-power
+  verification_status: provisional-full-text-locator-needed
+  locator: "hmmm — exact full-text result locator has not yet been recorded."
+  study_result: "A comparative campaign study reported greater success for nonviolent than violent campaigns in its dataset and analyzed participation and loyalty-shift mechanisms."
+  article_relation: "Challenges reduction of collective political power to violence alone."
+  inference_gap: "Historical observational comparison is not a complete theory of authority and does not show violence is never decisive."
+  reviewed_on: "2026-07-31"
+
+- id: article-six-collective-intelligence-dispute
+  verification_status: provisional-full-text-locator-needed
+  locator: "hmmm — exact full-text result locators for both studies have not yet been recorded."
+  study_result: "Small-group experiments found a collective-performance factor, while later replication and model tests disputed which member and interaction variables explained it."
+  article_relation: "Shows that group performance can be studied while leaving the Article's proposed circle size and authority mechanism unvalidated."
+  inference_gap: "Small selected groups and tasks cannot validate twelve-person circles, singular emergency leadership, or authority derived from violence."
+  reviewed_on: "2026-07-31"
+
+- id: article-seven-graded-categories
+  verification_status: provisional-full-text-locator-needed
+  locator: "hmmm — exact full-text result locator has not yet been recorded."
+  study_result: "Experiments found graded typicality effects within several ordinary semantic categories."
+  article_relation: "Challenges the assumption that every conversational category naturally has one sharp boundary fixed before use."
+  inference_gap: "Ordinary semantic-category experiments do not govern legal drafting or technical interfaces."
+  reviewed_on: "2026-07-31"
+
+- id: article-seven-standard-terminology-outcomes
+  verification_status: provisional-full-text-locator-needed
+  locator: "hmmm — exact full-text result locator has not yet been recorded."
+  study_result: "A systematic review and meta-analysis found possible documentation, coordination, knowledge, and outcome benefits from standardized nursing terminologies, with very low-to-low certainty."
+  article_relation: "Supports studying shared terminology while limiting claims that imposed definitions are neutral or sufficient."
+  inference_gap: "Terminology was often embedded in larger interventions, most evidence was observational, and ordinary conversation was not studied."
+  reviewed_on: "2026-07-31"
+
+- id: article-eight-decision-aids
+  verification_status: provisional-full-text-locator-needed
+  locator: "hmmm — exact full-text result locator has not yet been recorded."
+  study_result: "A Cochrane review of randomized trials found decision aids improved knowledge, risk perception, active participation, and informed values-congruent choices without increasing regret."
+  article_relation: "Supports consent practices that communicate options, benefits, harms, probabilities, and personal values."
+  inference_gap: "Health-treatment and screening decisions do not establish a universal consent standard or settle every conflict among autonomy, harm, and public duty."
+  reviewed_on: "2026-07-31"
