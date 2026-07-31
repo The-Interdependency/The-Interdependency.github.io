@@ -1,0 +1,71 @@
+- id: article-one-study-gap
+  article: rights-and-definitions-of-the-way.article-one
+  search_status: candidate-ledger-screened-both-directions
+  support_status: qualifying-study-found
+  dissent_status: qualifying-study-found
+  mixed_or_limit_status: qualifying-study-found
+  hmmm: "The current candidate ledger contains study contact in both directions; a comprehensive database search, independent duplicate screening, full-text locators, and design-specific risk-of-bias appraisals remain incomplete."
+  reviewed_on: "2026-07-31"
+
+- id: article-two-study-gap
+  article: rights-and-definitions-of-the-way.article-two
+  search_status: candidate-ledger-screened-both-directions
+  support_status: qualifying-study-found
+  dissent_status: qualifying-study-found
+  mixed_or_limit_status: qualifying-study-found
+  hmmm: "The current candidate ledger contains study contact in both directions; a comprehensive database search, independent duplicate screening, full-text locators, and design-specific risk-of-bias appraisals remain incomplete."
+  reviewed_on: "2026-07-31"
+
+- id: article-three-study-gap
+  article: rights-and-definitions-of-the-way.article-three
+  search_status: candidate-ledger-screened-both-directions
+  support_status: no-qualifying-study-found
+  dissent_status: no-qualifying-study-found
+  mixed_or_limit_status: qualifying-study-found
+  hmmm: "Only a non-empirical formal/simulation study currently qualifies. No qualifying support or dissent study is in the screened candidate ledger; a broader systematic search and empirical field evidence are needed."
+  reviewed_on: "2026-07-31"
+
+- id: article-four-study-gap
+  article: rights-and-definitions-of-the-way.article-four
+  search_status: candidate-ledger-screened-both-directions
+  support_status: qualifying-study-found
+  dissent_status: no-qualifying-study-found
+  mixed_or_limit_status: qualifying-study-found
+  hmmm: "No qualifying dissent study is in the screened candidate ledger. A broader search should test failure modes of legal education, teach-back, plain-language drafting, and comprehension-dependent enforcement."
+  reviewed_on: "2026-07-31"
+
+- id: article-five-study-gap
+  article: rights-and-definitions-of-the-way.article-five
+  search_status: candidate-ledger-screened-both-directions
+  support_status: no-qualifying-study-found
+  dissent_status: qualifying-study-found
+  mixed_or_limit_status: no-qualifying-study-found
+  hmmm: "No qualifying support study is in the screened candidate ledger. Studies directly evaluating competence portfolios, supported decision-making, task specificity, and age-based alternatives are needed."
+  reviewed_on: "2026-07-31"
+
+- id: article-six-study-gap
+  article: rights-and-definitions-of-the-way.article-six
+  search_status: candidate-ledger-screened-both-directions
+  support_status: no-qualifying-study-found
+  dissent_status: qualifying-study-found
+  mixed_or_limit_status: qualifying-study-found
+  hmmm: "No qualifying support study is in the screened candidate ledger. Direct evidence on bounded emergency authority, leader selection, group size, accountability, transfer, and demobilization is needed."
+  reviewed_on: "2026-07-31"
+
+- id: article-seven-study-gap
+  article: rights-and-definitions-of-the-way.article-seven
+  search_status: candidate-ledger-screened-both-directions
+  support_status: no-qualifying-study-found
+  dissent_status: qualifying-study-found
+  mixed_or_limit_status: qualifying-study-found
+  hmmm: "No qualifying support study is in the screened candidate ledger. Research should compare negotiated, imposed, and standardized definitions across ordinary, technical, legal, and cross-cultural settings."
+  reviewed_on: "2026-07-31"
+
+- id: article-eight-study-gap
+  article: rights-and-definitions-of-the-way.article-eight
+  search_status: candidate-ledger-screened-both-directions
+  support_status: qualifying-study-found
+  dissent_status: no-qualifying-study-found
+  mixed_or_limit_status: no-qualifying-study-found
+  hmmm: "No qualifying dissent or limit study is in the screened candidate ledger. Research is needed on consent failure, collective harms, vulnerability, coercion, and competing definitions of harm."
+  reviewed_on: "2026-07-31"
