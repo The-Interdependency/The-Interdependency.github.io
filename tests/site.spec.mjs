@@ -62,9 +62,15 @@ test('the knowledge-system home links to Awakening, Preamble, and the distribute
   await page.goto('/home/');
   await expect(page.locator('a.brand')).toHaveAttribute('href', '/home/');
   await expect(page.locator('nav[aria-label="Primary navigation"] a[href="/"]', { hasText: 'Awakening' })).toBeVisible();
+  const startLink = page.locator('nav[aria-label="Primary navigation"] a[href="/way/"]', { hasText: 'Start' });
+  await expect(startLink).toBeVisible();
+  await expect(page.locator('nav[aria-label="Primary navigation"] a', { hasText: 'The Way' })).toHaveCount(0);
   await expect(page.locator('nav[aria-label="Primary navigation"] a[href="/preamble/"]', { hasText: 'Preamble' })).toBeVisible();
   await expect(page.locator('nav[aria-label="Primary navigation"] a[href="/chapters/"]', { hasText: 'Textbook' })).toBeVisible();
   await expect(page.locator('main a[href="/chapters/"]').first()).toBeVisible();
+  await startLink.click();
+  await expect(page).toHaveURL(/\/way\/$/);
+  await expect(page.locator('details.canon-unit').first()).toBeVisible();
 });
 
 test('chapters zero through seven are indexed, source-bound, and sequentially navigable', async ({ page }) => {

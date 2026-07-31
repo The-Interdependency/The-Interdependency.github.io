@@ -16,6 +16,8 @@ test('base layout remains readable without javascript and exposes the textbook a
   assert.match(layout, /<main id="content"/);
   assert.match(layout, /href="\/chapters\/"/);
   assert.match(layout, /href="\/narratives\/"/);
+  assert.match(layout, /<a href="\/way\/">Start<\/a>/);
+  assert.doesNotMatch(layout, />The Way<\/a>/);
   assert.doesNotMatch(layout, /fetch\(/);
 });
 
