@@ -1,0 +1,366 @@
+- id: patrick-williams-2012-sdt-health
+  decision: exclude-non-study
+  record_class: nonstudy_context
+  exclusion_reason: "Narrative review without a declared systematic search, selection, and synthesis method."
+  screened_on: "2026-07-31"
+
+- id: who-2018-sanitation-health
+  decision: exclude-non-study
+  record_class: nonstudy_context
+  exclusion_reason: "Practice guideline; evidence-informed guidance is not itself a research study."
+  screened_on: "2026-07-31"
+
+- id: mani-et-al-2013-poverty-cognition
+  decision: admit-study
+  record_class: research_study
+  study_design: "Laboratory and field experiments"
+  evidence_mode: empirical
+  screening_status: provisional-study-admission
+  appraisal_status: hmmm-full-text-locator-pending
+  risk_of_bias_status: hmmm-design-specific-appraisal-pending
+  funding_conflicts_status: hmmm-extraction-pending
+  correction_retraction_status: hmmm-integrity-check-pending
+  admission_basis: "Reports methods, analyses, and results from empirical experiments."
+  screened_on: "2026-07-31"
+
+- id: ahrq-2025-trauma-informed-care
+  decision: admit-study
+  record_class: research_study
+  study_design: "Systematic review"
+  evidence_mode: systematic_synthesis
+  screening_status: provisional-study-admission
+  appraisal_status: hmmm-full-text-locator-pending
+  risk_of_bias_status: hmmm-design-specific-appraisal-pending
+  funding_conflicts_status: hmmm-extraction-pending
+  correction_retraction_status: hmmm-integrity-check-pending
+  admission_basis: "Declares a systematic evidence-synthesis method and reports results and limitations."
+  screened_on: "2026-07-31"
+
+- id: gundersen-ziliak-2015-food-insecurity
+  decision: exclude-non-study
+  record_class: nonstudy_context
+  exclusion_reason: "Narrative review without a declared systematic search, selection, and synthesis method."
+  screened_on: "2026-07-31"
+
+- id: andersson-pearson-1999-incivility
+  decision: exclude-non-study
+  record_class: nonstudy_context
+  exclusion_reason: "Theoretical article; it proposes a model but does not report a study."
+  screened_on: "2026-07-31"
+
+- id: ahrq-2023-teamstepps
+  decision: exclude-non-study
+  record_class: nonstudy_context
+  exclusion_reason: "Implementation curriculum and framework; it is not itself a research study."
+  screened_on: "2026-07-31"
+
+- id: nagin-telep-2017-procedural-justice
+  decision: exclude-non-study
+  record_class: nonstudy_context
+  exclusion_reason: "Narrative review without a declared systematic search, selection, and synthesis method."
+  screened_on: "2026-07-31"
+
+- id: who-2001-icf
+  decision: exclude-non-study
+  record_class: nonstudy_context
+  exclusion_reason: "International classification and framework; a standard is not a research study."
+  screened_on: "2026-07-31"
+
+- id: who-2022-uhc-competency
+  decision: exclude-non-study
+  record_class: nonstudy_context
+  exclusion_reason: "Competency framework; a framework is not a research study."
+  screened_on: "2026-07-31"
+
+- id: fema-2017-nims
+  decision: exclude-non-study
+  record_class: nonstudy_context
+  exclusion_reason: "Operational doctrine and framework; it is not a research study."
+  screened_on: "2026-07-31"
+
+- id: ietf-1997-rfc2119
+  decision: exclude-non-study
+  record_class: nonstudy_context
+  exclusion_reason: "Technical standard; a standard is not a research study."
+  screened_on: "2026-07-31"
+
+- id: ietf-2017-rfc8174
+  decision: exclude-non-study
+  record_class: nonstudy_context
+  exclusion_reason: "Technical standard clarification; a standard is not a research study."
+  screened_on: "2026-07-31"
+
+- id: hhs-1979-belmont-report
+  decision: exclude-non-study
+  record_class: nonstudy_context
+  exclusion_reason: "Ethics declaration and guidance; normative doctrine is not a research study."
+  screened_on: "2026-07-31"
+
+- id: ndumele-et-al-2025-snap-work-requirements
+  decision: admit-study
+  record_class: research_study
+  study_design: "Quasi-experimental cohort study"
+  evidence_mode: empirical
+  screening_status: provisional-study-admission
+  appraisal_status: hmmm-full-text-locator-pending
+  risk_of_bias_status: hmmm-design-specific-appraisal-pending
+  funding_conflicts_status: hmmm-extraction-pending
+  correction_retraction_status: hmmm-integrity-check-pending
+  admission_basis: "Reports an empirical design, analysis, results, and limitations."
+  screened_on: "2026-07-31"
+
+- id: talevski-et-al-2020-teach-back
+  decision: admit-study
+  record_class: research_study
+  study_design: "Systematic review"
+  evidence_mode: systematic_synthesis
+  screening_status: provisional-study-admission
+  appraisal_status: hmmm-full-text-locator-pending
+  risk_of_bias_status: hmmm-design-specific-appraisal-pending
+  funding_conflicts_status: hmmm-extraction-pending
+  correction_retraction_status: hmmm-integrity-check-pending
+  admission_basis: "Declares systematic search and selection methods and synthesizes study results."
+  screened_on: "2026-07-31"
+
+- id: webb-2020-legislative-complexity
+  decision: exclude-non-study
+  record_class: nonstudy_context
+  exclusion_reason: "Legal analysis; peer review does not convert legal reasoning into a research study."
+  screened_on: "2026-07-31"
+
+- id: un-crpd-2014-legal-capacity
+  decision: exclude-non-study
+  record_class: nonstudy_context
+  exclusion_reason: "Treaty-body interpretation; legislation and legal doctrine are not science."
+  screened_on: "2026-07-31"
+
+- id: stephan-chenoweth-2008-civil-resistance
+  decision: admit-study
+  record_class: research_study
+  study_design: "Comparative observational study"
+  evidence_mode: empirical
+  screening_status: provisional-study-admission
+  appraisal_status: hmmm-full-text-locator-pending
+  risk_of_bias_status: hmmm-design-specific-appraisal-pending
+  funding_conflicts_status: hmmm-extraction-pending
+  correction_retraction_status: hmmm-integrity-check-pending
+  admission_basis: "Reports a defined campaign dataset, comparative analysis, results, and limitations."
+  screened_on: "2026-07-31"
+
+- id: rosch-1975-semantic-categories
+  decision: admit-study
+  record_class: research_study
+  study_design: "Experimental study"
+  evidence_mode: empirical
+  screening_status: provisional-study-admission
+  appraisal_status: hmmm-full-text-locator-pending
+  risk_of_bias_status: hmmm-design-specific-appraisal-pending
+  funding_conflicts_status: hmmm-extraction-pending
+  correction_retraction_status: hmmm-integrity-check-pending
+  admission_basis: "Reports empirical experiments, analyses, and results."
+  screened_on: "2026-07-31"
+
+- id: solove-2013-consent-dilemma
+  decision: exclude-non-study
+  record_class: nonstudy_context
+  exclusion_reason: "Legal analysis drawing on research; an analysis of studies is not itself a study."
+  screened_on: "2026-07-31"
+
+- id: fehr-gachter-2000-cooperation-punishment
+  decision: admit-study
+  record_class: research_study
+  study_design: "Public-goods laboratory experiments"
+  evidence_mode: empirical
+  screening_status: provisional-study-admission
+  appraisal_status: hmmm-full-text-locator-pending
+  risk_of_bias_status: hmmm-design-specific-appraisal-pending
+  funding_conflicts_status: hmmm-extraction-pending
+  correction_retraction_status: hmmm-integrity-check-pending
+  admission_basis: "Reports experimental methods, analyses, results, and limitations."
+  screened_on: "2026-07-31"
+
+- id: pattaro-et-al-2022-benefit-sanctions
+  decision: admit-study
+  record_class: research_study
+  study_design: "Scoping review of quantitative studies"
+  evidence_mode: systematic_synthesis
+  screening_status: provisional-study-admission
+  appraisal_status: hmmm-full-text-locator-pending
+  risk_of_bias_status: hmmm-design-specific-appraisal-pending
+  funding_conflicts_status: hmmm-extraction-pending
+  correction_retraction_status: hmmm-integrity-check-pending
+  admission_basis: "Declares search and selection methods and maps quantitative study results."
+  screened_on: "2026-07-31"
+
+- id: goodwin-maru-2017-legal-empowerment
+  decision: admit-study
+  record_class: research_study
+  study_design: "Systematic evidence map"
+  evidence_mode: systematic_synthesis
+  screening_status: provisional-study-admission
+  appraisal_status: hmmm-full-text-locator-pending
+  risk_of_bias_status: hmmm-design-specific-appraisal-pending
+  funding_conflicts_status: hmmm-extraction-pending
+  correction_retraction_status: hmmm-integrity-check-pending
+  admission_basis: "Reports a declared evidence-mapping search, selection, and synthesis process."
+  screened_on: "2026-07-31"
+
+- id: who-2002-world-report-violence
+  decision: exclude-non-study
+  record_class: nonstudy_context
+  exclusion_reason: "Global public-health report; the report is not one reproducible research study or systematic synthesis."
+  screened_on: "2026-07-31"
+
+- id: icenogle-et-al-2019-maturity-gap
+  decision: admit-study
+  record_class: research_study
+  study_design: "Multinational cross-sectional study"
+  evidence_mode: empirical
+  screening_status: provisional-study-admission
+  appraisal_status: hmmm-full-text-locator-pending
+  risk_of_bias_status: hmmm-design-specific-appraisal-pending
+  funding_conflicts_status: hmmm-extraction-pending
+  correction_retraction_status: hmmm-integrity-check-pending
+  admission_basis: "Reports a defined sample, empirical measures, analysis, results, and limitations."
+  screened_on: "2026-07-31"
+
+- id: sunstein-2002-group-polarization
+  decision: exclude-non-study
+  record_class: nonstudy_context
+  exclusion_reason: "Theoretical synthesis; it is not itself a research study or systematic review."
+  screened_on: "2026-07-31"
+
+- id: harcourt-1999-collapse-harm-principle
+  decision: exclude-non-study
+  record_class: nonstudy_context
+  exclusion_reason: "Law-review argument; legal theory is not a research study."
+  screened_on: "2026-07-31"
+
+- id: doocy-tappis-2017-humanitarian-cash
+  decision: admit-study
+  record_class: research_study
+  study_design: "Systematic review"
+  evidence_mode: systematic_synthesis
+  screening_status: provisional-study-admission
+  appraisal_status: hmmm-full-text-locator-pending
+  risk_of_bias_status: hmmm-design-specific-appraisal-pending
+  funding_conflicts_status: hmmm-extraction-pending
+  correction_retraction_status: hmmm-integrity-check-pending
+  admission_basis: "Declares systematic search, selection, appraisal, synthesis, results, and limitations."
+  screened_on: "2026-07-31"
+
+- id: ng-et-al-2012-sdt-meta-analysis
+  decision: admit-study
+  record_class: research_study
+  study_design: "Systematic review and meta-analysis"
+  evidence_mode: systematic_synthesis
+  screening_status: provisional-study-admission
+  appraisal_status: hmmm-full-text-locator-pending
+  risk_of_bias_status: hmmm-design-specific-appraisal-pending
+  funding_conflicts_status: hmmm-extraction-pending
+  correction_retraction_status: hmmm-integrity-check-pending
+  admission_basis: "Reports systematic synthesis and meta-analytic methods and results."
+  screened_on: "2026-07-31"
+
+- id: magana-et-al-2020-unpaid-caregivers-lmic
+  decision: admit-study
+  record_class: research_study
+  study_design: "Systematic review and meta-analysis of observational studies"
+  evidence_mode: systematic_synthesis
+  screening_status: provisional-study-admission
+  appraisal_status: hmmm-full-text-locator-pending
+  risk_of_bias_status: hmmm-design-specific-appraisal-pending
+  funding_conflicts_status: hmmm-extraction-pending
+  correction_retraction_status: hmmm-integrity-check-pending
+  admission_basis: "Declares systematic search, selection, synthesis, results, and limitations."
+  screened_on: "2026-07-31"
+
+- id: rossetti-hilbe-2024-direct-reciprocity
+  decision: exclude-non-study
+  record_class: nonstudy_context
+  exclusion_reason: "Narrative theory-and-evidence review without a declared systematic synthesis method."
+  screened_on: "2026-07-31"
+
+- id: reiter-et-al-2018-reciprocity-crosstalk
+  decision: admit-study
+  record_class: research_study
+  study_design: "Mathematical model and simulation study"
+  evidence_mode: formal_simulation
+  screening_status: provisional-study-admission
+  appraisal_status: hmmm-full-text-locator-pending
+  risk_of_bias_status: hmmm-design-specific-appraisal-pending
+  funding_conflicts_status: hmmm-extraction-pending
+  correction_retraction_status: hmmm-integrity-check-pending
+  admission_basis: "Reports a formal research question, model, simulation analysis, results, and limitations; explicitly non-empirical."
+  screened_on: "2026-07-31"
+
+- id: masson-waldron-1994-legal-contract-comprehension
+  decision: admit-study
+  record_class: research_study
+  study_design: "Controlled comprehension experiment"
+  evidence_mode: empirical
+  screening_status: provisional-study-admission
+  appraisal_status: hmmm-full-text-locator-pending
+  risk_of_bias_status: hmmm-design-specific-appraisal-pending
+  funding_conflicts_status: hmmm-extraction-pending
+  correction_retraction_status: hmmm-integrity-check-pending
+  admission_basis: "Reports experimental methods, analysis, results, and limitations."
+  screened_on: "2026-07-31"
+
+- id: zietlow-et-al-2022-guardianship-capacity
+  decision: exclude-non-study
+  record_class: nonstudy_context
+  exclusion_reason: "Medicolegal narrative review; clinical and legal guidance is not itself a research study."
+  screened_on: "2026-07-31"
+
+- id: woolley-et-al-2010-collective-intelligence
+  decision: admit-study
+  record_class: research_study
+  study_design: "Small-group experiments"
+  evidence_mode: empirical
+  screening_status: provisional-study-admission
+  appraisal_status: hmmm-full-text-locator-pending
+  risk_of_bias_status: hmmm-design-specific-appraisal-pending
+  funding_conflicts_status: hmmm-extraction-pending
+  correction_retraction_status: hmmm-integrity-check-pending
+  admission_basis: "Reports empirical group experiments, analyses, results, and limitations."
+  screened_on: "2026-07-31"
+
+- id: bates-gupta-2017-group-intelligence
+  decision: admit-study
+  record_class: research_study
+  study_design: "Replication and latent-variable model tests"
+  evidence_mode: empirical
+  screening_status: provisional-study-admission
+  appraisal_status: hmmm-full-text-locator-pending
+  risk_of_bias_status: hmmm-design-specific-appraisal-pending
+  funding_conflicts_status: hmmm-extraction-pending
+  correction_retraction_status: hmmm-integrity-check-pending
+  admission_basis: "Reports empirical replication studies, analyses, results, and limitations."
+  screened_on: "2026-07-31"
+
+- id: bertocchi-et-al-2023-standardized-terminologies
+  decision: admit-study
+  record_class: research_study
+  study_design: "Systematic review and meta-analysis"
+  evidence_mode: systematic_synthesis
+  screening_status: provisional-study-admission
+  appraisal_status: hmmm-full-text-locator-pending
+  risk_of_bias_status: hmmm-design-specific-appraisal-pending
+  funding_conflicts_status: hmmm-extraction-pending
+  correction_retraction_status: hmmm-integrity-check-pending
+  admission_basis: "Declares systematic search, selection, synthesis, certainty assessment, results, and limitations."
+  screened_on: "2026-07-31"
+
+- id: stacey-et-al-2024-decision-aids
+  decision: admit-study
+  record_class: research_study
+  study_design: "Cochrane systematic review of randomized controlled trials"
+  evidence_mode: systematic_synthesis
+  screening_status: provisional-study-admission
+  appraisal_status: hmmm-full-text-locator-pending
+  risk_of_bias_status: hmmm-design-specific-appraisal-pending
+  funding_conflicts_status: hmmm-extraction-pending
+  correction_retraction_status: hmmm-integrity-check-pending
+  admission_basis: "Declares systematic methods, risk-of-bias assessment, synthesis, results, and limitations."
+  screened_on: "2026-07-31"
