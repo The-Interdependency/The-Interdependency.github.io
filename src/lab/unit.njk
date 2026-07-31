@@ -12,7 +12,7 @@ title: "Lab: {{ unit.title }}"
 {% set claims = research_data.claims | where("article", unit.id) %}
 {% set gapMatches = research_data.gaps | where("article", unit.id) %}
 {% set gap = gapMatches[0] %}
-<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/lab/">Article Lab</a> / {{ unit.title }}</nav>
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/way/">Start · Way tree</a> / Article Lab / {{ unit.title }}</nav>
 <header class="page-head">
   <p class="eyebrow">Interpretive laboratory</p>
   <h1>{% if lab %}{{ lab.public_title }}{% else %}{{ unit.title }}{% endif %}</h1>
