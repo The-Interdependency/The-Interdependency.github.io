@@ -23,7 +23,7 @@ Rights and Definitions of The Way
 ## Other records
 
 - Project records: public GitHub facts plus visible `hmmm` when editorial metadata is missing.
-- Lab records: generated per canon unit, with reviewed research gaps explicitly shown.
+- Lab records: generated per canon unit, with study-only research contact and screened `hmmm` gaps explicitly shown. Non-study context never counts toward Research coverage.
 
 ## Usage guidance
 

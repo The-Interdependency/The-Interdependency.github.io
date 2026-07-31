@@ -163,6 +163,44 @@ export default defineMsdmdCollection({
       "block": "BOUNDARIES",
       "fields": {
         "admin_only": "false",
+        "auth_boundary": "optional GitHub read token",
+        "network_boundary": "external read-only",
+        "owner": "Erin Spencer",
+        "pii": "none beyond what submitters publish themselves",
+        "secrets": "GITHUB_TOKEN is passed only as an HTTPS authorization header and never written",
+        "side_effects": "generated dataset and snapshot writes",
+        "storage_boundary": "write beneath src/_data/generated and src/_data/snapshots",
+        "summary": "Reads only issues labeled related-work and approved from this repository via the allowlisted GitHub API.",
+        "user_data_boundary": "public issue content only; submitter login retained as provenance"
+      },
+      "file": "scripts/fetch-works.mjs",
+      "id": "related_works_network_boundary"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "optional read-only GITHUB_TOKEN",
+        "internal_surface": "issue-form body parsing, per-submission validation with visible exclusions, snapshot fallback",
+        "module_kind": "instrument",
+        "module_name": "fetch-works",
+        "network_boundary": "allowlisted read-only HTTPS to api.github.com",
+        "owner": "Erin Spencer",
+        "public_surface": "npm run refresh:works, generated.works",
+        "rollback": "remove refresh:works and the /works/ route; submissions remain as ordinary GitHub issues",
+        "rollout": "included in refresh:data before validation and Eleventy generation",
+        "storage_boundary": "writes generated works data and a last-known-good snapshot",
+        "summary": "Resolves maintainer-approved related-work submissions from GitHub issues into one provenance-bearing works registry dataset.",
+        "tests": "tests/works-registry.test.mjs",
+        "user_data_boundary": "publishes only fields submitters place in a public GitHub issue"
+      },
+      "file": "scripts/fetch-works.mjs",
+      "id": "related_works_registry_fetch"
+    },
+    {
+      "block": "BOUNDARIES",
+      "fields": {
+        "admin_only": "false",
         "auth_boundary": "none",
         "network_boundary": "none",
         "owner": "Erin Spencer",
@@ -315,7 +353,7 @@ export default defineMsdmdCollection({
       "fields": {
         "admin_only": "false",
         "auth_boundary": "none",
-        "internal_surface": "canon snapshot digest, heading hierarchy, distributed-textbook provenance, and repository-route assertions",
+        "internal_surface": "canon snapshot digest, heading hierarchy, distributed-textbook provenance, study-only research admission, and repository-route assertions",
         "module_kind": "instrument",
         "module_name": "validate-content",
         "network_boundary": "none",
@@ -324,8 +362,8 @@ export default defineMsdmdCollection({
         "rollback": "remove the gate only with an explicit replacement preserving provenance, hierarchy, textbook, and route checks",
         "rollout": "required by npm run build and npm run check",
         "storage_boundary": "read",
-        "summary": "Refuses deployment when canon identity, heading hierarchy, textbook coverage, snapshot integrity, generated route coverage, or recovery artifacts drift.",
-        "tests": "tests/canon-parser.test.mjs, tests/canon-integrity.test.mjs, tests/textbook-integrity.test.mjs, tests/repo-coverage.test.mjs, tests/site-contract.test.mjs",
+        "summary": "Refuses deployment when canon identity, heading hierarchy, textbook coverage, study-only research admission, snapshot integrity, generated route coverage, or recovery artifacts drift.",
+        "tests": "tests/canon-parser.test.mjs, tests/canon-integrity.test.mjs, tests/textbook-integrity.test.mjs, tests/repo-coverage.test.mjs, tests/research-ledger.test.mjs, tests/site-contract.test.mjs",
         "user_data_boundary": "none"
       },
       "file": "scripts/validate-content.mjs",
@@ -456,7 +494,7 @@ export default defineMsdmdCollection({
         "secrets": "none",
         "side_effects": "none",
         "storage_boundary": "read beneath src/_data/research only",
-        "summary": "Reads allowlisted repository-local YAML ledgers during static-site generation and returns parsed arrays.",
+        "summary": "Reads allowlisted repository-local YAML ledgers, rejects incomplete classifications, and returns study-only public arrays.",
         "user_data_boundary": "none"
       },
       "file": "src/_data/research_data.js",
@@ -467,16 +505,16 @@ export default defineMsdmdCollection({
       "fields": {
         "admin_only": "false",
         "auth_boundary": "none",
-        "internal_surface": "validateLedgerPaths, readYamlList, readYamlLedgers",
+        "internal_surface": "validateLedgerPaths, readYamlList, readYamlLedgers, indexUnique",
         "module_kind": "adapter",
         "module_name": "research_data",
         "network_boundary": "none",
         "owner": "Erin Spencer",
-        "public_surface": "research_data.sources, research_data.claims",
-        "rollback": "restore direct two-file reads and remove the manifest-declared tranche files",
+        "public_surface": "research_data.sources, research_data.claims, research_data.gaps, research_data.stats",
+        "rollback": "revert this adapter and the admission-ledger manifest entries together",
         "rollout": "loaded automatically by Eleventy from src/_data/research_data.js",
-        "storage_boundary": "read the repository-owned research manifest and its declared YAML ledgers",
-        "summary": "Loads manifest-declared reviewed research source and claim ledgers into one explicit Eleventy global-data object.",
+        "storage_boundary": "read the repository-owned candidate, admission, claim-review, and gap ledgers",
+        "summary": "Admits only research studies from manifest-declared candidate ledgers and exposes their bounded claims, reviews, and evidence gaps.",
         "tests": "tests/research-ledger.test.mjs, tests/generated-site.test.mjs",
         "user_data_boundary": "none"
       },
@@ -559,6 +597,13 @@ export default defineMsdmdCollection({
       "to": "Erin Spencer"
     },
     {
+      "from": "related_works_network_boundary",
+      "kind": "owns",
+      "source_block": "BOUNDARIES",
+      "source_id": "related_works_network_boundary",
+      "to": "Erin Spencer"
+    },
+    {
       "from": "static_textbook_math_rendering_boundary",
       "kind": "owns",
       "source_block": "BOUNDARIES",
@@ -633,6 +678,13 @@ export default defineMsdmdCollection({
       "kind": "owns",
       "source_block": "MODULE_BUILD",
       "source_id": "public_build_identity",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "related_works_registry_fetch",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "related_works_registry_fetch",
       "to": "Erin Spencer"
     },
     {

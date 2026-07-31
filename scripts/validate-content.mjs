@@ -1,25 +1,26 @@
 import { createHash } from 'node:crypto';
 import { access, readFile } from 'node:fs/promises';
+import loadResearchData from '../src/_data/research_data.js';
 
 // === MODULE_BUILD ===
 // id: generated_content_gate
 //   module_name: validate-content
 //   module_kind: instrument
-//   summary: Refuses deployment when canon identity, heading hierarchy, textbook coverage, snapshot integrity, generated route coverage, or recovery artifacts drift.
+//   summary: Refuses deployment when canon identity, heading hierarchy, textbook coverage, study-only research admission, snapshot integrity, generated route coverage, or recovery artifacts drift.
 //   owner: Erin Spencer
 //   public_surface: npm run validate
-//   internal_surface: canon snapshot digest, heading hierarchy, distributed-textbook provenance, and repository-route assertions
+//   internal_surface: canon snapshot digest, heading hierarchy, distributed-textbook provenance, study-only research admission, and repository-route assertions
 //   auth_boundary: none
 //   storage_boundary: read
 //   network_boundary: none
 //   user_data_boundary: none
 //   admin_only: false
-//   tests: tests/canon-parser.test.mjs, tests/canon-integrity.test.mjs, tests/textbook-integrity.test.mjs, tests/repo-coverage.test.mjs, tests/site-contract.test.mjs
+//   tests: tests/canon-parser.test.mjs, tests/canon-integrity.test.mjs, tests/textbook-integrity.test.mjs, tests/repo-coverage.test.mjs, tests/research-ledger.test.mjs, tests/site-contract.test.mjs
 //   rollout: required by npm run build and npm run check
 //   rollback: remove the gate only with an explicit replacement preserving provenance, hierarchy, textbook, and route checks
 // === END MODULE_BUILD ===
-// Usage: run `npm run validate`; it refreshes data first and exits nonzero on any integrity mismatch.
-// Limits: validates repository artifacts, not GitHub Pages settings or public DNS.
+// Usage: run `npm run validate`; it refreshes data first and exits nonzero on any integrity mismatch, including an unclassified or non-study Research source.
+// Limits: validates repository artifacts and study admission structure, not each study's substantive result, GitHub Pages settings, or public DNS.
 
 // === BOUNDARIES ===
 // id: generated_content_validation_boundary
@@ -39,6 +40,7 @@ const canon = JSON.parse(await readFile('src/_data/generated/canon.json', 'utf8'
 const repos = JSON.parse(await readFile('src/_data/generated/repos.json', 'utf8'));
 const textbook = JSON.parse(await readFile('src/_data/generated/textbook.json', 'utf8'));
 const textbookSources = JSON.parse(await readFile('src/_data/textbook_sources.json', 'utf8'));
+const research = await loadResearchData();
 const snapshotRaw = await readFile('src/_data/snapshots/canon.last-known-good.md', 'utf8');
 const snapshotText = snapshotRaw.replace(/^---\n[\s\S]*?\n---\n/, '');
 const snapshotHash = createHash('sha256').update(snapshotText).digest('hex');
@@ -90,6 +92,11 @@ if (process.env.OFFLINE !== '1') {
 
 if (repos.publicRepoCount !== repos.generatedRouteCount) throw new Error('repo route mismatch');
 if (new Set(repos.repositories.map(repo => repo.slug)).size !== repos.repositories.length) throw new Error('duplicate project slug');
+if (!research.sources.length || research.sources.some(source => source.record_class !== 'research_study')) throw new Error('public Research contains a non-study source or no admitted studies');
+if (!research.claims.length || research.claims.some(claim => claim.source_ids.some(sourceId => !research.sources.some(source => source.id === sourceId)))) {
+  throw new Error('public Research claim cites a non-study or unknown source');
+}
+if (research.gaps.length !== 8 || research.gaps.some(gap => !gap.hmmm)) throw new Error('each Rights Article needs one explicit study-coverage hmmm');
 await access('fallback/index.html');
 await access('artifacts/four-cuts-1.html');
-console.log(`validated ${canon.units.length} canon units, ${canon.notes.length} notes, ${textbook.chapterCount} textbook chapters, canonical hierarchy, and ${repos.publicRepoCount} repositories`);
+console.log(`validated ${canon.units.length} canon units, ${canon.notes.length} notes, ${textbook.chapterCount} textbook chapters, ${research.stats.admittedStudyCount} admitted studies, ${research.stats.publishedStudyClaimCount} study-only claims, canonical hierarchy, and ${repos.publicRepoCount} repositories`);

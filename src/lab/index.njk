@@ -6,7 +6,7 @@ description: A structured conversation between canonical body text, notes, resea
 <header class="page-head">
   <p class="eyebrow">Interpretation with visible seams</p>
   <h1>Article Lab</h1>
-  <p class="lede">Each Rights article is tested from several directions: the body text and notes remain distinct speakers; reductio ad absurdum exposes destructive overextensions; worst and best practices translate the tension into operations; domain applications test whether the reading survives contact with different kinds of work; reviewed research remains visibly bounded.</p>
+  <p class="lede">Each Rights article is tested from several directions: the body text and notes remain distinct speakers; reductio ad absurdum exposes destructive overextensions; worst and best practices translate the tension into operations; domain applications test whether the reading survives contact with different kinds of work; study-only research remains visibly bounded.</p>
 </header>
 <section>
   <h2>Rights Article laboratories</h2>
@@ -18,7 +18,7 @@ description: A structured conversation between canonical body text, notes, resea
           <a class="card" href="/lab/{{ unit.routeSlug }}/">
             <span class="status status-interpretation">Lab</span>
             <h3>{{ record.public_title }}</h3>
-            <p>{{ unit.notes.length }} separately parsed note{% if unit.notes.length != 1 %}s{% endif %} · {{ claims.length }} reviewed claim{% if claims.length != 1 %}s{% endif %} · {{ record.applications | length }} application domains</p>
+            <p>{{ unit.notes.length }} separately parsed note{% if unit.notes.length != 1 %}s{% endif %} · {{ claims.length }} study-linked claim{% if claims.length != 1 %}s{% endif %} · {{ record.applications | length }} application domains</p>
           </a>
         {% endif %}
       {% endfor %}
@@ -27,6 +27,6 @@ description: A structured conversation between canonical body text, notes, resea
 </section>
 <section class="panel">
   <h2>Method boundary</h2>
-  <p>Applications are operational hypotheses, not claims that one rule transfers unchanged across domains. Research sources support, dissent from, or limit a particular component; they do not prove an Article as a whole. Other canonical units retain generated Lab routes, but this index begins with the eight Rights articles as the first complete comparative set.</p>
+  <p>Applications are operational hypotheses, not claims that one rule transfers unchanged across domains. Only admitted research studies can support, dissent from, or limit a particular component in the Research field; they do not prove an Article as a whole. Legislation, treaties, standards, guidelines, frameworks, and other non-study context do not count. Other canonical units retain generated Lab routes, but this index begins with the eight Rights articles as the first comparative set.</p>
 </section>
-<section class="hmmm"><h2>Research coverage</h2><p>The initial pack establishes reviewed contact for all eight Rights articles. It is not exhaustive: each claim remains open to stronger replication, domain-specific evidence, direct dissent, and evidence from outside United States and institutional settings.</p></section>
+<section class="hmmm"><h2>Research coverage</h2><p>The existing candidate ledger has been screened into {{ research_data.stats.admittedStudyCount }} admitted studies and {{ research_data.stats.excludedNonstudyCount }} excluded non-study records. Study contact exists for all eight Rights articles, but support and dissent are not forced into false symmetry; see each Article's explicit <code>hmmm</code> gap.</p></section>

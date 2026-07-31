@@ -91,7 +91,8 @@ Place that file at `.interdependency/project.yml`. Until it exists, the public p
 - **canon** — exact or mechanically derived from the canonical source
 - **distributed textbook** — exact source material whose status remains local to its owning repository
 - **interpretation** — explanatory material subject to review
-- **research** — externally sourced support, dissent, or context
+- **research** — primary studies or systematic evidence-synthesis studies admitted through explicit screening
+- **non-study context** — legislation, treaties, standards, guidelines, frameworks, doctrine, and analysis kept outside Research
 - **implemented** — a working public surface exists
 - **frontier** — experimental, incomplete, or not externally established
 - **hmmm** — an unresolved constraint with enough context for continuation

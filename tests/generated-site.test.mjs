@@ -113,8 +113,9 @@ test('generated deployment artifact contains all rights article vertical slices 
     assert.match(html, titlePattern);
     assert.match(html, canonPattern);
     assert.match(html, /60–90 second script/);
-    assert.match(html, /Reviewed research attachment/);
-    assert.match(html, /Evidence boundary/);
+    assert.match(html, /Study-only research attachment/);
+    assert.match(html, /Inference boundary/);
+    assert.match(html, /hmmm · study coverage/);
     assert.match(html, /hmmm/);
   }
 });
@@ -136,10 +137,32 @@ test('every Rights Article Lab renders absurd-limit, practice, domain, and resea
     assert.match(html, /Worst practices and best practices/);
     assert.match(html, /Applications by domain/);
     assert.match(html, /Research field/);
-    assert.match(html, /Evidence boundary/);
+    assert.match(html, /Inference boundary/);
+    assert.match(html, /Only admitted research studies appear here|Research means an admitted primary study/);
+    assert.match(html, /hmmm · study coverage/);
     assert.match(html, /href="https?:\/\//);
     for (const domain of requiredDomains) assert.match(html, new RegExp(domain.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   }
+});
+
+test('public Research pages exclude legislation, standards, guidelines, frameworks, and doctrine', async () => {
+  const method = await readFile('_site/research/method/index.html', 'utf8');
+  const articlePages = await Promise.all([
+    'article-one', 'article-two', 'article-three', 'article-four',
+    'article-five', 'article-six', 'article-seven', 'article-eight'
+  ].map(slug => readFile(`_site/articles/${slug}/index.html`, 'utf8')));
+  const publicResearch = [method, ...articlePages].join('\n');
+
+  assert.match(method, /Legislation is not science/);
+  assert.match(method, /19<\/strong> admitted studies/);
+  assert.match(method, /20<\/strong> non-study records excluded/);
+  for (const excludedTitle of [
+    'Guidelines on sanitation and health',
+    'General comment No. 1',
+    'RFC 2119',
+    'National Incident Management System',
+    'The Belmont Report'
+  ]) assert.doesNotMatch(publicResearch, new RegExp(excludedTitle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
 });
 
 test('generated deployment artifact publishes verifiable build identity', async () => {
