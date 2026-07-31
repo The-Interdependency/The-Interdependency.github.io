@@ -28,12 +28,11 @@
 - id: article-three-forgiving-reciprocity
   article: rights-and-definitions-of-the-way.article-three
   stance: mixed
-  status: theory-evidence-synthesis
-  claim: "Repeated interaction can sustain cooperative reciprocity, but strict act-for-act retaliation is error-sensitive; concurrent social crosstalk can spread defection and require bounded forgiveness or other error-correcting strategies."
+  status: formal-simulation-study
+  claim: "In a concurrent repeated-game model, social crosstalk can spread defection, make strict act-for-act retaliation brittle, and require stronger bounded forgiveness to preserve cooperation."
   source_ids:
-    - rossetti-hilbe-2024-direct-reciprocity
     - reiter-et-al-2018-reciprocity-crosstalk
-  limitation: "The evidence comes mainly from stylized games, mathematical models, and simulations; it neither establishes consent to retaliation nor instructs anyone to forgive or remain exposed to abuse."
+  limitation: "This is a mathematical and simulation study of stylized repeated games, not an empirical field study; it neither establishes consent to retaliation nor instructs anyone to forgive or remain exposed to abuse."
 
 - id: article-four-plain-language-boundary
   article: rights-and-definitions-of-the-way.article-four
