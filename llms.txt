@@ -1,0 +1,25 @@
+# LLM Instructions for The-Interdependency.github.io
+
+## Project Overview
+The Interdependent Way website is a static-first publication consumer for the sole canon in `wayseer00/main`, the distributed Interdependency textbook, and bounded public project context. Its machine entry point is `/eai/aicontext.md`.
+
+## Key Definitions (never infer or expand these)
+- **ai_context** = One ordered machine-oriented Markdown artifact carrying the author contract, exact distributed source copies, public biography JSON-LD, provenance, interpretation boundaries, and unresolved continuation.
+- **canon** = The canonical text of The Interdependent Way lives only at `wayseer00/main:canon/INTERDEPENDENT_WAY.txt`; website copies do not become authority.
+- **public_biography** = An author-requested public project biography with explicit privacy exclusions and field-level correction routing.
+- **json_ld_at_id** = A stable public identifier for one JSON-LD subject; it does not authenticate a person, authorize an action, connect a runtime, or grant access.
+- **hmmm** = The mandatory boundary object for unresolved constraints and honest incompletion.
+
+## Architecture Summary
+- `/eai/aicontext.md` begins at byte zero with Erin Spencer's connection contract, then publishes grounded interpretation rules, exact canon, eight exact source-owned textbook chapters, public biography JSON-LD, work-graph identity, and publication provenance.
+- `/llms.txt`, the homepage, alternate-link metadata, and `/sitemap.xml` point machine readers to that endpoint.
+- The website owns ordering and rendering; every source repository retains its own content, license, status, and correction authority.
+
+## How to Use This Repo with LLMs / Agents
+- Read `/eai/aicontext.md` from its first byte and preserve its source order, status labels, provenance, privacy limits, and `hmmm` boundaries.
+- Treat copied theories, architectures, metaphors, and project descriptions as source claims, not observations of current runtime state.
+- Do not infer measurement, drift, currents, coherence, consciousness, synchronization, deployment, log access, tool access, or authorization without supplied and cited evidence that establishes the specific claim.
+- An EDCM claim requires an actual cited EDCM result record; EDCM vocabulary alone is not a measurement.
+- Do not invent, expand, or connect identifiers, acronyms, repositories, runtimes, or capabilities absent from the supplied sources. Preserve the gap as `hmmm` or request evidence.
+
+This file is the single source of truth. If something is not explicitly stated in the files listed above, it does not exist in this repository.

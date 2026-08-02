@@ -7,6 +7,7 @@ import { installMathRenderer } from './scripts/markdown-math.mjs';
 //   entrypoint: npm run build
 //   tests: tests/site-contract.test.mjs, tests/math-rendering.test.mjs, tests/narratives.test.mjs, tests/generated-site.test.mjs
 // === END MODULE_BUILD ===
+// Usage: run `npm run build`; Eleventy emits the static site, copies root machine instructions, and preserves dependency-free public reading paths.
 
 export default function configureEleventy(eleventyConfig) {
   const md = installMathRenderer(markdownIt({ html: false, linkify: true, typographer: true }));
@@ -14,6 +15,7 @@ export default function configureEleventy(eleventyConfig) {
   eleventyConfig.addPassthroughCopy({
     'src/assets': 'assets',
     'CNAME': 'CNAME',
+    'llms.txt': 'llms.txt',
     'artifacts/four-cuts-1.html': 'artifacts/four-cuts/index.html',
     'fallback': 'fallback'
   });
