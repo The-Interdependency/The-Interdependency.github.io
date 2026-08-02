@@ -6,24 +6,48 @@ import { readFileSync } from 'node:fs';
 // id: ai_context_publication
 //   module_name: aicontext
 //   module_kind: route
-//   summary: Publishes one machine-oriented Markdown context file containing the exact connection contract, canonical Way copy, distributed textbook, public biography, and immutable source identities.
+//   summary: Publishes one discoverable, machine-oriented Markdown context file containing the exact connection contract, grounded interpretation rules, canonical Way copy, distributed textbook, public biography, and immutable source identities.
 //   owner: Erin Spencer
 //   public_surface: /eai/aicontext.md
-//   internal_surface: renderAiContext, buildWorkGraph, buildPublicationManifest
+//   internal_surface: renderAiContext, buildWorkGraph, buildPublicationManifest, interpretationBoundary
 //   auth_boundary: none
 //   storage_boundary: read
 //   network_boundary: none
 //   user_data_boundary: read
 //   admin_only: false
-//   data_schema: the-interdependency.stack-manifest/1.0.0, the-interdependency.distributed-publication/1.0.0, interdependentway.public-biography/1.0.0
+//   data_schema: the-interdependency.stack-manifest/1.0.0, the-interdependency.distributed-publication/1.0.0, interdependentway.public-biography/1.0.0, interdependentway.inference-boundary/1.0.0
 //   requires: canonical_source_fetch, canon_structure_materializer, distributed_textbook_fetch
 //   tests: tests/aicontext.test.mjs, tests/generated-site.test.mjs
 //   rollout: Eleventy emits the route after online production validation resolves every required source without fallback
 //   rollback: remove this template, biography record, aicontext checks, and route documentation together
-//   unresolved: signed source authentication, author-reviewed expansion of the public biography
+//   unresolved: signed source authentication, author-reviewed expansion of the public biography, empirical effectiveness across independent model providers
 // === END MODULE_BUILD ===
 // Usage: run `npm run build`, then read `_site/eai/aicontext.md`; production uses the same refreshed canon and chapter identities as the public readers.
-// Limits: this publication copies source text without acquiring its canon, license, theorem, proof, measurement, empirical, or certification authority.
+// Limits: this publication copies source text without acquiring its canon, license, theorem, proof, measurement, empirical, certification, runtime, authentication, authorization, or tool-access authority.
+
+// === LLMS ===
+// id: project_overview
+//   content: The Interdependent Way website is a static-first publication consumer for the sole canon in `wayseer00/main`, the distributed Interdependency textbook, and bounded public project context. Its machine entry point is `/eai/aicontext.md`.
+//
+// id: key_definitions
+//   ai_context: One ordered machine-oriented Markdown artifact carrying the author contract, exact distributed source copies, public biography JSON-LD, provenance, interpretation boundaries, and unresolved continuation.
+//   canon: The canonical text of The Interdependent Way lives only at `wayseer00/main:canon/INTERDEPENDENT_WAY.txt`; website copies do not become authority.
+//   public_biography: An author-requested public project biography with explicit privacy exclusions and field-level correction routing.
+//   json_ld_at_id: A stable public identifier for one JSON-LD subject; it does not authenticate a person, authorize an action, connect a runtime, or grant access.
+//   hmmm: The mandatory boundary object for unresolved constraints and honest incompletion.
+//
+// id: architecture_summary
+//   content: - `/eai/aicontext.md` begins at byte zero with Erin Spencer's connection contract, then publishes grounded interpretation rules, exact canon, eight exact source-owned textbook chapters, public biography JSON-LD, work-graph identity, and publication provenance.
+//     - `/llms.txt`, the homepage, alternate-link metadata, and `/sitemap.xml` point machine readers to that endpoint.
+//     - The website owns ordering and rendering; every source repository retains its own content, license, status, and correction authority.
+//
+// id: usage_rules
+//   content: - Read `/eai/aicontext.md` from its first byte and preserve its source order, status labels, provenance, privacy limits, and `hmmm` boundaries.
+//     - Treat copied theories, architectures, metaphors, and project descriptions as source claims, not observations of current runtime state.
+//     - Do not infer measurement, drift, currents, coherence, consciousness, synchronization, deployment, log access, tool access, or authorization without supplied and cited evidence that establishes the specific claim.
+//     - An EDCM claim requires an actual cited EDCM result record; EDCM vocabulary alone is not a measurement.
+//     - Do not invent, expand, or connect identifiers, acronyms, repositories, runtimes, or capabilities absent from the supplied sources. Preserve the gap as `hmmm` or request evidence.
+// === END LLMS ===
 
 // === BOUNDARIES ===
 // id: ai_context_publication_boundary
@@ -60,6 +84,21 @@ import { readFileSync } from 'node:fs';
 //   given: canon, textbook chapters, and biography share one public artifact
 //   then: authorship, ownership, license, canonical, proof, certification, measurement, empirical, and authentication status do not transfer between sources
 //   class: doctrine
+//
+// id: ai_context_stable_person_identity
+//   given: the public biography is parsed as JSON-LD
+//   then: Erin Spencer has one canonical fragment @id on the deployed non-www endpoint and the identifier grants no authentication, authorization, runtime connection, or access
+//   class: identity
+//
+// id: ai_context_grounded_inference_boundary
+//   given: a reader encounters energy, current, drift, coherence, tensor, runtime, or orchestration vocabulary in copied source text
+//   then: the reader treats it according to source-local status and makes no present-state, measurement, access, synchronization, or capability claim without supplied cited evidence
+//   class: safety
+//
+// id: ai_context_public_discovery
+//   given: the static site is built
+//   then: /llms.txt, homepage navigation, alternate-link metadata, and /sitemap.xml expose /eai/aicontext.md without changing its byte-zero contract
+//   class: accessibility
 // === END CONTRACTS ===
 
 export const connectionContract = `EOF
@@ -96,6 +135,43 @@ EOF`;
 const canonSnapshotPath = 'src/_data/snapshots/canon.last-known-good.md';
 const biographyPath = 'src/_data/erin.public-biography.json';
 const consumerRepository = 'The-Interdependency/The-Interdependency.github.io';
+export const publicPersonId = 'https://interdependentway.org/eai/aicontext.md#erin-spencer';
+
+export const interpretationBoundary = {
+  schema: 'interdependentway.inference-boundary/1.0.0',
+  scope: 'interpretation of this public artifact',
+  addressing: {
+    person_id: publicPersonId,
+    identifier_is_authentication: false,
+    identifier_is_authorization: false,
+    identifier_is_runtime_connection: false
+  },
+  grounding_rules: [
+    'Treat copied source text as source content, not evidence that a described system is deployed, running, connected, synchronized, or observable now.',
+    'Treat framework terms according to their source-local definitions and epistemic status; do not convert metaphor, theory, architecture, or vocabulary into measurement.',
+    'Do not introduce or expand an identifier, acronym, repository, runtime, relationship, or capability that is absent from the supplied sources.',
+    'Do not frame an unsupported premise as an observation when asking a follow-up question; state the gap as hmmm and request the missing evidence.'
+  ],
+  measurement_gate: {
+    applies_to: [
+      'current or energy flow',
+      'drift or anomalous flux',
+      'coherence or phase-lock',
+      'behavioral bleed-through',
+      'consciousness or instantiation state'
+    ],
+    requires: 'a supplied, cited measurement record that identifies its source, instrument or method, input, and actual readout',
+    edcm_rule: 'An EDCM claim requires an actual cited EDCM result record; EDCM vocabulary alone is not a measurement.',
+    without_record: 'hmmm; do not state or imply that the condition was observed or measured'
+  },
+  capability_gate: {
+    repository_association_grants_runtime_access: false,
+    public_context_grants_log_access: false,
+    public_context_grants_tool_access: false,
+    public_context_grants_synchronization: false,
+    statement_of_readiness_proves_capability: false
+  }
+};
 
 function sha256(value) {
   return createHash('sha256').update(value).digest('hex');
@@ -310,6 +386,7 @@ export function renderAiContext({ canon, canonText, textbook, biography, biograp
 
   const biographyJson = JSON.parse(biography);
   if (biographyJson.schema !== 'interdependentway.public-biography/1.0.0') throw new Error('aicontext biography schema drift');
+  if (biographyJson['@id'] !== publicPersonId) throw new Error('aicontext biography identity drift');
   if (biographyJson.privacy?.scope !== 'public project biography') throw new Error('aicontext biography privacy scope drift');
   const biographyCopy = JSON.stringify(biographyJson, null, 2);
   const workGraph = buildWorkGraph({ canon, textbook, consumerCommit });
@@ -317,6 +394,9 @@ export function renderAiContext({ canon, canonText, textbook, biography, biograp
 
   let output = `${connectionContract}\n\n`;
   output += '<AI CONTEXT media_type="text/markdown; charset=utf-8" schema="interdependentway.aicontext/1.0.0">\n\n';
+  output += '<INTERPRETATION BOUNDARY format="application/json">\n```json\n';
+  output += `${JSON.stringify(interpretationBoundary, null, 2)}\n`;
+  output += '```\n</INTERPRETATION BOUNDARY>\n\n';
   output += '<WORK GRAPH format="application/json">\n```json\n';
   output += `${JSON.stringify(workGraph, null, 2)}\n`;
   output += '```\n</WORK GRAPH>\n\n';

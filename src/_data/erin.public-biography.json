@@ -1,5 +1,6 @@
 {
   "@context": "https://schema.org",
+  "@id": "https://interdependentway.org/eai/aicontext.md#erin-spencer",
   "@type": "Person",
   "schema": "interdependentway.public-biography/1.0.0",
   "name": "Erin Spencer",

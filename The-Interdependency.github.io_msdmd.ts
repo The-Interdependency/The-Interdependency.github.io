@@ -13,6 +13,16 @@ export default defineMsdmdCollection({
       "id": "eleventy_site_configuration"
     },
     {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "entrypoint": "loaded with defer from the base layout",
+        "purpose": "Add a compact mobile navigation toggle without hiding static content.",
+        "tests": "tests/site-contract.test.mjs"
+      },
+      "file": "_site/assets/js/site.js",
+      "id": "optional_site_enhancement"
+    },
+    {
       "block": "BOUNDARIES",
       "fields": {
         "admin_only": "false",
@@ -59,6 +69,74 @@ export default defineMsdmdCollection({
       },
       "file": "scripts/audit-workflows.mjs",
       "id": "workflow_action_audit"
+    },
+    {
+      "block": "BOUNDARIES",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "pii": "none",
+        "secrets": "none",
+        "side_effects": "root llms.txt replacement on --apply",
+        "storage_boundary": "write",
+        "summary": "Reads repository source declarations and writes only the root llms.txt when explicitly invoked with --apply.",
+        "user_data_boundary": "none"
+      },
+      "file": "scripts/build-llms.mjs",
+      "id": "llms_instruction_builder_boundary"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "a Markdown fenced-code example contains LLMS fence text",
+        "then": "the example contributes no declaration to llms.txt"
+      },
+      "file": "scripts/build-llms.mjs",
+      "id": "llms_markdown_examples_ignored"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "repository source files contain msdmd LLMS entries and the builder runs",
+        "then": "llms.txt is generated deterministically from project_overview, key_definitions, architecture_summary, and usage_rules entries"
+      },
+      "file": "scripts/build-llms.mjs",
+      "id": "llms_root_generated_from_declarations"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "safety",
+        "given": "a required LLMS entry is absent",
+        "then": "the generated section contains hmmm rather than invented content"
+      },
+      "file": "scripts/build-llms.mjs",
+      "id": "llms_unknowns_visible"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "parseLlmsText, collectLlmsEntries, generateLlms",
+        "module_kind": "instrument",
+        "module_name": "build-llms",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "npm run build:llms, npm run check:llms",
+        "rollback": "remove the runner, its package scripts and tests, llms.txt passthrough, and root llms.txt together",
+        "rollout": "check:llms is required by npm run check; build:llms intentionally applies reviewed declaration changes",
+        "storage_boundary": "write",
+        "summary": "Generates and drift-checks the canonical root llms.txt from repository-local msdmd LLMS declarations.",
+        "tests": "tests/llms-build.test.mjs",
+        "user_data_boundary": "none"
+      },
+      "file": "scripts/build-llms.mjs",
+      "id": "llms_instruction_builder"
     },
     {
       "block": "MODULE_BUILD",
@@ -572,6 +650,16 @@ export default defineMsdmdCollection({
     {
       "block": "CONTRACTS",
       "fields": {
+        "class": "safety",
+        "given": "a reader encounters energy, current, drift, coherence, tensor, runtime, or orchestration vocabulary in copied source text",
+        "then": "the reader treats it according to source-local status and makes no present-state, measurement, access, synchronization, or capability claim without supplied cited evidence"
+      },
+      "file": "src/eai/aicontext.11ty.js",
+      "id": "ai_context_grounded_inference_boundary"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
         "class": "doctrine",
         "given": "canon, textbook chapters, and biography share one public artifact",
         "then": "authorship, ownership, license, canonical, proof, certification, measurement, empirical, and authentication status do not transfer between sources"
@@ -590,12 +678,68 @@ export default defineMsdmdCollection({
       "id": "ai_context_public_biography_boundary"
     },
     {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "accessibility",
+        "given": "the static site is built",
+        "then": "/llms.txt, homepage navigation, alternate-link metadata, and /sitemap.xml expose /eai/aicontext.md without changing its byte-zero contract"
+      },
+      "file": "src/eai/aicontext.11ty.js",
+      "id": "ai_context_public_discovery"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "identity",
+        "given": "the public biography is parsed as JSON-LD",
+        "then": "Erin Spencer has one canonical fragment @id on the deployed non-www endpoint and the identifier grants no authentication, authorization, runtime connection, or access"
+      },
+      "file": "src/eai/aicontext.11ty.js",
+      "id": "ai_context_stable_person_identity"
+    },
+    {
+      "block": "LLMS",
+      "fields": {
+        "content": "- `/eai/aicontext.md` begins at byte zero with Erin Spencer's connection contract, then publishes grounded interpretation rules, exact canon, eight exact source-owned textbook chapters, public biography JSON-LD, work-graph identity, and publication provenance."
+      },
+      "file": "src/eai/aicontext.11ty.js",
+      "id": "architecture_summary"
+    },
+    {
+      "block": "LLMS",
+      "fields": {
+        "ai_context": "One ordered machine-oriented Markdown artifact carrying the author contract, exact distributed source copies, public biography JSON-LD, provenance, interpretation boundaries, and unresolved continuation.",
+        "canon": "The canonical text of The Interdependent Way lives only at `wayseer00/main:canon/INTERDEPENDENT_WAY.txt`; website copies do not become authority.",
+        "hmmm": "The mandatory boundary object for unresolved constraints and honest incompletion.",
+        "json_ld_at_id": "A stable public identifier for one JSON-LD subject; it does not authenticate a person, authorize an action, connect a runtime, or grant access.",
+        "public_biography": "An author-requested public project biography with explicit privacy exclusions and field-level correction routing."
+      },
+      "file": "src/eai/aicontext.11ty.js",
+      "id": "key_definitions"
+    },
+    {
+      "block": "LLMS",
+      "fields": {
+        "content": "The Interdependent Way website is a static-first publication consumer for the sole canon in `wayseer00/main`, the distributed Interdependency textbook, and bounded public project context. Its machine entry point is `/eai/aicontext.md`."
+      },
+      "file": "src/eai/aicontext.11ty.js",
+      "id": "project_overview"
+    },
+    {
+      "block": "LLMS",
+      "fields": {
+        "content": "- Read `/eai/aicontext.md` from its first byte and preserve its source order, status labels, provenance, privacy limits, and `hmmm` boundaries."
+      },
+      "file": "src/eai/aicontext.11ty.js",
+      "id": "usage_rules"
+    },
+    {
       "block": "MODULE_BUILD",
       "fields": {
         "admin_only": "false",
         "auth_boundary": "none",
-        "data_schema": "the-interdependency.stack-manifest/1.0.0, the-interdependency.distributed-publication/1.0.0, interdependentway.public-biography/1.0.0",
-        "internal_surface": "renderAiContext, buildWorkGraph, buildPublicationManifest",
+        "data_schema": "the-interdependency.stack-manifest/1.0.0, the-interdependency.distributed-publication/1.0.0, interdependentway.public-biography/1.0.0, interdependentway.inference-boundary/1.0.0",
+        "internal_surface": "renderAiContext, buildWorkGraph, buildPublicationManifest, interpretationBoundary",
         "module_kind": "route",
         "module_name": "aicontext",
         "network_boundary": "none",
@@ -605,13 +749,34 @@ export default defineMsdmdCollection({
         "rollback": "remove this template, biography record, aicontext checks, and route documentation together",
         "rollout": "Eleventy emits the route after online production validation resolves every required source without fallback",
         "storage_boundary": "read",
-        "summary": "Publishes one machine-oriented Markdown context file containing the exact connection contract, canonical Way copy, distributed textbook, public biography, and immutable source identities.",
+        "summary": "Publishes one discoverable, machine-oriented Markdown context file containing the exact connection contract, grounded interpretation rules, canonical Way copy, distributed textbook, public biography, and immutable source identities.",
         "tests": "tests/aicontext.test.mjs, tests/generated-site.test.mjs",
-        "unresolved": "signed source authentication, author-reviewed expansion of the public biography",
+        "unresolved": "signed source authentication, author-reviewed expansion of the public biography, empirical effectiveness across independent model providers",
         "user_data_boundary": "read"
       },
       "file": "src/eai/aicontext.11ty.js",
       "id": "ai_context_publication"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "SitemapTemplate.render, collections.all, site.url",
+        "module_kind": "route",
+        "module_name": "sitemap",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "/sitemap.xml",
+        "rollback": "remove this template and its discovery checks",
+        "rollout": "emitted by every Eleventy build",
+        "storage_boundary": "none",
+        "summary": "Publishes stable public page locations plus the collection-excluded AI-context endpoint for machine discovery.",
+        "tests": "tests/site-contract.test.mjs, tests/generated-site.test.mjs",
+        "user_data_boundary": "none"
+      },
+      "file": "src/sitemap.11ty.js",
+      "id": "public_sitemap"
     },
     {
       "block": "CHECKS",
@@ -642,6 +807,19 @@ export default defineMsdmdCollection({
     {
       "block": "CHECKS",
       "fields": {
+        "call": "self::checkGroundedInferenceBoundary",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "ai_context_grounded_inference_boundary",
+        "requires": "node",
+        "timeout": "10"
+      },
+      "file": "tests/aicontext.test.mjs",
+      "id": "check_ai_context_grounded_inference_boundary"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
         "call": "self::checkNonTransferBoundary",
         "cleanup": "none",
         "mutates": "none",
@@ -664,6 +842,71 @@ export default defineMsdmdCollection({
       },
       "file": "tests/aicontext.test.mjs",
       "id": "check_ai_context_public_biography_boundary"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::checkStablePersonIdentity",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "ai_context_stable_person_identity",
+        "requires": "node",
+        "timeout": "10"
+      },
+      "file": "tests/aicontext.test.mjs",
+      "id": "check_ai_context_stable_person_identity"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::checkAiContextPublicDiscovery",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "ai_context_public_discovery",
+        "requires": "node",
+        "timeout": "10"
+      },
+      "file": "tests/generated-site.test.mjs",
+      "id": "check_ai_context_public_discovery"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::checkLlmsMarkdownExamplesIgnored",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "llms_markdown_examples_ignored",
+        "requires": "node",
+        "timeout": "10"
+      },
+      "file": "tests/llms-build.test.mjs",
+      "id": "check_llms_markdown_examples_ignored"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::checkLlmsRootGeneratedFromDeclarations",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "llms_root_generated_from_declarations",
+        "requires": "node",
+        "timeout": "10"
+      },
+      "file": "tests/llms-build.test.mjs",
+      "id": "check_llms_root_generated_from_declarations"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::checkLlmsUnknownsVisible",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "llms_unknowns_visible",
+        "requires": "node",
+        "timeout": "10"
+      },
+      "file": "tests/llms-build.test.mjs",
+      "id": "check_llms_unknowns_visible"
     }
   ],
   "edges": [
@@ -721,6 +964,13 @@ export default defineMsdmdCollection({
       "kind": "owns",
       "source_block": "BOUNDARIES",
       "source_id": "generated_site_test_server_boundary",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "llms_instruction_builder_boundary",
+      "kind": "owns",
+      "source_block": "BOUNDARIES",
+      "source_id": "llms_instruction_builder_boundary",
       "to": "Erin Spencer"
     },
     {
@@ -794,6 +1044,27 @@ export default defineMsdmdCollection({
       "to": "node"
     },
     {
+      "from": "check_ai_context_grounded_inference_boundary",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_ai_context_grounded_inference_boundary",
+      "to": "self::checkGroundedInferenceBoundary"
+    },
+    {
+      "from": "check_ai_context_grounded_inference_boundary",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_ai_context_grounded_inference_boundary",
+      "to": "ai_context_grounded_inference_boundary"
+    },
+    {
+      "from": "check_ai_context_grounded_inference_boundary",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_ai_context_grounded_inference_boundary",
+      "to": "node"
+    },
+    {
       "from": "check_ai_context_non_transfer_boundary",
       "kind": "calls",
       "source_block": "CHECKS",
@@ -833,6 +1104,111 @@ export default defineMsdmdCollection({
       "kind": "requires",
       "source_block": "CHECKS",
       "source_id": "check_ai_context_public_biography_boundary",
+      "to": "node"
+    },
+    {
+      "from": "check_ai_context_public_discovery",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_ai_context_public_discovery",
+      "to": "self::checkAiContextPublicDiscovery"
+    },
+    {
+      "from": "check_ai_context_public_discovery",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_ai_context_public_discovery",
+      "to": "ai_context_public_discovery"
+    },
+    {
+      "from": "check_ai_context_public_discovery",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_ai_context_public_discovery",
+      "to": "node"
+    },
+    {
+      "from": "check_ai_context_stable_person_identity",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_ai_context_stable_person_identity",
+      "to": "self::checkStablePersonIdentity"
+    },
+    {
+      "from": "check_ai_context_stable_person_identity",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_ai_context_stable_person_identity",
+      "to": "ai_context_stable_person_identity"
+    },
+    {
+      "from": "check_ai_context_stable_person_identity",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_ai_context_stable_person_identity",
+      "to": "node"
+    },
+    {
+      "from": "check_llms_markdown_examples_ignored",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_llms_markdown_examples_ignored",
+      "to": "self::checkLlmsMarkdownExamplesIgnored"
+    },
+    {
+      "from": "check_llms_markdown_examples_ignored",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_llms_markdown_examples_ignored",
+      "to": "llms_markdown_examples_ignored"
+    },
+    {
+      "from": "check_llms_markdown_examples_ignored",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_llms_markdown_examples_ignored",
+      "to": "node"
+    },
+    {
+      "from": "check_llms_root_generated_from_declarations",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_llms_root_generated_from_declarations",
+      "to": "self::checkLlmsRootGeneratedFromDeclarations"
+    },
+    {
+      "from": "check_llms_root_generated_from_declarations",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_llms_root_generated_from_declarations",
+      "to": "llms_root_generated_from_declarations"
+    },
+    {
+      "from": "check_llms_root_generated_from_declarations",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_llms_root_generated_from_declarations",
+      "to": "node"
+    },
+    {
+      "from": "check_llms_unknowns_visible",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_llms_unknowns_visible",
+      "to": "self::checkLlmsUnknownsVisible"
+    },
+    {
+      "from": "check_llms_unknowns_visible",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_llms_unknowns_visible",
+      "to": "llms_unknowns_visible"
+    },
+    {
+      "from": "check_llms_unknowns_visible",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_llms_unknowns_visible",
       "to": "node"
     },
     {
@@ -927,10 +1303,24 @@ export default defineMsdmdCollection({
       "to": "Erin Spencer"
     },
     {
+      "from": "llms_instruction_builder",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "llms_instruction_builder",
+      "to": "Erin Spencer"
+    },
+    {
       "from": "public_build_identity",
       "kind": "owns",
       "source_block": "MODULE_BUILD",
       "source_id": "public_build_identity",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "public_sitemap",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "public_sitemap",
       "to": "Erin Spencer"
     },
     {

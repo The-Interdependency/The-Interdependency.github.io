@@ -2,12 +2,30 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
+// Usage: run with `npm test`; source-level checks verify that machine-discovery declarations remain wired before generated-artifact checks run.
+
 test('one static-first build owns public routes and exact Markdown rendering', async () => {
   const config = await readFile('.eleventy.js', 'utf8');
   assert.match(config, /artifacts\/four-cuts-1\.html.*artifacts\/four-cuts\/index\.html/s);
   assert.match(config, /fallback/);
+  assert.match(config, /'llms\.txt': 'llms\.txt'/);
   assert.match(config, /addFilter\('markdown'/);
   assert.match(config, /html: false/);
+});
+
+test('machine discovery source surfaces name the bounded AI context', async () => {
+  const [home, base, splash, sitemap] = await Promise.all([
+    readFile('src/home/index.njk', 'utf8'),
+    readFile('src/_includes/layouts/base.njk', 'utf8'),
+    readFile('src/_includes/layouts/splash.njk', 'utf8'),
+    readFile('src/sitemap.11ty.js', 'utf8')
+  ]);
+  assert.match(home, /href="\/eai\/aicontext\.md"/);
+  assert.match(home, /href="\/llms\.txt"/);
+  assert.match(base, /rel="alternate" type="text\/markdown" href="\/eai\/aicontext\.md"/);
+  assert.match(splash, /rel="alternate" type="text\/markdown" href="\/eai\/aicontext\.md"/);
+  assert.match(sitemap, /routes\.push\('\/eai\/aicontext\.md', '\/llms\.txt'\)/);
+  assert.match(sitemap, /permalink: 'sitemap\.xml'/);
 });
 
 test('base layout remains readable without javascript and exposes the textbook and narratives', async () => {

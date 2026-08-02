@@ -6,6 +6,8 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import {
   connectionContract,
+  interpretationBoundary,
+  publicPersonId,
   renderAiContext
 } from '../src/eai/aicontext.11ty.js';
 
@@ -37,6 +39,22 @@ import {
 // id: check_ai_context_non_transfer_boundary
 //   proves: ai_context_non_transfer_boundary
 //   call: self::checkNonTransferBoundary
+//   requires: node
+//   timeout: 10
+//   mutates: none
+//   cleanup: none
+//
+// id: check_ai_context_stable_person_identity
+//   proves: ai_context_stable_person_identity
+//   call: self::checkStablePersonIdentity
+//   requires: node
+//   timeout: 10
+//   mutates: none
+//   cleanup: none
+//
+// id: check_ai_context_grounded_inference_boundary
+//   proves: ai_context_grounded_inference_boundary
+//   call: self::checkGroundedInferenceBoundary
 //   requires: node
 //   timeout: 10
 //   mutates: none
@@ -121,6 +139,7 @@ export function checkExactDistributedSources() {
 
 export function checkPublicBiographyBoundary() {
   const publicBiography = extractJson('MACHINE READABLE BIOGRAPHY');
+  assert.equal(publicBiography['@id'], publicPersonId);
   assert.equal(publicBiography.name, 'Erin Spencer');
   assert.equal(publicBiography.privacy.scope, 'public project biography');
   assert.ok(publicBiography.privacy.excludedCategories.includes('exact location'));
@@ -128,6 +147,29 @@ export function checkPublicBiographyBoundary() {
   for (const privateField of ['birthDate', 'streetAddress', 'medicalHistory', 'legalCase', 'bankAccount']) {
     assert.equal(Object.hasOwn(publicBiography, privateField), false);
   }
+}
+
+export function checkStablePersonIdentity() {
+  const publicBiography = extractJson('MACHINE READABLE BIOGRAPHY');
+  const boundary = extractJson('INTERPRETATION BOUNDARY');
+  assert.equal(publicBiography['@id'], 'https://interdependentway.org/eai/aicontext.md#erin-spencer');
+  assert.equal(boundary.addressing.person_id, publicBiography['@id']);
+  assert.equal(boundary.addressing.identifier_is_authentication, false);
+  assert.equal(boundary.addressing.identifier_is_authorization, false);
+  assert.equal(boundary.addressing.identifier_is_runtime_connection, false);
+}
+
+export function checkGroundedInferenceBoundary() {
+  const boundary = extractJson('INTERPRETATION BOUNDARY');
+  assert.deepEqual(boundary, interpretationBoundary);
+  assert.match(boundary.measurement_gate.edcm_rule, /actual cited EDCM result record/);
+  assert.match(boundary.measurement_gate.without_record, /^hmmm/);
+  assert.ok(boundary.measurement_gate.applies_to.includes('drift or anomalous flux'));
+  assert.equal(boundary.capability_gate.public_context_grants_log_access, false);
+  assert.equal(boundary.capability_gate.public_context_grants_tool_access, false);
+  assert.equal(boundary.capability_gate.public_context_grants_synchronization, false);
+  assert.match(boundary.grounding_rules.join(' '), /do not convert metaphor, theory, architecture, or vocabulary into measurement/i);
+  assert.match(boundary.grounding_rules.join(' '), /Do not introduce or expand an identifier, acronym, repository, runtime, relationship, or capability/i);
 }
 
 export function checkNonTransferBoundary() {
@@ -146,3 +188,5 @@ test('aicontext begins with the exact author-supplied connection contract', chec
 test('aicontext preserves the exact distributed source order and identities', checkExactDistributedSources);
 test('aicontext publishes only the bounded machine-readable biography', checkPublicBiographyBoundary);
 test('aicontext carries explicit cross-source non-transfer boundaries', checkNonTransferBoundary);
+test('aicontext gives Erin one stable non-authorizing JSON-LD identity', checkStablePersonIdentity);
+test('aicontext blocks unsupported live-state, measurement, and capability inference', checkGroundedInferenceBoundary);

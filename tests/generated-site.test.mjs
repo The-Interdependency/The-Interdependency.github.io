@@ -6,6 +6,32 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { connectionContract } from '../src/eai/aicontext.11ty.js';
 
+// === CHECKS ===
+// id: check_ai_context_public_discovery
+//   proves: ai_context_public_discovery
+//   call: self::checkAiContextPublicDiscovery
+//   requires: node
+//   timeout: 10
+//   mutates: none
+//   cleanup: none
+// === END CHECKS ===
+
+export async function checkAiContextPublicDiscovery() {
+  const [home, splash, sitemap, llms] = await Promise.all([
+    readFile('_site/home/index.html', 'utf8'),
+    readFile('_site/index.html', 'utf8'),
+    readFile('_site/sitemap.xml', 'utf8'),
+    readFile('_site/llms.txt', 'utf8')
+  ]);
+  assert.match(home, /href="\/eai\/aicontext\.md"/);
+  assert.match(home, /rel="alternate" type="text\/markdown" href="\/eai\/aicontext\.md"/);
+  assert.match(splash, /rel="alternate" type="text\/markdown" href="\/eai\/aicontext\.md"/);
+  assert.match(sitemap, /<loc>https:\/\/interdependentway\.org\/eai\/aicontext\.md<\/loc>/);
+  assert.match(sitemap, /<loc>https:\/\/interdependentway\.org\/llms\.txt<\/loc>/);
+  assert.match(llms, /machine entry point is `\/eai\/aicontext\.md`/);
+  assert.match(llms, /EDCM claim requires an actual cited EDCM result record/);
+}
+
 // Usage: run only after Eleventy has generated _site, normally through npm run test:generated or npm run check.
 test('generated deployment artifact contains the unified routes', async () => {
   const [splash, home, preamble, chapters, artifacts, fourCuts, fallback, articles, narratives, jackAndDiane] = await Promise.all([
@@ -217,7 +243,16 @@ test('generated deployment artifact publishes the complete machine-oriented AI c
   const biographyMatch = /<MACHINE READABLE BIOGRAPHY[^>]*>\n\|\n```json\n([\s\S]*?)\n```\n\|\n<\/MACHINE READABLE BIOGRAPHY>/.exec(aicontext);
   assert.ok(biographyMatch);
   assert.deepEqual(JSON.parse(biographyMatch[1]), biography);
+  assert.equal(biography['@id'], 'https://interdependentway.org/eai/aicontext.md#erin-spencer');
+  const interpretationMatch = /<INTERPRETATION BOUNDARY[^>]*>\n```json\n([\s\S]*?)\n```\n<\/INTERPRETATION BOUNDARY>/.exec(aicontext);
+  assert.ok(interpretationMatch);
+  const interpretation = JSON.parse(interpretationMatch[1]);
+  assert.equal(interpretation.addressing.identifier_is_runtime_connection, false);
+  assert.equal(interpretation.capability_gate.public_context_grants_log_access, false);
+  assert.match(interpretation.measurement_gate.edcm_rule, /actual cited EDCM result record/);
   assert.match(aicontext, /"canonical_status_transfer": false/);
   assert.match(aicontext, /"digest_is_authentication": false/);
   assert.match(aicontext, /hmmm The endpoint now demonstrates intersession continuity/);
 });
+
+test('generated site exposes the AI context through redundant machine discovery', checkAiContextPublicDiscovery);

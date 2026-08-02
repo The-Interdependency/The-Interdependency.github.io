@@ -1,4 +1,5 @@
 <!doctype html>
+<!-- Usage: every ordinary site page inherits this static navigation and advertises the machine-readable AI context without requiring JavaScript. -->
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -8,6 +9,7 @@
   <title>{{ title or site.title }}</title>
   <meta name="description" content="{{ description or site.description }}">
   <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+  <link rel="alternate" type="text/markdown" href="/eai/aicontext.md" title="AI context">
   <link rel="stylesheet" href="/assets/css/site.css">
   <link rel="stylesheet" href="/assets/css/math.css">
   <script src="/assets/js/site.js" defer></script>

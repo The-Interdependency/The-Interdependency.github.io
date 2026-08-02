@@ -7,17 +7,24 @@
 Read the file from its first byte. The author-supplied `EOF` connection contract is deliberately first and has no front matter, byte-order marker, HTML wrapper, or generated introduction before it. A consuming agent should then:
 
 1. apply the opening content-creation and connection contract;
-2. read the work-graph and publication manifests as JSON;
-3. treat `<CANON COPY>` as an exact publication copy whose authority remains `wayseer00/main:canon/INTERDEPENDENT_WAY.txt`;
-4. read textbook chapters in declared order from Zero through Seven while preserving each source-local status and license;
-5. parse the JSON-LD inside `<MACHINE READABLE BIOGRAPHY>` and its vertical-bar context boundary;
-6. carry `<TO BE DETERMINED>`, `<NOT YET>`, and the closing `hmmm` into continuation rather than inventing completion.
+2. apply `<INTERPRETATION BOUNDARY>` before interpreting any copied project vocabulary;
+3. read the work-graph and publication manifests as JSON;
+4. treat `<CANON COPY>` as an exact publication copy whose authority remains `wayseer00/main:canon/INTERDEPENDENT_WAY.txt`;
+5. read textbook chapters in declared order from Zero through Seven while preserving each source-local status and license;
+6. parse the JSON-LD inside `<MACHINE READABLE BIOGRAPHY>` and its vertical-bar context boundary;
+7. carry `<TO BE DETERMINED>`, `<NOT YET>`, and the closing `hmmm` into continuation rather than inventing completion.
+
+The biography subject has the canonical JSON-LD identity `https://interdependentway.org/eai/aicontext.md#erin-spencer`. The `www` host redirects to this non-`www` canonical host. The identifier distinguishes the public record; it does not authenticate Erin, authorize actions, connect a runtime, or grant access.
+
+Machine discovery is redundant by design: the homepage links the endpoint, HTML pages advertise it with `rel="alternate"`, `/sitemap.xml` lists it, and `/llms.txt` supplies concise usage rules. These pointers do not alter the required byte-zero contract.
 
 Build and inspect locally:
 
 ```bash
 npm run build
 sed -n '1,120p' _site/eai/aicontext.md
+npm run build:llms
+npm run check:llms
 npm run check
 ```
 
@@ -70,6 +77,8 @@ Repository boundaries remain authority and provenance boundaries. The website co
 
 The endpoint transfers no authorship, ownership, license, canon, theorem, proof, certification, measurement, empirical, frontier, or authentication status between sources. Digests establish byte identity only. Every source has a correction target. Online production fails before Eleventy renders when canon or any required textbook chapter is missing or fallback.
 
+Copied vocabulary does not establish live state. References to energy, currents, drift, coherence, tensors, runtimes, or orchestration retain the epistemic status of their owning source. They do not establish that any system is deployed, synchronized, observable, conscious, measurable, or accessible. An EDCM measurement claim requires an actual cited EDCM result record; vocabulary, association, or confident phrasing is not a readout. Missing evidence remains `hmmm` and must not be smuggled into a follow-up question as though it were observed.
+
 The biography is intentionally public-scope. Its `privacy.excludedCategories` list records what is absent without publishing any excluded values. Erin Spencer must explicitly authorize field expansion before those values enter a public build.
 
 ## hmmm
@@ -78,3 +87,4 @@ The biography is intentionally public-scope. Its `privacy.excludedCategories` li
 - UCNS currently has no root license declaration; Chapter One is therefore marked `human-review-required`, and the archived Apache license is not projected onto current source.
 - The public biography needs Erin Spencer's line-by-line review before its provisional field selection can be considered settled.
 - Content negotiation for a pure JSON sibling endpoint is not selected; Markdown with fenced JSON remains the requested surface.
+- The grounded-inference boundary is test-backed against the observed unsupported-claim class, but its effectiveness across independent model providers remains empirical work rather than a guarantee.
