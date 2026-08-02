@@ -1,0 +1,104 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "schema": "interdependentway.public-biography/1.0.0",
+  "name": "Erin Spencer",
+  "alternateName": [
+    "Erin",
+    "Way Seer Erin"
+  ],
+  "description": "Erin Spencer is an independent researcher, freelance social activist, author, and systems architect. Erin is the architect of The Interdependent Way and Agent Zero and coordinates the wider Interdependency project constellation.",
+  "hasOccupation": [
+    {
+      "@type": "Occupation",
+      "name": "Independent researcher"
+    },
+    {
+      "@type": "Occupation",
+      "name": "Freelance social activist"
+    },
+    {
+      "@type": "Occupation",
+      "name": "Author and systems architect"
+    }
+  ],
+  "affiliation": {
+    "@type": "Organization",
+    "name": "The Interdependency",
+    "url": "https://github.com/The-Interdependency"
+  },
+  "background": [
+    {
+      "statement": "United States Marine veteran",
+      "scope": "public biographical fact; no service record claims are encoded"
+    }
+  ],
+  "primaryWorks": [
+    {
+      "name": "The Interdependent Way",
+      "role": "architect and author",
+      "canonicalSource": "https://github.com/wayseer00/main/blob/main/canon/INTERDEPENDENT_WAY.txt",
+      "publicSurface": "https://interdependentway.org/"
+    },
+    {
+      "name": "Agent Zero",
+      "identifier": "a0",
+      "role": "architect",
+      "repository": "https://github.com/The-Interdependency/a0"
+    }
+  ],
+  "associatedProjects": [
+    {
+      "name": "UCNS",
+      "repository": "https://github.com/The-Interdependency/ucns",
+      "namingBoundary": "UCNS is a stable identifier without a canonical expansion"
+    },
+    {
+      "name": "EDCM",
+      "repository": "https://github.com/The-Interdependency/edcm"
+    },
+    {
+      "name": "METAPAT",
+      "repository": "https://github.com/The-Interdependency/metapat"
+    },
+    {
+      "name": "skill-lib",
+      "repository": "https://github.com/The-Interdependency/skill-lib"
+    }
+  ],
+  "workingContext": {
+    "mobileFirst": true,
+    "usageLimitAware": true,
+    "provenanceFirst": true,
+    "uncertaintyBoundary": "hmmm"
+  },
+  "sameAs": [
+    "https://github.com/erinepshovel-code",
+    "https://github.com/The-Interdependency",
+    "https://interdependentway.org/"
+  ],
+  "provenance": {
+    "status": "author-requested public project biography; field selection pending line-by-line author review",
+    "sources": [
+      "Erin's current request for a machine-readable biography",
+      "author-supplied project context",
+      "public repository evidence"
+    ],
+    "generatedTextBoundary": "The published JSON is enclosed in vertical bars because it was assembled from prior author-supplied context.",
+    "lastStructured": "2026-08-01"
+  },
+  "privacy": {
+    "scope": "public project biography",
+    "excludedCategories": [
+      "exact location",
+      "birth details",
+      "medical information",
+      "trauma history",
+      "legal matters",
+      "financial information",
+      "private relationships",
+      "private contact information"
+    ],
+    "expansionRule": "Add excluded or more precise fields only after Erin explicitly authorizes their public publication."
+  }
+}

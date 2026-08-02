@@ -28,6 +28,7 @@ This site displays exact, provenance-bearing chapter snapshots. It does not merg
 - `/preamble/` remains one click from Awakening and from the primary navigation.
 - `/chapters/` is the unified index for the eight-repository textbook.
 - `/chapters/chapter-zero/` through `/chapters/chapter-seven/` render exact source Markdown with commit, blob, digest, and repository links.
+- `/eai/aicontext.md` begins with Erin's exact connection contract and then publishes the exact canon copy, all eight textbook chapters, a public-scope JSON-LD biography, and machine-readable work-graph and publication identities.
 - Eleventy generates complete HTML into `_site`.
 - Pagefind supplies static search.
 - GitHub organization, canon, and textbook source data are retrieved at build time, never in a visitor’s browser.
@@ -69,6 +70,7 @@ Route checks after a build:
 /chapters/chapter-zero/         Chapter Zero
 ...
 /chapters/chapter-seven/        Chapter Seven
+/eai/aicontext.md               machine-oriented connection context
 ```
 
 Add reviewed project metadata to a repository:

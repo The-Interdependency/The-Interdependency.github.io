@@ -1,8 +1,10 @@
 // Usage: run through `npm run test:generated` after a complete site build.
 // Evidence boundary: verifies generated artifact contracts, not the remote Pages environment.
+import { createHash } from 'node:crypto';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import { connectionContract } from '../src/eai/aicontext.11ty.js';
 
 // Usage: run only after Eleventy has generated _site, normally through npm run test:generated or npm run check.
 test('generated deployment artifact contains the unified routes', async () => {
@@ -188,4 +190,34 @@ test('generated deployment artifact publishes verifiable build identity', async 
   assert.equal(build.canonicalSource.repository, 'wayseer00/main');
   assert.equal(build.canonicalSource.path, 'canon/INTERDEPENDENT_WAY.txt');
   assert.match(build.canonicalSource.contentSha256, /^[a-f0-9]{64}$/);
+});
+
+test('generated deployment artifact publishes the complete machine-oriented AI context', async () => {
+  const [aicontext, textbookRaw, biographyRaw] = await Promise.all([
+    readFile('_site/eai/aicontext.md', 'utf8'),
+    readFile('src/_data/generated/textbook.json', 'utf8'),
+    readFile('src/_data/erin.public-biography.json', 'utf8')
+  ]);
+  const textbook = JSON.parse(textbookRaw);
+  const biography = JSON.parse(biographyRaw);
+
+  assert.equal(aicontext.slice(0, connectionContract.length), connectionContract);
+  const canonMatch = /<CANON COPY>\n([\s\S]*?)<\/CANON COPY>/.exec(aicontext);
+  const publicationMatch = /<PUBLICATION MANIFEST[^>]*>\n```json\n([\s\S]*?)\n```\n<\/PUBLICATION MANIFEST>/.exec(aicontext);
+  assert.ok(canonMatch);
+  assert.ok(publicationMatch);
+  const publication = JSON.parse(publicationMatch[1]);
+  assert.equal(createHash('sha256').update(canonMatch[1]).digest('hex'), publication.sources[0].content_sha256);
+  let cursor = aicontext.indexOf('<TIW TEXTBOOK>');
+  for (const chapter of textbook.chapters) {
+    const position = aicontext.indexOf(chapter.content, cursor);
+    assert.ok(position > cursor, `aicontext chapter ${chapter.number} missing or out of order`);
+    cursor = position;
+  }
+  const biographyMatch = /<MACHINE READABLE BIOGRAPHY[^>]*>\n\|\n```json\n([\s\S]*?)\n```\n\|\n<\/MACHINE READABLE BIOGRAPHY>/.exec(aicontext);
+  assert.ok(biographyMatch);
+  assert.deepEqual(JSON.parse(biographyMatch[1]), biography);
+  assert.match(aicontext, /"canonical_status_transfer": false/);
+  assert.match(aicontext, /"digest_is_authentication": false/);
+  assert.match(aicontext, /hmmm The endpoint now demonstrates intersession continuity/);
 });

@@ -530,9 +530,150 @@ export default defineMsdmdCollection({
       },
       "file": "src/assets/js/site.js",
       "id": "optional_site_enhancement"
+    },
+    {
+      "block": "BOUNDARIES",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "pii": "direct",
+        "review_required": "Erin Spencer for biography field expansion",
+        "secrets": "none",
+        "side_effects": "public static artifact generated beneath _site/eai",
+        "storage_boundary": "read",
+        "summary": "Reads repository-controlled snapshots and a deliberately public biography record, then writes them into a public build artifact through Eleventy.",
+        "user_data_boundary": "read"
+      },
+      "file": "src/eai/aicontext.11ty.js",
+      "id": "ai_context_publication_boundary"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "canon",
+        "given": "Eleventy renders /eai/aicontext.md",
+        "then": "the first byte begins the author-supplied EOF connection contract with no front matter, preamble, or byte-order marker"
+      },
+      "file": "src/eai/aicontext.11ty.js",
+      "id": "ai_context_exact_contract_prefix"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "current canon and all eight textbook sources resolve with immutable identities",
+        "then": "the artifact contains each exact source body once in declared order and exposes repository, path, commit, blob, digest, license state, correction target, and fallback state"
+      },
+      "file": "src/eai/aicontext.11ty.js",
+      "id": "ai_context_exact_distributed_sources"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "doctrine",
+        "given": "canon, textbook chapters, and biography share one public artifact",
+        "then": "authorship, ownership, license, canonical, proof, certification, measurement, empirical, and authentication status do not transfer between sources"
+      },
+      "file": "src/eai/aicontext.11ty.js",
+      "id": "ai_context_non_transfer_boundary"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "safety",
+        "given": "the machine-readable biography is published",
+        "then": "valid JSON-LD is enclosed in vertical bars and excludes private categories unless Erin explicitly authorizes expansion"
+      },
+      "file": "src/eai/aicontext.11ty.js",
+      "id": "ai_context_public_biography_boundary"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "data_schema": "the-interdependency.stack-manifest/1.0.0, the-interdependency.distributed-publication/1.0.0, interdependentway.public-biography/1.0.0",
+        "internal_surface": "renderAiContext, buildWorkGraph, buildPublicationManifest",
+        "module_kind": "route",
+        "module_name": "aicontext",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "/eai/aicontext.md",
+        "requires": "canonical_source_fetch, canon_structure_materializer, distributed_textbook_fetch",
+        "rollback": "remove this template, biography record, aicontext checks, and route documentation together",
+        "rollout": "Eleventy emits the route after online production validation resolves every required source without fallback",
+        "storage_boundary": "read",
+        "summary": "Publishes one machine-oriented Markdown context file containing the exact connection contract, canonical Way copy, distributed textbook, public biography, and immutable source identities.",
+        "tests": "tests/aicontext.test.mjs, tests/generated-site.test.mjs",
+        "unresolved": "signed source authentication, author-reviewed expansion of the public biography",
+        "user_data_boundary": "read"
+      },
+      "file": "src/eai/aicontext.11ty.js",
+      "id": "ai_context_publication"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::checkExactContractPrefix",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "ai_context_exact_contract_prefix",
+        "requires": "node",
+        "timeout": "10"
+      },
+      "file": "tests/aicontext.test.mjs",
+      "id": "check_ai_context_exact_contract_prefix"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::checkExactDistributedSources",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "ai_context_exact_distributed_sources",
+        "requires": "node",
+        "timeout": "10"
+      },
+      "file": "tests/aicontext.test.mjs",
+      "id": "check_ai_context_exact_distributed_sources"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::checkNonTransferBoundary",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "ai_context_non_transfer_boundary",
+        "requires": "node",
+        "timeout": "10"
+      },
+      "file": "tests/aicontext.test.mjs",
+      "id": "check_ai_context_non_transfer_boundary"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::checkPublicBiographyBoundary",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "ai_context_public_biography_boundary",
+        "requires": "node",
+        "timeout": "10"
+      },
+      "file": "tests/aicontext.test.mjs",
+      "id": "check_ai_context_public_biography_boundary"
     }
   ],
   "edges": [
+    {
+      "from": "ai_context_publication_boundary",
+      "kind": "owns",
+      "source_block": "BOUNDARIES",
+      "source_id": "ai_context_publication_boundary",
+      "to": "Erin Spencer"
+    },
     {
       "from": "article_canon_verification_boundary",
       "kind": "owns",
@@ -609,6 +750,118 @@ export default defineMsdmdCollection({
       "source_block": "BOUNDARIES",
       "source_id": "static_textbook_math_rendering_boundary",
       "to": "Erin Spencer"
+    },
+    {
+      "from": "check_ai_context_exact_contract_prefix",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_ai_context_exact_contract_prefix",
+      "to": "self::checkExactContractPrefix"
+    },
+    {
+      "from": "check_ai_context_exact_contract_prefix",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_ai_context_exact_contract_prefix",
+      "to": "ai_context_exact_contract_prefix"
+    },
+    {
+      "from": "check_ai_context_exact_contract_prefix",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_ai_context_exact_contract_prefix",
+      "to": "node"
+    },
+    {
+      "from": "check_ai_context_exact_distributed_sources",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_ai_context_exact_distributed_sources",
+      "to": "self::checkExactDistributedSources"
+    },
+    {
+      "from": "check_ai_context_exact_distributed_sources",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_ai_context_exact_distributed_sources",
+      "to": "ai_context_exact_distributed_sources"
+    },
+    {
+      "from": "check_ai_context_exact_distributed_sources",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_ai_context_exact_distributed_sources",
+      "to": "node"
+    },
+    {
+      "from": "check_ai_context_non_transfer_boundary",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_ai_context_non_transfer_boundary",
+      "to": "self::checkNonTransferBoundary"
+    },
+    {
+      "from": "check_ai_context_non_transfer_boundary",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_ai_context_non_transfer_boundary",
+      "to": "ai_context_non_transfer_boundary"
+    },
+    {
+      "from": "check_ai_context_non_transfer_boundary",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_ai_context_non_transfer_boundary",
+      "to": "node"
+    },
+    {
+      "from": "check_ai_context_public_biography_boundary",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_ai_context_public_biography_boundary",
+      "to": "self::checkPublicBiographyBoundary"
+    },
+    {
+      "from": "check_ai_context_public_biography_boundary",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_ai_context_public_biography_boundary",
+      "to": "ai_context_public_biography_boundary"
+    },
+    {
+      "from": "check_ai_context_public_biography_boundary",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_ai_context_public_biography_boundary",
+      "to": "node"
+    },
+    {
+      "from": "ai_context_publication",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ai_context_publication",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "ai_context_publication",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ai_context_publication",
+      "to": "canon_structure_materializer"
+    },
+    {
+      "from": "ai_context_publication",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ai_context_publication",
+      "to": "canonical_source_fetch"
+    },
+    {
+      "from": "ai_context_publication",
+      "kind": "requires",
+      "source_block": "MODULE_BUILD",
+      "source_id": "ai_context_publication",
+      "to": "distributed_textbook_fetch"
     },
     {
       "from": "article_canon_exactness_gate",
