@@ -34,12 +34,13 @@ export async function checkAiContextPublicDiscovery() {
 
 // Usage: run only after Eleventy has generated _site, normally through npm run test:generated or npm run check.
 test('generated deployment artifact contains the unified routes', async () => {
-  const [splash, home, preamble, chapters, artifacts, fourCuts, fallback, articles, narratives, jackAndDiane] = await Promise.all([
+  const [splash, home, preamble, chapters, artifacts, edcmMathematics, fourCuts, fallback, articles, narratives, jackAndDiane] = await Promise.all([
     readFile('_site/index.html', 'utf8'),
     readFile('_site/home/index.html', 'utf8'),
     readFile('_site/preamble/index.html', 'utf8'),
     readFile('_site/chapters/index.html', 'utf8'),
     readFile('_site/artifacts/index.html', 'utf8'),
+    readFile('_site/artifacts/edcm-mathematics/index.html', 'utf8'),
     readFile('_site/artifacts/four-cuts/index.html', 'utf8'),
     readFile('_site/fallback/index.html', 'utf8'),
     readFile('_site/articles/index.html', 'utf8'),
@@ -65,6 +66,17 @@ test('generated deployment artifact contains the unified routes', async () => {
   assert.match(chapters, /The Interdependency Textbook/);
   assert.match(chapters, /Chapters Zero through Seven/);
   assert.match(artifacts, /Artifacts/);
+  assert.match(artifacts, /href="\/artifacts\/edcm-mathematics\/"/);
+  assert.match(edcmMathematics, /EDCM mathematics: recovered architecture record/);
+  assert.match(edcmMathematics, /ratified architecture v0\.3\.1/);
+  assert.match(edcmMathematics, /not a measurement result/);
+  assert.match(edcmMathematics, /ee20db72dde75f602ccf590a64047117f6bca87d/);
+  assert.match(edcmMathematics, /457758fecb257532757657db4f119a52f850f318/);
+  assert.match(edcmMathematics, /aria-label="Start of recovered conversational context">\|<\/p>/);
+  assert.match(edcmMathematics, /aria-label="End of recovered conversational context">\|<\/p>/);
+  assert.match(edcmMathematics, /<math\b/);
+  assert.match(edcmMathematics, /\\mathrm\{NA\} \\ne 0/);
+  assert.match(edcmMathematics, /hmmm/);
   assert.match(fourCuts, /Wealth and tax/);
   assert.match(fallback, /Emergency static edition/);
   assert.match(articles, /Publication drafts/);

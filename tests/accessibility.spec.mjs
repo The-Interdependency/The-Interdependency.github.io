@@ -14,7 +14,7 @@ if (!firstLabUnit) throw new Error(`missing Lab canon unit ${articleLab[0].unit_
 for (const route of [
   '/', '/home/', '/preamble/', '/chapters/', '/chapters/chapter-zero/', '/chapters/chapter-seven/',
   '/articles/', '/articles/article-two/', '/narratives/', '/narratives/jack-and-diane/', '/way/', '/lab/', `/lab/${firstLabUnit.routeSlug}/`, '/projects/',
-  '/research/method/'
+  '/artifacts/edcm-mathematics/', '/research/method/'
 ]) {
   test(`${route} has no serious or critical automated accessibility violations`, async ({ page }) => {
     await page.goto(route);

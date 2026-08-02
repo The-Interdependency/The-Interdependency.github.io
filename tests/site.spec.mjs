@@ -28,6 +28,7 @@ const routes = [
   ['/source/', /Source/],
   ['/projects/', /Projects/],
   ['/artifacts/', /Artifacts/],
+  ['/artifacts/edcm-mathematics/', /recovered architecture record/],
   ['/research/method/', /Legislation is not science/],
   ['/fallback/', /Emergency static edition/]
 ];
@@ -126,6 +127,18 @@ test('living narratives keep fiction and adulthood boundaries visible', async ({
   await expect(page.locator('body')).toContainText('Jack and Diane remain minors');
   await expect(page.locator('.journal-entry')).toHaveCount(9);
   await expect(page.locator('.hmmm')).toContainText('Neither adulthood, interdependence, physical maturity, nor a Political Circle has been declared complete');
+});
+
+test('EDCM mathematics stays source-bound and renders without a runtime math dependency', async ({ page }) => {
+  await page.goto('/artifacts/edcm-mathematics/');
+  await expect(page.locator('h1')).toHaveText('EDCM mathematics: recovered architecture record');
+  await expect(page.locator('.status-risk')).toHaveText('not a measurement result');
+  await expect(page.locator('body')).toContainText('EDCM UCNS SITREP');
+  await expect(page.locator('body')).toContainText('ee20db72dde75f602ccf590a64047117f6bca87d');
+  await expect(page.locator('.textbook-chapter math').first()).toBeVisible();
+  expect(await page.locator('.textbook-chapter math').count()).toBeGreaterThanOrEqual(20);
+  await expect(page.locator('script[src*="temml"], script[src*="katex"], script[src*="mathjax"]')).toHaveCount(0);
+  await expect(page.locator('.hmmm')).toContainText('exact immutable transcript export remains unresolved');
 });
 
 test('all eight Rights Article Labs are linked from the Way tree and expose the shared contact structure', async ({ page }) => {

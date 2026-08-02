@@ -552,6 +552,59 @@ export default defineMsdmdCollection({
       "id": "public_build_identity"
     },
     {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "the structured record is rendered through the site Markdown and math pipeline",
+        "then": "substrate, mirror, product, sequence, residue, readout, equivalence, carrier, mass, and epoch relations remain present as static mathematics"
+      },
+      "file": "src/_data/edcm_mathematics.js",
+      "id": "edcm_artifact_math_contact_preserved"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "the EDCM mathematics artifact is published",
+        "then": "the named conversation, public EDCM commit, file path, blob, license, retrieval method, and missing transcript identity remain visible"
+      },
+      "file": "src/_data/edcm_mathematics.js",
+      "id": "edcm_artifact_source_identity_visible"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "safety",
+        "given": "recovered architecture and UCNS substrate mathematics appear on the website",
+        "then": "canon, theorem, proof, measurement, empirical, authentication, and runtime status do not transfer to the publication"
+      },
+      "file": "src/_data/edcm_mathematics.js",
+      "id": "edcm_artifact_status_does_not_transfer"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "canonicalJson, workGraphIdentity, record_markdown",
+        "module_kind": "schema",
+        "module_name": "edcm-mathematics",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "edcm_mathematics, /artifacts/edcm-mathematics/",
+        "rollback": "remove this data module, its route, its index card, and its contract checks together",
+        "rollout": "loaded by Eleventy and linked from /artifacts/",
+        "since": "2026-08-02",
+        "storage_boundary": "none",
+        "summary": "Carries the recovered EDCM\u2013UCNS v0.3.1 mathematical architecture, its source identities, and its non-transfer boundaries into one public artifact.",
+        "tests": "tests/edcm-mathematics.test.mjs, tests/generated-site.test.mjs",
+        "unresolved": "immutable transcript export identity",
+        "user_data_boundary": "none"
+      },
+      "file": "src/_data/edcm_mathematics.js",
+      "id": "edcm_mathematics_public_artifact_record"
+    },
+    {
       "block": "BOUNDARIES",
       "fields": {
         "admin_only": "false",
@@ -849,6 +902,45 @@ export default defineMsdmdCollection({
     {
       "block": "CHECKS",
       "fields": {
+        "call": "self::checkMathContactPreserved",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "edcm_artifact_math_contact_preserved",
+        "requires": "node",
+        "timeout": "10"
+      },
+      "file": "tests/edcm-mathematics.test.mjs",
+      "id": "check_edcm_artifact_math_contact_preserved"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::checkSourceIdentityVisible",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "edcm_artifact_source_identity_visible",
+        "requires": "node",
+        "timeout": "10"
+      },
+      "file": "tests/edcm-mathematics.test.mjs",
+      "id": "check_edcm_artifact_source_identity_visible"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::checkStatusDoesNotTransfer",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "edcm_artifact_status_does_not_transfer",
+        "requires": "node",
+        "timeout": "10"
+      },
+      "file": "tests/edcm-mathematics.test.mjs",
+      "id": "check_edcm_artifact_status_does_not_transfer"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
         "call": "self::checkAiContextPublicDiscovery",
         "cleanup": "none",
         "mutates": "none",
@@ -1139,6 +1231,69 @@ export default defineMsdmdCollection({
       "to": "node"
     },
     {
+      "from": "check_edcm_artifact_math_contact_preserved",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_edcm_artifact_math_contact_preserved",
+      "to": "self::checkMathContactPreserved"
+    },
+    {
+      "from": "check_edcm_artifact_math_contact_preserved",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_edcm_artifact_math_contact_preserved",
+      "to": "edcm_artifact_math_contact_preserved"
+    },
+    {
+      "from": "check_edcm_artifact_math_contact_preserved",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_edcm_artifact_math_contact_preserved",
+      "to": "node"
+    },
+    {
+      "from": "check_edcm_artifact_source_identity_visible",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_edcm_artifact_source_identity_visible",
+      "to": "self::checkSourceIdentityVisible"
+    },
+    {
+      "from": "check_edcm_artifact_source_identity_visible",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_edcm_artifact_source_identity_visible",
+      "to": "edcm_artifact_source_identity_visible"
+    },
+    {
+      "from": "check_edcm_artifact_source_identity_visible",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_edcm_artifact_source_identity_visible",
+      "to": "node"
+    },
+    {
+      "from": "check_edcm_artifact_status_does_not_transfer",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_edcm_artifact_status_does_not_transfer",
+      "to": "self::checkStatusDoesNotTransfer"
+    },
+    {
+      "from": "check_edcm_artifact_status_does_not_transfer",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_edcm_artifact_status_does_not_transfer",
+      "to": "edcm_artifact_status_does_not_transfer"
+    },
+    {
+      "from": "check_edcm_artifact_status_does_not_transfer",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_edcm_artifact_status_does_not_transfer",
+      "to": "node"
+    },
+    {
       "from": "check_llms_markdown_examples_ignored",
       "kind": "calls",
       "source_block": "CHECKS",
@@ -1262,6 +1417,13 @@ export default defineMsdmdCollection({
       "kind": "owns",
       "source_block": "MODULE_BUILD",
       "source_id": "distributed_textbook_fetch",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "edcm_mathematics_public_artifact_record",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "edcm_mathematics_public_artifact_record",
       "to": "Erin Spencer"
     },
     {
