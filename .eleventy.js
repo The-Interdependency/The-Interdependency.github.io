@@ -24,6 +24,9 @@ export default function configureEleventy(eleventyConfig) {
   eleventyConfig.addFilter('where', (items, key, value) => (items || []).filter(item => item?.[key] === value));
   eleventyConfig.addFilter('statusClass', value => `status-${String(value || 'hmmm').toLowerCase().replace(/[^a-z0-9]+/g, '-')}`);
   eleventyConfig.addFilter('markdown', value => md.render(String(value || '')));
+  eleventyConfig.addFilter('edcmMarkdown', value => md.render(String(value || ''))
+    .replace(/<pre(?![^>]*\btabindex=)([^>]*)>/g, '<pre tabindex="0"$1>')
+    .replace(/<math(?![^>]*\btabindex=)(?=[^>]*\bdisplay="block")/g, '<math tabindex="0"'));
   // Exact canonical body lines of a unit: skip the heading line, stop before
   // footnote lines, notes blocks, separators, and sub-headings. Mirrors the
   // body extraction in scripts/verify-article-canon.mjs; keep the two in step.

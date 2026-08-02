@@ -150,6 +150,29 @@ export default defineMsdmdCollection({
       "id": "canon_parser_core"
     },
     {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "none",
+        "module_kind": "instrument",
+        "module_name": "check-edcm-reference-drift",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "node scripts/check-edcm-reference-drift.mjs [reference-file]",
+        "rollback": "remove only with another deterministic cross-repository reference gate",
+        "rollout": "npm run check:edcm-reference and npm run check",
+        "since": "2026-08-02",
+        "storage_boundary": "read",
+        "summary": "Fails when the website copy differs from the exact commit-pinned EDCM reference identity or an explicitly supplied producer checkout.",
+        "tests": "tests/edcm-mathematics.test.mjs",
+        "unresolved": "none",
+        "user_data_boundary": "none"
+      },
+      "file": "scripts/check-edcm-reference-drift.mjs",
+      "id": "edcm_reference_drift_gate"
+    },
+    {
       "block": "BOUNDARIES",
       "fields": {
         "failure": "falls back to the repository mirror and records fallback=true",
@@ -552,6 +575,59 @@ export default defineMsdmdCollection({
       "id": "public_build_identity"
     },
     {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "correctness",
+        "given": "the website builds the EDCM mathematical reference",
+        "then": "the rendered Markdown source has the exact SHA-256 and Git blob identity of the commit-pinned EDCM reference"
+      },
+      "file": "src/_data/edcm_mathematics.js",
+      "id": "edcm_reference_bytes_reproduced"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "evidence",
+        "given": "the EDCM mathematical reference is published",
+        "then": "the EDCM repository, path, commit, Git blob, SHA-256, license, and correction target remain visible"
+      },
+      "file": "src/_data/edcm_mathematics.js",
+      "id": "edcm_reference_source_pin_visible"
+    },
+    {
+      "block": "CONTRACTS",
+      "fields": {
+        "class": "safety",
+        "given": "EDCM equations and status boundaries appear on the website",
+        "then": "the publication identifies itself as a non-authoritative copy and transfers no canon, proof, theorem, measurement, empirical, or runtime status"
+      },
+      "file": "src/_data/edcm_mathematics.js",
+      "id": "edcm_reference_status_does_not_transfer"
+    },
+    {
+      "block": "MODULE_BUILD",
+      "fields": {
+        "admin_only": "false",
+        "auth_boundary": "none",
+        "internal_surface": "gitBlobSha1, reference_markdown",
+        "module_kind": "schema",
+        "module_name": "edcm-mathematics",
+        "network_boundary": "none",
+        "owner": "Erin Spencer",
+        "public_surface": "edcm_mathematics, /artifacts/edcm-mathematics/",
+        "rollback": "remove this data module, its pinned reference bytes, route, index card, and contract checks together",
+        "rollout": "loaded by Eleventy and linked from /artifacts/",
+        "since": "2026-08-02",
+        "storage_boundary": "read",
+        "summary": "Publishes an exact commit-pinned reproduction of the EDCM mathematical reference without creating a second mathematical authority.",
+        "tests": "tests/edcm-mathematics.test.mjs, tests/generated-site.test.mjs",
+        "unresolved": "Git content identities detect drift but do not provide a cryptographic producer signature",
+        "user_data_boundary": "none"
+      },
+      "file": "src/_data/edcm_mathematics.js",
+      "id": "edcm_mathematics_public_artifact_record"
+    },
+    {
       "block": "BOUNDARIES",
       "fields": {
         "admin_only": "false",
@@ -849,6 +925,45 @@ export default defineMsdmdCollection({
     {
       "block": "CHECKS",
       "fields": {
+        "call": "self::checkReferenceBytesReproduced",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "edcm_reference_bytes_reproduced",
+        "requires": "node",
+        "timeout": "10"
+      },
+      "file": "tests/edcm-mathematics.test.mjs",
+      "id": "check_edcm_reference_bytes_reproduced"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::checkSourcePinVisible",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "edcm_reference_source_pin_visible",
+        "requires": "node",
+        "timeout": "10"
+      },
+      "file": "tests/edcm-mathematics.test.mjs",
+      "id": "check_edcm_reference_source_pin_visible"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
+        "call": "self::checkStatusDoesNotTransfer",
+        "cleanup": "none",
+        "mutates": "none",
+        "proves": "edcm_reference_status_does_not_transfer",
+        "requires": "node",
+        "timeout": "10"
+      },
+      "file": "tests/edcm-mathematics.test.mjs",
+      "id": "check_edcm_reference_status_does_not_transfer"
+    },
+    {
+      "block": "CHECKS",
+      "fields": {
         "call": "self::checkAiContextPublicDiscovery",
         "cleanup": "none",
         "mutates": "none",
@@ -1139,6 +1254,69 @@ export default defineMsdmdCollection({
       "to": "node"
     },
     {
+      "from": "check_edcm_reference_bytes_reproduced",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_edcm_reference_bytes_reproduced",
+      "to": "self::checkReferenceBytesReproduced"
+    },
+    {
+      "from": "check_edcm_reference_bytes_reproduced",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_edcm_reference_bytes_reproduced",
+      "to": "edcm_reference_bytes_reproduced"
+    },
+    {
+      "from": "check_edcm_reference_bytes_reproduced",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_edcm_reference_bytes_reproduced",
+      "to": "node"
+    },
+    {
+      "from": "check_edcm_reference_source_pin_visible",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_edcm_reference_source_pin_visible",
+      "to": "self::checkSourcePinVisible"
+    },
+    {
+      "from": "check_edcm_reference_source_pin_visible",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_edcm_reference_source_pin_visible",
+      "to": "edcm_reference_source_pin_visible"
+    },
+    {
+      "from": "check_edcm_reference_source_pin_visible",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_edcm_reference_source_pin_visible",
+      "to": "node"
+    },
+    {
+      "from": "check_edcm_reference_status_does_not_transfer",
+      "kind": "calls",
+      "source_block": "CHECKS",
+      "source_id": "check_edcm_reference_status_does_not_transfer",
+      "to": "self::checkStatusDoesNotTransfer"
+    },
+    {
+      "from": "check_edcm_reference_status_does_not_transfer",
+      "kind": "claims_proves",
+      "source_block": "CHECKS",
+      "source_id": "check_edcm_reference_status_does_not_transfer",
+      "to": "edcm_reference_status_does_not_transfer"
+    },
+    {
+      "from": "check_edcm_reference_status_does_not_transfer",
+      "kind": "requires",
+      "source_block": "CHECKS",
+      "source_id": "check_edcm_reference_status_does_not_transfer",
+      "to": "node"
+    },
+    {
       "from": "check_llms_markdown_examples_ignored",
       "kind": "calls",
       "source_block": "CHECKS",
@@ -1262,6 +1440,20 @@ export default defineMsdmdCollection({
       "kind": "owns",
       "source_block": "MODULE_BUILD",
       "source_id": "distributed_textbook_fetch",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "edcm_mathematics_public_artifact_record",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "edcm_mathematics_public_artifact_record",
+      "to": "Erin Spencer"
+    },
+    {
+      "from": "edcm_reference_drift_gate",
+      "kind": "owns",
+      "source_block": "MODULE_BUILD",
+      "source_id": "edcm_reference_drift_gate",
       "to": "Erin Spencer"
     },
     {

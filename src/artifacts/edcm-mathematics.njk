@@ -1,0 +1,40 @@
+---
+layout: layouts/base.njk
+title: "EDCM mathematical reference"
+description: An exact commit-pinned, non-authoritative reproduction of the EDCM mathematical reference.
+permalink: /artifacts/edcm-mathematics/
+---
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/artifacts/">Artifacts</a> / EDCM mathematics</nav>
+
+<aside class="panel" aria-label="Publication boundary">
+  <p class="eyebrow">Commit-pinned reproduction · non-authoritative publication copy</p>
+  <p>This page renders the exact EDCM reference bytes identified below. The EDCM source modules remain implementation authority and <code>CANON.md</code> remains status authority. This website transfers no authority, canon, proof, theorem, measurement, empirical, or runtime status.</p>
+</aside>
+
+<article class="textbook-chapter" aria-label="Commit-pinned EDCM mathematical reference">
+{{ edcm_mathematics.reference_markdown | edcmMarkdown | safe }}
+</article>
+
+<section class="panel" aria-labelledby="source-identity">
+  <h2 id="source-identity">Source identity and drift boundary</h2>
+  <dl class="meta">
+    <dt>Repository</dt><dd><code>{{ edcm_mathematics.source.repository }}</code></dd>
+    <dt>Path</dt><dd><code>{{ edcm_mathematics.source.path }}</code></dd>
+    <dt>Commit</dt><dd><code>{{ edcm_mathematics.source.commit }}</code></dd>
+    <dt>Git blob</dt><dd><code>{{ edcm_mathematics.source.blob }}</code></dd>
+    <dt>SHA-256</dt><dd><code>{{ edcm_mathematics.source.sha256 }}</code></dd>
+    <dt>License</dt><dd>{{ edcm_mathematics.source.license }}</dd>
+  </dl>
+  <p><a class="button" href="{{ edcm_mathematics.source.url }}">Open the exact EDCM reference</a></p>
+</section>
+
+<section class="panel" aria-labelledby="usage-guidance">
+  <h2 id="usage-guidance">Usage guidance</h2>
+  <ol>
+    <li>Cite the EDCM repository, path, and commit above when mathematical or status authority matters.</li>
+    <li>Correct equations, labels, provenance identities, and unresolved boundaries in <code>The-Interdependency/edcm</code> first.</li>
+    <li>Update this copy only by changing the pinned commit, Git blob, SHA-256, and reproduced bytes together, then run <code>npm run check:edcm-reference</code>.</li>
+  </ol>
+</section>
+
+<section class="hmmm"><h2>hmmm</h2><p>{{ edcm_mathematics.hmmm }}</p></section>

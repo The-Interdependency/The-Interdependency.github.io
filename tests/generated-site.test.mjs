@@ -34,12 +34,13 @@ export async function checkAiContextPublicDiscovery() {
 
 // Usage: run only after Eleventy has generated _site, normally through npm run test:generated or npm run check.
 test('generated deployment artifact contains the unified routes', async () => {
-  const [splash, home, preamble, chapters, artifacts, fourCuts, fallback, articles, narratives, jackAndDiane] = await Promise.all([
+  const [splash, home, preamble, chapters, artifacts, edcmMathematics, fourCuts, fallback, articles, narratives, jackAndDiane] = await Promise.all([
     readFile('_site/index.html', 'utf8'),
     readFile('_site/home/index.html', 'utf8'),
     readFile('_site/preamble/index.html', 'utf8'),
     readFile('_site/chapters/index.html', 'utf8'),
     readFile('_site/artifacts/index.html', 'utf8'),
+    readFile('_site/artifacts/edcm-mathematics/index.html', 'utf8'),
     readFile('_site/artifacts/four-cuts/index.html', 'utf8'),
     readFile('_site/fallback/index.html', 'utf8'),
     readFile('_site/articles/index.html', 'utf8'),
@@ -65,6 +66,19 @@ test('generated deployment artifact contains the unified routes', async () => {
   assert.match(chapters, /The Interdependency Textbook/);
   assert.match(chapters, /Chapters Zero through Seven/);
   assert.match(artifacts, /Artifacts/);
+  assert.match(artifacts, /href="\/artifacts\/edcm-mathematics\/"/);
+  assert.match(edcmMathematics, /EDCM mathematical reference/);
+  assert.match(edcmMathematics, /Commit-pinned reproduction/);
+  assert.match(edcmMathematics, /not a joint UCNS–EDCM canon selection/);
+  assert.match(edcmMathematics, /2f09f9af10ef950ce68c765bcbed7dca83625c65/);
+  assert.match(edcmMathematics, /c2e059de15c4ef2c5fa9368c63363b606e503206/);
+  assert.match(edcmMathematics, /889336c7c723d6e013188e1b3f969f98aeca88e3075b8ce2e67bc87e897e724f/);
+  assert.match(edcmMathematics, /Implemented v0\.3\.1 architecture layer/);
+  assert.match(edcmMathematics, /<math\b/);
+  assert.match(edcmMathematics, /<math tabindex="0"[^>]*display="block"/);
+  assert.match(edcmMathematics, /<pre tabindex="0">/);
+  assert.match(edcmMathematics, /NA/);
+  assert.match(edcmMathematics, /hmmm/);
   assert.match(fourCuts, /Wealth and tax/);
   assert.match(fallback, /Emergency static edition/);
   assert.match(articles, /Publication drafts/);

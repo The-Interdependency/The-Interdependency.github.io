@@ -28,6 +28,7 @@ const routes = [
   ['/source/', /Source/],
   ['/projects/', /Projects/],
   ['/artifacts/', /Artifacts/],
+  ['/artifacts/edcm-mathematics/', /EDCM mathematical reference/],
   ['/research/method/', /Legislation is not science/],
   ['/fallback/', /Emergency static edition/]
 ];
@@ -126,6 +127,20 @@ test('living narratives keep fiction and adulthood boundaries visible', async ({
   await expect(page.locator('body')).toContainText('Jack and Diane remain minors');
   await expect(page.locator('.journal-entry')).toHaveCount(9);
   await expect(page.locator('.hmmm')).toContainText('Neither adulthood, interdependence, physical maturity, nor a Political Circle has been declared complete');
+});
+
+test('EDCM mathematics stays source-bound and renders without a runtime math dependency', async ({ page }) => {
+  await page.goto('/artifacts/edcm-mathematics/');
+  await expect(page.locator('h1')).toHaveText('EDCM mathematical reference');
+  await expect(page.locator('body')).toContainText('Commit-pinned reproduction');
+  await expect(page.locator('body')).toContainText('2f09f9af10ef950ce68c765bcbed7dca83625c65');
+  await expect(page.locator('body')).toContainText('c2e059de15c4ef2c5fa9368c63363b606e503206');
+  await expect(page.locator('body')).toContainText('Implemented v0.3.1 architecture layer');
+  await expect(page.locator('body')).toContainText('not a joint UCNS–EDCM canon selection');
+  await expect(page.locator('.textbook-chapter math').first()).toBeVisible();
+  expect(await page.locator('.textbook-chapter math').count()).toBeGreaterThanOrEqual(50);
+  await expect(page.locator('script[src*="temml"], script[src*="katex"], script[src*="mathjax"]')).toHaveCount(0);
+  await expect(page.locator('.hmmm')).toContainText('content identities detect copy drift');
 });
 
 test('all eight Rights Article Labs are linked from the Way tree and expose the shared contact structure', async ({ page }) => {
