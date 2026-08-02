@@ -40,6 +40,7 @@ const canon = JSON.parse(await readFile('src/_data/generated/canon.json', 'utf8'
 const repos = JSON.parse(await readFile('src/_data/generated/repos.json', 'utf8'));
 const textbook = JSON.parse(await readFile('src/_data/generated/textbook.json', 'utf8'));
 const textbookSources = JSON.parse(await readFile('src/_data/textbook_sources.json', 'utf8'));
+const biography = JSON.parse(await readFile('src/_data/erin.public-biography.json', 'utf8'));
 const research = await loadResearchData();
 const snapshotRaw = await readFile('src/_data/snapshots/canon.last-known-good.md', 'utf8');
 const snapshotText = snapshotRaw.replace(/^---\n[\s\S]*?\n---\n/, '');
@@ -77,9 +78,17 @@ for (let number = 0; number < 8; number += 1) {
   for (const key of ['slug', 'title', 'repository', 'path', 'branch']) {
     if (chapter[key] !== source[key]) throw new Error(`textbook chapter ${number} ${key} drift`);
   }
+  for (const key of ['expected_title_match', 'license', 'license_status', 'correction_target']) {
+    if (!chapter[key] || chapter[key] !== source[key]) throw new Error(`textbook chapter ${number} ${key} missing or drifted`);
+  }
+  if (!['declared', 'unknown', 'human-review-required'].includes(chapter.license_status)) throw new Error(`textbook chapter ${number} invalid license status`);
+  if (chapter.correction_target !== `${chapter.repository}:${chapter.path}`) throw new Error(`textbook chapter ${number} correction target drift`);
 }
 if (new Set(textbook.chapters.map(chapter => chapter.slug)).size !== 8) throw new Error('duplicate textbook chapter slug');
 if (new Set(textbook.chapters.map(chapter => `${chapter.repository}:${chapter.path}`)).size !== 8) throw new Error('duplicate textbook source location');
+if (biography.schema !== 'interdependentway.public-biography/1.0.0') throw new Error('unexpected public biography schema');
+if (biography.privacy?.scope !== 'public project biography') throw new Error('public biography privacy scope drift');
+if (!Array.isArray(biography.privacy?.excludedCategories) || biography.privacy.excludedCategories.length < 1) throw new Error('public biography exclusions missing');
 if (process.env.OFFLINE !== '1') {
   if (!textbook.complete || textbook.fallback) throw new Error('production textbook refresh is incomplete or using fallback content');
   for (const chapter of textbook.chapters) {

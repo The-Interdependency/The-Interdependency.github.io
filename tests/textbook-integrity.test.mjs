@@ -41,6 +41,10 @@ test('distributed textbook manifest and generated data preserve chapters zero th
     assert.equal(chapter.branch, 'main');
     assert.ok(chapter.summary);
     assert.ok(chapter.status);
+    assert.ok(chapter.expected_title_match);
+    assert.ok(chapter.license);
+    assert.ok(['declared', 'unknown', 'human-review-required'].includes(chapter.license_status));
+    assert.equal(chapter.correction_target, `${chapter.repository}:${chapter.path}`);
     assert.ok(chapter.sourceUrl?.startsWith(`https://github.com/${repository}/blob/`));
 
     if (chapter.content) {
@@ -58,4 +62,6 @@ test('distributed textbook manifest and generated data preserve chapters zero th
   }
 
   assert.equal(textbook.chapters[7].status, 'theory under development');
+  assert.equal(textbook.chapters[1].license, 'hmmm');
+  assert.equal(textbook.chapters[1].license_status, 'human-review-required');
 });

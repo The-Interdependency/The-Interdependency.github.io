@@ -7,6 +7,10 @@
     "repository": "The-Interdependency/metapat",
     "path": "CHAPTER_ZERO.md",
     "branch": "main",
+    "expected_title_match": "substring plus declared Chapter Zero heading",
+    "license": "MPL-2.0",
+    "license_status": "declared",
+    "correction_target": "The-Interdependency/metapat:CHAPTER_ZERO.md",
     "status": "root ontology and theory",
     "summary": "The invariant vocabulary of distinction, boundary, simplex, tensor, energy-state, registration, and question."
   },
@@ -18,6 +22,10 @@
     "repository": "The-Interdependency/ucns",
     "path": "docs/chapter-1.md",
     "branch": "main",
+    "expected_title_match": "substring plus declared Chapter 1 heading",
+    "license": "hmmm",
+    "license_status": "human-review-required",
+    "correction_target": "The-Interdependency/ucns:docs/chapter-1.md",
     "status": "carrier foundations",
     "summary": "The directed 720° carrier, Structural Null, separated zeros, valuation triad, pairing, typed dispatch, and retained memory."
   },
@@ -29,6 +37,10 @@
     "repository": "The-Interdependency/edcm",
     "path": "docs/chapter-2.md",
     "branch": "main",
+    "expected_title_match": "substring plus declared Chapter 2 heading",
+    "license": "MPL-2.0",
+    "license_status": "declared",
+    "correction_target": "The-Interdependency/edcm:docs/chapter-2.md",
     "status": "measurement discipline",
     "summary": "Typed absence, frozen canon, evidence compartments, proof-transfer firewalls, identity epochs, and an honest measurement frontier."
   },
@@ -40,6 +52,10 @@
     "repository": "The-Interdependency/skill-lib",
     "path": "docs/chapter-3.md",
     "branch": "main",
+    "expected_title_match": "substring plus declared Chapter 3 heading",
+    "license": "MPL-2.0",
+    "license_status": "declared",
+    "correction_target": "The-Interdependency/skill-lib:docs/chapter-3.md",
     "status": "self-declaration method",
     "summary": "Module Self-Declared Metadata in Markdown: declarations beside implementation, machine reconciliation, and drift-resistant evidence."
   },
@@ -51,6 +67,10 @@
     "repository": "The-Interdependency/interdependent-lib",
     "path": "docs/chapter-4.md",
     "branch": "main",
+    "expected_title_match": "substring plus declared Chapter 4 heading",
+    "license": "MPL-2.0",
+    "license_status": "declared",
+    "correction_target": "The-Interdependency/interdependent-lib:docs/chapter-4.md",
     "status": "cross-repository canon placement",
     "summary": "How a meta-package carries family-level canon without inverting runtime dependencies or duplicating authority."
   },
@@ -62,6 +82,10 @@
     "repository": "The-Interdependency/ptcna",
     "path": "docs/chapter-5.md",
     "branch": "main",
+    "expected_title_match": "substring plus declared Chapter 5 heading",
+    "license": "MPL-2.0",
+    "license_status": "declared",
+    "correction_target": "The-Interdependency/ptcna:docs/chapter-5.md",
     "status": "architecture",
     "summary": "The Prime Tensor Circled Neural Architecture as one package with neural, circle, seed, and core layers."
   },
@@ -73,6 +97,10 @@
     "repository": "The-Interdependency/a0",
     "path": "docs/chapter-6.md",
     "branch": "main",
+    "expected_title_match": "substring plus declared Chapter 6 heading",
+    "license": "AGPL-3.0-only",
+    "license_status": "declared",
+    "correction_target": "The-Interdependency/a0:docs/chapter-6.md",
     "status": "research instrument",
     "summary": "a0 as the codebase, a0p as the public instrument, and persistent agent structure distinct from interchangeable model providers."
   },
@@ -84,6 +112,10 @@
     "repository": "The-Interdependency/zfae",
     "path": "docs/chapter-7.md",
     "branch": "main",
+    "expected_title_match": "substring plus declared Chapter 7 heading",
+    "license": "CC-BY-SA-4.0",
+    "license_status": "declared",
+    "correction_target": "The-Interdependency/zfae:docs/chapter-7.md",
     "status": "theory under development",
     "summary": "Zeta Function Alpha Echo as an emergent event claim, explicitly bounded as theory with a falsifiable prediction."
   }
