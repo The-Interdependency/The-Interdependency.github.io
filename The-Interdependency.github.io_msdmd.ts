@@ -13,16 +13,6 @@ export default defineMsdmdCollection({
       "id": "eleventy_site_configuration"
     },
     {
-      "block": "MODULE_BUILD",
-      "fields": {
-        "entrypoint": "loaded with defer from the base layout",
-        "purpose": "Add a compact mobile navigation toggle without hiding static content.",
-        "tests": "tests/site-contract.test.mjs"
-      },
-      "file": "_site/assets/js/site.js",
-      "id": "optional_site_enhancement"
-    },
-    {
       "block": "BOUNDARIES",
       "fields": {
         "admin_only": "false",
