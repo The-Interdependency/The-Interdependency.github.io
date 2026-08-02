@@ -1,61 +1,39 @@
 ---
 layout: layouts/base.njk
-title: "EDCM mathematics: recovered architecture record"
-description: A source-attributed public artifact preserving the recovered EDCM–UCNS v0.3.1 mathematical architecture and its non-transfer boundaries.
+title: "EDCM mathematical reference"
+description: An exact commit-pinned, non-authoritative reproduction of the EDCM mathematical reference.
 permalink: /artifacts/edcm-mathematics/
 ---
 <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/artifacts/">Artifacts</a> / EDCM mathematics</nav>
-<header class="page-head">
-  <p class="eyebrow">Recovered mathematical record · conversation-derived</p>
-  <h1>{{ edcm_mathematics.title }}</h1>
-  <div class="status-row">
-    <span class="status status-interpretation">ratified architecture v0.3.1</span>
-    <span class="status status-frontier">empirical frontier</span>
-    <span class="status status-risk">not a measurement result</span>
-  </div>
-  <p class="lede">A public, inspectable rendering of the EDCM mathematics recovered from the “EDCM UCNS SITREP” thread and checked against the immutable EDCM implementation handoff.</p>
-</header>
 
-<section class="panel" aria-labelledby="source-boundary">
-  <h2 id="source-boundary">Source and status boundary</h2>
-  <p>The conversation associated <code>edcmucns.md</code> with a ratified and frozen v0.3.1 architecture. Empirical measurement remained frontier, and implementation remained gated on tests plus the closed <code>readout_scope</code> registry.</p>
-  <p>The website publishes this record; it does not become the source of EDCM mathematics, current UCNS canon, a theorem proof, a result record, or evidence of a running system.</p>
-  <p>The recovered mathematical record is bracketed with <code>|</code> below because it is generated from prior conversational context. Editorial orientation remains outside those bars.</p>
-  <dl class="meta">
-    <dt>Conversation</dt><dd><code>{{ edcm_mathematics.source.conversation_title }}</code></dd>
-    <dt>Conversation identity</dt><dd><code>{{ edcm_mathematics.source.immutable_transcript_export }}</code> — no immutable transcript export was present in the recovered index</dd>
-    <dt>Public cross-check</dt><dd><code>{{ edcm_mathematics.source.public_corroborating_source.repository }}:{{ edcm_mathematics.source.public_corroborating_source.path }}</code></dd>
-    <dt>Commit</dt><dd><code>{{ edcm_mathematics.source.public_corroborating_source.commit }}</code></dd>
-    <dt>Blob</dt><dd><code>{{ edcm_mathematics.source.public_corroborating_source.blob }}</code></dd>
-    <dt>License</dt><dd>{{ edcm_mathematics.source.public_corroborating_source.license }}</dd>
-    <dt>Work graph</dt><dd><code>{{ edcm_mathematics.work_graph.work_graph_sha256 }}</code></dd>
-  </dl>
-  <p><a class="button" href="{{ edcm_mathematics.source.public_corroborating_source.url }}">Open the exact EDCM handoff</a></p>
-</section>
+<aside class="panel" aria-label="Publication boundary">
+  <p class="eyebrow">Commit-pinned reproduction · non-authoritative publication copy</p>
+  <p>This page renders the exact EDCM reference bytes identified below. The EDCM source modules remain implementation authority and <code>CANON.md</code> remains status authority. This website transfers no authority, canon, proof, theorem, measurement, empirical, or runtime status.</p>
+</aside>
 
-<section aria-labelledby="plain-orientation">
-  <p class="eyebrow">Plain orientation · editorial companion</p>
-  <h2 id="plain-orientation">What the architecture is saying</h2>
-  <div class="grid">
-    <article class="panel"><h3>Geometry is the carrier</h3><p>UCNS supplies an ordered geometric object. EDCM does not treat that object alone as a measurement.</p></article>
-    <article class="panel"><h3>Provenance is an input</h3><p>Who or what produced an occurrence, its order, payload, field state, and governing manifest can change the readout even when geometry is unchanged.</p></article>
-    <article class="panel"><h3>Absence stays absent</h3><p>A turn with no operator geometry yields <code>NA</code>, not zero. Missing measurement cannot be made numerically convenient without changing the claim.</p></article>
-  </div>
-</section>
-
-<p class="eyebrow" aria-label="Start of recovered conversational context">|</p>
-<article class="textbook-chapter" aria-label="Recovered EDCM mathematical record">
-{{ edcm_mathematics.record_markdown | markdown | safe }}
+<article class="textbook-chapter" aria-label="Commit-pinned EDCM mathematical reference">
+{{ edcm_mathematics.reference_markdown | edcmMarkdown | safe }}
 </article>
-<p class="eyebrow" aria-label="End of recovered conversational context">|</p>
+
+<section class="panel" aria-labelledby="source-identity">
+  <h2 id="source-identity">Source identity and drift boundary</h2>
+  <dl class="meta">
+    <dt>Repository</dt><dd><code>{{ edcm_mathematics.source.repository }}</code></dd>
+    <dt>Path</dt><dd><code>{{ edcm_mathematics.source.path }}</code></dd>
+    <dt>Commit</dt><dd><code>{{ edcm_mathematics.source.commit }}</code></dd>
+    <dt>Git blob</dt><dd><code>{{ edcm_mathematics.source.blob }}</code></dd>
+    <dt>SHA-256</dt><dd><code>{{ edcm_mathematics.source.sha256 }}</code></dd>
+    <dt>License</dt><dd>{{ edcm_mathematics.source.license }}</dd>
+  </dl>
+  <p><a class="button" href="{{ edcm_mathematics.source.url }}">Open the exact EDCM reference</a></p>
+</section>
 
 <section class="panel" aria-labelledby="usage-guidance">
   <h2 id="usage-guidance">Usage guidance</h2>
   <ol>
-    <li>Cite this page when referring to the recovered v0.3.1 architecture and its status boundary.</li>
-    <li>Cite the exact EDCM handoff above when source identity matters.</li>
-    <li>For any measurement claim, cite a separate EDCM result record containing the actual input scope, manifest identity, computation, and output. This artifact is not that record.</li>
-    <li>Route corrections to <code>The-Interdependency/edcm</code> first; then update this publication consumer without transferring authority.</li>
+    <li>Cite the EDCM repository, path, and commit above when mathematical or status authority matters.</li>
+    <li>Correct equations, labels, provenance identities, and unresolved boundaries in <code>The-Interdependency/edcm</code> first.</li>
+    <li>Update this copy only by changing the pinned commit, Git blob, SHA-256, and reproduced bytes together, then run <code>npm run check:edcm-reference</code>.</li>
   </ol>
 </section>
 

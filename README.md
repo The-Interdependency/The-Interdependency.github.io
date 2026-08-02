@@ -35,7 +35,7 @@ This site displays exact, provenance-bearing chapter snapshots. It does not merg
 - Every public organization repository receives a generated project page.
 - `.interdependency/project.yml` supplies reviewed project purpose, maturity, relationships, and links.
 - `fallback/` is a dependency-free emergency edition.
-- `src/artifacts/edcm-mathematics.njk` publishes the source-attributed EDCM v0.3.1 architecture at `/artifacts/edcm-mathematics/`; use it for the recovered design record, never as a measurement result.
+- `src/artifacts/edcm-mathematics.njk` publishes an exact commit-pinned reproduction of `The-Interdependency/edcm:docs/EDCM_MATHEMATICS.md` at `/artifacts/edcm-mathematics/`; correct the EDCM source first and run `npm run check:edcm-reference` before updating the copy.
 - `artifacts/four-cuts-1.html` is deliberately published at `/artifacts/four-cuts/` through Eleventy passthrough.
 - `_site/build.json` publishes the site commit and canonical source identity for live deployment verification.
 

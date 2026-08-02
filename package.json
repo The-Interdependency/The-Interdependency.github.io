@@ -13,6 +13,7 @@
     "audit:workflows": "node scripts/audit-workflows.mjs",
     "build:llms": "node scripts/build-llms.mjs --apply",
     "check:llms": "node scripts/build-llms.mjs --check",
+    "check:edcm-reference": "node scripts/check-edcm-reference-drift.mjs",
     "prevalidate": "npm run refresh:data",
     "validate": "node scripts/validate-content.mjs && node scripts/verify-generated-routes.mjs && node scripts/verify-article-canon.mjs",
     "build": "npm run validate && eleventy && pagefind --site _site && node scripts/write-build-info.mjs",
@@ -24,7 +25,7 @@
     "test:a11y": "playwright test tests/accessibility.spec.mjs",
     "test:links": "node tests/links.test.mjs",
     "test:performance": "node scripts/performance-placeholder.mjs",
-    "check": "npm run audit:workflows && npm run check:llms && npm run build && npm test && npm run test:generated",
+    "check": "npm run audit:workflows && npm run check:llms && npm run check:edcm-reference && npm run build && npm test && npm run test:generated",
     "refresh:works": "node scripts/fetch-works.mjs"
   },
   "dependencies": {
