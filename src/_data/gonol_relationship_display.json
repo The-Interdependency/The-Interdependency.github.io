@@ -1,0 +1,140 @@
+{
+  "schema_id": "ucns.gonol-relationship-display",
+  "schema_version": "0.1.0",
+  "authority": "Erin Spencer",
+  "recorded_on": "2026-08-03",
+  "record_status": "authority-declared-option-preserving-proposal",
+  "selection_effect": "none",
+  "primitive_arities": [1, 2, 3, 7],
+  "scale_contract": {
+    "admission": "any-declared-native-scale",
+    "display_policy_id": "ucns.display.relation-equalized",
+    "display_policy_version": "0.1.0",
+    "display_radius": 1,
+    "native_scale_retained": true,
+    "visible_radius_represents_native_scale": false,
+    "comparison_policy_default": null,
+    "comparison_policy_required_for_result": true,
+    "information_loss": [
+      "native-scale magnitude is not encoded by visible radius",
+      "continuous Mobius band width and local-frame motion are not encoded by the centerline projection"
+    ]
+  },
+  "primitives": [
+    {
+      "arity": 1,
+      "primitive_id": "single-mobius",
+      "projection_id": "figure-eight-centerline",
+      "operand_count": 1,
+      "pairwise_receipt_count": 0,
+      "geometry_standing": "declared-static-projection",
+      "path": {
+        "parameter": "t in [0, 2*pi)",
+        "x": "sin(t)",
+        "y": "sin(t)*cos(t)"
+      },
+      "crossing_semantics": "two traversal occurrences at one projected coordinate; not a vertex, seam, second gonol, or Structural Null",
+      "continuous_frame_required_for_motion": true
+    },
+    {
+      "arity": 2,
+      "primitive_id": "vesica-mobius",
+      "projection_id": "equal-circle-vesica-piscis",
+      "operand_count": 2,
+      "pairwise_receipt_count": 1,
+      "geometry_standing": "declared-static-projection",
+      "operand_radius": 1,
+      "centers": [
+        {"operand_slot": "A", "x_exact": "-1/2", "y_exact": "0", "x_binary64": -0.5, "y_binary64": 0},
+        {"operand_slot": "B", "x_exact": "1/2", "y_exact": "0", "x_binary64": 0.5, "y_binary64": 0}
+      ],
+      "center_distance": 1,
+      "visible_boundary_intersections": 2,
+      "intersection_points_exact": [
+        {"x": "0", "y": "sqrt(3)/2"},
+        {"x": "0", "y": "-sqrt(3)/2"}
+      ],
+      "pairwise_vesicas": [["A", "B"]],
+      "scope_circle": {"center": "operand midpoint", "radius": 1.5},
+      "relationship_circle": {"center": "operand midpoint", "radius": 0.5},
+      "derived_circle_semantics": "display layers only; no implicit operand, gonol, vertex, or Structural Null promotion"
+    },
+    {
+      "arity": 3,
+      "primitive_id": "triquetra-retained-vesicas",
+      "projection_id": "equilateral-three-circle-triquetra",
+      "operand_count": 3,
+      "pairwise_receipt_count": 3,
+      "geometry_standing": "declared-static-projection",
+      "operand_radius": 1,
+      "centers": [
+        {"operand_slot": "A", "x_exact": "-1/2", "y_exact": "-sqrt(3)/6", "x_binary64": -0.5, "y_binary64": -0.28867513459481287},
+        {"operand_slot": "B", "x_exact": "1/2", "y_exact": "-sqrt(3)/6", "x_binary64": 0.5, "y_binary64": -0.28867513459481287},
+        {"operand_slot": "C", "x_exact": "0", "y_exact": "sqrt(3)/3", "x_binary64": 0, "y_binary64": 0.5773502691896257}
+      ],
+      "pairwise_vesicas": [["A", "B"], ["B", "C"], ["C", "A"]],
+      "each_vesica_retained": true,
+      "coordinate_coincidences_merge_occurrences": false,
+      "joint_overlap_semantics": "joint context; not an implicit fourth pair, gonol, or vertex"
+    },
+    {
+      "arity": 7,
+      "primitive_id": "full-ucns-seven",
+      "projection_id": null,
+      "operand_count": 7,
+      "pairwise_receipt_count": null,
+      "geometry_standing": "hmmm-unresolved",
+      "pairing_plan_required": true,
+      "forbidden_implicit_substitutions": ["flower-of-life", "heptagon", "complete-graph", "seven-circle-rosette"]
+    }
+  ],
+  "public_gonol": {
+    "id": "public-gonol-157",
+    "arity": 157,
+    "token_identity": "unicode-code-point",
+    "source_repository": "The-Interdependency/a0-betatest",
+    "source_commit": "7af8debf6ef3905f01baff02b43d8c3bee16ccbc",
+    "source_path": "backend/interdependent_lib/gonal/gonal.py",
+    "sha256": "55d10c84529a4d7bc7714786357e977b68d9df2ac3f73d20e229580b552c2ef5",
+    "origin_position": 0,
+    "origin_token": " ",
+    "digit_zero_position": 139,
+    "normalization": "none-preserve-source",
+    "space_manifestation_code_points": [
+      "U+0009", "U+000A", "U+000B", "U+000C", "U+000D", "U+0020", "U+0085", "U+00A0",
+      "U+1680", "U+2000", "U+2001", "U+2002", "U+2003", "U+2004", "U+2005", "U+2006",
+      "U+2007", "U+2008", "U+2009", "U+200A", "U+2028", "U+2029", "U+202F", "U+205F", "U+3000"
+    ],
+    "space_semantics": "source-preserved boundary and superpositioned nesting interface; not a word-gonol vertex",
+    "occurrence_address_vector": ["source_ordinal", "unicode_scalar_value", "carrier_position_or_null"],
+    "vector_standing": "identity-and-address-evidence-not-geometric-embedding",
+    "tokens": [
+      " ", "A", "!", "\"", "B", "#", "$", "C", "%", "(", "D", "&", "'", "E", "1", "*",
+      "F", "+", "[", "G", ",", "-", "H", ".", "/", "I", "3", "{", "J", ":", ";", "K",
+      "=", "?", "L", "<", "@", "M", "5", "\\", "N", "^", "_", "O", "‘", "`", "P", "|",
+      "~", "Q", "7", "…", "R", "“", "—", "S", "–", "·", "T", "°", "«", "U", "9", "±",
+      "V", "×", "÷", "W", "√", "∂", "X", "∫", "∑", "Y", "∏", "∇", "Z", "∞", "≈", "≠",
+      "a", "≤", "≥", "b", "→", "←", "c", ")", "↑", "d", "↓", "2", "e", "↔", "⊕", "f",
+      "]", "⊗", "g", "⊙", "⊘", "h", "∈", "4", "i", "}", "∉", "j", "⊂", "⊃", "k", "⊆",
+      ">", "l", "⊇", "6", "m", "∩", "∪", "n", "∧", "’", "o", "∨", "¬", "p", "∀", "8",
+      "q", "∃", "”", "r", "⊢", "⊨", "s", "∴", "∵", "t", "»", "0", "u", "≡", "ψ", "v",
+      "φ", "ω", "w", "α", "β", "x", "γ", "δ", "y", "λ", "π", "z", "σ"
+    ]
+  },
+  "receipt_schema": "ucns.gonol-relationship-receipt/0.1.0",
+  "nonclaims": [
+    "not a complete UCNSObject",
+    "not a selected Mobius embedding or continuous motion law",
+    "not canonical structural or numerical comparison",
+    "not a higher-gonol composition law",
+    "not a completed English lexical-floor embedding",
+    "not proof, measurement, empirical, certification, or producer-authentication evidence"
+  ],
+  "hmmm": [
+    "continuous local-frame geometry across the Mobius band",
+    "seven-gonol display geometry and pairing plan",
+    "promotion law for derived scope or relationship circles",
+    "cross-scope and higher-gonol composition",
+    "English root policy, lexical source completion, and hyperdimensional embedding law"
+  ]
+}

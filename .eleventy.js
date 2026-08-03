@@ -7,6 +7,14 @@ import { installMathRenderer } from './scripts/markdown-math.mjs';
 //   entrypoint: npm run build
 //   tests: tests/site-contract.test.mjs, tests/math-rendering.test.mjs, tests/narratives.test.mjs, tests/generated-site.test.mjs
 // === END MODULE_BUILD ===
+
+// === CONTRACTS ===
+// id: website_gonol_contract_has_one_exact_public_copy
+//   given: the commit-pinned UCNS gonol relationship contract enters the Eleventy data graph
+//   then: the same source bytes are copied to the public data route without runtime fetching or schema shadowing
+//   class: evidence
+//   since: 2026-08-03
+// === END CONTRACTS ===
 // Usage: run `npm run build`; Eleventy emits the static site, copies root machine instructions, and preserves dependency-free public reading paths.
 
 export default function configureEleventy(eleventyConfig) {
@@ -14,6 +22,7 @@ export default function configureEleventy(eleventyConfig) {
   eleventyConfig.setLibrary('md', md);
   eleventyConfig.addPassthroughCopy({
     'src/assets': 'assets',
+    'src/_data/gonol_relationship_display.json': 'assets/data/gonol-relationship-display-v1.json',
     'CNAME': 'CNAME',
     'llms.txt': 'llms.txt',
     'artifacts/four-cuts-1.html': 'artifacts/four-cuts/index.html',

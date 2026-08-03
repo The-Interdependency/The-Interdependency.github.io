@@ -1,0 +1,200 @@
+---
+layout: layouts/base.njk
+title: "Public Gonol relationship lab"
+description: Assemble exact Unicode occurrence-address vectors on the Public Gonol and inspect one-, two-, three-, and seven-gonol relationship displays without hiding unresolved UCNS choices.
+permalink: /artifacts/gonol-relationships/
+---
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/artifacts/">Artifacts</a> / Public Gonol relationships</nav>
+
+<header class="page-head">
+  <p class="eyebrow">Commit-pinned UCNS display consumer · interactive evidence receipt</p>
+  <h1>Public Gonol relationship lab</h1>
+  <p class="lede">Assemble exact Unicode occurrences against the 157-position Public Gonol, then place one, two, three, or seven gonols in an option-preserving relationship view. Native scales remain visible even when the circles are equalized for display.</p>
+</header>
+
+<aside class="panel" aria-labelledby="publication-boundary">
+  <h2 id="publication-boundary">Publication boundary</h2>
+  <p>This page consumes the exact UCNS machine contract identified below. UCNS remains mathematical and status authority. The website supplies interaction, accessibility, and projection only; it transfers no canon, geometry, proof, measurement, empirical, completion, or embedding status.</p>
+  <p><strong>Current standing:</strong> {{ gonol_relationship_publication.publication_status }}. The producer contract is still under review in <a href="{{ gonol_relationship_publication.producer_pr }}">UCNS PR #168</a>.</p>
+</aside>
+
+<section class="gonol-lab" data-gonol-lab data-contract-sha256="{{ gonol_relationship_publication.source.sha256 }}" aria-labelledby="lab-heading">
+  <h2 id="lab-heading">Relationship workspace</h2>
+
+  <noscript>
+    <p class="noscript gonol-noscript">The exact primitive descriptions, source identities, static vesica, and Public Gonol remain below. JavaScript is required only to assemble entered occurrences, change projections, and emit a local relationship receipt.</p>
+  </noscript>
+
+  <div class="gonol-control-grid">
+    <fieldset class="panel gonol-primitive-controls">
+      <legend>Primitive arity</legend>
+      <p class="field-help">One, two, three, and seven coexist as the declared range. Selecting one changes the view; it does not demote the others.</p>
+      <div class="gonol-segmented" role="radiogroup" aria-label="Primitive arity">
+        {% for arity in gonol_relationship_display.primitive_arities %}
+        <label><input type="radio" name="gonol-arity" value="{{ arity }}"{% if arity == 2 %} checked{% endif %}> <span>{{ arity }}</span></label>
+        {% endfor %}
+      </div>
+    </fieldset>
+
+    <fieldset class="panel gonol-policy-controls">
+      <legend>Explicit view policies</legend>
+      <label for="gonol-comparison-policy">Comparison</label>
+      <select id="gonol-comparison-policy" data-comparison-policy>
+        <option value="none">Represent relationship only — no comparison</option>
+        <option value="exact-utf8">Exact UTF-8 bytes — experiment candidate</option>
+      </select>
+      <label class="gonol-check"><input type="checkbox" data-derived-layers checked> Show derived scope and relationship circles</label>
+      <p class="field-help">Visible radii use <code>{{ gonol_relationship_display.scale_contract.display_policy_id }}/{{ gonol_relationship_display.scale_contract.display_policy_version }}</code>. They never claim that native scales are equal.</p>
+    </fieldset>
+  </div>
+
+  <section class="panel gonol-stage-panel" aria-labelledby="relationship-display-heading">
+    <div class="gonol-stage-head">
+      <div>
+        <p class="eyebrow">Centerline projection · not the carrier</p>
+        <h3 id="relationship-display-heading">Vesica Möbius</h3>
+      </div>
+      <p class="status status-interpretation" data-stage-standing>declared static projection</p>
+    </div>
+    <p data-stage-description>The two centerlines intersect at two visible coordinate events. The lens, both full operand circles, outer scope circle, and inner relationship circle remain present.</p>
+    <svg class="gonol-stage" data-gonol-stage viewBox="0 0 640 420" role="img" aria-labelledby="gonol-stage-title gonol-stage-desc">
+      <title id="gonol-stage-title">Static vesica Möbius relationship</title>
+      <desc id="gonol-stage-desc">Two equal circles whose centers are one radius apart, with their complete overlap lens, an enclosing scope circle, and a smaller relationship circle inside the lens.</desc>
+      <defs>
+        <clipPath id="static-vesica-b"><circle cx="370" cy="210" r="120"></circle></clipPath>
+      </defs>
+      <circle class="gonol-scope-ring" cx="310" cy="210" r="180"></circle>
+      <circle class="gonol-lens gonol-lens-ab" cx="250" cy="210" r="120" clip-path="url(#static-vesica-b)"></circle>
+      <circle class="gonol-operand-ring gonol-ring-a" cx="250" cy="210" r="120"></circle>
+      <circle class="gonol-operand-ring gonol-ring-b" cx="370" cy="210" r="120"></circle>
+      <circle class="gonol-relationship-ring" cx="310" cy="210" r="60"></circle>
+      <circle class="gonol-intersection" cx="310" cy="106.077" r="5"></circle>
+      <circle class="gonol-intersection" cx="310" cy="313.923" r="5"></circle>
+      <text class="gonol-svg-label" x="206" y="214">A</text>
+      <text class="gonol-svg-label" x="414" y="214">B</text>
+    </svg>
+    <p class="gonol-stage-legend"><span><i class="legend-operand"></i> operand centerline</span><span><i class="legend-lens"></i> retained vesica</span><span><i class="legend-scope"></i> scope circle</span><span><i class="legend-relation"></i> relationship circle</span></p>
+  </section>
+
+  {% set operandSlots = ["A", "B", "C", "D", "E", "F", "G"] %}
+  {% set operandNames = ["root", "route", "language", "meaning", "relation", "scale", "context"] %}
+  {% set operandScales = ["word", "word", "lexical-family", "declared-scale-D", "declared-scale-E", "declared-scale-F", "declared-scale-G"] %}
+  <section aria-labelledby="operands-heading">
+    <h3 id="operands-heading">Exact operands</h3>
+    <p class="section-intro">Enter exact source text or a serialized gonol. No normalization or case folding is applied. A source-preserved SPACE manifestation is a nesting boundary, not a word-gonol vertex; a non-SPACE unassigned scalar remains positive coverage evidence.</p>
+    <div class="gonol-operand-grid">
+      {% for slot in operandSlots %}
+      <article class="panel gonol-operand" data-operand="{{ slot }}"{% if loop.index0 > 1 %} hidden{% endif %}>
+        <h4>Operand {{ slot }}</h4>
+        <div class="gonol-field-row">
+          <label for="gonol-name-{{ slot }}">Gonol id</label>
+          <input id="gonol-name-{{ slot }}" data-operand-name value="{{ operandNames[loop.index0] }}" autocomplete="off">
+        </div>
+        <div class="gonol-field-row">
+          <label for="gonol-scale-{{ slot }}">Native scale</label>
+          <input id="gonol-scale-{{ slot }}" data-operand-scale value="{{ operandScales[loop.index0] }}" autocomplete="off">
+        </div>
+        <div class="gonol-field-row">
+          <label for="gonol-source-{{ slot }}">Source identity</label>
+          <input id="gonol-source-{{ slot }}" data-operand-source value="interactive:{{ slot }}" autocomplete="off">
+        </div>
+        <div class="gonol-field-stack">
+          <label for="gonol-payload-{{ slot }}">Exact payload</label>
+          <textarea id="gonol-payload-{{ slot }}" data-operand-payload rows="3" spellcheck="false">{{ operandNames[loop.index0] }}</textarea>
+        </div>
+        <div class="source-block gonol-output" aria-label="Operand {{ slot }} exact snapshot"><pre data-operand-snapshot>Awaiting exact occurrence assembly.</pre></div>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="panel gonol-public-panel" aria-labelledby="public-gonol-heading">
+    <div class="gonol-stage-head">
+      <div>
+        <p class="eyebrow">Exact source-provenance carrier · 157 Unicode code points</p>
+        <h3 id="public-gonol-heading">Public Gonol occurrence view</h3>
+      </div>
+      <label for="gonol-public-operand">Inspect operand
+        <select id="gonol-public-operand" data-public-operand>
+          {% for slot in operandSlots %}<option value="{{ slot }}"{% if loop.first %} selected{% endif %}>{{ slot }}</option>{% endfor %}
+        </select>
+      </label>
+    </div>
+    <p>Each address remains present as a frame position. Highlighting registers only the non-SPACE Unicode occurrences possessed by the selected operand. Address position is not a source-derived geometric coordinate.</p>
+    <div class="source-block gonol-output" aria-label="Ordered Public Gonol occurrence-address vectors"><pre data-vector-output>Awaiting exact occurrence assembly.</pre></div>
+    <ol class="public-gonol-grid" data-public-gonol-grid aria-label="Public Gonol 157 ordered positions" tabindex="0">
+      {% for token in gonol_relationship_display.public_gonol.tokens %}
+      <li data-carrier-position="{{ loop.index0 }}">
+        <span class="public-gonol-position">{{ loop.index0 }}</span>
+        <code>{{ token | json }}</code>
+        <span class="public-gonol-count" data-position-count hidden></span>
+      </li>
+      {% endfor %}
+    </ol>
+  </section>
+
+  <section aria-labelledby="pairwise-heading">
+    <h3 id="pairwise-heading">Pairwise vesica receipts</h3>
+    <p class="section-intro">Primitive three retains all three vesicas. Coordinate coincidence does not merge their receipt identities.</p>
+    <div class="gonol-pair-grid">
+      {% for pair in ["AB", "BC", "CA"] %}
+      <article class="panel gonol-pair" data-pair="{{ pair }}"{% if pair != "AB" %} hidden{% endif %}>
+        <p class="eyebrow">Retained vesica {{ pair[0] }} ↔ {{ pair[1] }}</p>
+        <h4>{{ pair[0] }} ↔ {{ pair[1] }}</h4>
+        <pre class="gonol-code" data-pair-receipt aria-label="Vesica {{ pair }} relationship receipt JSON" tabindex="0">Awaiting relationship receipt.</pre>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="receipt-heading">
+    <h3 id="receipt-heading">Complete relationship receipt</h3>
+    <p>The generated JSON remains local to this page. It identifies the commit-pinned producer contract, native scales, explicit projection and comparison policies, retained pairwise relationships, declared information loss, and unresolved constraints.</p>
+    <div class="actions">
+      <button class="button" type="button" data-download-receipt>Download JSON receipt</button>
+      <a class="button secondary" href="{{ gonol_relationship_publication.receipt_schema.path }}">Open receipt schema</a>
+      <a class="button secondary" href="/assets/data/gonol-relationship-display-v1.json">Open machine contract</a>
+    </div>
+    <div class="source-block gonol-output" aria-label="Complete generated relationship receipt"><pre data-receipt-output>Awaiting exact relationship assembly.</pre></div>
+    <p class="gonol-live-status" data-gonol-status role="status" aria-live="polite"></p>
+  </section>
+</section>
+
+<section class="panel" aria-labelledby="primitive-range-heading">
+  <h2 id="primitive-range-heading">Primitive range and display standing</h2>
+  <div class="gonol-primitive-table-wrap" tabindex="0">
+    <table class="gonol-primitive-table">
+      <thead><tr><th>Arity</th><th>Primitive</th><th>Projection</th><th>Relationship boundary</th></tr></thead>
+      <tbody>
+        {% for primitive in gonol_relationship_display.primitives %}
+        <tr>
+          <th scope="row">{{ primitive.arity }}</th>
+          <td><code>{{ primitive.primitive_id }}</code></td>
+          <td>{{ primitive.projection_id or "hmmm — unresolved" }}</td>
+          <td>{% if primitive.arity == 1 %}One continuous path; projected crossing is not a vertex.{% elif primitive.arity == 2 %}One vesica, two visible centerline intersections, scope and relationship circles retained.{% elif primitive.arity == 3 %}AB, BC, and CA remain three recoverable vesicas inside the joint triquetra view.{% else %}Seven identities may be retained; no geometry or pairing count is inferred.{% endif %}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="panel" aria-labelledby="source-identity-heading">
+  <h2 id="source-identity-heading">Source identity and drift boundary</h2>
+  <dl class="meta">
+    <dt>Repository</dt><dd><code>{{ gonol_relationship_publication.source.repository }}</code></dd>
+    <dt>Commit</dt><dd><code>{{ gonol_relationship_publication.source.commit }}</code></dd>
+    <dt>Path</dt><dd><code>{{ gonol_relationship_publication.source.path }}</code></dd>
+    <dt>Git blob</dt><dd><code>{{ gonol_relationship_publication.source.blob }}</code></dd>
+    <dt>SHA-256</dt><dd><code>{{ gonol_relationship_publication.source.sha256 }}</code></dd>
+    <dt>Public Gonol source</dt><dd><code>{{ gonol_relationship_display.public_gonol.source_repository }}@{{ gonol_relationship_display.public_gonol.source_commit }}</code></dd>
+    <dt>Public Gonol digest</dt><dd><code>{{ gonol_relationship_display.public_gonol.sha256 }}</code></dd>
+  </dl>
+  <p><a class="button" href="{{ gonol_relationship_publication.source.url }}">Open exact UCNS machine contract</a></p>
+</section>
+
+<section class="hmmm"><h2>hmmm</h2><p>{{ gonol_relationship_publication.hmmm }}</p><p>The occurrence-address vector starts the English embedding work by preserving exact character identity, source order, multiplicity, carrier address, and scale declaration. It is not the completed English lexical floor or the missing hyperdimensional geometric assignment law.</p></section>
+
+<script id="gonol-relationship-contract" type="application/json">{{ gonol_relationship_display | json | safe }}</script>
+<script id="gonol-relationship-publication" type="application/json">{{ gonol_relationship_publication | json | safe }}</script>
+<script src="/assets/js/gonol-relationships.js" defer></script>
