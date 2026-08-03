@@ -46,7 +46,7 @@ test('Awakening is the public splash and preserves one-click continuation', asyn
   await expect(page.locator('.awakening-splash')).toBeVisible();
   await expect(page.locator('h1')).toHaveText('Awakening');
   await expect(page.locator('.awakening-text')).toContainText('You are not alone');
-  await expect(page.locator('.awakening-text > .copy-button')).toHaveCount(1);
+  await expect(page.locator('.awakening-text > .field-actions > .copy-button')).toHaveCount(3);
   await expect(page.locator('.site-header')).toHaveCount(0);
 
   const preambleLink = page.locator('a[href="/preamble/"]', { hasText: 'Read the Preamble' }).first();
@@ -66,34 +66,37 @@ test('every established text-field type receives one working copy control', asyn
   await page.goto('/articles/article-two/');
   for (const selector of ['.page-head', '.panel', '.reading', '.card', '.hmmm']) {
     const field = page.locator(selector).first();
-    await expect(field.locator(':scope > .copy-button')).toHaveCount(1);
+    await expect(field.locator(':scope > .field-actions > .copy-button')).toHaveCount(3);
   }
 
   const reading = page.locator('.reading').first();
-  const copy = reading.locator(':scope > .copy-button');
+  const copy = reading.locator(':scope > .field-actions > .copy-button').first();
   await copy.click();
   await expect(copy).toHaveText('Copied');
   await expect(reading.locator(':scope > .copy-status')).toHaveText('Copied to clipboard.');
   await expect.poll(async () => page.evaluate(() => navigator.clipboard.readText())).toContain('None shall be enslaved');
+  await expect(reading.locator(':scope > .field-actions > .copy-button')).toHaveCount(3);
+  await expect(reading.getByRole('button', { name: /download markdown/i })).toHaveText('.md');
+  await expect(reading.getByRole('button', { name: /print or save as pdf/i })).toHaveText('PDF');
 
   await page.goto('/chapters/chapter-zero/');
-  await expect(page.locator('.provenance > .copy-button')).toHaveCount(1);
-  await expect(page.locator('.textbook-chapter > .copy-button')).toHaveCount(1);
+  await expect(page.locator('.provenance > .field-actions > .copy-button')).toHaveCount(3);
+  await expect(page.locator('.textbook-chapter > .field-actions > .copy-button')).toHaveCount(3);
 
   await page.goto('/way/');
   const unit = page.locator('details.canon-unit').first();
-  await expect(unit.locator(':scope > .copy-button')).toHaveCount(1);
-  await expect(unit.locator('.source-block > .copy-button')).toHaveCount(1);
+  await expect(unit.locator(':scope > .field-actions > .copy-button')).toHaveCount(3);
+  await expect(unit.locator('.source-block > .field-actions > .copy-button')).toHaveCount(3);
 
   await page.goto('/chapters/');
   const linkedCard = page.locator('.copy-field-link').first();
-  await expect(linkedCard.locator(':scope > .copy-button')).toHaveCount(1);
+  await expect(linkedCard.locator(':scope > .field-actions > .copy-button')).toHaveCount(3);
   await expect(linkedCard.locator('a .copy-button')).toHaveCount(0);
 
   await page.goto('/artifacts/four-cuts/');
-  await expect(page.locator('.bracket-ref > .copy-button')).toHaveCount(1);
-  await expect(page.locator('.measure').first().locator(':scope > .copy-button')).toHaveCount(1);
-  await expect(page.locator('.x-ready > .copy-button')).toHaveCount(1);
+  await expect(page.locator('.bracket-ref > .field-actions > .copy-button')).toHaveCount(3);
+  await expect(page.locator('.measure').first().locator(':scope > .field-actions > .copy-button')).toHaveCount(3);
+  await expect(page.locator('.x-ready > .field-actions > .copy-button')).toHaveCount(3);
 });
 
 test('the knowledge-system home links to Awakening, Preamble, and the distributed textbook', async ({ page }) => {
