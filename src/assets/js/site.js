@@ -109,6 +109,14 @@ function blockMarkdown(node, depth = 0) {
   const tag = node.tagName.toLowerCase();
   const headingLevel = /^h([1-6])$/.exec(tag);
   if (headingLevel) return `${'#'.repeat(Number(headingLevel[1]))} ${inlineMarkdown(node).trim()}\n\n`;
+  if (node.matches('.m-title, .ref-title')) return `### ${inlineMarkdown(node).trim()}\n\n`;
+  if (tag === 'a') {
+    const href = node.getAttribute('href');
+    const body = Array.from(node.childNodes).map(child => blockMarkdown(child, depth)).join('').trim();
+    if (!href) return body ? `${body}\n\n` : '';
+    const title = node.querySelector(TITLE_SELECTOR)?.textContent?.replace(/\s+/g, ' ').trim() || href;
+    return `${body}\n\n[Open ${markdownEscape(title)}](${new URL(href, document.baseURI).href})\n\n`;
+  }
   if (tag === 'p') return `${inlineMarkdown(node).trim()}\n\n`;
   if (tag === 'pre') return `\`\`\`\n${node.textContent || ''}\n\`\`\`\n\n`;
   if (tag === 'blockquote') return `${(node.innerText || '').split('\n').map(line => `> ${line}`).join('\n')}\n\n`;
