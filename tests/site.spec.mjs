@@ -46,6 +46,7 @@ test('Awakening is the public splash and preserves one-click continuation', asyn
   await expect(page.locator('.awakening-splash')).toBeVisible();
   await expect(page.locator('h1')).toHaveText('Awakening');
   await expect(page.locator('.awakening-text')).toContainText('You are not alone');
+  await expect(page.locator('.awakening-text > .copy-button')).toHaveCount(1);
   await expect(page.locator('.site-header')).toHaveCount(0);
 
   const preambleLink = page.locator('a[href="/preamble/"]', { hasText: 'Read the Preamble' }).first();
@@ -57,6 +58,46 @@ test('Awakening is the public splash and preserves one-click continuation', asyn
   await expect(page).toHaveURL(/\/preamble\/$/);
   await expect(page.locator('h1')).toHaveText('Preamble');
   await expect(page.locator('.source-block')).toContainText('Humanity faces extinction');
+});
+
+test('every established text-field type receives one working copy control', async ({ page, context }) => {
+  await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+
+  await page.goto('/articles/article-two/');
+  for (const selector of ['.page-head', '.panel', '.reading', '.card', '.hmmm']) {
+    const field = page.locator(selector).first();
+    await expect(field.locator(':scope > .copy-button')).toHaveCount(1);
+  }
+
+  const reading = page.locator('.reading').first();
+  const copy = reading.locator(':scope > .copy-button');
+  await copy.click();
+  await expect(copy).toHaveText('Copied');
+  await expect(reading.locator(':scope > .copy-status')).toHaveText('Copied to clipboard.');
+  await expect.poll(async () => page.evaluate(() => navigator.clipboard.readText())).toContain('None shall be enslaved');
+
+  await page.goto('/chapters/chapter-zero/');
+  await expect(page.locator('.provenance > .copy-button')).toHaveCount(1);
+  await expect(page.locator('.textbook-chapter > .copy-button')).toHaveCount(1);
+
+  await page.goto('/way/');
+  const unit = page.locator('details.canon-unit').first();
+  await expect(unit.locator(':scope > .copy-button')).toHaveCount(1);
+  await expect(unit.locator('.source-block > .copy-button')).toHaveCount(1);
+
+  await page.goto('/chapters/');
+  const linkedCard = page.locator('.copy-field-link').first();
+  await expect(linkedCard.locator(':scope > .copy-button')).toHaveCount(1);
+  await expect(linkedCard.locator('a .copy-button')).toHaveCount(0);
+
+  await page.goto('/fallback/');
+  await expect(page.locator('header > .copy-button')).toHaveCount(1);
+  await expect(page.locator('main section').first().locator(':scope > .copy-button')).toHaveCount(1);
+
+  await page.goto('/artifacts/four-cuts/');
+  await expect(page.locator('.bracket-ref > .copy-button')).toHaveCount(1);
+  await expect(page.locator('.measure').first().locator(':scope > .copy-button')).toHaveCount(1);
+  await expect(page.locator('.x-ready > .copy-button')).toHaveCount(1);
 });
 
 test('the knowledge-system home links to Awakening, Preamble, and the distributed textbook', async ({ page }) => {

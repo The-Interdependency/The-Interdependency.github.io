@@ -54,6 +54,16 @@ h3 { font-size: clamp(1.2rem, 2vw, 1.55rem); }
 .actions { display: flex; gap: .75rem; flex-wrap: wrap; margin-top: 1.7rem; }
 .button { display: inline-flex; align-items: center; justify-content: center; min-height: 2.8rem; padding: .7rem 1rem; border: 1px solid var(--violet); border-radius: .75rem; color: var(--starlight); background: rgba(155, 135, 245, .1); text-decoration: none; font-weight: 700; }
 .button.secondary { border-color: var(--line); background: transparent; color: var(--silver); }
+.copy-field { position: relative; }
+.copy-button { float: right; min-height: 2.2rem; margin: 0 0 .75rem .75rem; padding: .4rem .65rem; border: 1px solid var(--line); border-radius: .55rem; color: var(--silver); background: var(--night); font: 700 .73rem/1 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; cursor: pointer; }
+.copy-button:hover { color: var(--starlight); border-color: var(--violet); background: var(--night-soft); }
+.copy-status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+.copy-field-link { position: relative; min-width: 0; }
+.copy-field-link > .card { height: 100%; }
+.copy-field-link > .copy-button { position: absolute; z-index: 2; top: .75rem; right: .75rem; float: none; margin: 0; }
+details.copy-field { padding-top: 1.2rem; }
+details.copy-field > .copy-button { position: absolute; top: .65rem; right: .65rem; float: none; margin: 0; }
+details.copy-field > summary { padding-right: 4.75rem; }
 .section-intro { max-width: 65ch; color: var(--silver); }
 .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); gap: 1rem; margin: 1.4rem 0 3rem; }
 .card { display: block; position: relative; padding: 1.25rem; color: inherit; text-decoration: none; background: linear-gradient(145deg, rgba(22, 33, 58, .9), rgba(16, 24, 42, .86)); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: 0 0 0 rgba(0,0,0,0); transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
@@ -174,4 +184,4 @@ summary { cursor: pointer; font-weight: 800; }
   .hmmm-boundary { grid-column: auto; grid-template-columns: 1fr; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; } }
-@media print { body { background: white; color: black; } body::before, .site-header, .actions, .noscript { display: none; } .site-main { max-width: none; padding: 0; } .card, .panel, .provenance, .hmmm, details, .textbook-chapter { background: white; color: black; box-shadow: none; } a { color: black; } }
+@media print { body { background: white; color: black; } body::before, .site-header, .actions, .noscript, .copy-button { display: none; } .site-main { max-width: none; padding: 0; } .card, .panel, .provenance, .hmmm, details, .textbook-chapter { background: white; color: black; box-shadow: none; } a { color: black; } }

@@ -15,12 +15,13 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="/assets/js/site.js" defer></script>
 <style>
   :root{
     --ink:#14171c; --ink-2:#1b1f26; --ink-3:#20242c;
     --brass:#b8935f; --brass-dim:#8a7150;
-    --rust:#c1502e; --rust-dim:#8f3c22;
-    --slate:#5b6472; --text:#e8e6de; --text-dim:#93979f; --hair:#2a2f38;
+    --rust:#f08a63; --rust-dim:#8f3c22;
+    --slate:#aeb4c0; --text:#e8e6de; --text-dim:#93979f; --hair:#2a2f38;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   html,body{ background:var(--ink); color:var(--text); font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
@@ -107,6 +108,10 @@
   .section-label::after{ content:''; flex:1; height:1px; background:var(--hair); }
 
   footer{ font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--slate); line-height:1.7; padding-top:16px; border-top:1px solid var(--hair); }
+  .copy-field{ position:relative; }
+  .copy-button{ position:absolute; top:10px; right:10px; z-index:3; min-height:28px; padding:6px 8px; border:1px solid var(--hair); border-radius:5px; background:var(--ink); color:var(--text-dim); font:600 10px/1 'JetBrains Mono',monospace; cursor:pointer; }
+  .copy-button:hover{ border-color:var(--brass); color:var(--text); }
+  .copy-status{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap; }
   @media (max-width:380px){ h1{ font-size:21px; } }
 </style>
 </head>
@@ -117,7 +122,7 @@
   <h1>Wealth and tax, <em>each cut its own honest way</em>.</h1>
   <p class="sub">You asked to see wealth and tax burden per bracket, total and per person, as stacks of <b>$</b>. Two of these are cleanly measurable by tax bracket; two are not. Rather than fake the alignment, each measure sits on the finest axis its real data supports — and the seam between them is marked, not hidden. Tap <b>⤢</b> on any field to focus it full-screen.</p>
 
-  <div class="bracket-ref">
+  <div class="bracket-ref" data-copy-field>
     <div class="ref-title">2026 federal brackets — single filer · matched income group</div>
     <div class="bracket-row"><span class="rate">10%</span><span class="range">$0 – $12,400</span><span class="grp">inc <20%</span></div>
     <div class="bracket-row"><span class="rate">12%</span><span class="range">$12,401 – $50,400</span><span class="grp">20–40%</span></div>
@@ -131,7 +136,7 @@
   <!-- ===== TAX SIDE (7 brackets, real IRS) ===== -->
   <div class="section-label">tax — by marginal bracket · real</div>
 
-  <div class="measure">
+  <div class="measure" data-copy-field>
     <div class="m-head">
       <div class="m-title tax">1 · Total tax generated per bracket</div>
       <div class="m-unit">each $ = $1 billion of federal income tax</div>
@@ -149,7 +154,7 @@
     </div>
   </div>
 
-  <div class="measure">
+  <div class="measure" data-copy-field>
     <div class="m-head">
       <div class="m-title tax">2 · Tax per person, per bracket</div>
       <div class="m-unit">each $ = $1,000 of tax generated at that rate, per return reaching it</div>
@@ -170,7 +175,7 @@
   <!-- ===== WEALTH SIDE (6 income sextiles, real SCF) ===== -->
   <div class="section-label">wealth — by income group · real</div>
 
-  <div class="measure">
+  <div class="measure" data-copy-field>
     <div class="m-head">
       <div class="m-title wealth">3 · Total net dollars held per income group</div>
       <div class="m-unit">each $ = $1 billion of household net dollars (assets − debts)</div>
@@ -188,7 +193,7 @@
     </div>
   </div>
 
-  <div class="measure">
+  <div class="measure" data-copy-field>
     <div class="m-head">
       <div class="m-title wealth">4 · Net dollars held per person</div>
       <div class="m-unit">each $ = $1,000 a person <em>holds</em> (assets − debts) — not what they're worth</div>
@@ -206,7 +211,7 @@
     </div>
   </div>
 
-  <div class="hmmm">
+  <div class="hmmm" data-copy-field>
     <span class="tag">hmmm</span>
     <p>The two axes are <b>not</b> the same cut. Tax data (1, 2) is real, ranked by <b>marginal rate</b> — IRS reports exactly how much each rate generates and who reaches it. Wealth data (3, 4) is real, ranked by <b>income group</b> — the SCF reports net worth by income sextile. The bracket table up top pairs them by income range, but a taxpayer's <b>taxable</b> income (after deductions) and a family's <b>usual</b> income aren't the same number, so the pairing is a guide, not an identity.</p>
     <p><span class="flag">Why wealth isn't drawn per bracket at all:</span> the wealth-by-tax-bracket cross-tab isn't published, and any estimate would collapse at the top — the SCF's top income decile holds mean net dollars of $6.63M, which hides the top 1% holding near $44M. Forcing wealth onto the 7 brackets would <b>understate the tail so badly it would lie.</b> The income-sextile cut is the finest honest one, and even it buries that top-1% tail inside the 90–100 slice.</p>
@@ -216,7 +221,7 @@
   <!-- X-ready section: makes sharing / threading on X frictionless -->
   <div class="section-label">ready for X · copy-paste numbers & thread starter</div>
 
-  <div class="x-ready" style="border:1px solid var(--hair); border-radius:8px; padding:16px 16px 18px; background:var(--ink-2); margin-bottom:28px; font-size:13px; line-height:1.55;">
+  <div class="x-ready" data-copy-field style="border:1px solid var(--hair); border-radius:8px; padding:16px 16px 18px; background:var(--ink-2); margin-bottom:28px; font-size:13px; line-height:1.55;">
     <p style="color:var(--text-dim); margin-bottom:14px;">The interactive fields above (especially when expanded ⤢) make strong screenshots for threads. Below are the clean numbers + a suggested starter post you can copy straight into X. Feel free to quote any pie or field directly.</p>
 
     <div style="background:#0f1218; border-radius:6px; padding:12px 14px; margin-bottom:14px; font-family:'JetBrains Mono',monospace; font-size:11.5px; color:#c8c6be; line-height:1.65;">
