@@ -1,8 +1,8 @@
 // === MODULE_BUILD ===
 // id: optional_site_enhancement
-//   purpose: Add compact navigation and export actions for each substantive text field without hiding static content.
+//   purpose: Add compact navigation and structure-preserving export actions for each substantive text field without hiding static content.
 //   entrypoint: loaded with defer from the base layout
-//   tests: tests/site-contract.test.mjs
+//   tests: tests/site-contract.test.mjs, tests/post-merge-reconciliation.test.mjs
 // === END MODULE_BUILD ===
 
 document.documentElement.classList.add('js');
@@ -18,11 +18,6 @@ if (button && nav) {
   });
 }
 
-// A public field is a deliberate, self-contained reading unit: not a heading,
-// navigation link, or decorative label. Keep this list aligned with the site
-// component vocabulary so new content using an established field class gains a
-// copy action automatically. `data-copy-field` is the escape hatch for a new
-// field type that has not yet earned a shared class.
 const COPYABLE_FIELD_SELECTOR = [
   '[data-copy-field]',
   '#content .hero',
@@ -44,15 +39,31 @@ const COPYABLE_FIELD_SELECTOR = [
   '.site-footer .hmmm-boundary'
 ].join(', ');
 
-function textForCopy(field) {
+const TITLE_SELECTOR = 'h1, h2, h3, .m-title, .ref-title, summary, strong';
+const EXPORT_IGNORE_SELECTOR = '.field-actions, .copy-status, script, style, template, [data-copy-ignore]';
+
+function cleanClone(field) {
   const copy = field.cloneNode(true);
-  copy.querySelectorAll('.field-actions, .copy-status, script, style, template, [data-copy-ignore]').forEach(node => node.remove());
-  return copy.innerText.replace(/\n{3,}/g, '\n\n').trim();
+  copy.querySelectorAll(EXPORT_IGNORE_SELECTOR).forEach(node => node.remove());
+  return copy;
+}
+
+function textForCopy(field) {
+  return cleanClone(field).innerText.replace(/\n{3,}/g, '\n\n').trim();
 }
 
 function fieldTitle(field) {
-  const heading = field.querySelector('h1, h2, h3, summary, strong');
-  return heading?.textContent?.replace(/\s+/g, ' ').trim() || document.title.replace(/\s+·\s+.*$/, '').trim() || 'field-text';
+  const heading = field.querySelector(TITLE_SELECTOR);
+  return heading?.textContent?.replace(/\s+/g, ' ').trim()
+    || document.title.replace(/\s+·\s+.*$/, '').trim()
+    || 'field-text';
+}
+
+function textWithoutRepeatedTitle(field) {
+  const copy = cleanClone(field);
+  const heading = copy.querySelector(TITLE_SELECTOR);
+  if (heading && heading.textContent.replace(/\s+/g, ' ').trim() === fieldTitle(field)) heading.remove();
+  return copy.innerText.replace(/\n{3,}/g, '\n\n').trim();
 }
 
 function fieldLabel(field, action) {
@@ -71,12 +82,61 @@ function fieldFilename(field, extension) {
   return `${filename}.${extension}`;
 }
 
+function markdownEscape(value) {
+  return value.replace(/([\\`*_[\]<>])/g, '\\$1');
+}
+
+function inlineMarkdown(node) {
+  if (node.nodeType === Node.TEXT_NODE) return markdownEscape(node.textContent || '');
+  if (node.nodeType !== Node.ELEMENT_NODE) return '';
+  const tag = node.tagName.toLowerCase();
+  const content = Array.from(node.childNodes).map(inlineMarkdown).join('');
+  if (tag === 'a') {
+    const href = node.getAttribute('href');
+    return href ? `[${content.trim() || href}](${new URL(href, document.baseURI).href})` : content;
+  }
+  if (tag === 'code') return `\`${(node.textContent || '').replace(/`/g, '\\`')}\``;
+  if (tag === 'strong' || tag === 'b') return `**${content}**`;
+  if (tag === 'em' || tag === 'i') return `*${content}*`;
+  if (tag === 'br') return '  \n';
+  return content;
+}
+
+function blockMarkdown(node, depth = 0) {
+  if (node.nodeType === Node.TEXT_NODE) return node.textContent?.trim() ? `${markdownEscape(node.textContent.trim())}\n\n` : '';
+  if (node.nodeType !== Node.ELEMENT_NODE) return '';
+  if (node.matches(EXPORT_IGNORE_SELECTOR)) return '';
+  const tag = node.tagName.toLowerCase();
+  const headingLevel = /^h([1-6])$/.exec(tag);
+  if (headingLevel) return `${'#'.repeat(Number(headingLevel[1]))} ${inlineMarkdown(node).trim()}\n\n`;
+  if (tag === 'p') return `${inlineMarkdown(node).trim()}\n\n`;
+  if (tag === 'pre') return `\`\`\`\n${node.textContent || ''}\n\`\`\`\n\n`;
+  if (tag === 'blockquote') return `${(node.innerText || '').split('\n').map(line => `> ${line}`).join('\n')}\n\n`;
+  if (tag === 'ul' || tag === 'ol') {
+    return `${Array.from(node.children).map((item, index) => {
+      const marker = tag === 'ol' ? `${index + 1}.` : '-';
+      return `${'  '.repeat(depth)}${marker} ${inlineMarkdown(item).trim()}`;
+    }).join('\n')}\n\n`;
+  }
+  if (tag === 'dl') {
+    return `${Array.from(node.children).map(child => child.tagName === 'DT'
+      ? `**${inlineMarkdown(child).trim()}**`
+      : `${inlineMarkdown(child).trim()}\n`).join('\n')}\n`;
+  }
+  if (tag === 'hr') return '---\n\n';
+  return Array.from(node.childNodes).map(child => blockMarkdown(child, depth + 1)).join('');
+}
+
+function markdownForField(field) {
+  const copy = cleanClone(field);
+  return blockMarkdown(copy).replace(/\n{3,}/g, '\n\n').trim();
+}
+
 async function writeText(text) {
   if (navigator.clipboard?.writeText) {
     await navigator.clipboard.writeText(text);
     return;
   }
-
   const textarea = document.createElement('textarea');
   textarea.value = text;
   textarea.setAttribute('readonly', '');
@@ -90,7 +150,7 @@ async function writeText(text) {
 
 function downloadMarkdown(field) {
   const link = document.createElement('a');
-  link.href = URL.createObjectURL(new Blob([`${textForCopy(field)}\n`], { type: 'text/markdown;charset=utf-8' }));
+  link.href = URL.createObjectURL(new Blob([`${markdownForField(field)}\n`], { type: 'text/markdown;charset=utf-8' }));
   link.download = fieldFilename(field, 'md');
   link.hidden = true;
   document.body.append(link);
@@ -107,10 +167,10 @@ function printPdf(field) {
   const printWindow = window.open('', '_blank', 'popup');
   if (!printWindow) return false;
   printWindow.opener = null;
-
   const title = fieldTitle(field);
+  const body = textWithoutRepeatedTitle(field);
   printWindow.document.open();
-  printWindow.document.write(`<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${escapeHtml(title)}</title><style>body{max-width:50rem;margin:2rem auto;padding:0 1rem;color:#111;font:12pt/1.5 system-ui,sans-serif}h1{font-family:Georgia,serif;font-size:20pt;line-height:1.2}pre{white-space:pre-wrap;font:inherit}</style></head><body><h1>${escapeHtml(title)}</h1><pre>${escapeHtml(textForCopy(field))}</pre></body></html>`);
+  printWindow.document.write(`<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${escapeHtml(title)}</title><style>body{max-width:50rem;margin:2rem auto;padding:0 1rem;color:#111;font:12pt/1.5 system-ui,sans-serif}h1{font-family:Georgia,serif;font-size:20pt;line-height:1.2}pre{white-space:pre-wrap;font:inherit}</style></head><body><h1>${escapeHtml(title)}</h1><pre>${escapeHtml(body)}</pre></body></html>`);
   printWindow.document.close();
   printWindow.focus();
   window.setTimeout(() => printWindow.print(), 100);
@@ -119,31 +179,16 @@ function printPdf(field) {
 
 function addCopyControl(field) {
   if (field.dataset.copyReady === 'true' || !textForCopy(field)) return;
-
   const actions = document.createElement('div');
   actions.className = 'field-actions';
   actions.setAttribute('data-copy-ignore', '');
-
-  const copyControl = document.createElement('button');
-  copyControl.type = 'button';
-  copyControl.className = 'copy-button';
-  copyControl.textContent = 'Copy';
+  const copyControl = Object.assign(document.createElement('button'), { type: 'button', className: 'copy-button', textContent: 'Copy' });
   copyControl.setAttribute('aria-label', fieldLabel(field, 'Copy'));
-
-  const markdownControl = document.createElement('button');
-  markdownControl.type = 'button';
-  markdownControl.className = 'copy-button';
-  markdownControl.textContent = '.md';
+  const markdownControl = Object.assign(document.createElement('button'), { type: 'button', className: 'copy-button', textContent: '.md' });
   markdownControl.setAttribute('aria-label', fieldLabel(field, 'Download Markdown for'));
-
-  const pdfControl = document.createElement('button');
-  pdfControl.type = 'button';
-  pdfControl.className = 'copy-button';
-  pdfControl.textContent = 'PDF';
+  const pdfControl = Object.assign(document.createElement('button'), { type: 'button', className: 'copy-button', textContent: 'PDF' });
   pdfControl.setAttribute('aria-label', fieldLabel(field, 'Print or save as PDF for'));
-
   actions.append(copyControl, markdownControl, pdfControl);
-
   const status = document.createElement('span');
   status.className = 'copy-status';
   status.setAttribute('role', 'status');
@@ -151,14 +196,12 @@ function addCopyControl(field) {
 
   let controlField = field;
   if (field.matches('a')) {
-    // An anchor cannot contain an interactive descendant. Its copy action is
-    // therefore a sibling in a small wrapper, while the copied text remains
-    // exactly the card/link field.
     const wrapper = document.createElement('div');
     wrapper.className = 'copy-field copy-field-link';
     field.replaceWith(wrapper);
     wrapper.append(actions, status, field);
     controlField = wrapper;
+    if (field.matches('.card')) field.style.paddingTop = '4.75rem';
   } else if (field.matches('details')) {
     field.append(actions, status);
   } else {
@@ -187,3 +230,10 @@ function addCopyControl(field) {
 }
 
 document.querySelectorAll(COPYABLE_FIELD_SELECTOR).forEach(addCopyControl);
+
+if (document.querySelector('[data-gonol-lab]')) {
+  import('/assets/js/gonol-reconciliation.js').catch(() => {
+    const status = document.querySelector('[data-gonol-status]');
+    if (status) status.textContent = 'Strict receipt reconciliation could not load; do not treat generated receipts as portable evidence.';
+  });
+}
