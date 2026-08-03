@@ -28,6 +28,7 @@ const routes = [
   ['/source/', /Source/],
   ['/projects/', /Projects/],
   ['/artifacts/', /Artifacts/],
+  ['/artifacts/gonol-relationships/', /Public Gonol relationship lab/],
   ['/artifacts/edcm-mathematics/', /EDCM mathematical reference/],
   ['/research/method/', /Legislation is not science/],
   ['/fallback/', /Emergency static edition/]
@@ -181,6 +182,52 @@ test('EDCM mathematics stays source-bound and renders without a runtime math dep
   expect(await page.locator('.textbook-chapter math').count()).toBeGreaterThanOrEqual(50);
   await expect(page.locator('script[src*="temml"], script[src*="katex"], script[src*="mathjax"]')).toHaveCount(0);
   await expect(page.locator('.hmmm')).toContainText('content identities detect copy drift');
+});
+
+test('Public Gonol lab preserves vesica pieces, triquetra pair receipts, and unresolved seven geometry', async ({ page }) => {
+  await page.goto('/artifacts/gonol-relationships/');
+  await expect(page.locator('h1')).toHaveText('Public Gonol relationship lab');
+  await expect(page.locator('[data-gonol-status]')).toContainText('Primitive 2 receipt updated');
+  await expect(page.locator('[data-gonol-stage] .gonol-operand-ring')).toHaveCount(2);
+  await expect(page.locator('[data-gonol-stage] .gonol-lens')).toHaveCount(1);
+  await expect(page.locator('[data-gonol-stage] .gonol-intersection')).toHaveCount(2);
+  await expect(page.locator('[data-gonol-stage] .gonol-scope-ring')).toHaveCount(1);
+  await expect(page.locator('[data-gonol-stage] .gonol-relationship-ring')).toHaveCount(1);
+  await expect(page.locator('.gonol-pair:not([hidden])')).toHaveCount(1);
+
+  const activeOperandOutput = page.locator('.gonol-operand:not([hidden]) .gonol-output').first();
+  await expect(activeOperandOutput.locator(':scope > .copy-button')).toHaveCount(1);
+  const completeReceiptOutput = page.locator('[data-receipt-output]').locator('..');
+  await expect(completeReceiptOutput.locator(':scope > .copy-button')).toHaveCount(1);
+
+  await page.locator('#gonol-payload-A').fill('root');
+  await page.locator('#gonol-payload-B').fill('root');
+  await page.locator('[data-comparison-policy]').selectOption('exact-utf8');
+  await expect(page.locator('[data-receipt-output]')).toContainText('"exact_utf8_equal": true');
+  await expect(page.locator('[data-vector-output]')).toContainText('"code_point": "U+0072"');
+
+  await page.locator('.gonol-segmented label', { has: page.locator('input[value="3"]') }).click();
+  await expect(page.locator('[data-gonol-status]')).toContainText('3 retained pairwise vesicas');
+  await expect(page.locator('[data-gonol-stage] .gonol-lens')).toHaveCount(3);
+  await expect(page.locator('[data-gonol-stage] [data-pair-intersection]')).toHaveCount(6);
+  await expect(page.locator('.gonol-pair:not([hidden])')).toHaveCount(3);
+  for (const pair of ['AB', 'BC', 'CA']) {
+    await expect(page.locator(`.gonol-pair[data-pair="${pair}"]`)).toContainText(`vesica-${pair.toLowerCase()}`);
+  }
+
+  await page.locator('.gonol-segmented label', { has: page.locator('input[value="7"]') }).click();
+  await expect(page.locator('[data-gonol-status]')).toContainText('geometry and pairing remain hmmm');
+  await expect(page.locator('[data-gonol-stage] .gonol-identity-box')).toHaveCount(7);
+  await expect(page.locator('[data-gonol-stage] .gonol-operand-ring')).toHaveCount(0);
+  await expect(page.locator('[data-receipt-output]')).toContainText('no seven-form geometry or pairing count was inferred');
+});
+
+test('Public Gonol lab contains long receipts on a narrow viewport', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/artifacts/gonol-relationships/');
+  await expect(page.locator('[data-gonol-status]')).toContainText('Primitive 2 receipt updated');
+  const widths = await page.evaluate(() => ({ viewport: window.innerWidth, document: document.documentElement.scrollWidth }));
+  expect(widths.document).toBeLessThanOrEqual(widths.viewport);
 });
 
 test('all eight Rights Article Labs are linked from the Way tree and expose the shared contact structure', async ({ page }) => {
