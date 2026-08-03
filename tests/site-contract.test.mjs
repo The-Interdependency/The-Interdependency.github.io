@@ -59,7 +59,7 @@ test('Awakening owns the static public threshold and routes inward', async () =>
   ]);
   assert.match(layout, /class="awakening-body"/);
   assert.match(layout, /class="awakening-splash"/);
-  assert.doesNotMatch(layout, /<script/i);
+  assert.match(layout, /<script src="\/assets\/js\/site\.js" defer><\/script>/);
   assert.match(splash, /generated\.canon\.units/);
   assert.match(splash, /<h1>Awakening<\/h1>/);
   assert.match(splash, /href="\/preamble\/"/);

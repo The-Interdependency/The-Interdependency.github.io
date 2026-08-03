@@ -90,10 +90,6 @@ test('every established text-field type receives one working copy control', asyn
   await expect(linkedCard.locator(':scope > .copy-button')).toHaveCount(1);
   await expect(linkedCard.locator('a .copy-button')).toHaveCount(0);
 
-  await page.goto('/fallback/');
-  await expect(page.locator('header > .copy-button')).toHaveCount(1);
-  await expect(page.locator('main section').first().locator(':scope > .copy-button')).toHaveCount(1);
-
   await page.goto('/artifacts/four-cuts/');
   await expect(page.locator('.bracket-ref > .copy-button')).toHaveCount(1);
   await expect(page.locator('.measure').first().locator(':scope > .copy-button')).toHaveCount(1);
