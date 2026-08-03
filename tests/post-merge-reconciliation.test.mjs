@@ -13,12 +13,15 @@ function syntaxCheck(path) {
   assert.equal(result.status, 0, `${path} syntax failure:\n${result.stderr || result.stdout}`);
 }
 
-test('site-wide export controls preserve structure and distinct titles', async () => {
+test('site-wide export controls preserve structure, root destinations, and distinct titles', async () => {
   const source = await readFile(SITE_SCRIPT, 'utf8');
   syntaxCheck(SITE_SCRIPT);
 
   assert.match(source, /\.m-title, \.ref-title/);
+  assert.match(source, /node\.matches\('\.m-title, \.ref-title'\)/);
   assert.match(source, /function markdownForField\(field\)/);
+  assert.match(source, /if \(tag === 'a'\)/);
+  assert.match(source, /\[Open \$\{markdownEscape\(title\)\}\]/);
   assert.match(source, /new URL\(href, document\.baseURI\)\.href/);
   assert.match(source, /function textWithoutRepeatedTitle\(field\)/);
   assert.match(source, /heading\.remove\(\)/);
