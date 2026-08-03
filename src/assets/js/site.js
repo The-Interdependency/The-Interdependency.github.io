@@ -1,6 +1,6 @@
 // === MODULE_BUILD ===
 // id: optional_site_enhancement
-//   purpose: Add compact mobile navigation and one-copy-action-per-text-field without hiding static content.
+//   purpose: Add compact navigation and export actions for each substantive text field without hiding static content.
 //   entrypoint: loaded with defer from the base layout
 //   tests: tests/site-contract.test.mjs
 // === END MODULE_BUILD ===
@@ -46,14 +46,29 @@ const COPYABLE_FIELD_SELECTOR = [
 
 function textForCopy(field) {
   const copy = field.cloneNode(true);
-  copy.querySelectorAll('.copy-button, .copy-status, script, style, template, [data-copy-ignore]').forEach(node => node.remove());
+  copy.querySelectorAll('.field-actions, .copy-status, script, style, template, [data-copy-ignore]').forEach(node => node.remove());
   return copy.innerText.replace(/\n{3,}/g, '\n\n').trim();
 }
 
-function fieldLabel(field) {
+function fieldTitle(field) {
   const heading = field.querySelector('h1, h2, h3, summary, strong');
-  const label = heading?.textContent?.replace(/\s+/g, ' ').trim();
-  return label ? `Copy ${label}` : 'Copy field text';
+  return heading?.textContent?.replace(/\s+/g, ' ').trim() || document.title.replace(/\s+·\s+.*$/, '').trim() || 'field-text';
+}
+
+function fieldLabel(field, action) {
+  const title = fieldTitle(field);
+  return title ? `${action} ${title}` : `${action} field text`;
+}
+
+function fieldFilename(field, extension) {
+  const filename = fieldTitle(field)
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 80) || 'field-text';
+  return `${filename}.${extension}`;
 }
 
 async function writeText(text) {
@@ -73,14 +88,61 @@ async function writeText(text) {
   if (!copied) throw new Error('Clipboard copy is unavailable.');
 }
 
+function downloadMarkdown(field) {
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(new Blob([`${textForCopy(field)}\n`], { type: 'text/markdown;charset=utf-8' }));
+  link.download = fieldFilename(field, 'md');
+  link.hidden = true;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(link.href), 0);
+}
+
+function escapeHtml(value) {
+  return value.replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
+}
+
+function printPdf(field) {
+  const printWindow = window.open('', '_blank', 'popup');
+  if (!printWindow) return false;
+  printWindow.opener = null;
+
+  const title = fieldTitle(field);
+  printWindow.document.open();
+  printWindow.document.write(`<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${escapeHtml(title)}</title><style>body{max-width:50rem;margin:2rem auto;padding:0 1rem;color:#111;font:12pt/1.5 system-ui,sans-serif}h1{font-family:Georgia,serif;font-size:20pt;line-height:1.2}pre{white-space:pre-wrap;font:inherit}</style></head><body><h1>${escapeHtml(title)}</h1><pre>${escapeHtml(textForCopy(field))}</pre></body></html>`);
+  printWindow.document.close();
+  printWindow.focus();
+  window.setTimeout(() => printWindow.print(), 100);
+  return true;
+}
+
 function addCopyControl(field) {
   if (field.dataset.copyReady === 'true' || !textForCopy(field)) return;
 
-  const control = document.createElement('button');
-  control.type = 'button';
-  control.className = 'copy-button';
-  control.textContent = 'Copy';
-  control.setAttribute('aria-label', fieldLabel(field));
+  const actions = document.createElement('div');
+  actions.className = 'field-actions';
+  actions.setAttribute('data-copy-ignore', '');
+
+  const copyControl = document.createElement('button');
+  copyControl.type = 'button';
+  copyControl.className = 'copy-button';
+  copyControl.textContent = 'Copy';
+  copyControl.setAttribute('aria-label', fieldLabel(field, 'Copy'));
+
+  const markdownControl = document.createElement('button');
+  markdownControl.type = 'button';
+  markdownControl.className = 'copy-button';
+  markdownControl.textContent = '.md';
+  markdownControl.setAttribute('aria-label', fieldLabel(field, 'Download Markdown for'));
+
+  const pdfControl = document.createElement('button');
+  pdfControl.type = 'button';
+  pdfControl.className = 'copy-button';
+  pdfControl.textContent = 'PDF';
+  pdfControl.setAttribute('aria-label', fieldLabel(field, 'Print or save as PDF for'));
+
+  actions.append(copyControl, markdownControl, pdfControl);
 
   const status = document.createElement('span');
   status.className = 'copy-status';
@@ -95,25 +157,32 @@ function addCopyControl(field) {
     const wrapper = document.createElement('div');
     wrapper.className = 'copy-field copy-field-link';
     field.replaceWith(wrapper);
-    wrapper.append(control, status, field);
+    wrapper.append(actions, status, field);
     controlField = wrapper;
   } else if (field.matches('details')) {
-    field.append(control, status);
+    field.append(actions, status);
   } else {
-    field.prepend(control, status);
+    field.prepend(actions, status);
   }
 
   controlField.classList.add('copy-field');
   field.dataset.copyReady = 'true';
-  control.addEventListener('click', async () => {
+  copyControl.addEventListener('click', async () => {
     try {
       await writeText(textForCopy(field));
-      control.textContent = 'Copied';
+      copyControl.textContent = 'Copied';
       status.textContent = 'Copied to clipboard.';
-      window.setTimeout(() => { control.textContent = 'Copy'; }, 1600);
+      window.setTimeout(() => { copyControl.textContent = 'Copy'; }, 1600);
     } catch {
       status.textContent = 'Copy failed. Select the text and copy it manually.';
     }
+  });
+  markdownControl.addEventListener('click', () => {
+    downloadMarkdown(field);
+    status.textContent = 'Markdown download started.';
+  });
+  pdfControl.addEventListener('click', () => {
+    status.textContent = printPdf(field) ? 'Print dialog opened. Choose Save as PDF to download.' : 'PDF export was blocked. Allow pop-ups and try again.';
   });
 }
 
