@@ -1,7 +1,7 @@
 ---
 layout: layouts/splash.njk
 title: Awakening · The Interdependent Way
-description: The canonical Awakening of The Interdependent Way, presented as the public threshold into the Preamble and living knowledge system.
+description: The canonical Awakening of The Interdependent Way, presented as the public threshold into the Way.
 ---
 {% set awakenings = generated.canon.units | where("title", "Awakening") %}
 {% set awakening = awakenings[0] %}
@@ -13,14 +13,12 @@ description: The canonical Awakening of The Interdependent Way, presented as the
     {% if awakening %}
       <div class="awakening-text">{{ awakening.content | replace("Awakening \n", "") | replace("Awakening\n", "") }}</div>
       <div class="awakening-actions" aria-label="Continue from Awakening">
-        <a class="button" href="/preamble/">Read the Preamble</a>
-        <a class="button secondary" href="/home/">Enter the living system</a>
-        <a class="awakening-source" href="/source/{{ awakening.routeSlug }}/">Exact source and provenance</a>
+        <a class="button" href="/way/">Enter The Way</a>
       </div>
-      <p class="awakening-provenance">Canon <code>{{ generated.canon.source.repository }}:{{ generated.canon.source.path }}</code> · lines {{ awakening.startLine }}–{{ awakening.endLine }} · digest <code>{{ awakening.hash | truncate(18, true, '…') }}</code></p>
+      <p class="section-intro">Continue into the Way tree. Canon units unfold in their source order; Article Labs stay closed until you choose to open them.</p>
     {% else %}
       <section class="hmmm"><h2>hmmm</h2><p>The selected canon did not produce an Awakening unit. The release gate must treat the missing threshold as a broken public contract.</p></section>
-      <div class="awakening-actions"><a class="button" href="/preamble/">Read the Preamble</a><a class="button secondary" href="/home/">Enter the living system</a></div>
+      <div class="awakening-actions"><a class="button" href="/way/">Enter The Way</a></div>
     {% endif %}
   </div>
 </section>

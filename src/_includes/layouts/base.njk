@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Usage: every ordinary site page inherits this static navigation and advertises the machine-readable AI context without requiring JavaScript. -->
+<!-- Usage: every ordinary site page inherits a human-facing navigation. Machine-readable context remains discoverable through head metadata and dedicated routes without occupying the visible reading path. -->
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -17,15 +17,13 @@
 <body>
   <a class="skip-link" href="#content">Skip to content</a>
   <header class="site-header" data-site-header>
-    <a class="brand" href="/home/" aria-label="The Interdependent Way knowledge-system home">
+    <a class="brand" href="/home/" aria-label="The Interdependent Way home">
       <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
       <span><strong>The Interdependent Way</strong><small>living public knowledge system</small></span>
     </a>
     <button class="nav-toggle" type="button" hidden aria-expanded="false" aria-controls="primary-nav">Menu</button>
     <nav id="primary-nav" class="primary-nav" aria-label="Primary navigation">
-      <a href="/">Awakening</a>
-      <a href="/way/">Start</a>
-      <a href="/preamble/">Preamble</a>
+      <a href="/way/">The Way</a>
       <a href="/chapters/">Textbook</a>
       <a href="/narratives/">Narratives</a>
       <a href="/projects/">Projects</a>
@@ -40,13 +38,7 @@
   <footer class="site-footer">
     <div>
       <strong>The Interdependent Way</strong>
-      <p>Canon, distributed textbook, interpretation, research, implementation, and frontier claims are kept visibly distinct.</p>
-    </div>
-    <div class="footer-provenance">
-      <span>Canon alias: {{ generated.canon.source.repository }}</span>
-      <span>Path: {{ generated.canon.source.path }}</span>
-      <span>Digest: <code>{{ generated.canon.source.contentSha256 | truncate(18, true, '…') }}</code></span>
-      <span>Textbook: {{ generated.textbook.chapterCount }} distributed chapters</span>
+      <p>Canon, textbook, interpretation, research, implementation, and frontier claims remain distinct even when they are connected through the same site.</p>
     </div>
     <div class="hmmm-boundary"><strong>hmmm</strong><span>Honest incompletion remains visible so the next action has somewhere true to begin.</span></div>
   </footer>
