@@ -1,7 +1,36 @@
 ---
 layout: layouts/base.njk
 title: Explore The Way
-description: An expandable map of The Interdependent Way.
+description: A human-readable expandable map of The Interdependent Way with Article Labs nested beneath the canon units they examine.
 ---
-<header class="page-head"><p class="eyebrow">Canon-derived map</p><h1>Explore The Way</h1><p class="lede">Select a title to display that canon unit's exact text.</p></header>
-<ul class="index-list canon-outline">{% for unit in generated.canon.units %}{% set labMatches = article_lab | where("unit_id", unit.id) %}<li class="unit-level-{{ unit.level }}" data-parent-id="{{ unit.parentId or '' }}"><details class="canon-unit" id="{{ unit.routeSlug }}"><summary class="canon-unit-summary"><strong>{{ unit.title }}</strong></summary><pre class="source-block">{{ unit.content }}</pre>{% if labMatches.length %}<p class="canon-unit-lab"><a href="/lab/{{ unit.routeSlug }}/">Open Article Lab</a></p>{% endif %}</details></li>{% endfor %}</ul>
+<header class="page-head">
+  <p class="eyebrow">The human reading spine</p>
+  <h1>Explore The Way</h1>
+  <p class="lede">Open a title to read that unit in source order. Where a reviewed Article Lab exists, it appears as a second collapsible box inside the unit. Exact source text remains available one level deeper instead of occupying the first reading surface.</p>
+</header>
+<ul class="index-list canon-outline">
+  {% for unit in generated.canon.units %}
+    {% set labMatches = article_lab | where("unit_id", unit.id) %}
+    {% set lab = labMatches[0] %}
+    <li class="unit-level-{{ unit.level }}" data-parent-id="{{ unit.parentId or '' }}">
+      <details class="canon-unit" id="{{ unit.routeSlug }}">
+        <summary class="canon-unit-summary"><strong>{{ unit.title }}</strong>{% if lab %} <span class="status status-interpretation">Article Lab</span>{% endif %}</summary>
+        <blockquote class="reading canon-reading">
+          {% for line in unit.content | canonUnitBody %}<p>{{ line }}</p>{% endfor %}
+        </blockquote>
+        {% if lab %}
+          <details class="article-lab-box">
+            <summary><strong>Article Lab</strong> · {{ lab.public_title }}</summary>
+            <p><strong>Working boundary:</strong> {{ lab.ad_absurdum.boundary }}</p>
+            <p>This Lab keeps interpretation separate from canon. Open the full review for the paired failure tests, worst and best practices, domain applications, and reviewed research field.</p>
+            <p><a href="/lab/{{ unit.routeSlug }}/">Open full Article Lab</a></p>
+          </details>
+        {% endif %}
+        <details class="source-disclosure">
+          <summary>Exact source text</summary>
+          <pre class="source-block">{{ unit.content }}</pre>
+        </details>
+      </details>
+    </li>
+  {% endfor %}
+</ul>
