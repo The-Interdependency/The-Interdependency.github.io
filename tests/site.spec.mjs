@@ -14,7 +14,7 @@ const labRoutes = articleLab.map(record => {
 
 const routes = [
   ['/', /You are not alone/],
-  ['/home/', /A way through complexity/],
+  ['/home/', /Start with The Way/],
   ['/preamble/', /Humanity faces extinction/],
   ['/chapters/', /The Interdependency Textbook/],
   ['/chapters/chapter-zero/', /Zero is not nothing/],
@@ -23,7 +23,7 @@ const routes = [
   ['/articles/article-two/', /Freedom without abandonment/],
   ['/narratives/', /Living Narratives/],
   ['/narratives/jack-and-diane/', /The Longhand Journal/],
-  ['/way/', /The Way/],
+  ['/way/', /Explore The Way/],
   ['/lab/', /Rights Article laboratories/],
   ['/source/', /Source/],
   ['/projects/', /Projects/],
@@ -42,7 +42,7 @@ test('primary public routes render meaningful headings', async ({ page }) => {
   }
 });
 
-test('Awakening is the public splash and preserves one-click continuation', async ({ page }) => {
+test('Awakening is the public splash and has one human continuation into the Way', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('.awakening-splash')).toBeVisible();
   await expect(page.locator('h1')).toHaveText('Awakening');
@@ -50,15 +50,15 @@ test('Awakening is the public splash and preserves one-click continuation', asyn
   await expect(page.locator('.awakening-text > .field-actions > .copy-button')).toHaveCount(3);
   await expect(page.locator('.site-header')).toHaveCount(0);
 
-  const preambleLink = page.locator('a[href="/preamble/"]', { hasText: 'Read the Preamble' }).first();
-  const homeLink = page.locator('a[href="/home/"]', { hasText: 'Enter the living system' }).first();
-  await expect(preambleLink).toBeVisible();
-  await expect(homeLink).toBeVisible();
+  const wayLink = page.locator('a[href="/way/"]', { hasText: 'Enter The Way' }).first();
+  await expect(wayLink).toBeVisible();
+  await expect(page.locator('a[href="/preamble/"]')).toHaveCount(0);
+  await expect(page.locator('a[href="/home/"]')).toHaveCount(0);
 
-  await preambleLink.click();
-  await expect(page).toHaveURL(/\/preamble\/$/);
-  await expect(page.locator('h1')).toHaveText('Preamble');
-  await expect(page.locator('.source-block')).toContainText('Humanity faces extinction');
+  await wayLink.click();
+  await expect(page).toHaveURL(/\/way\/$/);
+  await expect(page.locator('h1')).toHaveText('Explore The Way');
+  await expect(page.locator('details.canon-unit').first()).toBeVisible();
 });
 
 test('every established text-field type receives one working copy control', async ({ page, context }) => {
@@ -100,17 +100,18 @@ test('every established text-field type receives one working copy control', asyn
   await expect(page.locator('.x-ready > .field-actions > .copy-button')).toHaveCount(3);
 });
 
-test('the knowledge-system home links to Awakening, Preamble, and the distributed textbook', async ({ page }) => {
+test('the knowledge-system home exposes the human reading spine without visible machine controls', async ({ page }) => {
   await page.goto('/home/');
   await expect(page.locator('a.brand')).toHaveAttribute('href', '/home/');
-  await expect(page.locator('nav[aria-label="Primary navigation"] a[href="/"]', { hasText: 'Awakening' })).toBeVisible();
-  const startLink = page.locator('nav[aria-label="Primary navigation"] a[href="/way/"]', { hasText: 'Start' });
-  await expect(startLink).toBeVisible();
-  await expect(page.locator('nav[aria-label="Primary navigation"] a', { hasText: 'The Way' })).toHaveCount(0);
-  await expect(page.locator('nav[aria-label="Primary navigation"] a[href="/preamble/"]', { hasText: 'Preamble' })).toBeVisible();
+  const wayLink = page.locator('nav[aria-label="Primary navigation"] a[href="/way/"]', { hasText: 'The Way' });
+  await expect(wayLink).toBeVisible();
+  await expect(page.locator('nav[aria-label="Primary navigation"] a[href="/"]')).toHaveCount(0);
+  await expect(page.locator('nav[aria-label="Primary navigation"] a[href="/preamble/"]')).toHaveCount(0);
   await expect(page.locator('nav[aria-label="Primary navigation"] a[href="/chapters/"]', { hasText: 'Textbook' })).toBeVisible();
   await expect(page.locator('main a[href="/chapters/"]').first()).toBeVisible();
-  await startLink.click();
+  await expect(page.locator('main a[href="/eai/aicontext.md"]')).toHaveCount(0);
+  await expect(page.locator('main a[href="/llms.txt"]')).toHaveCount(0);
+  await wayLink.click();
   await expect(page).toHaveURL(/\/way\/$/);
   await expect(page.locator('details.canon-unit').first()).toBeVisible();
 });
@@ -140,21 +141,36 @@ test('all eight rights articles are reachable from the article index', async ({ 
   }
 });
 
-test('clicking a Way row reveals its bounded canon text without leaving the tree', async ({ page }) => {
+test('clicking a Way row reveals human reading first, with Lab and exact source as nested disclosures', async ({ page }) => {
   await page.goto('/way/');
-  await expect(page.locator('.canon-unit-lab a')).toHaveCount(articleLab.length);
+  await expect(page.locator('.article-lab-box')).toHaveCount(articleLab.length);
   const article = page.locator('details.canon-unit', { has: page.locator(`a[href="${labRoutes[0].route}"]`) }).first();
-  const sourceBlock = article.locator('.source-block');
+  const reading = article.locator('.canon-reading');
+  const labBox = article.locator('details.article-lab-box');
   const labLink = article.locator(`a[href="${labRoutes[0].route}"]`);
+  const sourceDisclosure = article.locator('details.source-disclosure');
+  const sourceBlock = article.locator('.source-block');
+
   await expect(article).not.toHaveAttribute('open', '');
+  await expect(reading).not.toBeVisible();
   await expect(sourceBlock).not.toBeVisible();
-  await expect(labLink).not.toBeVisible();
-  await article.locator('summary').click();
+  await article.locator(':scope > summary').click();
   await expect(article).toHaveAttribute('open', '');
+  await expect(reading).toBeVisible();
+  await expect(reading).toContainText('Article One');
+  await expect(labBox).toBeVisible();
+  await expect(labBox).not.toHaveAttribute('open', '');
+  await expect(sourceBlock).not.toBeVisible();
+
+  await labBox.locator(':scope > summary').click();
+  await expect(labBox).toHaveAttribute('open', '');
+  await expect(labBox).toContainText('Working boundary');
+  await expect(labLink).toBeVisible();
+
+  await sourceDisclosure.locator(':scope > summary').click();
   await expect(sourceBlock).toBeVisible();
   await expect(sourceBlock).toContainText('Article One');
   expect((await sourceBlock.textContent())?.trim().length).toBeGreaterThan(100);
-  await expect(labLink).toBeVisible();
   await expect(page).toHaveURL(/\/way\/$/);
 });
 
