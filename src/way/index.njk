@@ -16,6 +16,7 @@ description: A human-readable expandable map of The Interdependent Way with Arti
       <details class="canon-unit" id="{{ unit.routeSlug }}">
         <summary class="canon-unit-summary"><strong>{{ unit.title }}</strong>{% if lab %} <span class="status status-interpretation">Article Lab</span>{% endif %}</summary>
         <blockquote class="reading canon-reading">
+          <p class="eyebrow">Canon text · {{ unit.title }}</p>
           {% for line in unit.content | canonUnitBody %}<p>{{ line }}</p>{% endfor %}
         </blockquote>
         {% if lab %}
