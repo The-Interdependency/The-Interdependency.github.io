@@ -23,7 +23,7 @@ export async function checkAiContextPublicDiscovery() {
     readFile('_site/sitemap.xml', 'utf8'),
     readFile('_site/llms.txt', 'utf8')
   ]);
-  assert.match(home, /href="\/eai\/aicontext\.md"/);
+  assert.doesNotMatch(home, /<a[^>]+href="\/eai\/aicontext\.md"/);
   assert.match(home, /rel="alternate" type="text\/markdown" href="\/eai\/aicontext\.md"/);
   assert.match(splash, /rel="alternate" type="text\/markdown" href="\/eai\/aicontext\.md"/);
   assert.match(sitemap, /<loc>https:\/\/interdependentway\.org\/eai\/aicontext\.md<\/loc>/);
@@ -52,14 +52,15 @@ test('generated deployment artifact contains the unified routes', async () => {
   assert.match(splash, /<h1>Awakening<\/h1>/);
   assert.match(splash, /5d explodes out of 4d/);
   assert.match(splash, /You are not alone/);
-  assert.match(splash, /href="\/preamble\/"[^>]*>Read the Preamble/);
-  assert.match(splash, /href="\/home\/"[^>]*>Enter the living system/);
+  assert.match(splash, /href="\/way\/"[^>]*>Enter The Way/);
+  assert.doesNotMatch(splash, /href="\/preamble\/"[^>]*>Read the Preamble/);
+  assert.doesNotMatch(splash, /href="\/home\/"[^>]*>Enter the living system/);
   assert.doesNotMatch(splash, /primary-nav/);
-  assert.match(home, /A way through complexity/);
-  assert.match(home, /href="\/preamble\/"[^>]*>Read the Preamble/);
+  assert.match(home, /Start with The Way/);
+  assert.match(home, /href="\/way\/"/);
   assert.match(home, /href="\/chapters\/"/);
   assert.match(home, /Chapters Zero through Seven/);
-  assert.match(home, /href="\/"/);
+  assert.doesNotMatch(home, /<a[^>]+href="\/eai\/aicontext\.md"/);
   assert.match(preamble, /One-click canon entrance/);
   assert.match(preamble, /Humanity faces extinction/);
   assert.match(preamble, /Canonical repository/);
@@ -147,11 +148,16 @@ test('Way map renders Human consciousness beneath Interdefinables and before Pre
   assert.doesNotMatch(way, /<h2>Human consciousness emerges from:?<\/h2>/);
   assert.match(way, /<details class="canon-unit"/);
   assert.match(way, /<summary class="canon-unit-summary">/);
-  assert.match(way, /Select a title to display that canon unit's exact text/);
-  assert.equal((way.match(/class="canon-unit-lab"/g) || []).length, 8);
-  assert.match(way, /Open Article Lab/);
+  assert.match(way, /Open a title to read that unit in source order/);
+  assert.equal((way.match(/class="article-lab-box"/g) || []).length, 8);
+  assert.equal((way.match(/class="source-disclosure"/g) || []).length, canonUnitCount(way));
+  assert.match(way, /Open full Article Lab/);
   assert.doesNotMatch(way, /Open unit page|Enter Lab|Source and provenance|tap to read|text open/);
 });
+
+function canonUnitCount(html) {
+  return (html.match(/class="canon-unit"/g) || []).length;
+}
 
 test('generated deployment artifact contains all rights article vertical slices with research attachment', async () => {
   const pages = [
