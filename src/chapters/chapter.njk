@@ -23,6 +23,7 @@ eleventyComputed:
 </article>
 <details class="provenance chapter-provenance">
   <summary>Source &amp; provenance</summary>
+  <h2>Source evidence</h2>
   <dl class="meta">
     <dt>Repository</dt><dd><code>{{ chapter.repository }}</code></dd>
     <dt>Path</dt><dd><code>{{ chapter.path }}</code></dd>
@@ -34,7 +35,7 @@ eleventyComputed:
   <div class="actions"><a class="button secondary" href="{{ chapter.sourceUrl }}">Open exact source in GitHub</a></div>
 </details>
 {% else %}
-<section class="hmmm"><h1>Chapter {{ chapter.display_number }} source unavailable</h1><p>The offline build has no retained content snapshot for this chapter. Its declared source remains available through the repository link below; no substitute text has been invented.</p><p>{{ chapter.retrievalError }}</p><details class="provenance chapter-provenance"><summary>Source &amp; provenance</summary><p><a href="{{ chapter.sourceUrl }}">Open declared source in GitHub</a></p></details></section>
+<section class="hmmm"><h1>Chapter {{ chapter.display_number }} source unavailable</h1><p>The offline build has no retained content snapshot for this chapter. Its declared source remains available through the repository link below; no substitute text has been invented.</p><p>{{ chapter.retrievalError }}</p><details class="provenance chapter-provenance"><summary>Source &amp; provenance</summary><h2>Source evidence</h2><p><a href="{{ chapter.sourceUrl }}">Open declared source in GitHub</a></p></details></section>
 {% endif %}
 <nav class="chapter-pagination" aria-label="Textbook chapters">
   {% if pagination.href.previous %}<a class="button secondary" href="{{ pagination.href.previous }}">Previous chapter</a>{% endif %}
