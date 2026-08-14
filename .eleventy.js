@@ -36,6 +36,20 @@ export default function configureEleventy(eleventyConfig) {
   eleventyConfig.addFilter('edcmMarkdown', value => md.render(String(value || ''))
     .replace(/<pre(?![^>]*\btabindex=)([^>]*)>/g, '<pre tabindex="0"$1>')
     .replace(/<math(?![^>]*\btabindex=)(?=[^>]*\bdisplay="block")/g, '<math tabindex="0"'));
+
+  // The eight publication Article drafts predate the current human-facing UI.
+  // Normalize their repeated presentation at build time so the Article is primary,
+  // footnotes are named literally, and source/provenance is available on demand.
+  // This is a static HTML transform; it does not depend on browser JavaScript.
+  eleventyConfig.addTransform('article-reading-hierarchy', function(content) {
+    const outputPath = this.page?.outputPath || '';
+    if (!/\/articles\/article-(?:one|two|three|four|five|six|seven|eight)\/index\.html$/.test(outputPath)) return content;
+    return String(content)
+      .replace(/<section class="panel">\s*<h2>Source boundary<\/h2>([\s\S]*?)<\/section>/, '<details class="provenance-disclosure"><summary>Source &amp; provenance</summary><h2>Source boundary</h2>$1</details>')
+      .replaceAll('Speaker A · exact canon excerpt', 'Article')
+      .replaceAll('Speaker B · footnote conversation', 'Footnotes');
+  });
+
   // Exact canonical body lines of a unit: skip the heading line, stop before
   // footnote lines, notes blocks, separators, and sub-headings. Mirrors the
   // body extraction in scripts/verify-article-canon.mjs; keep the two in step.
