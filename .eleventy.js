@@ -39,13 +39,24 @@ export default function configureEleventy(eleventyConfig) {
 
   // The eight publication Article drafts predate the current human-facing UI.
   // Normalize their repeated presentation at build time so the Article is primary,
-  // footnotes are named literally, and source/provenance is available on demand.
+  // footnotes are named literally, source/provenance is available on demand, and
+  // ordinary previous/next/Way navigation remains visible outside that disclosure.
   // This is a static HTML transform; it does not depend on browser JavaScript.
   eleventyConfig.addTransform('article-reading-hierarchy', function(content) {
     const outputPath = this.page?.outputPath || '';
     if (!/\/articles\/article-(?:one|two|three|four|five|six|seven|eight)\/index\.html$/.test(outputPath)) return content;
     return String(content)
-      .replace(/<section class="panel">\s*<h2>Source boundary<\/h2>([\s\S]*?)<\/section>/, '<details class="provenance-disclosure"><summary>Source &amp; provenance</summary><h2>Source boundary</h2>$1</details>')
+      .replace(
+        /<section class="panel">\s*<h2>Source boundary<\/h2>\s*<p>([\s\S]*?)<\/p>\s*<p>([\s\S]*?)<\/p>\s*<\/section>/,
+        (_match, boundaryText, linkLine) => {
+          const links = [...linkLine.matchAll(/<a\b[^>]*>[\s\S]*?<\/a>/g)].map(match => match[0]);
+          const sourceLink = links.shift() || '';
+          const navigation = links.length
+            ? `<nav class="article-context-nav" aria-label="Related Article navigation">${links.join(' · ')}</nav>`
+            : '';
+          return `<details class="provenance-disclosure"><summary>Source &amp; provenance</summary><h2>Source boundary</h2><p>${boundaryText}</p>${sourceLink ? `<p>${sourceLink}</p>` : ''}</details>${navigation}`;
+        }
+      )
       .replaceAll('Speaker A · exact canon excerpt', 'Article')
       .replaceAll('Speaker B · footnote conversation', 'Footnotes');
   });
