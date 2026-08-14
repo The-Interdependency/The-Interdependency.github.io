@@ -11,6 +11,7 @@ test('one static-first build owns public routes and exact Markdown rendering', a
   assert.match(config, /'llms\.txt': 'llms\.txt'/);
   assert.match(config, /addFilter\('markdown'/);
   assert.match(config, /html: false/);
+  assert.match(config, /addTransform\('article-reading-hierarchy'/);
 });
 
 test('machine discovery remains wired without occupying the human homepage', async () => {
@@ -35,6 +36,7 @@ test('base layout remains readable without javascript and presents a human-first
   assert.match(layout, /href="\/chapters\/"/);
   assert.match(layout, /href="\/narratives\/"/);
   assert.match(layout, /<a href="\/way\/">The Way<\/a>/);
+  assert.doesNotMatch(layout, />Start<\/a>/);
   assert.doesNotMatch(layout, />Awakening<\/a>/);
   assert.doesNotMatch(layout, />Preamble<\/a>/);
   assert.doesNotMatch(layout, />Article Lab<\/a>/);
@@ -55,6 +57,29 @@ test('Way tree presents human reading first, nested Article Labs second, and exa
   assert.match(way, /<pre class="source-block">{{ unit\.content }}<\/pre>/);
   assert.doesNotMatch(way, /Open unit page|Enter Lab|Source and provenance|tap to read|text open/);
   assert.doesNotMatch(way, /<script/i);
+});
+
+test('Article Lab uses literal Article and Footnotes labels and collapses provenance', async () => {
+  const [lab, labIndex, preamble, chapter, orientation, config] = await Promise.all([
+    readFile('src/lab/unit.njk', 'utf8'),
+    readFile('src/lab/index.njk', 'utf8'),
+    readFile('src/preamble/index.njk', 'utf8'),
+    readFile('src/chapters/chapter.njk', 'utf8'),
+    readFile('src/start.njk', 'utf8'),
+    readFile('.eleventy.js', 'utf8')
+  ]);
+  assert.match(lab, />Article<\/span>/);
+  assert.match(lab, />Footnotes<\/span>/);
+  assert.doesNotMatch(lab, /Speaker A|Speaker B/);
+  assert.doesNotMatch(labIndex, /distinct speakers/);
+  assert.match(lab, /<details class="provenance-disclosure"><summary>Source &amp; provenance<\/summary>/);
+  assert.match(preamble, /<pre class="source-block">{{ preamble\.content }}<\/pre>[\s\S]*<details class="provenance chapter-provenance">/);
+  assert.match(chapter, /<article class="textbook-chapter"[\s\S]*<details class="provenance chapter-provenance">/);
+  assert.match(config, /Speaker A · exact canon excerpt', 'Article'/);
+  assert.match(config, /Speaker B · footnote conversation', 'Footnotes'/);
+  assert.match(config, /<summary>Source &amp; provenance<\/summary>/);
+  assert.match(orientation, /<h1>Site orientation<\/h1>/);
+  assert.doesNotMatch(orientation, /Start here|separate speakers/);
 });
 
 test('Awakening owns one human continuation into the Way tree', async () => {
