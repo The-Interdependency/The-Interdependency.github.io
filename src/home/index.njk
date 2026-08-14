@@ -1,46 +1,40 @@
 ---
 layout: layouts/base.njk
 title: The Interdependent Way
-description: The living public knowledge system for the canon, distributed textbook, deliberate tensions, research, applications, and implementation projects.
+description: The human-facing entrance to the Way, its textbook, narratives, research, and implementation work.
 permalink: /home/
 ---
-<!-- Usage: this is the ordinary human homepage; the AI-context panel gives machine readers and auditors a direct path to the bounded source artifact. -->
 <section class="hero">
   <div>
-    <p class="eyebrow">Canon · textbook · interpretation · research · implementation · frontier</p>
-    <h1>A way through complexity without pretending the tension is gone.</h1>
-    <p class="lede">The Interdependent Way is a dense living text and a constellation of attempts to test, explain, implement, challenge, and preserve it. The Preamble is directly available here; the distributed Interdependency textbook now restores chapters Zero through Seven into one reading sequence.</p>
-    <div class="actions"><a class="button" href="/way/">Start with the Way tree</a><a class="button secondary" href="/preamble/">Read the Preamble</a><a class="button secondary" href="/chapters/">Read the Textbook</a></div>
+    <p class="eyebrow">Read · test · apply · build</p>
+    <h1>Start with The Way. Branch outward when you need more.</h1>
+    <p class="lede">The Way tree is the human reading spine for this site. Canon units open in source order. Rights Article Labs sit inside the relevant units and stay collapsed until you want interpretation, limit tests, applications, or research. The textbook, narratives, projects, and research are deeper paths—not prerequisites for entering.</p>
+    <div class="actions"><a class="button" href="/way/">Enter the Way tree</a><a class="button secondary" href="/chapters/">Read the Textbook</a></div>
   </div>
   <div class="hero-field" aria-label="Three concentric fields around a thirteenth center"><span></span><strong>12 + 1</strong></div>
 </section>
 <section class="panel">
-  <p class="eyebrow">AI and machine readers</p>
-  <h2>One bounded context before inference</h2>
-  <p>The machine-oriented context preserves the content contract, exact canon and textbook copies, public biography, provenance, and the boundary between source vocabulary and actual measurement.</p>
-  <div class="actions"><a class="button" href="/eai/aicontext.md" type="text/markdown">Read the AI context</a><a class="button secondary" href="/llms.txt" type="text/plain">Read concise machine instructions</a></div>
+  <p class="eyebrow">The Way is the spine</p>
+  <h2>Read the source before choosing a branch.</h2>
+  <p>The Way tree keeps the source structure visible without forcing every layer onto the screen at once. Open a canon unit to read it. Where a reviewed Article Lab exists, open that nested box only when you want to examine the tension around the Article.</p>
+  <div class="actions"><a class="button" href="/way/">Open The Way</a></div>
 </section>
 <section class="panel">
   <p class="eyebrow">Distributed Interdependency textbook</p>
   <h2>Chapters Zero through Seven</h2>
-  <p>Eight chapters now form one continuous technical reading path across <code>metapat</code>, <code>ucns</code>, <code>edcm</code>, <code>skill-lib</code>, <code>interdependent-lib</code>, <code>ptcna</code>, <code>a0</code>, and <code>zfae</code>. Each chapter remains bound to the license, status vocabulary, and authority of the repository that carries it.</p>
+  <p>Eight chapters form one technical reading path across the current architecture. Each chapter remains independently revisable in the repository that carries it.</p>
   <div class="actions"><a class="button" href="/chapters/">Open all eight chapters</a><a class="button secondary" href="/chapters/chapter-zero/">Begin at Chapter Zero</a></div>
 </section>
 <section class="panel">
-  <p class="eyebrow">Eight rights-article laboratories</p>
-  <h2>From canon excerpt to public practice</h2>
-  <p>All eight Rights articles now have a canon-bounded path through exact excerpt, note conversation, reductio ad absurdum, worst and best practices, applications across eleven domains, and a study-only research field with explicit coverage gaps.</p>
-  <div class="actions"><a class="button" href="/way/">Open the Way tree and Article Labs</a><a class="button secondary" href="/articles/">Read publication drafts</a></div>
+  <p class="eyebrow">Living narratives</p>
+  <h2>Test the Way against lived situations.</h2>
+  <p>Fictional and narrative work explores competence, consent, failure, adulthood, and interdependence without becoming canon or research evidence.</p>
+  <div class="actions"><a class="button" href="/narratives/">Enter Living Narratives</a></div>
 </section>
 <section class="panel">
-  <p class="eyebrow">Living narratives · fiction under constraint</p>
-  <h2>What happens after the copying is finished?</h2>
-  <p>Jack and Diane begin an alternating journal after completing handwritten copies of the Way. Their fictional record tests adulthood, competence, consent, failure, and interdependence without becoming canon or research evidence.</p>
-  <div class="actions"><a class="button" href="/narratives/jack-and-diane/">Read Jack &amp; Diane</a><a class="button secondary" href="/narratives/">Enter Living Narratives</a></div>
+  <p class="eyebrow">Implementation and inquiry</p>
+  <h2>Follow the work outward.</h2>
+  <p>Projects, artifacts, works, and research are places where the ideas are implemented, challenged, measured, or extended. They remain distinct from the source they examine.</p>
+  <div class="actions"><a class="button" href="/projects/">Projects</a><a class="button secondary" href="/research/method/">Research</a><a class="button secondary" href="/works/">Works</a></div>
 </section>
-<section class="panel">
-  <p class="eyebrow">Current field snapshot</p>
-  <h2>{{ generated.repos.publicRepoCount }} public repositories · {{ generated.canon.units.length }} canonical units · {{ generated.textbook.chapterCount }} textbook chapters</h2>
-  <p>Project data was generated {{ generated.repos.snapshotAt | dateOnly }}{% if generated.repos.fallback %} from the last verified snapshot{% endif %}. Canon digest <code>{{ generated.canon.source.contentSha256 }}</code>. Textbook complete: <code>{{ generated.textbook.complete }}</code>.</p>
-</section>
-<section class="hmmm"><h2>hmmm</h2><p>The textbook now has a complete public reading spine, while each chapter remains independently revisable in its source repository. The Article Lab now excludes legislation, standards, guidelines, frameworks, and other non-study records from Research. Its retained study claims still need full-text locators, design-specific appraisal, stronger dissent, replication, field studies, disability-led critique, and non-Western evidence.</p></section>
+<section class="hmmm"><h2>hmmm</h2><p>The public reading spine is usable, but the surrounding system remains deliberately revisable. New evidence, stronger dissent, better implementation, and clearer explanation can change the branches without silently rewriting the source.</p></section>
