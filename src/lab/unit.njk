@@ -12,21 +12,22 @@ title: "Lab: {{ unit.title }}"
 {% set claims = research_data.claims | where("article", unit.id) %}
 {% set gapMatches = research_data.gaps | where("article", unit.id) %}
 {% set gap = gapMatches[0] %}
-<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/way/">Start · Way tree</a> / Article Lab / {{ unit.title }}</nav>
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/way/">The Way</a> / Article Lab / {{ unit.title }}</nav>
 <header class="page-head">
   <p class="eyebrow">Interpretive laboratory</p>
   <h1>{% if lab %}{{ lab.public_title }}{% else %}{{ unit.title }}{% endif %}</h1>
-  <p class="lede">The body text, notes, research, failure tests, and applications remain separate layers. This is a review surface, not substitute canon and not an edcmbone metric runtime.</p>
+  <p class="lede">The Article, footnotes, research, failure tests, and applications remain separate layers. This is a review surface, not substitute canon and not an edcmbone metric runtime.</p>
 </header>
 <section>
-  <h2>Conversation</h2>
-  <article class="panel turn"><span class="status status-canon">Speaker A · main text</span>
+  <h2>Article and footnotes</h2>
+  <article class="panel turn"><span class="status status-canon">Article</span>
     <blockquote class="reading">{% for line in unit.content | canonUnitBody %}<p>{{ line }}</p>{% endfor %}</blockquote>
-    <p><a href="/source/{{ unit.routeSlug }}/">Open exact source and provenance</a></p></article>
+    <details class="provenance-disclosure"><summary>Source &amp; provenance</summary><p><a href="/source/{{ unit.routeSlug }}/">Open exact source and provenance</a></p></details>
+  </article>
   {% if unit.notes.length %}
-    {% for note in unit.notes %}<article class="panel turn note"><span class="status status-interpretation">Speaker B · note {{ note.marker }}</span><p>{{ note.text }}</p></article>{% endfor %}
+    {% for note in unit.notes %}<article class="panel turn note"><span class="status status-interpretation">Footnotes</span><p><strong>{{ note.marker }}</strong> {{ note.text }}</p></article>{% endfor %}
   {% else %}
-    <article class="hmmm"><h3>No separately parsed note text</h3><p>This unit may contain no numbered annotations, or its tension may be structural rather than footnoted.</p></article>
+    <article class="hmmm"><h3>No separately parsed footnotes</h3><p>This unit may contain no numbered annotations, or its tension may be structural rather than footnoted.</p></article>
   {% endif %}
 </section>
 {% if lab %}
