@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
-// Usage: run with `npm test`; source-level checks verify that machine-discovery declarations remain wired before generated-artifact checks run.
+// Usage: run with `npm test`; source-level checks verify that machine discovery remains wired while the visible interface stays human-first.
 
 test('one static-first build owns public routes and exact Markdown rendering', async () => {
   const config = await readFile('.eleventy.js', 'utf8');
@@ -13,45 +13,51 @@ test('one static-first build owns public routes and exact Markdown rendering', a
   assert.match(config, /html: false/);
 });
 
-test('machine discovery source surfaces name the bounded AI context', async () => {
+test('machine discovery remains wired without occupying the human homepage', async () => {
   const [home, base, splash, sitemap] = await Promise.all([
     readFile('src/home/index.njk', 'utf8'),
     readFile('src/_includes/layouts/base.njk', 'utf8'),
     readFile('src/_includes/layouts/splash.njk', 'utf8'),
     readFile('src/sitemap.11ty.js', 'utf8')
   ]);
-  assert.match(home, /href="\/eai\/aicontext\.md"/);
-  assert.match(home, /href="\/llms\.txt"/);
+  assert.doesNotMatch(home, /href="\/eai\/aicontext\.md"/);
+  assert.doesNotMatch(home, /href="\/llms\.txt"/);
   assert.match(base, /rel="alternate" type="text\/markdown" href="\/eai\/aicontext\.md"/);
   assert.match(splash, /rel="alternate" type="text\/markdown" href="\/eai\/aicontext\.md"/);
   assert.match(sitemap, /routes\.push\('\/eai\/aicontext\.md', '\/llms\.txt'\)/);
   assert.match(sitemap, /permalink: 'sitemap\.xml'/);
 });
 
-test('base layout remains readable without javascript and exposes the textbook and narratives', async () => {
+test('base layout remains readable without javascript and presents a human-first navigation', async () => {
   const layout = await readFile('src/_includes/layouts/base.njk', 'utf8');
   assert.match(layout, /<noscript>/);
   assert.match(layout, /<main id="content"/);
   assert.match(layout, /href="\/chapters\/"/);
   assert.match(layout, /href="\/narratives\/"/);
-  assert.match(layout, /<a href="\/way\/">Start<\/a>/);
-  assert.doesNotMatch(layout, />The Way<\/a>/);
+  assert.match(layout, /<a href="\/way\/">The Way<\/a>/);
+  assert.doesNotMatch(layout, />Awakening<\/a>/);
+  assert.doesNotMatch(layout, />Preamble<\/a>/);
   assert.doesNotMatch(layout, />Article Lab<\/a>/);
+  assert.doesNotMatch(layout, /footer-provenance/);
   assert.doesNotMatch(layout, /fetch\(/);
 });
 
-test('Way tree disclosures contain exact canon text and only reviewed Article Lab links', async () => {
+test('Way tree presents human reading first, nested Article Labs second, and exact source on demand', async () => {
   const way = await readFile('src/way/index.njk', 'utf8');
   assert.match(way, /<details class="canon-unit"/);
-  assert.match(way, /<summary class="canon-unit-summary"><strong>{{ unit\.title }}<\/strong><\/summary>/);
-  assert.match(way, /<pre class="source-block">{{ unit\.content }}<\/pre>/);
+  assert.match(way, /<summary class="canon-unit-summary"><strong>{{ unit\.title }}<\/strong>/);
+  assert.match(way, /unit\.content \| canonUnitBody/);
   assert.match(way, /article_lab \| where\("unit_id", unit\.id\)/);
-  assert.match(way, /href="\/lab\/{{ unit\.routeSlug }}\/">Open Article Lab<\/a>/);
+  assert.match(way, /<details class="article-lab-box">/);
+  assert.match(way, /Working boundary:/);
+  assert.match(way, /href="\/lab\/{{ unit\.routeSlug }}\/">Open full Article Lab<\/a>/);
+  assert.match(way, /<details class="source-disclosure">/);
+  assert.match(way, /<pre class="source-block">{{ unit\.content }}<\/pre>/);
   assert.doesNotMatch(way, /Open unit page|Enter Lab|Source and provenance|tap to read|text open/);
   assert.doesNotMatch(way, /<script/i);
 });
 
-test('Awakening owns the static public threshold and routes inward', async () => {
+test('Awakening owns one human continuation into the Way tree', async () => {
   const [layout, splash, home] = await Promise.all([
     readFile('src/_includes/layouts/splash.njk', 'utf8'),
     readFile('src/index.njk', 'utf8'),
@@ -62,11 +68,15 @@ test('Awakening owns the static public threshold and routes inward', async () =>
   assert.match(layout, /<script src="\/assets\/js\/site\.js" defer><\/script>/);
   assert.match(splash, /generated\.canon\.units/);
   assert.match(splash, /<h1>Awakening<\/h1>/);
-  assert.match(splash, /href="\/preamble\/"/);
-  assert.match(splash, /href="\/home\/"/);
+  assert.match(splash, /href="\/way\/"[^>]*>Enter The Way<\/a>/);
+  assert.doesNotMatch(splash, /href="\/preamble\/"/);
+  assert.doesNotMatch(splash, /href="\/home\/"/);
+  assert.doesNotMatch(splash, /Exact source and provenance/);
   assert.match(home, /permalink: \/home\//);
   assert.match(home, /href="\/way\/"/);
   assert.doesNotMatch(home, /href="\/lab\/"/);
+  assert.doesNotMatch(home, /href="\/eai\/aicontext\.md"/);
+  assert.doesNotMatch(home, /href="\/llms\.txt"/);
 });
 
 test('distributed textbook routes are data-backed and source-bound', async () => {
