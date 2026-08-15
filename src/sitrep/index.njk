@@ -1,0 +1,143 @@
+---
+layout: layouts/base.njk
+title: Repository SITREP
+description: A live, provenance-preserving view of METAPAT, UCNS, EDCM, a0, and this website, derived from repo-owned reports through skill-lib and overlaid with separate GitHub telemetry.
+---
+<header class="page-head sitrep-head">
+  <p class="eyebrow">Interdependent work graph · live public projection</p>
+  <h1>Repository SITREP</h1>
+  <p class="lede">Each repository states its own situation. <strong>skill-lib</strong> supplies the frozen reporting contract and deterministic portfolio projection. GitHub activity is shown separately as observed telemetry; a passing workflow never upgrades a repository claim.</p>
+  <div class="status-row">
+    <span class="status status-implemented">{{ generated.sitrep.projects | length }} participating views</span>
+    {% if generated.sitrep.fallback %}<span class="status status-frontier">fallback snapshot</span>{% endif %}
+    {% if generated.sitrep.missingReports and generated.sitrep.missingReports | length %}<span class="status status-risk">{{ generated.sitrep.missingReports | length }} missing report(s)</span>{% endif %}
+  </div>
+</header>
+
+<section class="sitrep-control-plane" aria-labelledby="sitrep-control-title">
+  <div>
+    <p class="eyebrow">Control-plane provenance</p>
+    <h2 id="sitrep-control-title">skill-lib / interdependent-work-graph</h2>
+    <p>The control plane validates, orders, hashes, and projects repo-owned reports. It owns no METAPAT canon, UCNS mathematics, EDCM measurement validity, a0 runtime authority, or website publication claim.</p>
+  </div>
+  <dl class="sitrep-contract-grid">
+    <div><dt>Contract</dt><dd>repository-plan-report {{ generated.sitrep.controlPlane.reportSchemaVersion }}</dd></div>
+    <div><dt>Schema blob</dt><dd><code>{{ generated.sitrep.controlPlane.reportSchemaBlob | truncate(12, true, '') }}</code></dd></div>
+    <div><dt>skill-lib commit</dt><dd><code>{{ generated.sitrep.controlPlane.commit | truncate(12, true, '') }}</code></dd></div>
+    <div><dt>Projection</dt><dd>{% if generated.sitrep.portfolio %}<code>{{ generated.sitrep.portfolio.portfolio_plan_sha256 | truncate(12, true, '') }}</code>{% else %}<span class="status status-hmmm">hmmm</span>{% endif %}</dd></div>
+    <div><dt>Snapshot</dt><dd>{{ generated.sitrep.snapshotAt | dateOnly }}</dd></div>
+    <div><dt>Mode</dt><dd>{% if generated.sitrep.fallback %}last-known-good / unavailable boundary{% else %}fresh build-time observation{% endif %}</dd></div>
+  </dl>
+</section>
+
+{% if generated.sitrep.fallback %}
+<section class="hmmm sitrep-fallback" aria-labelledby="sitrep-fallback-title">
+  <h2 id="sitrep-fallback-title">Live refresh unavailable</h2>
+  <p>{{ generated.sitrep.fallbackReason }}. Displayed data is explicitly marked fallback; missing current state is not reconstructed.</p>
+</section>
+{% endif %}
+
+<section aria-labelledby="repo-sitreps-title">
+  <p class="eyebrow">Five distinct authority surfaces</p>
+  <h2 id="repo-sitreps-title">Current repository situations</h2>
+  <p class="section-intro">The left side of each infogram is declared situation from the repository report. The right side is GitHub-observed activity at site build time. Report/head mismatch is shown rather than silently reconciled.</p>
+
+  <div class="sitrep-grid">
+    {% for project in generated.sitrep.projects %}
+    <article class="sitrep-card" id="{{ project.slug }}">
+      <header class="sitrep-card-header">
+        <div class="sitrep-orbit" aria-hidden="true">
+          <span class="sitrep-orbit-ring"></span>
+          <strong>{{ project.label }}</strong>
+          <span class="orbit-marker orbit-report">R</span>
+          <span class="orbit-marker orbit-ci">CI</span>
+          <span class="orbit-marker orbit-next">N</span>
+          <span class="orbit-marker orbit-hmmm">?</span>
+        </div>
+        <div>
+          <p class="eyebrow">{{ project.repository }}</p>
+          <h3>{{ project.label }}</h3>
+          {% if project.report %}
+          <p class="sitrep-state">{{ project.report.status.state }}</p>
+          {% else %}
+          <p class="sitrep-state">Repository report unavailable.</p>
+          {% endif %}
+        </div>
+      </header>
+
+      <div class="sitrep-dual">
+        <section class="sitrep-declared" aria-label="{{ project.label }} declared situation">
+          <p class="sitrep-axis-label">Declared · repo-owned</p>
+          {% if project.report %}
+          <p class="sitrep-claim">{{ project.report.status.current_claim }}</p>
+          <dl class="sitrep-metrics">
+            <div><dt>Frontier</dt><dd>{{ project.report.active_frontier | length }}</dd></div>
+            <div><dt>Next</dt><dd>{{ project.report.next_actions | length }}</dd></div>
+            <div><dt>Blocked</dt><dd>{{ project.report.blocked | length }}</dd></div>
+            <div><dt>hmmm</dt><dd>{{ project.report.hmmm | length }}</dd></div>
+          </dl>
+          <div class="status-row">
+            <span class="status {% if project.reportFreshness == 'current' %}status-implemented{% elif project.reportFreshness == 'stale' %}status-frontier{% else %}status-hmmm{% endif %}">report {{ project.reportFreshness }}</span>
+            <span class="status status-interpretation">source {{ project.report.source.commit | truncate(9, true, '') }}</span>
+          </div>
+          {% else %}
+          <div class="hmmm"><strong>hmmm</strong><p>No report was supplied to the skill-lib projection. No project state has been synthesized.</p></div>
+          {% endif %}
+        </section>
+
+        <section class="sitrep-observed" aria-label="{{ project.label }} observed GitHub telemetry">
+          <p class="sitrep-axis-label">Observed · GitHub</p>
+          {% if project.telemetry %}
+          <dl class="sitrep-observed-list">
+            <div><dt>HEAD</dt><dd><code>{{ project.telemetry.head | truncate(9, true, '') }}</code></dd></div>
+            <div><dt>Branch</dt><dd>{{ project.telemetry.branch }}</dd></div>
+            <div><dt>Open PRs</dt><dd>{{ project.telemetry.openPullRequests }}</dd></div>
+            <div><dt>Last push</dt><dd>{{ project.telemetry.pushedAt | dateOnly }}</dd></div>
+            <div><dt>Workflow</dt><dd>{% if project.telemetry.latestWorkflow %}{{ project.telemetry.latestWorkflow.conclusion or project.telemetry.latestWorkflow.status or 'hmmm' }}{% else %}hmmm{% endif %}</dd></div>
+          </dl>
+          {% if project.telemetry.latestWorkflow %}
+          <div class="status-row"><span class="status {% if project.telemetry.latestWorkflow.conclusion == 'success' %}status-implemented{% elif project.telemetry.latestWorkflow.conclusion == 'failure' %}status-risk{% else %}status-hmmm{% endif %}">CI {{ project.telemetry.latestWorkflow.conclusion or project.telemetry.latestWorkflow.status }}</span></div>
+          {% endif %}
+          {% else %}
+          <p class="hmmm">GitHub telemetry was unavailable at build time.</p>
+          {% endif %}
+        </section>
+      </div>
+
+      {% if project.report %}
+      <details class="sitrep-details">
+        <summary>Frontier, next actions, blockers, relations, and hmmm</summary>
+        <div class="sitrep-detail-grid">
+          <section><h4>Active frontier</h4><ul>{% for item in project.report.active_frontier %}<li>{{ item }}</li>{% else %}<li>None declared.</li>{% endfor %}</ul></section>
+          <section><h4>Next actions</h4><ul>{% for item in project.report.next_actions %}<li>{{ item.action }}{% if item.dependency %}<small>Dependency: {{ item.dependency }}</small>{% endif %}</li>{% else %}<li>None declared.</li>{% endfor %}</ul></section>
+          <section><h4>Blocked</h4><ul>{% for item in project.report.blocked %}<li>{{ item }}</li>{% else %}<li>None declared.</li>{% endfor %}</ul></section>
+          <section><h4>hmmm</h4><ul>{% for item in project.report.hmmm %}<li>{{ item }}</li>{% else %}<li>None declared.</li>{% endfor %}</ul></section>
+          <section class="sitrep-relations"><h4>Cross-repository relations</h4><ul>{% for relation in project.report.cross_repository_relations %}<li><code>{{ relation.repository }}</code><span>{{ relation.relation }}</span><small>authority transfer: false</small></li>{% else %}<li>None declared.</li>{% endfor %}</ul></section>
+        </div>
+      </details>
+      {% endif %}
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+{% if generated.sitrep.portfolio %}
+<section class="sitrep-work-graph" aria-labelledby="work-graph-title">
+  <p class="eyebrow">Deterministic relation projection</p>
+  <h2 id="work-graph-title">Current work graph</h2>
+  <p class="section-intro">These edges are emitted from repo-owned relation declarations by the skill-lib projection. Connection does not transfer authority, proof status, measurement validity, empirical status, or publication ownership.</p>
+  <ol class="relation-list">
+    {% for relation in generated.sitrep.portfolio.cross_repository_dependencies %}
+    <li><code>{{ relation.from }}</code><span aria-hidden="true">→</span><code>{{ relation.to }}</code><strong>{{ relation.relation }}</strong></li>
+    {% else %}
+    <li>No cross-repository relations were projected.</li>
+    {% endfor %}
+  </ol>
+</section>
+{% endif %}
+
+<section class="sitrep-boundary panel" aria-labelledby="sitrep-boundary-title">
+  <p class="eyebrow">Invariant</p>
+  <h2 id="sitrep-boundary-title">Relation without collapse</h2>
+  <p>Repositories expose their own claims and boundaries. skill-lib defines the reusable coordination contract. This website presents the projection and observes GitHub state. None of those roles silently inherits another role's authority.</p>
+</section>

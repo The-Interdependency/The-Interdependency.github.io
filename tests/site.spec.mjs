@@ -27,6 +27,7 @@ const routes = [
   ['/lab/', /Rights Article laboratories/],
   ['/source/', /Source/],
   ['/projects/', /Projects/],
+  ['/sitrep/', /Repository SITREP/],
   ['/artifacts/', /Artifacts/],
   ['/artifacts/gonol-relationships/', /Public Gonol relationship lab/],
   ['/artifacts/edcm-mathematics/', /EDCM mathematical reference/],
@@ -212,15 +213,16 @@ test('Public Gonol lab preserves vesica pieces, triquetra pair receipts, and unr
   await expect(page.locator('.gonol-pair:not([hidden])')).toHaveCount(1);
 
   const activeOperandOutput = page.locator('.gonol-operand:not([hidden]) .gonol-output').first();
-  await expect(activeOperandOutput.locator(':scope > .copy-button')).toHaveCount(1);
+  await expect(activeOperandOutput.locator(':scope > .field-actions > .copy-button')).toHaveCount(3);
   const completeReceiptOutput = page.locator('[data-receipt-output]').locator('..');
-  await expect(completeReceiptOutput.locator(':scope > .copy-button')).toHaveCount(1);
+  await expect(completeReceiptOutput.locator(':scope > .field-actions > .copy-button')).toHaveCount(3);
 
   await page.locator('#gonol-payload-A').fill('root');
   await page.locator('#gonol-payload-B').fill('root');
   await page.locator('[data-comparison-policy]').selectOption('exact-utf8');
   await expect(page.locator('[data-receipt-output]')).toContainText('"exact_utf8_equal": true');
-  await expect(page.locator('[data-vector-output]')).toContainText('"code_point": "U+0072"');
+  await expect(page.locator('[data-vector-output]')).toContainText('"unicode_scalar_value": 114');
+  await expect(page.locator('[data-vector-output]')).toContainText('"source_value": "r"');
 
   await page.locator('.gonol-segmented label', { has: page.locator('input[value="3"]') }).click();
   await expect(page.locator('[data-gonol-status]')).toContainText('3 retained pairwise vesicas');
@@ -228,14 +230,18 @@ test('Public Gonol lab preserves vesica pieces, triquetra pair receipts, and unr
   await expect(page.locator('[data-gonol-stage] [data-pair-intersection]')).toHaveCount(6);
   await expect(page.locator('.gonol-pair:not([hidden])')).toHaveCount(3);
   for (const pair of ['AB', 'BC', 'CA']) {
-    await expect(page.locator(`.gonol-pair[data-pair="${pair}"]`)).toContainText(`vesica-${pair.toLowerCase()}`);
+    const pairCard = page.locator(`.gonol-pair[data-pair="${pair}"]`);
+    await expect(pairCard).toContainText(`Retained vesica ${pair[0]} ↔ ${pair[1]}`);
+    await expect(pairCard).toContainText(`"pair_id": "${pair[0]}-${pair[1]}"`);
   }
 
   await page.locator('.gonol-segmented label', { has: page.locator('input[value="7"]') }).click();
   await expect(page.locator('[data-gonol-status]')).toContainText('geometry and pairing remain hmmm');
   await expect(page.locator('[data-gonol-stage] .gonol-identity-box')).toHaveCount(7);
   await expect(page.locator('[data-gonol-stage] .gonol-operand-ring')).toHaveCount(0);
-  await expect(page.locator('[data-receipt-output]')).toContainText('no seven-form geometry or pairing count was inferred');
+  await expect(page.locator('[data-receipt-output]')).toContainText('"standing": "hmmm-unresolved"');
+  await expect(page.locator('[data-receipt-output]')).toContainText('"pairs": []');
+  await expect(page.locator('[data-receipt-output]')).toContainText('seven-gonol display geometry and pairing plan');
 });
 
 test('Public Gonol lab contains long receipts on a narrow viewport', async ({ page }) => {
