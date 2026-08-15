@@ -221,7 +221,8 @@ test('Public Gonol lab preserves vesica pieces, triquetra pair receipts, and unr
   await page.locator('#gonol-payload-B').fill('root');
   await page.locator('[data-comparison-policy]').selectOption('exact-utf8');
   await expect(page.locator('[data-receipt-output]')).toContainText('"exact_utf8_equal": true');
-  await expect(page.locator('[data-vector-output]')).toContainText('"code_point": "U+0072"');
+  await expect(page.locator('[data-vector-output]')).toContainText('"unicode_scalar_value": 114');
+  await expect(page.locator('[data-vector-output]')).toContainText('"source_value": "r"');
 
   await page.locator('.gonol-segmented label', { has: page.locator('input[value="3"]') }).click();
   await expect(page.locator('[data-gonol-status]')).toContainText('3 retained pairwise vesicas');
