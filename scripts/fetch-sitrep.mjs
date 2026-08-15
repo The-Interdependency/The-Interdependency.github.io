@@ -14,7 +14,7 @@ import path from 'node:path';
 //   network: reads public GitHub repository metadata and repo-owned reports; optional token raises rate limits
 //   storage: writes generated and last-known-good SITREP JSON only
 //   authority: skill-lib owns the reporting contract and deterministic projection; each repository owns its report claims; this site owns presentation only
-//   failure: never reconstructs missing reports; never publishes raw command errors or credentials; missing or stale sources remain visible and a last-known-good projection may be used only with fallback=true
+//   failure: never reconstructs missing reports; never publishes raw command errors or credentials; missing or HEAD-different sources remain visible and a last-known-good projection may be used only with fallback=true
 // === END BOUNDARIES ===
 // Usage: run `npm run refresh:sitrep`; the output is presentation data, not a new source of repository canon.
 
@@ -163,7 +163,7 @@ function projectView(definition, reportRecord, telemetry, portfolioView) {
   const sourceCommit = reportRecord?.report?.source?.commit || null;
   const head = telemetry?.head || null;
   let reportFreshness = 'unknown';
-  if (sourceCommit && head) reportFreshness = sourceCommit === head ? 'current' : 'stale';
+  if (sourceCommit && head) reportFreshness = sourceCommit === head ? 'current' : 'HEAD differs';
   else if (!reportRecord) reportFreshness = 'missing';
   return {
     ...definition,
