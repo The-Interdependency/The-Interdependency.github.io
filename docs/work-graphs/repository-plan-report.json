@@ -9,10 +9,10 @@
     "blob_sha": "9b347b2dff7692054b571602f30ee6d00c2e7265"
   },
   "source": {
-    "branch": "feature/dynamic-repo-sitrep",
-    "commit": "8f41144653fd084e4f0ef433367ee01faee9d29e",
+    "branch": "main",
+    "commit": "66b16842774731514c9fd15757e8af36270fccd1",
     "generated_at": "2026-08-14",
-    "note": "This report describes the SITREP implementation commit immediately beneath the first website self-report. The report commit is coordination metadata and does not acquire semantic, mathematical, measurement, runtime, empirical, or publication authority from the repositories it presents."
+    "note": "This report describes the deployed SITREP merge commit and its successful Pages release evidence. The report-refresh commit is coordination metadata and does not acquire semantic, mathematical, measurement, runtime, empirical, or publication authority from the repositories the website presents."
   },
   "authority": {
     "owns": [
@@ -32,7 +32,7 @@
       "publication on this website does not transfer producer-repository authority to the website",
       "GitHub workflow success does not establish semantic, mathematical, measurement, empirical, or runtime validity",
       "the SITREP presentation view does not become a second source of repository canon",
-      "a stale or missing repository report remains visibly incomplete rather than being reconstructed from telemetry or memory",
+      "a missing or HEAD-different repository report remains visibly incomplete or different rather than being reconstructed from telemetry or memory",
       "skill-lib validation and deterministic projection constrain coordination representation but do not decide substantive project truth"
     ]
   },
@@ -47,17 +47,26 @@
     }
   },
   "status": {
-    "state": "implemented static public knowledge system with dynamic repository SITREP pending branch validation and deployment",
-    "current_claim": "The website now contains a build-time SITREP path for METAPAT, UCNS, EDCM, a0, and itself that executes the exact pinned skill-lib portfolio projection, preserves missing reports and fallback explicitly, and renders GitHub telemetry separately from repo-declared situation; public deployment evidence remains pending merge.",
+    "state": "deployed static public knowledge system with skill-lib-governed dynamic repository SITREP",
+    "current_claim": "The deployed website presents METAPAT, UCNS, EDCM, a0, and itself through repo-owned repository-plan reports projected by the exact pinned skill-lib interdependent-work-graph instrument, with GitHub telemetry kept separate from declared situation, missing reports left visible, and public failure output classified rather than leaking raw command details.",
     "latest_main_milestone": {
-      "commit": "4d4da2436ae556e5274cf5cb98f601e34bb793d3",
-      "description": "current main before the dynamic SITREP branch: static-first public knowledge system with provenance subordinated to human reading"
+      "commit": "66b16842774731514c9fd15757e8af36270fccd1",
+      "description": "merged and deployed the skill-lib-governed dynamic repository SITREP with five project views, machine-readable public projection, hourly refresh, and explicit declared-versus-observed boundaries"
+    },
+    "deployment_evidence": {
+      "workflow_run": 31865480540,
+      "merge_commit": "66b16842774731514c9fd15757e8af36270fccd1",
+      "build": "success",
+      "browser_accessibility": "success",
+      "pages_deploy": "success",
+      "pages_identity": "verified",
+      "custom_domain_identity": "verified"
     }
   },
   "delivered": [
     {
       "surface": "static-first public knowledge system",
-      "status": "implemented and deployed on current main",
+      "status": "implemented and deployed",
       "boundary": "publication and rendering do not establish the validity of producer-repository claims"
     },
     {
@@ -67,47 +76,50 @@
     },
     {
       "surface": "skill-lib-governed repository SITREP collector",
-      "status": "implemented on feature branch pending executable CI evidence",
+      "status": "deployed and release-gated",
       "boundary": "collector executes a commit- and blob-pinned skill-lib portfolio_plan.py rather than reimplementing its projection semantics"
     },
     {
       "surface": "repository SITREP infogram page",
-      "status": "implemented on feature branch with declared-versus-observed separation and explicit fallback",
-      "boundary": "presentation does not reconcile report/HEAD mismatches or upgrade source claims"
+      "status": "deployed at /sitrep/ with declared-versus-observed separation and explicit fallback",
+      "boundary": "presentation does not reconcile report/HEAD differences or upgrade source claims"
     },
     {
       "surface": "machine-readable public SITREP view",
-      "status": "configured for build-time publication at assets/data/sitrep.json",
+      "status": "deployed at /assets/data/sitrep.json and regenerated by the site build",
       "boundary": "generated JSON is a presentation projection and not a replacement for repo-owned reports"
+    },
+    {
+      "surface": "scheduled SITREP refresh",
+      "status": "hourly Pages rebuild plus existing repository_dispatch entrypoint",
+      "boundary": "producer-side dispatch coverage is not yet installed across all participating repositories"
     }
   ],
   "active_frontier": [
-    "validate the SITREP collector, skill-lib projection execution, Eleventy rendering, links, and accessibility in CI",
-    "merge and deploy the SITREP page only after existing website release gates pass",
-    "refresh the website repo report after merge while preserving the report-refresh commit as coordination metadata",
-    "decide whether producer repositories should emit repository_dispatch events for near-immediate refresh in addition to the hourly fallback schedule",
-    "decide which additional repositories, if any, intentionally join the public SITREP portfolio after the initial five-surface scope"
+    "decide whether producer repositories should emit repository_dispatch events for near-immediate refresh in addition to the hourly bounded refresh",
+    "decide whether long-term SITREP history should persist as an auditable snapshot series rather than only current build output",
+    "decide which additional repositories, if any, intentionally join the public SITREP portfolio after the initial five-surface scope",
+    "retain explicit distinction between a report source commit differing from HEAD and a demonstrated substantive report-staleness claim",
+    "keep the skill-lib control-plane pin deliberate so future contract or projection upgrades are reviewed rather than silently inherited"
   ],
   "next_actions": [
     {
-      "action": "run the full pull-request validation suite against the dynamic SITREP branch",
-      "owner": "The-Interdependency/The-Interdependency.github.io",
-      "dependency": "GitHub Actions runner and public GitHub API access"
-    },
-    {
-      "action": "merge and deploy the SITREP only if build, unit, generated-site, browser, accessibility, and link gates remain green",
-      "owner": "The-Interdependency/The-Interdependency.github.io",
-      "dependency": "successful pull-request validation"
-    },
-    {
       "action": "add producer-side org-repo-updated dispatch only where repository permissions and failure behavior can be kept explicit",
       "owner": "participating repositories",
-      "dependency": "post-deployment decision; hourly scheduled refresh already provides bounded eventual update"
+      "dependency": "deliberate per-repository permission and trigger decision; hourly refresh already provides bounded eventual update"
+    },
+    {
+      "action": "define a durable historical snapshot contract before presenting SITREP changes as a public timeline",
+      "owner": "The-Interdependency/The-Interdependency.github.io + The-Interdependency/skill-lib",
+      "dependency": "must preserve repo-owned source identity and avoid turning presentation snapshots into canonical project history"
+    },
+    {
+      "action": "add future public portfolio members only by explicit membership decision and valid repo-owned report",
+      "owner": "The-Interdependency/The-Interdependency.github.io + The-Interdependency/skill-lib",
+      "dependency": "maintainer-selected public portfolio scope"
     }
   ],
-  "blocked": [
-    "public SITREP deployment is blocked on branch validation and merge"
-  ],
+  "blocked": [],
   "cross_repository_relations": [
     {
       "repository": "The-Interdependency/skill-lib",
@@ -152,6 +164,6 @@
     "whether the public portfolio remains exactly METAPAT, UCNS, EDCM, a0, and website or later admits additional intentional members",
     "long-term historical SITREP snapshot retention and public timeline policy",
     "cryptographic producer authentication beyond GitHub transport and content identities",
-    "whether report freshness should later distinguish substantive repository change from report-only coordination commits"
+    "whether a future report-freshness vocabulary should distinguish substantive repository changes from report-only coordination commits"
   ]
 }
