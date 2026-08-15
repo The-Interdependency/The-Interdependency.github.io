@@ -14,6 +14,12 @@ import { installMathRenderer } from './scripts/markdown-math.mjs';
 //   then: the same source bytes are copied to the public data route without runtime fetching or schema shadowing
 //   class: evidence
 //   since: 2026-08-03
+//
+// id: website_sitrep_has_one_public_projection_copy
+//   given: repo-owned plan reports are validated and projected through the pinned skill-lib work-graph instrument
+//   then: the website publishes the generated presentation view without becoming a second source of repo canon
+//   class: evidence
+//   since: 2026-08-14
 // === END CONTRACTS ===
 // Usage: run `npm run build`; Eleventy emits the static site, copies root machine instructions, and preserves dependency-free public reading paths.
 
@@ -23,6 +29,7 @@ export default function configureEleventy(eleventyConfig) {
   eleventyConfig.addPassthroughCopy({
     'src/assets': 'assets',
     'src/_data/gonol_relationship_display.json': 'assets/data/gonol-relationship-display-v1.json',
+    'src/_data/generated/sitrep.json': 'assets/data/sitrep.json',
     'CNAME': 'CNAME',
     'llms.txt': 'llms.txt',
     'artifacts/four-cuts-1.html': 'artifacts/four-cuts/index.html',
