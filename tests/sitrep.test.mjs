@@ -13,6 +13,14 @@ test('SITREP consumes the frozen skill-lib projection instead of redefining repo
   assert.match(source, /missingReports/);
 });
 
+test('SITREP failure publication classifies errors instead of echoing command details', async () => {
+  const source = await readFile('scripts/fetch-sitrep.mjs', 'utf8');
+  assert.match(source, /function publicFailureReason/);
+  assert.match(source, /fallbackData\(publicFailureReason\(error\)\)/);
+  assert.doesNotMatch(source, /fallbackData\(error\.message/);
+  assert.doesNotMatch(source, /reason:\s*error\.message/);
+});
+
 test('SITREP presentation keeps declared situation separate from observed GitHub telemetry', async () => {
   const template = await readFile('src/sitrep/index.njk', 'utf8');
   assert.match(template, /Declared · repo-owned/);
