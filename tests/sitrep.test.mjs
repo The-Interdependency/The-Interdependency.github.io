@@ -21,6 +21,12 @@ test('SITREP failure publication classifies errors instead of echoing command de
   assert.doesNotMatch(source, /reason:\s*error\.message/);
 });
 
+test('HEAD mismatch is exposed as difference without inferring substantive staleness', async () => {
+  const source = await readFile('scripts/fetch-sitrep.mjs', 'utf8');
+  assert.match(source, /sourceCommit === head \? 'current' : 'HEAD differs'/);
+  assert.doesNotMatch(source, /sourceCommit === head \? 'current' : 'stale'/);
+});
+
 test('SITREP presentation keeps declared situation separate from observed GitHub telemetry', async () => {
   const template = await readFile('src/sitrep/index.njk', 'utf8');
   assert.match(template, /Declared · repo-owned/);
