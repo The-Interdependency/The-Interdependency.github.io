@@ -230,7 +230,9 @@ test('Public Gonol lab preserves vesica pieces, triquetra pair receipts, and unr
   await expect(page.locator('[data-gonol-stage] [data-pair-intersection]')).toHaveCount(6);
   await expect(page.locator('.gonol-pair:not([hidden])')).toHaveCount(3);
   for (const pair of ['AB', 'BC', 'CA']) {
-    await expect(page.locator(`.gonol-pair[data-pair="${pair}"]`)).toContainText(`vesica-${pair.toLowerCase()}`);
+    const pairCard = page.locator(`.gonol-pair[data-pair="${pair}"]`);
+    await expect(pairCard).toContainText(`Retained vesica ${pair[0]} ↔ ${pair[1]}`);
+    await expect(pairCard).toContainText(`"pair_id": "${pair[0]}-${pair[1]}"`);
   }
 
   await page.locator('.gonol-segmented label', { has: page.locator('input[value="7"]') }).click();
