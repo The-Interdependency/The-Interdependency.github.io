@@ -239,7 +239,9 @@ test('Public Gonol lab preserves vesica pieces, triquetra pair receipts, and unr
   await expect(page.locator('[data-gonol-status]')).toContainText('geometry and pairing remain hmmm');
   await expect(page.locator('[data-gonol-stage] .gonol-identity-box')).toHaveCount(7);
   await expect(page.locator('[data-gonol-stage] .gonol-operand-ring')).toHaveCount(0);
-  await expect(page.locator('[data-receipt-output]')).toContainText('no seven-form geometry or pairing count was inferred');
+  await expect(page.locator('[data-receipt-output]')).toContainText('"standing": "hmmm-unresolved"');
+  await expect(page.locator('[data-receipt-output]')).toContainText('"pairs": []');
+  await expect(page.locator('[data-receipt-output]')).toContainText('seven-gonol display geometry and pairing plan');
 });
 
 test('Public Gonol lab contains long receipts on a narrow viewport', async ({ page }) => {
