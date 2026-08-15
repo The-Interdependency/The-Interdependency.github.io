@@ -14,7 +14,7 @@ import path from 'node:path';
 //   network: reads public GitHub repository metadata and repo-owned reports; optional token raises rate limits
 //   storage: writes generated and last-known-good SITREP JSON only
 //   authority: skill-lib owns the reporting contract and deterministic projection; each repository owns its report claims; this site owns presentation only
-//   failure: never reconstructs missing reports; missing or stale sources remain visible and a last-known-good projection may be used only with fallback=true
+//   failure: never reconstructs missing reports; never publishes raw command errors or credentials; missing or stale sources remain visible and a last-known-good projection may be used only with fallback=true
 // === END BOUNDARIES ===
 // Usage: run `npm run refresh:sitrep`; the output is presentation data, not a new source of repository canon.
 
@@ -68,6 +68,17 @@ function getJson(target) {
 
 function tryGetJson(target) {
   try { return getJson(target); } catch { return null; }
+}
+
+function publicFailureReason(error, scope = 'refresh') {
+  const message = String(error?.message || error || '');
+  if (message.includes('offline requested')) return 'offline refresh requested';
+  if (message.includes('skill-lib report schema drift')) return 'skill-lib report schema identity mismatch';
+  if (message.includes('skill-lib portfolio script drift')) return 'skill-lib portfolio projection identity mismatch';
+  if (message.includes('no repository plan reports could be collected')) return 'repository plan reports unavailable';
+  if (message.includes('repo report identifies') || message.includes('expected base64 GitHub contents response')) return `${scope} report invalid or unavailable`;
+  if (message.includes('Python interpreter') || message.includes('portfolio projection')) return 'skill-lib portfolio projection execution failed';
+  return `${scope} unavailable`;
 }
 
 function decodeContent(response, label) {
@@ -234,7 +245,7 @@ try {
     try {
       reportRecords.set(definition.repository, await collectReport(definition, workDir));
     } catch (error) {
-      missingReports.push({ repository: definition.repository, reason: error.message });
+      missingReports.push({ repository: definition.repository, reason: publicFailureReason(error, definition.repository) });
     }
   }
   if (reportRecords.size === 0) throw new Error('no repository plan reports could be collected');
@@ -274,7 +285,7 @@ try {
   await writeGenerated(data, true);
   console.log(`sitrep ${data.projects.length} projects, ${missingReports.length} missing report(s), plan ${portfolio.portfolio_plan_sha256}`);
 } catch (error) {
-  const data = await fallbackData(error.message || String(error));
+  const data = await fallbackData(publicFailureReason(error));
   await writeGenerated(data, false);
   console.log(`sitrep fallback: ${data.fallbackReason}`);
 } finally {
