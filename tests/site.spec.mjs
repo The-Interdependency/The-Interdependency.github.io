@@ -27,6 +27,7 @@ const routes = [
   ['/lab/', /Rights Article laboratories/],
   ['/source/', /Source/],
   ['/projects/', /Projects/],
+  ['/sitrep/', /Repository SITREP/],
   ['/artifacts/', /Artifacts/],
   ['/artifacts/gonol-relationships/', /Public Gonol relationship lab/],
   ['/artifacts/edcm-mathematics/', /EDCM mathematical reference/],
@@ -212,9 +213,9 @@ test('Public Gonol lab preserves vesica pieces, triquetra pair receipts, and unr
   await expect(page.locator('.gonol-pair:not([hidden])')).toHaveCount(1);
 
   const activeOperandOutput = page.locator('.gonol-operand:not([hidden]) .gonol-output').first();
-  await expect(activeOperandOutput.locator(':scope > .copy-button')).toHaveCount(1);
+  await expect(activeOperandOutput.locator(':scope > .field-actions > .copy-button')).toHaveCount(3);
   const completeReceiptOutput = page.locator('[data-receipt-output]').locator('..');
-  await expect(completeReceiptOutput.locator(':scope > .copy-button')).toHaveCount(1);
+  await expect(completeReceiptOutput.locator(':scope > .field-actions > .copy-button')).toHaveCount(3);
 
   await page.locator('#gonol-payload-A').fill('root');
   await page.locator('#gonol-payload-B').fill('root');
