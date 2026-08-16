@@ -14,7 +14,7 @@ import { pathToFileURL } from 'node:url';
 //   network: reads only commit-pinned raw.githubusercontent.com collection files named <repo>_msdmd.ts; repository heads come from the prior GitHub metadata refresh
 //   storage: writes generated and last-known-good JSON snapshots only
 //   authority: repository collection points remain source authority; this module namespaces, resolves, aggregates, and displays their declared relations
-//   failure: missing, invalid, stale, and unresolved inputs remain explicit hmmm evidence and are never silently omitted
+//   failure: missing, invalid, stale, ambiguous, and broken explicit inputs remain visible; ordinary owner/file/route/tool/external targets remain valid opaque relations rather than being mislabeled hmmm
 // === END BOUNDARIES ===
 // === CONTRACTS ===
 // id: organization_msdmd_exact_input_identity
@@ -22,9 +22,9 @@ import { pathToFileURL } from 'node:url';
 //   then: repository, exact head SHA, collection path, collection SHA-256, declared source commit, and match status remain in the output receipt
 //   class: evidence
 //
-// id: organization_msdmd_no_inferred_edges
-//   given: an msdmd edge target cannot be resolved exactly by local id, explicit repository identity, or globally unique declaration id
-//   then: the edge is retained unresolved rather than guessed
+// id: organization_msdmd_target_kinds_remain_distinct
+//   given: an msdmd edge target is not a repository or declaration identity
+//   then: retain it as an opaque external target; only empty, ambiguous declaration, or broken explicit declaration references become unresolved hmmm
 //   class: safety
 //
 // id: organization_msdmd_reproducible_snapshot
@@ -41,6 +41,7 @@ const GENERATED_OUT = 'src/_data/generated/orgMsdmd.json';
 const SNAPSHOT_OUT = 'src/_data/snapshots/org-msdmd.last-known-good.json';
 const COLLECTION_SUFFIX = '_msdmd.ts';
 const COLLECTION_MARKER = 'defineMsdmdCollection(';
+const HMMM_RESOLUTIONS = new Set(['empty-target', 'ambiguous-declaration', 'broken-explicit-declaration']);
 
 function sha256(value) {
   return createHash('sha256').update(value).digest('hex');
@@ -206,6 +207,11 @@ function normalizeRepoName(value) {
   return name;
 }
 
+function collectionRepoMatches(value, repoName) {
+  if (!value) return true;
+  return value === repoName || value === `${ORGANIZATION}/${repoName}`;
+}
+
 function normalizeDeclaration(repoName, declaration) {
   const localId = String(declaration?.id || '').trim();
   if (!localId) return null;
@@ -221,9 +227,10 @@ function normalizeDeclaration(repoName, declaration) {
 
 function explicitRepoTarget(target, repoNames) {
   if (repoNames.has(target)) return { repo: target, declaration: null };
-  const full = new RegExp(`^${ORGANIZATION.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}/([^@#:\\s/]+)(?:@[^#:\\s]+)?(?:#{1}|::)(.+)$`).exec(target);
+  const escapedOrg = ORGANIZATION.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const full = new RegExp(`^${escapedOrg}/([^@#:\\s/]+)(?:@[^#:\\s]+)?(?:#{1}|::)(.+)$`).exec(target);
   if (full && repoNames.has(full[1])) return { repo: full[1], declaration: full[2].trim() || null };
-  const fullRepo = new RegExp(`^${ORGANIZATION.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}/([^@#:\\s/]+)(?:@[^#:\\s]+)?$`).exec(target);
+  const fullRepo = new RegExp(`^${escapedOrg}/([^@#:\\s/]+)(?:@[^#:\\s]+)?$`).exec(target);
   if (fullRepo && repoNames.has(fullRepo[1])) return { repo: fullRepo[1], declaration: null };
   const scoped = /^([^:\s]+)::(.+)$/.exec(target);
   if (scoped && repoNames.has(scoped[1])) return { repo: scoped[1], declaration: scoped[2].trim() || null };
@@ -232,7 +239,7 @@ function explicitRepoTarget(target, repoNames) {
 
 function resolveEdgeTarget(sourceRepo, target, context) {
   const raw = String(target || '').trim();
-  if (!raw) return { resolution: 'unresolved', targetId: null, targetRepo: null };
+  if (!raw) return { resolution: 'empty-target', targetId: null, targetRepo: null };
 
   const local = `${sourceRepo}::${raw}`;
   if (context.declarationIds.has(local)) {
@@ -248,7 +255,7 @@ function resolveEdgeTarget(sourceRepo, target, context) {
     if (context.declarationIds.has(explicitId)) {
       return { resolution: 'explicit-declaration', targetId: explicitId, targetRepo: explicit.repo };
     }
-    return { resolution: 'unresolved', targetId: null, targetRepo: explicit.repo };
+    return { resolution: 'broken-explicit-declaration', targetId: null, targetRepo: explicit.repo };
   }
 
   const global = context.globalIds.get(raw) || [];
@@ -256,13 +263,20 @@ function resolveEdgeTarget(sourceRepo, target, context) {
     const [targetId] = global;
     return { resolution: 'unique-global-declaration', targetId, targetRepo: targetId.split('::')[0] };
   }
-  return { resolution: 'unresolved', targetId: null, targetRepo: null };
+  if (global.length > 1) {
+    return { resolution: 'ambiguous-declaration', targetId: null, targetRepo: null };
+  }
+  return { resolution: 'external-target', targetId: null, targetRepo: null };
+}
+
+function isHmmmResolution(value) {
+  return HMMM_RESOLUTIONS.has(value);
 }
 
 function aggregateRepositoryEdges(edges) {
   const grouped = new Map();
   for (const edge of edges) {
-    if (!edge.targetRepo || edge.targetRepo === edge.sourceRepo || edge.resolution === 'unresolved') continue;
+    if (!edge.targetRepo || edge.targetRepo === edge.sourceRepo || isHmmmResolution(edge.resolution)) continue;
     const key = `${edge.sourceRepo}\u0000${edge.targetRepo}`;
     const entry = grouped.get(key) || {
       from: edge.sourceRepo,
@@ -314,7 +328,15 @@ export function buildOrgMap(repositoryInputs) {
           : null,
         error: item.collectionError || null
       },
-      counts: { declarations: 0, gaps: 0, edges: 0, resolvedEdges: 0, unresolvedEdges: 0, crossRepoEdges: 0 },
+      counts: {
+        declarations: 0,
+        gaps: 0,
+        edges: 0,
+        resolvedEdges: 0,
+        externalTargets: 0,
+        unresolvedEdges: 0,
+        crossRepoEdges: 0
+      },
       blockCounts: {},
       hmmm
     };
@@ -325,7 +347,7 @@ export function buildOrgMap(repositoryInputs) {
       repositoryRows.push(row);
       continue;
     }
-    if (collection.repo && collection.repo !== item.name) {
+    if (!collectionRepoMatches(collection.repo, item.name)) {
       hmmm.push(`Collection declares repo=${collection.repo}; consumed repository is ${item.name}.`);
     }
     if (row.collection.sourceCommitMatchesHead === false) {
@@ -365,10 +387,8 @@ export function buildOrgMap(repositoryInputs) {
   for (const row of repositoryRows) {
     for (const edge of row._rawEdges || []) {
       const sourceLocalId = String(edge?.from || edge?.source_id || 'hmmm');
-      const sourceId = declarationIds.has(`${row.name}::${sourceLocalId}`)
-        ? `${row.name}::${sourceLocalId}`
-        : `${row.name}::${sourceLocalId}`;
-      const targetRaw = String(edge?.to || 'hmmm');
+      const sourceId = `${row.name}::${sourceLocalId}`;
+      const targetRaw = String(edge?.to || '');
       const resolved = resolveEdgeTarget(row.name, targetRaw, context);
       const normalized = {
         sourceRepo: row.name,
@@ -383,9 +403,10 @@ export function buildOrgMap(repositoryInputs) {
         sourceDeclarationId: String(edge?.source_id || sourceLocalId)
       };
       edges.push(normalized);
-      if (normalized.resolution === 'unresolved') row.counts.unresolvedEdges += 1;
+      if (isHmmmResolution(normalized.resolution)) row.counts.unresolvedEdges += 1;
+      else if (normalized.resolution === 'external-target') row.counts.externalTargets += 1;
       else row.counts.resolvedEdges += 1;
-      if (normalized.targetRepo && normalized.targetRepo !== row.name && normalized.resolution !== 'unresolved') {
+      if (normalized.targetRepo && normalized.targetRepo !== row.name && !isHmmmResolution(normalized.resolution)) {
         row.counts.crossRepoEdges += 1;
       }
     }
@@ -393,11 +414,12 @@ export function buildOrgMap(repositoryInputs) {
   }
 
   const repositoryEdges = aggregateRepositoryEdges(edges);
-  const unresolvedEdges = edges.filter(edge => edge.resolution === 'unresolved');
+  const unresolvedEdges = edges.filter(edge => isHmmmResolution(edge.resolution));
+  const externalTargetCount = edges.filter(edge => edge.resolution === 'external-target').length;
+  const graphResolvedEdgeCount = edges.length - unresolvedEdges.length - externalTargetCount;
   const collectionCount = repositoryRows.filter(repo => repo.collection.status === 'ok').length;
   const invalidCollectionCount = repositoryRows.filter(repo => repo.collection.status === 'invalid').length;
   const missingCollectionCount = repositoryRows.length - collectionCount - invalidCollectionCount;
-  const resolvedEdgeCount = edges.length - unresolvedEdges.length;
   const latestHeadCommittedAt = repositoryRows
     .map(repo => repo.headCommittedAt)
     .filter(Boolean)
@@ -429,7 +451,8 @@ export function buildOrgMap(repositoryInputs) {
       declarationCount: declarations.length,
       gapCount: gaps.length,
       edgeCount: edges.length,
-      resolvedEdgeCount,
+      resolvedEdgeCount: graphResolvedEdgeCount,
+      externalTargetCount,
       crossRepoEdgeCount: repositoryEdges.reduce((sum, edge) => sum + edge.count, 0),
       crossRepoPairCount: repositoryEdges.length,
       unresolvedEdgeCount: unresolvedEdges.length
@@ -441,7 +464,7 @@ export function buildOrgMap(repositoryInputs) {
     repositoryEdges,
     unresolvedEdges: unresolvedEdges.sort((a, b) => a.sourceRepo.localeCompare(b.sourceRepo) || a.sourceId.localeCompare(b.sourceId) || a.targetRaw.localeCompare(b.targetRaw)),
     hmmm: [
-      'An unresolved edge means the source repository declared a target that cannot be exactly identified from current repo collection identities; the website does not guess the relation.',
+      'Only empty, ambiguous declaration, and broken explicit declaration references are unresolved. Ordinary owners, routes, files, tools, capability names, and external systems remain valid opaque targets.',
       'Missing collection points remain visible until the source repository publishes one.'
     ]
   };
@@ -507,7 +530,7 @@ async function main() {
     const data = buildOrgMap(inputs);
     await writeFile(GENERATED_OUT, stableJson(data));
     await writeFile(SNAPSHOT_OUT, stableJson(data));
-    console.log(`org-msdmd ${data.summary.collectionCount}/${data.summary.repositoryCount} collections · ${data.summary.crossRepoPairCount} cross-repo pairs · ${data.summary.unresolvedEdgeCount} unresolved edges`);
+    console.log(`org-msdmd ${data.summary.collectionCount}/${data.summary.repositoryCount} collections · ${data.summary.crossRepoPairCount} cross-repo pairs · ${data.summary.externalTargetCount} opaque targets · ${data.summary.unresolvedEdgeCount} hmmm edges`);
   } catch (error) {
     const fallback = JSON.parse(await readFile(SNAPSHOT_OUT, 'utf8'));
     fallback.fallback = true;
