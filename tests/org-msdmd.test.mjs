@@ -29,7 +29,7 @@ test('parses generated and hand-authored msdmd collection points without evaluat
   assert.equal(parsed.edges[0].kind, 'requires');
 });
 
-test('resolves only exact cross-repo targets and retains unresolved edges', () => {
+test('resolves exact graph targets, preserves opaque targets, and isolates true hmmm edges', () => {
   const inputs = [
     {
       name: 'alpha', slug: 'alpha', defaultBranch: 'main', headSha: 'a'.repeat(40), headCommittedAt: '2026-08-15T00:00:00Z',
@@ -39,7 +39,8 @@ test('resolves only exact cross-repo targets and retains unresolved edges', () =
         declarations: [{ file: 'src/a.py', block: 'DEPENDENCIES', id: 'alpha_dep', fields: {} }],
         edges: [
           { from: 'alpha_dep', to: 'beta::beta_cap', kind: 'requires', source_block: 'DEPENDENCIES', source_id: 'alpha_dep' },
-          { from: 'alpha_dep', to: 'looks-like-something', kind: 'requires', source_block: 'DEPENDENCIES', source_id: 'alpha_dep' }
+          { from: 'alpha_dep', to: 'node', kind: 'requires', source_block: 'DEPENDENCIES', source_id: 'alpha_dep' },
+          { from: 'alpha_dep', to: 'The-Interdependency/beta#missing_cap', kind: 'requires', source_block: 'DEPENDENCIES', source_id: 'alpha_dep' }
         ]
       }
     },
@@ -47,7 +48,7 @@ test('resolves only exact cross-repo targets and retains unresolved edges', () =
       name: 'beta', slug: 'beta', defaultBranch: 'main', headSha: 'b'.repeat(40), headCommittedAt: '2026-08-16T00:00:00Z',
       collectionStatus: 'ok', collectionPath: 'beta_msdmd.ts', collectionSha256: '2'.repeat(64),
       collection: {
-        repo: 'beta', source_commit: 'b'.repeat(40), gaps: [], edges: [],
+        repo: 'The-Interdependency/beta', source_commit: 'b'.repeat(40), gaps: [], edges: [],
         declarations: [{ file: 'src/b.py', block: 'CAPABILITIES', id: 'beta_cap', fields: {} }]
       }
     },
@@ -64,12 +65,17 @@ test('resolves only exact cross-repo targets and retains unresolved edges', () =
   assert.equal(first.summary.collectionCount, 2);
   assert.equal(first.summary.missingCollectionCount, 1);
   assert.equal(first.summary.crossRepoPairCount, 1);
+  assert.equal(first.summary.externalTargetCount, 1);
   assert.equal(first.summary.unresolvedEdgeCount, 1);
   assert.deepEqual(first.repositoryEdges[0], {
     from: 'alpha', to: 'beta', count: 1, kinds: ['requires'], sourceBlocks: ['DEPENDENCIES']
   });
-  assert.equal(first.unresolvedEdges[0].targetRaw, 'looks-like-something');
+  const opaque = first.edges.find(edge => edge.targetRaw === 'node');
+  assert.equal(opaque.resolution, 'external-target');
+  assert.equal(first.unresolvedEdges[0].targetRaw, 'The-Interdependency/beta#missing_cap');
+  assert.equal(first.unresolvedEdges[0].resolution, 'broken-explicit-declaration');
   assert.match(first.repositories.find(repo => repo.name === 'gamma').hmmm[0], /No consumable repo-level msdmd collection point/);
+  assert.equal(first.repositories.find(repo => repo.name === 'beta').hmmm.length, 0, 'full-name repo identity is accepted');
 });
 
 test('flags collection source commit drift without rejecting the source bytes', () => {
