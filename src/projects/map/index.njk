@@ -1,0 +1,106 @@
+---
+layout: layouts/base.njk
+title: Organization map
+description: A build-time, provenance-bearing relationship map generated from repository-owned msdmd collection points.
+---
+{% set map = generated.orgMsdmd %}
+<header class="page-head">
+  <p class="eyebrow">Repository-owned msdmd → organization-scale integration</p>
+  <h1>Organization map</h1>
+  <p class="lede">Repositories describe themselves. This website joins those commit-pinned descriptions and displays the resulting relations without becoming a second source of repository canon.</p>
+  <div class="status-row">
+    <span class="status status-implemented">{{ map.summary.collectionCount }}/{{ map.summary.repositoryCount }} collections</span>
+    <span class="status status-public">{{ map.summary.declarationCount }} declarations</span>
+    <span class="status status-research">{{ map.summary.crossRepoPairCount }} cross-repo pairs</span>
+    {% if map.summary.unresolvedEdgeCount %}<span class="status status-hmmm">{{ map.summary.unresolvedEdgeCount }} unresolved edges</span>{% endif %}
+    {% if map.fallback %}<span class="status status-frontier">last-known-good snapshot</span>{% endif %}
+  </div>
+</header>
+
+<section aria-labelledby="map-view-title">
+  <p class="eyebrow">Generated view</p>
+  <h2 id="map-view-title">Relations currently visible</h2>
+  <p class="section-intro">The graphic shows repository-level relations only when an msdmd edge resolves exactly across repository boundaries. Missing collections and unresolved targets remain visible rather than being inferred.</p>
+  <div class="org-map-summary" aria-label="Organization map summary">
+    <div class="org-map-stat"><strong>{{ map.summary.repositoryCount }}</strong><span>repositories</span></div>
+    <div class="org-map-stat"><strong>{{ map.summary.collectionCount }}</strong><span>collections</span></div>
+    <div class="org-map-stat"><strong>{{ map.summary.edgeCount }}</strong><span>declared edges</span></div>
+    <div class="org-map-stat"><strong>{{ map.summary.resolvedEdgeCount }}</strong><span>resolved edges</span></div>
+    <div class="org-map-stat"><strong>{{ map.summary.gapCount }}</strong><span>coverage gaps</span></div>
+    <div class="org-map-stat"><strong>{{ map.summary.unresolvedEdgeCount }}</strong><span>hmmm edges</span></div>
+  </div>
+  <div class="org-map-shell" data-org-map data-source="/assets/data/org-msdmd.json">
+    <div class="org-map-frame" data-org-map-frame>
+      <div class="org-map-detail" data-org-map-detail aria-live="polite">JavaScript adds the visual graph here. The complete static evidence remains below.</div>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="repo-evidence-title">
+  <p class="eyebrow">Static fallback · complete repository surface</p>
+  <h2 id="repo-evidence-title">Repository evidence</h2>
+  <div class="grid org-map-repo-grid">
+    {% for repo in map.repositories %}
+    <a class="card org-map-repo-card" href="/projects/{{ repo.slug }}/">
+      <div class="status-row">
+        {% if repo.collection.status == 'ok' %}<span class="status status-implemented">msdmd</span>{% elif repo.collection.status == 'invalid' %}<span class="status status-risk">invalid collection</span>{% else %}<span class="status status-hmmm">collection hmmm</span>{% endif %}
+        {% if repo.archived %}<span class="status status-archived">archived</span>{% endif %}
+      </div>
+      <h3>{{ repo.name }}</h3>
+      <dl>
+        <dt>declarations</dt><dd>{{ repo.counts.declarations }}</dd>
+        <dt>edges</dt><dd>{{ repo.counts.edges }}</dd>
+        <dt>gaps</dt><dd>{{ repo.counts.gaps }}</dd>
+        <dt>cross-repo</dt><dd>{{ repo.counts.crossRepoEdges }}</dd>
+        <dt>unresolved</dt><dd>{{ repo.counts.unresolvedEdges }}</dd>
+      </dl>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+<section aria-labelledby="cross-repo-title">
+  <p class="eyebrow">Exact cross-repository resolution</p>
+  <h2 id="cross-repo-title">Cross-repo relations</h2>
+  {% if map.repositoryEdges.length %}
+  <div class="org-map-table-wrap" tabindex="0" aria-label="Scrollable cross-repository relation table">
+    <table class="org-map-table">
+      <thead><tr><th>From</th><th>To</th><th>Relations</th><th>Declarations</th></tr></thead>
+      <tbody>
+        {% for edge in map.repositoryEdges %}<tr><td>{{ edge.from }}</td><td>{{ edge.to }}</td><td>{{ edge.kinds | join(', ') }}</td><td>{{ edge.count }}</td></tr>{% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="hmmm"><h3>hmmm</h3><p>No current msdmd edge resolves exactly across repository boundaries. The repositories remain mapped individually; the website will not invent cross-repo edges from naming similarity or editorial familiarity.</p></div>
+  {% endif %}
+</section>
+
+<section aria-labelledby="unresolved-title">
+  <p class="eyebrow">Resolution boundary</p>
+  <h2 id="unresolved-title">Unresolved edges</h2>
+  {% if map.unresolvedEdges.length %}
+  <details>
+    <summary>{{ map.unresolvedEdges.length }} declared targets remain unresolved</summary>
+    <ol class="org-map-unresolved">
+      {% for edge in map.unresolvedEdges %}<li><code>{{ edge.sourceId }}</code> —{{ edge.kind }}→ <code>{{ edge.targetRaw }}</code></li>{% endfor %}
+    </ol>
+  </details>
+  {% else %}<p>No unresolved declared targets in this snapshot.</p>{% endif %}
+</section>
+
+<section aria-labelledby="provenance-title">
+  <p class="eyebrow">Build receipt</p>
+  <h2 id="provenance-title">Consumed source identities</h2>
+  <p class="section-intro">The snapshot identity is <code>{{ map.sourceSnapshot.stateDigest }}</code>. Its source time is the latest consumed repository head time, {{ map.sourceSnapshot.latestHeadCommittedAt or 'hmmm' }}. Rebuilding against unchanged heads and collection bytes produces the same JSON.</p>
+  <ul class="org-map-receipts">
+    {% for repo in map.repositories %}
+    <li><strong>{{ repo.name }}</strong> · head <code>{{ repo.headSha or 'hmmm' }}</code> · collection <code>{{ repo.collection.path }}</code> · SHA-256 <code>{{ repo.collection.sha256 or 'hmmm' }}</code>{% if repo.collection.declaredSourceCommit %} · declared source <code>{{ repo.collection.declaredSourceCommit }}</code>{% endif %}{% if repo.collection.sourceCommitMatchesHead == false %} · <strong>source-commit mismatch</strong>{% endif %}</li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section class="hmmm" aria-labelledby="map-hmmm-title">
+  <h2 id="map-hmmm-title">hmmm</h2>
+  {% for item in map.hmmm %}<p>{{ item }}</p>{% endfor %}
+</section>
