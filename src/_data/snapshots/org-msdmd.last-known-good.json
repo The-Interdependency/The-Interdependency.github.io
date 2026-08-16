@@ -1,0 +1,36 @@
+{
+  "schema": "interdependency.org-msdmd-map/0.1.0",
+  "organization": "The-Interdependency",
+  "fallback": true,
+  "sourceSnapshot": {
+    "policy": "bootstrap fallback only; no repository collection evidence has been consumed in this checked-in snapshot",
+    "latestHeadCommittedAt": null,
+    "stateDigest": "hmmm-bootstrap-no-source-evidence"
+  },
+  "summary": {
+    "repositoryCount": 0,
+    "collectionCount": 0,
+    "missingCollectionCount": 0,
+    "invalidCollectionCount": 0,
+    "declarationCount": 0,
+    "gapCount": 0,
+    "edgeCount": 0,
+    "resolvedEdgeCount": 0,
+    "externalTargetCount": 0,
+    "crossRepoEdgeCount": 0,
+    "crossRepoPairCount": 0,
+    "unresolvedEdgeCount": 0
+  },
+  "repositories": [],
+  "declarations": [],
+  "gaps": [],
+  "edges": [],
+  "repositoryEdges": [],
+  "unresolvedEdges": [],
+  "hmmm": [
+    "Bootstrap fallback: this checked-in artifact contains no repository collection evidence and must not be mistaken for an organization-state measurement.",
+    "A successful online refresh replaces this file in the build workspace with a commit-pinned last-known-good snapshot.",
+    "Only empty, ambiguous declaration, and broken explicit declaration references are unresolved. Ordinary owners, routes, files, tools, capability names, and external systems remain valid opaque targets.",
+    "Missing collection points remain visible until the source repository publishes one."
+  ]
+}

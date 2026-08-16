@@ -20,6 +20,12 @@ import { installMathRenderer } from './scripts/markdown-math.mjs';
 //   then: the website publishes the generated presentation view without becoming a second source of repo canon
 //   class: evidence
 //   since: 2026-08-14
+//
+// id: website_org_msdmd_has_one_public_projection_copy
+//   given: commit-pinned repo-owned msdmd collections are joined into the generated organization map
+//   then: the website publishes that generated evidence artifact unchanged and uses it for the visual map without becoming repository metadata authority
+//   class: evidence
+//   since: 2026-08-16
 // === END CONTRACTS ===
 // Usage: run `npm run build`; Eleventy emits the static site, copies root machine instructions, and preserves dependency-free public reading paths.
 
@@ -30,6 +36,7 @@ export default function configureEleventy(eleventyConfig) {
     'src/assets': 'assets',
     'src/_data/gonol_relationship_display.json': 'assets/data/gonol-relationship-display-v1.json',
     'src/_data/generated/sitrep.json': 'assets/data/sitrep.json',
+    'src/_data/generated/orgMsdmd.json': 'assets/data/org-msdmd.json',
     'CNAME': 'CNAME',
     'llms.txt': 'llms.txt',
     'artifacts/four-cuts-1.html': 'artifacts/four-cuts/index.html',
