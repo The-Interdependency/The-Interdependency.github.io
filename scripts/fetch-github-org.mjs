@@ -4,19 +4,21 @@ import yaml from 'js-yaml';
 
 // === MODULE_BUILD ===
 // id: organization_project_map
-//   purpose: Build public project pages from GitHub facts plus reviewed repository manifests or central overrides.
+//   purpose: Build public project pages from GitHub facts plus reviewed repository manifests or central overrides, recording exact default-branch heads for reproducible downstream consumers.
 //   entrypoint: npm run refresh:github
 //   tests: tests/repo-coverage.test.mjs, tests/offline-project-snapshot.test.mjs
 // === END MODULE_BUILD ===
 // === BOUNDARIES ===
 // id: github_public_metadata
-//   network: reads only allowlisted HTTPS GitHub API endpoints; optional token raises rate limits
+//   network: reads only allowlisted HTTPS GitHub API and raw.githubusercontent.com endpoints; optional token raises API rate limits
 //   storage: writes generated and last-known-good JSON snapshots
 //   failure: preserves last-known-good data with fallback=true, including reviewed editorial fields
 // === END BOUNDARIES ===
+// Usage: run `npm run refresh:github`; the generated repo snapshot records each exact default-branch head so later collectors can fetch commit-pinned source without repeating GitHub API lookups.
 
 const org = 'The-Interdependency';
 const githubApiOrigin = 'https://api.github.com';
+const rawGithubOrigin = 'https://raw.githubusercontent.com';
 const headers = ['-H', 'Accept: application/vnd.github+json', '-H', 'X-GitHub-Api-Version: 2022-11-28'];
 if (process.env.GITHUB_TOKEN) headers.push('-H', `Authorization: Bearer ${process.env.GITHUB_TOKEN}`);
 
@@ -24,6 +26,11 @@ function githubApiUrl(pathname, search = {}) {
   const url = new URL(pathname, githubApiOrigin);
   for (const [key, value] of Object.entries(search)) url.searchParams.set(key, String(value));
   return url;
+}
+
+function rawGithubUrl(repoName, commit, path) {
+  const parts = [org, repoName, commit, ...String(path).split('/')].map(encodeURIComponent);
+  return new URL(`/${parts.join('/')}`, rawGithubOrigin);
 }
 
 function getJson(target) {
@@ -38,19 +45,45 @@ function getJson(target) {
   ));
 }
 
+function getText(target) {
+  const url = target instanceof URL ? target : new URL(target);
+  if (url.protocol !== 'https:' || url.origin !== rawGithubOrigin) {
+    throw new Error(`refusing non-raw-GitHub target: ${url.origin}`);
+  }
+  return execFileSync(
+    'curl',
+    ['-fsSL', '--retry', '2', '--max-time', '20', url.href],
+    { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }
+  );
+}
+
 function normalizeRepoName(value) {
   const name = String(value || '');
   if (!/^[A-Za-z0-9_.-]{1,100}$/.test(name)) throw new Error(`invalid GitHub repository name: ${name}`);
   return name;
 }
 
-function getManifest(repoName) {
+function getHead(repoName, defaultBranch) {
   try {
+    if (!defaultBranch) return { sha: null, committed_at: null };
     const safeRepo = normalizeRepoName(repoName);
     const response = getJson(githubApiUrl(
-      `/repos/${encodeURIComponent(org)}/${encodeURIComponent(safeRepo)}/contents/.interdependency/project.yml`
+      `/repos/${encodeURIComponent(org)}/${encodeURIComponent(safeRepo)}/commits/${encodeURIComponent(defaultBranch)}`
     ));
-    return yaml.load(Buffer.from(response.content || '', 'base64').toString('utf8')) || null;
+    return {
+      sha: response.sha || null,
+      committed_at: response.commit?.committer?.date || response.commit?.author?.date || null
+    };
+  } catch {
+    return { sha: null, committed_at: null };
+  }
+}
+
+function getManifest(repoName, headSha) {
+  try {
+    if (!headSha) return null;
+    const safeRepo = normalizeRepoName(repoName);
+    return yaml.load(getText(rawGithubUrl(safeRepo, headSha, '.interdependency/project.yml'))) || null;
   } catch {
     return null;
   }
@@ -91,7 +124,10 @@ try {
 
 const repositories = rawRepos.map(repo => {
   const repoName = normalizeRepoName(repo.name);
-  const manifest = fallback ? null : getManifest(repoName);
+  const head = fallback
+    ? { sha: repo.head_sha || null, committed_at: repo.head_committed_at || null }
+    : getHead(repoName, repo.default_branch);
+  const manifest = fallback ? null : getManifest(repoName, head.sha);
   const inheritedEditorial = fallback ? {
     category: repo.category,
     status: repo.status,
@@ -113,6 +149,9 @@ const repositories = rawRepos.map(repo => {
   if (!editorial.status && !hmmm.includes('Project maturity has not been explicitly declared.')) {
     hmmm.push('Project maturity has not been explicitly declared.');
   }
+  if (!fallback && !head.sha) {
+    hmmm.push('Exact default-branch head was unavailable during this snapshot; commit-pinned downstream collection is suspended for this repository.');
+  }
   return {
     name: repoName,
     slug: repoName.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
@@ -127,6 +166,8 @@ const repositories = rawRepos.map(repo => {
     archived: Boolean(repo.archived),
     fork: Boolean(repo.fork),
     default_branch: repo.default_branch || null,
+    head_sha: head.sha,
+    head_committed_at: head.committed_at,
     topics: Array.isArray(repo.topics) ? repo.topics : [],
     license: repo.license?.spdx_id || repo.license || null,
     language: repo.language || null,
