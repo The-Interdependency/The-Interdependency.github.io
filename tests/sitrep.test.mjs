@@ -35,6 +35,17 @@ test('SITREP presentation keeps declared situation separate from observed GitHub
   assert.match(template, /authority transfer: false/);
 });
 
+test('SITREP formatting exposes scan, summary, and evidence depths without hiding hmmm', async () => {
+  const template = await readFile('src/sitrep/index.njk', 'utf8');
+  assert.match(template, /aria-label="Repository situation index"/);
+  assert.match(template, /Portfolio scan/);
+  assert.match(template, /Current claim/);
+  assert.match(template, /Open full report/);
+  assert.match(template, /Show exact source identities/);
+  assert.match(template, /Honest incompletion stays visible and countable/);
+  assert.doesNotMatch(template, /sitrep-orbit/);
+});
+
 test('website participates through the skill-lib repository-plan-report contract', async () => {
   const report = JSON.parse(await readFile('docs/work-graphs/repository-plan-report.json', 'utf8'));
   assert.equal(report.schema, 'the-interdependency.repository-plan-report');
