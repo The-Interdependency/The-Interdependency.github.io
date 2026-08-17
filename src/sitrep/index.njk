@@ -14,21 +14,26 @@ description: A live, provenance-preserving view of METAPAT, UCNS, EDCM, a0, and 
   </div>
 </header>
 
-<section class="sitrep-control-plane" aria-labelledby="sitrep-control-title">
-  <div>
-    <p class="eyebrow">Control-plane provenance</p>
-    <h2 id="sitrep-control-title">skill-lib / interdependent-work-graph</h2>
+<details class="sitrep-control-plane">
+  <summary>
+    <span>
+      <span class="eyebrow">Control-plane provenance</span>
+      <strong>skill-lib / interdependent-work-graph</strong>
+    </span>
+    <span class="sitrep-summary-action">Show exact source identities</span>
+  </summary>
+  <div class="sitrep-control-content">
     <p>The control plane validates, orders, hashes, and projects repo-owned reports. It owns no METAPAT canon, UCNS mathematics, EDCM measurement validity, a0 runtime authority, or website publication claim.</p>
+    <dl class="sitrep-contract-grid">
+      <div><dt>Contract</dt><dd>repository-plan-report {{ generated.sitrep.controlPlane.reportSchemaVersion }}</dd></div>
+      <div><dt>Schema blob</dt><dd><code>{{ generated.sitrep.controlPlane.reportSchemaBlob | truncate(12, true, '') }}</code></dd></div>
+      <div><dt>skill-lib commit</dt><dd><code>{{ generated.sitrep.controlPlane.commit | truncate(12, true, '') }}</code></dd></div>
+      <div><dt>Projection</dt><dd>{% if generated.sitrep.portfolio %}<code>{{ generated.sitrep.portfolio.portfolio_plan_sha256 | truncate(12, true, '') }}</code>{% else %}<span class="status status-hmmm">hmmm</span>{% endif %}</dd></div>
+      <div><dt>Snapshot</dt><dd>{{ generated.sitrep.snapshotAt | dateOnly }}</dd></div>
+      <div><dt>Mode</dt><dd>{% if generated.sitrep.fallback %}last-known-good / unavailable boundary{% else %}fresh build-time observation{% endif %}</dd></div>
+    </dl>
   </div>
-  <dl class="sitrep-contract-grid">
-    <div><dt>Contract</dt><dd>repository-plan-report {{ generated.sitrep.controlPlane.reportSchemaVersion }}</dd></div>
-    <div><dt>Schema blob</dt><dd><code>{{ generated.sitrep.controlPlane.reportSchemaBlob | truncate(12, true, '') }}</code></dd></div>
-    <div><dt>skill-lib commit</dt><dd><code>{{ generated.sitrep.controlPlane.commit | truncate(12, true, '') }}</code></dd></div>
-    <div><dt>Projection</dt><dd>{% if generated.sitrep.portfolio %}<code>{{ generated.sitrep.portfolio.portfolio_plan_sha256 | truncate(12, true, '') }}</code>{% else %}<span class="status status-hmmm">hmmm</span>{% endif %}</dd></div>
-    <div><dt>Snapshot</dt><dd>{{ generated.sitrep.snapshotAt | dateOnly }}</dd></div>
-    <div><dt>Mode</dt><dd>{% if generated.sitrep.fallback %}last-known-good / unavailable boundary{% else %}fresh build-time observation{% endif %}</dd></div>
-  </dl>
-</section>
+</details>
 
 {% if generated.sitrep.fallback %}
 <section class="hmmm sitrep-fallback" aria-labelledby="sitrep-fallback-title">
@@ -37,24 +42,42 @@ description: A live, provenance-preserving view of METAPAT, UCNS, EDCM, a0, and 
 </section>
 {% endif %}
 
+<nav class="sitrep-index" aria-label="Repository situation index">
+  <div class="sitrep-index-heading">
+    <p class="eyebrow">Portfolio scan</p>
+    <p>Choose a repository. Counts come from its declared report; CI and pull requests remain observed facts.</p>
+  </div>
+  <div class="sitrep-index-grid">
+    {% for project in generated.sitrep.projects %}
+    <a href="#{{ project.slug }}" data-project="{{ project.slug }}">
+      <span class="sitrep-index-number" aria-hidden="true">{{ loop.index }}</span>
+      <span class="sitrep-index-copy">
+        <strong>{{ project.label }}</strong>
+        {% if project.report %}<small>{{ project.report.next_actions | length }} next · {{ project.report.blocked | length }} blocked · {{ project.report.hmmm | length }} hmmm</small>{% else %}<small>report unavailable</small>{% endif %}
+      </span>
+      <span class="status {% if project.reportFreshness == 'current' %}status-implemented{% else %}status-hmmm{% endif %}">{{ project.reportFreshness }}</span>
+    </a>
+    {% endfor %}
+  </div>
+</nav>
+
 <section aria-labelledby="repo-sitreps-title">
   <p class="eyebrow">Five distinct authority surfaces</p>
   <h2 id="repo-sitreps-title">Current repository situations</h2>
   <p class="section-intro">The left side of each infogram is declared situation from the repository report. The right side is GitHub-observed activity at site build time. Report/head mismatch is shown rather than silently reconciled.</p>
 
+  <div class="sitrep-reading-key" aria-label="How to read each repository situation">
+    <div><span class="sitrep-key-mark key-declared" aria-hidden="true"></span><p><strong>Declared</strong><small>Meaning, frontier, next actions, and unresolved constraints.</small></p></div>
+    <div><span class="sitrep-key-mark key-observed" aria-hidden="true"></span><p><strong>Observed</strong><small>Repository activity only; it cannot strengthen a claim.</small></p></div>
+    <div><span class="sitrep-key-mark key-hmmm" aria-hidden="true">?</span><p><strong>hmmm</strong><small>Honest incompletion stays visible and countable.</small></p></div>
+  </div>
+
   <div class="sitrep-grid">
     {% for project in generated.sitrep.projects %}
-    <article class="sitrep-card" id="{{ project.slug }}">
+    <article class="sitrep-card" id="{{ project.slug }}" data-project="{{ project.slug }}">
       <header class="sitrep-card-header">
-        <div class="sitrep-orbit" aria-hidden="true">
-          <span class="sitrep-orbit-ring"></span>
-          <strong>{{ project.label }}</strong>
-          <span class="orbit-marker orbit-report">R</span>
-          <span class="orbit-marker orbit-ci">CI</span>
-          <span class="orbit-marker orbit-next">N</span>
-          <span class="orbit-marker orbit-hmmm">?</span>
-        </div>
-        <div>
+        <div class="sitrep-node" aria-hidden="true"><span>{{ loop.index }}</span></div>
+        <div class="sitrep-card-heading">
           <p class="eyebrow">{{ project.repository }}</p>
           <h3>{{ project.label }}</h3>
           {% if project.report %}
@@ -62,31 +85,38 @@ description: A live, provenance-preserving view of METAPAT, UCNS, EDCM, a0, and 
           {% else %}
           <p class="sitrep-state">Repository report unavailable.</p>
           {% endif %}
+          <div class="status-row">
+            <span class="status {% if project.reportFreshness == 'current' %}status-implemented{% else %}status-hmmm{% endif %}">report {{ project.reportFreshness }}</span>
+            {% if project.report %}<span class="status status-interpretation">source {{ project.report.source.commit | truncate(9, true, '') }}</span>{% endif %}
+            {% if project.telemetry and project.telemetry.latestWorkflow %}<span class="status {% if project.telemetry.latestWorkflow.conclusion == 'success' %}status-implemented{% elif project.telemetry.latestWorkflow.conclusion == 'failure' %}status-risk{% else %}status-hmmm{% endif %}">CI {{ project.telemetry.latestWorkflow.conclusion or project.telemetry.latestWorkflow.status }}</span>{% endif %}
+          </div>
         </div>
       </header>
 
       <div class="sitrep-dual">
         <section class="sitrep-declared" aria-label="{{ project.label }} declared situation">
-          <p class="sitrep-axis-label">Declared · repo-owned</p>
-          {% if project.report %}
-          <p class="sitrep-claim">{{ project.report.status.current_claim }}</p>
-          <dl class="sitrep-metrics">
-            <div><dt>Frontier</dt><dd>{{ project.report.active_frontier | length }}</dd></div>
-            <div><dt>Next</dt><dd>{{ project.report.next_actions | length }}</dd></div>
-            <div><dt>Blocked</dt><dd>{{ project.report.blocked | length }}</dd></div>
-            <div><dt>hmmm</dt><dd>{{ project.report.hmmm | length }}</dd></div>
-          </dl>
-          <div class="status-row">
-            <span class="status {% if project.reportFreshness == 'current' %}status-implemented{% elif project.reportFreshness == 'stale' %}status-frontier{% else %}status-hmmm{% endif %}">report {{ project.reportFreshness }}</span>
-            <span class="status status-interpretation">source {{ project.report.source.commit | truncate(9, true, '') }}</span>
+          <div class="sitrep-axis-heading">
+            <p class="sitrep-axis-label">Declared · repo-owned</p>
+            <p>What the repository says is true of its present work.</p>
           </div>
+          {% if project.report %}
+          <div class="sitrep-current-claim"><span>Current claim</span><p class="sitrep-claim">{{ project.report.status.current_claim }}</p></div>
+          <dl class="sitrep-metrics">
+            <div class="metric-frontier"><dt>Frontier</dt><dd>{{ project.report.active_frontier | length }}</dd></div>
+            <div class="metric-next"><dt>Next</dt><dd>{{ project.report.next_actions | length }}</dd></div>
+            <div class="metric-blocked"><dt>Blocked</dt><dd>{{ project.report.blocked | length }}</dd></div>
+            <div class="metric-hmmm"><dt>hmmm</dt><dd>{{ project.report.hmmm | length }}</dd></div>
+          </dl>
           {% else %}
           <div class="hmmm"><strong>hmmm</strong><p>No report was supplied to the skill-lib projection. No project state has been synthesized.</p></div>
           {% endif %}
         </section>
 
         <section class="sitrep-observed" aria-label="{{ project.label }} observed GitHub telemetry">
-          <p class="sitrep-axis-label">Observed · GitHub</p>
+          <div class="sitrep-axis-heading">
+            <p class="sitrep-axis-label">Observed · GitHub</p>
+            <p>What the build could verify without interpreting the claim.</p>
+          </div>
           {% if project.telemetry %}
           <dl class="sitrep-observed-list">
             <div><dt>HEAD</dt><dd><code>{{ project.telemetry.head | truncate(9, true, '') }}</code></dd></div>
@@ -95,9 +125,6 @@ description: A live, provenance-preserving view of METAPAT, UCNS, EDCM, a0, and 
             <div><dt>Last push</dt><dd>{{ project.telemetry.pushedAt | dateOnly }}</dd></div>
             <div><dt>Workflow</dt><dd>{% if project.telemetry.latestWorkflow %}{{ project.telemetry.latestWorkflow.conclusion or project.telemetry.latestWorkflow.status or 'hmmm' }}{% else %}hmmm{% endif %}</dd></div>
           </dl>
-          {% if project.telemetry.latestWorkflow %}
-          <div class="status-row"><span class="status {% if project.telemetry.latestWorkflow.conclusion == 'success' %}status-implemented{% elif project.telemetry.latestWorkflow.conclusion == 'failure' %}status-risk{% else %}status-hmmm{% endif %}">CI {{ project.telemetry.latestWorkflow.conclusion or project.telemetry.latestWorkflow.status }}</span></div>
-          {% endif %}
           {% else %}
           <p class="hmmm">GitHub telemetry was unavailable at build time.</p>
           {% endif %}
@@ -106,12 +133,12 @@ description: A live, provenance-preserving view of METAPAT, UCNS, EDCM, a0, and 
 
       {% if project.report %}
       <details class="sitrep-details">
-        <summary>Frontier, next actions, blockers, relations, and hmmm</summary>
+        <summary><span>Open full report</span><small>Frontier · next actions · blockers · relations · hmmm</small></summary>
         <div class="sitrep-detail-grid">
-          <section><h4>Active frontier</h4><ul>{% for item in project.report.active_frontier %}<li>{{ item }}</li>{% else %}<li>None declared.</li>{% endfor %}</ul></section>
-          <section><h4>Next actions</h4><ul>{% for item in project.report.next_actions %}<li>{{ item.action }}{% if item.dependency %}<small>Dependency: {{ item.dependency }}</small>{% endif %}</li>{% else %}<li>None declared.</li>{% endfor %}</ul></section>
-          <section><h4>Blocked</h4><ul>{% for item in project.report.blocked %}<li>{{ item }}</li>{% else %}<li>None declared.</li>{% endfor %}</ul></section>
-          <section><h4>hmmm</h4><ul>{% for item in project.report.hmmm %}<li>{{ item }}</li>{% else %}<li>None declared.</li>{% endfor %}</ul></section>
+          <section class="detail-frontier"><h4>Active frontier</h4><ul>{% for item in project.report.active_frontier %}<li>{{ item }}</li>{% else %}<li>None declared.</li>{% endfor %}</ul></section>
+          <section class="detail-next"><h4>Next actions</h4><ul>{% for item in project.report.next_actions %}<li>{{ item.action }}{% if item.dependency %}<small>Dependency: {{ item.dependency }}</small>{% endif %}</li>{% else %}<li>None declared.</li>{% endfor %}</ul></section>
+          <section class="detail-blocked"><h4>Blocked</h4><ul>{% for item in project.report.blocked %}<li>{{ item }}</li>{% else %}<li>None declared.</li>{% endfor %}</ul></section>
+          <section class="detail-hmmm"><h4>hmmm</h4><ul>{% for item in project.report.hmmm %}<li>{{ item }}</li>{% else %}<li>None declared.</li>{% endfor %}</ul></section>
           <section class="sitrep-relations"><h4>Cross-repository relations</h4><ul>{% for relation in project.report.cross_repository_relations %}<li><code>{{ relation.repository }}</code><span>{{ relation.relation }}</span><small>authority transfer: false</small></li>{% else %}<li>None declared.</li>{% endfor %}</ul></section>
         </div>
       </details>
@@ -126,13 +153,16 @@ description: A live, provenance-preserving view of METAPAT, UCNS, EDCM, a0, and 
   <p class="eyebrow">Deterministic relation projection</p>
   <h2 id="work-graph-title">Current work graph</h2>
   <p class="section-intro">These edges are emitted from repo-owned relation declarations by the skill-lib projection. Connection does not transfer authority, proof status, measurement validity, empirical status, or publication ownership.</p>
-  <ol class="relation-list">
-    {% for relation in generated.sitrep.portfolio.cross_repository_dependencies %}
-    <li><code>{{ relation.from }}</code><span aria-hidden="true">→</span><code>{{ relation.to }}</code><strong>{{ relation.relation }}</strong></li>
-    {% else %}
-    <li>No cross-repository relations were projected.</li>
-    {% endfor %}
-  </ol>
+  <details class="sitrep-graph-details">
+    <summary>Show {{ generated.sitrep.portfolio.cross_repository_dependencies | length }} projected relation(s)</summary>
+    <ol class="relation-list">
+      {% for relation in generated.sitrep.portfolio.cross_repository_dependencies %}
+      <li><code>{{ relation.from }}</code><span aria-hidden="true">→</span><code>{{ relation.to }}</code><strong>{{ relation.relation }}</strong></li>
+      {% else %}
+      <li>No cross-repository relations were projected.</li>
+      {% endfor %}
+    </ol>
+  </details>
 </section>
 {% endif %}
 
