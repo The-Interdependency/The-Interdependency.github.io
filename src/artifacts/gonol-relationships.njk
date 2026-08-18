@@ -14,7 +14,7 @@ permalink: /artifacts/gonol-relationships/
 
 <aside class="panel" aria-labelledby="publication-boundary">
   <h2 id="publication-boundary">Publication boundary</h2>
-  <p>This page consumes the exact UCNS machine contract identified below. UCNS remains mathematical and status authority. The website supplies interaction, accessibility, and projection only; it transfers no canon, geometry, proof, measurement, empirical, completion, or embedding status.</p>
+  <p>This page consumes the exact UCNS machine contract identified under Provenance. UCNS remains mathematical and status authority. The website supplies interaction, accessibility, and projection only; it transfers no canon, geometry, proof, measurement, empirical, completion, or embedding status.</p>
   <p><strong>Current standing:</strong> {{ gonol_relationship_publication.publication_status }}. The producer contract is still under review in <a href="{{ gonol_relationship_publication.producer_pr }}">UCNS PR #168</a>.</p>
 </aside>
 
@@ -179,8 +179,9 @@ permalink: /artifacts/gonol-relationships/
   </div>
 </section>
 
-<section class="panel" aria-labelledby="source-identity-heading">
-  <h2 id="source-identity-heading">Source identity and drift boundary</h2>
+<details class="provenance provenance-disclosure">
+  <summary>Provenance</summary>
+  <h2>Source identity and drift boundary</h2>
   <dl class="meta">
     <dt>Repository</dt><dd><code>{{ gonol_relationship_publication.source.repository }}</code></dd>
     <dt>Commit</dt><dd><code>{{ gonol_relationship_publication.source.commit }}</code></dd>
@@ -191,7 +192,7 @@ permalink: /artifacts/gonol-relationships/
     <dt>Public Gonol digest</dt><dd><code>{{ gonol_relationship_display.public_gonol.sha256 }}</code></dd>
   </dl>
   <p><a class="button" href="{{ gonol_relationship_publication.source.url }}">Open exact UCNS machine contract</a></p>
-</section>
+</details>
 
 <section class="hmmm"><h2>hmmm</h2><p>{{ gonol_relationship_publication.hmmm }}</p><p>The occurrence-address vector starts the English embedding work by preserving exact character identity, source order, multiplicity, carrier address, and scale declaration. It is not the completed English lexical floor or the missing hyperdimensional geometric assignment law.</p></section>
 
