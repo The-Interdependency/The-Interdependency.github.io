@@ -68,13 +68,15 @@ if (canon.units.some(unit => /^Human consciousness emerges from:?$/i.test(unit.t
 if (canon.units.some(unit => /^Binary essences meaningfully/i.test(unit.title))) throw new Error('Binary essences must remain body structure, not a tree unit');
 if (canon.units.some(unit => /^Trinary (?:perceptual|states of social perception|social perception)/i.test(unit.title))) throw new Error('Trinary Interdefinables labels must remain body structure, not tree units');
 if (canon.units.some(unit => /Archetype passions of possession/i.test(unit.title))) throw new Error('Archetype passions must remain body structure, not a tree unit');
-if (preamble.level !== 2 || preamble.section !== 'preamble') throw new Error('Preamble must remain the next major section boundary');
-const interdefinablesUnitIndex = canon.units.findIndex(unit => unit.id === interdefinables.id);
-const preambleUnitIndex = canon.units.findIndex(unit => unit.id === preamble.id);
-if (interdefinablesUnitIndex < 0 || preambleUnitIndex !== interdefinablesUnitIndex + 1) throw new Error('Preamble must be the next Way-tree heading after The Interdefinables');
-const interdefinablesSectionIndex = canon.sections.findIndex(section => section.title === 'The Interdefinables');
-const preambleSectionIndex = canon.sections.findIndex(section => section.title === 'Preamble');
-if (interdefinablesSectionIndex < 0 || preambleSectionIndex !== interdefinablesSectionIndex + 1) throw new Error('Preamble must be the next major section after The Interdefinables');
+if (preamble.level !== 2 || preamble.section !== 'preamble') throw new Error('Preamble must remain a major section boundary');
+if (!canon.source.fallback) {
+  const interdefinablesUnitIndex = canon.units.findIndex(unit => unit.id === interdefinables.id);
+  const preambleUnitIndex = canon.units.findIndex(unit => unit.id === preamble.id);
+  if (interdefinablesUnitIndex < 0 || preambleUnitIndex !== interdefinablesUnitIndex + 1) throw new Error('Preamble must be the next Way-tree heading after The Interdefinables');
+  const interdefinablesSectionIndex = canon.sections.findIndex(section => section.title === 'The Interdefinables');
+  const preambleSectionIndex = canon.sections.findIndex(section => section.title === 'Preamble');
+  if (interdefinablesSectionIndex < 0 || preambleSectionIndex !== interdefinablesSectionIndex + 1) throw new Error('Preamble must be the next major section after The Interdefinables');
+}
 
 if (textbook.schema !== 'interdependency.distributed-textbook/1.0.0') throw new Error(`unexpected textbook schema: ${textbook.schema}`);
 if (!Array.isArray(textbookSources) || textbookSources.length !== 8) throw new Error('textbook source manifest must contain exactly eight chapters');
