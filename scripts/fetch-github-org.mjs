@@ -4,17 +4,17 @@ import yaml from 'js-yaml';
 
 // === MODULE_BUILD ===
 // id: organization_project_map
-//   purpose: Build public project pages from GitHub facts plus reviewed repository manifests or central overrides, recording exact default-branch heads for reproducible downstream consumers.
+//   purpose: Build active public project pages from GitHub facts plus reviewed repository manifests or central overrides, recording exact default-branch heads for reproducible downstream consumers.
 //   entrypoint: npm run refresh:github
 //   tests: tests/repo-coverage.test.mjs, tests/offline-project-snapshot.test.mjs
 // === END MODULE_BUILD ===
 // === BOUNDARIES ===
 // id: github_public_metadata
 //   network: reads only allowlisted HTTPS GitHub API and raw.githubusercontent.com endpoints; optional token raises API rate limits
-//   storage: writes generated and last-known-good JSON snapshots
-//   failure: preserves last-known-good data with fallback=true, including reviewed editorial fields
+//   storage: writes generated and last-known-good JSON snapshots for active public repositories only
+//   failure: preserves last-known-good active-project data with fallback=true, including reviewed editorial fields
 // === END BOUNDARIES ===
-// Usage: run `npm run refresh:github`; the generated repo snapshot records each exact default-branch head so later collectors can fetch commit-pinned source without repeating GitHub API lookups.
+// Usage: run `npm run refresh:github`; the generated repo snapshot records each active public repository's exact default-branch head so later collectors can fetch commit-pinned source without repeating GitHub API lookups. GitHub-archived repositories are deliberately excluded from public website data, routes, counts, and downstream maps.
 
 const org = 'The-Interdependency';
 const githubApiOrigin = 'https://api.github.com';
@@ -122,7 +122,8 @@ try {
   catch { rawRepos = []; }
 }
 
-const repositories = rawRepos.map(repo => {
+const activeRepos = rawRepos.filter(repo => !repo.archived);
+const repositories = activeRepos.map(repo => {
   const repoName = normalizeRepoName(repo.name);
   const head = fallback
     ? { sha: repo.head_sha || null, committed_at: repo.head_committed_at || null }
@@ -163,7 +164,7 @@ const repositories = rawRepos.map(repo => {
     relationships: Array.isArray(editorial.relationships) ? editorial.relationships : [],
     primary_artifact: editorial.primary_artifact || repo.homepage || null,
     docs: editorial.docs || null,
-    archived: Boolean(repo.archived),
+    archived: false,
     fork: Boolean(repo.fork),
     default_branch: repo.default_branch || null,
     head_sha: head.sha,
@@ -184,6 +185,7 @@ const data = {
   fallback,
   publicRepoCount: repositories.length,
   generatedRouteCount: repositories.length,
+  excludedArchivedRepoCount: rawRepos.length - activeRepos.length,
   categories,
   repositories
 };
@@ -191,4 +193,4 @@ await mkdir('src/_data/generated', { recursive: true });
 await mkdir('src/_data/snapshots', { recursive: true });
 await writeFile('src/_data/generated/repos.json', JSON.stringify(data, null, 2));
 if (!fallback) await writeFile('src/_data/snapshots/repos.last-known-good.json', JSON.stringify(data, null, 2));
-console.log(`repos ${repositories.length}${fallback ? ' fallback' : ''}`);
+console.log(`repos ${repositories.length}; archived excluded ${data.excludedArchivedRepoCount}${fallback ? ' fallback' : ''}`);
