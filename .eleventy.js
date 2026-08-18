@@ -109,6 +109,16 @@ export default function configureEleventy(eleventyConfig) {
     .replace(/<math(?![^>]*\btabindex=)(?=[^>]*\bdisplay="block")/g, '<math tabindex="0"'));
   eleventyConfig.addFilter('canonInterdefinablesHtml', renderInterdefinables);
 
+  // Older publication surfaces predate the progressive-disclosure rule. Apply
+  // the same static build-time repair so provenance is available on demand even
+  // with JavaScript disabled, rather than appearing as primary reading content.
+  eleventyConfig.addTransform('legacy-provenance-disclosure', function(content) {
+    return String(content).replace(
+      /<section class="rhi-provenance" aria-labelledby="rhi-provenance-title">([\s\S]*?)<\/section>/,
+      '<details class="rhi-provenance provenance-disclosure"><summary>Provenance</summary>$1</details>'
+    );
+  });
+
   // The eight publication Article drafts predate the current human-facing UI.
   // Normalize their repeated presentation at build time so the Article is primary,
   // footnotes are named literally, source/provenance is available on demand, and
