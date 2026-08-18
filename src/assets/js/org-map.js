@@ -1,6 +1,6 @@
 // === MODULE_BUILD ===
 // id: organization_msdmd_map_renderer
-//   purpose: Render the generated repository-level msdmd relation graph as an accessible SVG enhancement while preserving the complete static fallback below it.
+//   purpose: Render the generated active-repository msdmd relation graph as an accessible SVG enhancement while preserving the complete static fallback below it.
 //   entrypoint: base layout deferred script; activates only when [data-org-map] exists
 //   tests: tests/org-msdmd.test.mjs, tests/generated-site.test.mjs
 // === END MODULE_BUILD ===
@@ -8,9 +8,9 @@
 // id: organization_msdmd_map_renderer_boundary
 //   network: fetches only the same-origin generated /assets/data/org-msdmd.json artifact
 //   storage: none
-//   failure: leaves the complete server-rendered repository, relation, unresolved-edge, and provenance lists intact
+//   failure: leaves the complete server-rendered active-repository, relation, unresolved-edge, and provenance lists intact
 // === END BOUNDARIES ===
-// Usage: no direct invocation is needed. The /projects/map/ page supplies data-source and an accessible static fallback; this script adds only the visual graph.
+// Usage: no direct invocation is needed. The /projects/map/ page supplies data-source and an accessible static fallback; this script adds only the visual graph. Archived repositories are filtered again here as a display-layer guard even though the producer normally excludes them.
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
@@ -59,8 +59,9 @@ export function renderOrganizationMap(root, data) {
   const detail = root.querySelector('[data-org-map-detail]');
   if (!frame || !detail || !Array.isArray(data?.repositories)) return;
 
-  const positions = positionsFor(data.repositories);
-  const byName = new Map(data.repositories.map(repo => [repo.name, repo]));
+  const repositories = data.repositories.filter(repo => !repo.archived);
+  const positions = positionsFor(repositories);
+  const byName = new Map(repositories.map(repo => [repo.name, repo]));
   const svg = svgElement('svg', {
     viewBox: '0 0 1000 700',
     role: 'img',
@@ -86,14 +87,13 @@ export function renderOrganizationMap(root, data) {
   svg.append(edgeLayer);
 
   const nodeLayer = svgElement('g');
-  for (const repo of data.repositories) {
+  for (const repo of repositories) {
     const point = positions.get(repo.name);
     if (!point) continue;
     const link = svgElement('a', {
       href: `/projects/${repo.slug}/`,
       class: 'org-map-node',
       'data-status': repo.collection?.status || 'hmmm',
-      'data-archived': Boolean(repo.archived),
       'aria-label': `${repo.name}: ${repo.collection?.status || 'hmmm'} msdmd collection`
     });
     const radius = Math.min(21, 8 + Math.sqrt(repo.counts?.declarations || 0));
