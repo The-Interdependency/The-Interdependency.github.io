@@ -21,6 +21,10 @@ Rights and Definitions of The Way
 
 The labels beginning with `Human consciousness emerges from`, including the binary, trinary, and archetype labels that follow it, are **body structure inside `The Interdefinables`**, not separate Way-tree headings. They may receive visual subhead treatment inside the expanded Interdefinables reading, but they do not become canon units or tree nodes. `Preamble` is the next tree heading after `The Interdefinables`.
 
+## Human-facing evidence disclosure
+
+Repository identities, commit hashes, blob hashes, content digests, build receipts, and similar source-verification material remain available but are not primary reading content. Human-facing pages expose that material through a collapsed **Provenance** disclosure unless the user explicitly opens it. Machine-readable provenance remains unchanged and directly available to automated consumers.
+
 ## Other records
 
 - Project records: public GitHub facts plus visible `hmmm` when editorial metadata is missing.
