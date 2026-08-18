@@ -1,13 +1,14 @@
 ---
 layout: layouts/base.njk
 title: Organization map
-description: A build-time, provenance-bearing relationship map generated from repository-owned msdmd collection points.
+description: A build-time, provenance-bearing relationship map generated from active repository-owned msdmd collection points.
 ---
 {% set map = generated.orgMsdmd %}
+{% set activeMapRepos = map.repositories | where("archived", false) %}
 <header class="page-head">
   <p class="eyebrow">Repository-owned msdmd → organization-scale integration</p>
   <h1>Organization map</h1>
-  <p class="lede">Repositories describe themselves. This website joins those commit-pinned descriptions and displays the resulting relations without becoming a second source of repository canon.</p>
+  <p class="lede">Active repositories describe themselves. This website joins those commit-pinned descriptions and displays the resulting relations without becoming a second source of repository canon. Archived repositories are not part of the public map.</p>
   <div class="status-row">
     <span class="status status-implemented">{{ map.summary.collectionCount }}/{{ map.summary.repositoryCount }} collections</span>
     <span class="status status-public">{{ map.summary.declarationCount }} declarations</span>
@@ -20,7 +21,7 @@ description: A build-time, provenance-bearing relationship map generated from re
 <section aria-labelledby="map-view-title">
   <p class="eyebrow">Generated view</p>
   <h2 id="map-view-title">Relations currently visible</h2>
-  <p class="section-intro">The graphic shows repository-level relations only when an msdmd edge resolves to a repository or declaration identity. Owners, routes, files, tools, capability names, and external systems remain valid opaque targets; only genuinely broken or ambiguous graph references become hmmm.</p>
+  <p class="section-intro">The graphic shows repository-level relations only when an msdmd edge resolves to an active repository or declaration identity. Owners, routes, files, tools, capability names, and external systems remain valid opaque targets; only genuinely broken or ambiguous graph references become hmmm.</p>
   <div class="org-map-summary" aria-label="Organization map summary">
     <div class="org-map-stat"><strong>{{ map.summary.repositoryCount }}</strong><span>repositories</span></div>
     <div class="org-map-stat"><strong>{{ map.summary.collectionCount }}</strong><span>collections</span></div>
@@ -38,14 +39,13 @@ description: A build-time, provenance-bearing relationship map generated from re
 </section>
 
 <section aria-labelledby="repo-evidence-title">
-  <p class="eyebrow">Static fallback · complete repository surface</p>
+  <p class="eyebrow">Static fallback · active repository surface</p>
   <h2 id="repo-evidence-title">Repository evidence</h2>
   <div class="grid org-map-repo-grid">
-    {% for repo in map.repositories %}
+    {% for repo in activeMapRepos %}
     <a class="card org-map-repo-card" href="/projects/{{ repo.slug }}/">
       <div class="status-row">
         {% if repo.collection.status == 'ok' %}<span class="status status-implemented">msdmd</span>{% elif repo.collection.status == 'invalid' %}<span class="status status-risk">invalid collection</span>{% else %}<span class="status status-hmmm">collection hmmm</span>{% endif %}
-        {% if repo.archived %}<span class="status status-archived">archived</span>{% endif %}
       </div>
       <h3>{{ repo.name }}</h3>
       <dl>
@@ -96,7 +96,7 @@ description: A build-time, provenance-bearing relationship map generated from re
   <h2>Consumed source identities</h2>
   <p class="section-intro">The snapshot identity is <code>{{ map.sourceSnapshot.stateDigest }}</code>. Its source time is the latest consumed repository head time, {{ map.sourceSnapshot.latestHeadCommittedAt or 'hmmm' }}. Rebuilding against unchanged heads and collection bytes produces the same JSON.</p>
   <ul class="org-map-receipts">
-    {% for repo in map.repositories %}
+    {% for repo in activeMapRepos %}
     <li><strong>{{ repo.name }}</strong> · head <code>{{ repo.headSha or 'hmmm' }}</code> · collection <code>{{ repo.collection.path }}</code> · SHA-256 <code>{{ repo.collection.sha256 or 'hmmm' }}</code>{% if repo.collection.declaredSourceCommit %} · declared source <code>{{ repo.collection.declaredSourceCommit }}</code>{% endif %}{% if repo.collection.sourceCommitMatchesHead == false %} · <strong>source-commit mismatch</strong>{% endif %}</li>
     {% endfor %}
   </ul>
