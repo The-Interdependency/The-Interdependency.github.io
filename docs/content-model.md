@@ -4,21 +4,22 @@
 
 Canon units are parsed headings with stable IDs, line ranges, SHA-256 hashes, major-section membership, and immediate heading-parent relationships.
 
-The opening hierarchy is load-bearing:
+The opening tree boundary is load-bearing:
 
 ```text
 Awakening
 The Interdefinables
+  [body labels and structures]
   Human consciousness emerges from
-    Binary essences...
-    Trinary perceptual focal states...
-    Trinary states of social perception...
-    Archetype passions of possession...
+  Binary essences...
+  Trinary perceptual focal states...
+  Trinary states of social perception...
+  Archetype passions of possession...
 Preamble
 Rights and Definitions of The Way
 ```
 
-`Human consciousness emerges from` is not a peer section. It is a subheading beneath `The Interdefinables`; its binary, trinary, and archetype headings are nested beneath it. `Preamble` is the next major section after `The Interdefinables`.
+The labels beginning with `Human consciousness emerges from`, including the binary, trinary, and archetype labels that follow it, are **body structure inside `The Interdefinables`**, not separate Way-tree headings. They may receive visual subhead treatment inside the expanded Interdefinables reading, but they do not become canon units or tree nodes. `Preamble` is the next tree heading after `The Interdefinables`.
 
 ## Other records
 
@@ -27,4 +28,4 @@ Rights and Definitions of The Way
 
 ## Usage guidance
 
-Run `npm run validate` after a canon refresh. The validation gate rejects a build that promotes `Human consciousness emerges from` to a section, assigns it outside `The Interdefinables`, loses its immediate parent, or places another major section between `The Interdefinables` and `Preamble` in the controlling remote canon.
+Run `npm run validate` after a canon refresh. The validation gate rejects a build that splits the Interdefinables body labels into tree units, loses those labels from the Interdefinables body, or places any tree heading between `The Interdefinables` and `Preamble`.
