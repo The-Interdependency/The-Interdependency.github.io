@@ -61,6 +61,48 @@ description: A live, provenance-preserving view of METAPAT, UCNS, EDCM, a0, and 
   </div>
 </nav>
 
+{% if generated.sitrep.portfolio %}
+<section class="sitrep-work-graph" aria-labelledby="work-graph-title">
+  <p class="eyebrow">Deterministic relation projection</p>
+  <h2 id="work-graph-title">Repository dependency map</h2>
+  <p class="section-intro">Nodes are repositories. Directed lines are dependency relations emitted from repo-owned declarations by the skill-lib projection. Drag to pan; use the controls to zoom. Connection does not transfer authority, proof status, measurement validity, empirical status, or publication ownership.</p>
+
+  <div class="sitrep-map-shell" data-sitrep-map>
+    <div class="sitrep-map-toolbar">
+      <p>Pan by dragging · keyboard: arrows, +, −, 0</p>
+      <div class="sitrep-map-controls" aria-label="Repository dependency map controls">
+        <button type="button" data-sitrep-map-zoom-out aria-label="Zoom out repository dependency map">−</button>
+        <button type="button" data-sitrep-map-reset>Reset</button>
+        <button type="button" data-sitrep-map-zoom-in aria-label="Zoom in repository dependency map">+</button>
+      </div>
+    </div>
+    <div class="sitrep-map-viewport" data-sitrep-map-viewport tabindex="0" aria-label="Interactive repository dependency map. Drag to pan; use plus and minus controls to zoom.">
+      <p class="sitrep-map-placeholder" data-sitrep-map-placeholder>Interactive dependency map loading…</p>
+    </div>
+    <p class="sitrep-map-detail" data-sitrep-map-detail aria-live="polite">{{ generated.sitrep.projects | length }} participating repositories · {{ generated.sitrep.portfolio.cross_repository_dependencies | length }} projected relations.</p>
+    <div hidden data-sitrep-map-source>
+      {% for project in generated.sitrep.projects %}
+      <span data-sitrep-map-node data-repository="{{ project.repository }}" data-label="{{ project.label }}" data-slug="{{ project.slug }}"></span>
+      {% endfor %}
+      {% for relation in generated.sitrep.portfolio.cross_repository_dependencies %}
+      <span data-sitrep-map-edge data-from="{{ relation.from }}" data-to="{{ relation.to }}" data-relation="{{ relation.relation }}"></span>
+      {% endfor %}
+    </div>
+  </div>
+
+  <details class="sitrep-graph-details sitrep-map-fallback">
+    <summary>Relation list · {{ generated.sitrep.portfolio.cross_repository_dependencies | length }} projected edge(s)</summary>
+    <ol class="relation-list">
+      {% for relation in generated.sitrep.portfolio.cross_repository_dependencies %}
+      <li><code>{{ relation.from }}</code><span aria-hidden="true">→</span><code>{{ relation.to }}</code><strong>{{ relation.relation }}</strong></li>
+      {% else %}
+      <li>No cross-repository relations were projected.</li>
+      {% endfor %}
+    </ol>
+  </details>
+</section>
+{% endif %}
+
 <section aria-labelledby="repo-sitreps-title">
   <p class="eyebrow">Five distinct authority surfaces</p>
   <h2 id="repo-sitreps-title">Current repository situations</h2>
@@ -101,12 +143,12 @@ description: A live, provenance-preserving view of METAPAT, UCNS, EDCM, a0, and 
           </div>
           {% if project.report %}
           <div class="sitrep-current-claim"><span>Current claim</span><p class="sitrep-claim">{{ project.report.status.current_claim }}</p></div>
-          <dl class="sitrep-metrics">
-            <div class="metric-frontier"><dt>Frontier</dt><dd>{{ project.report.active_frontier | length }}</dd></div>
-            <div class="metric-next"><dt>Next</dt><dd>{{ project.report.next_actions | length }}</dd></div>
-            <div class="metric-blocked"><dt>Blocked</dt><dd>{{ project.report.blocked | length }}</dd></div>
-            <div class="metric-hmmm"><dt>hmmm</dt><dd>{{ project.report.hmmm | length }}</dd></div>
-          </dl>
+          <div class="sitrep-metrics" role="group" aria-label="{{ project.label }} report sections">
+            <button class="sitrep-metric metric-frontier" type="button" data-sitrep-section="frontier" aria-expanded="false" aria-controls="{{ project.slug }}-frontier" aria-label="Open {{ project.label }} active frontier, {{ project.report.active_frontier | length }} items"><span>Frontier</span><strong>{{ project.report.active_frontier | length }}</strong><small>Open section</small></button>
+            <button class="sitrep-metric metric-next" type="button" data-sitrep-section="next" aria-expanded="false" aria-controls="{{ project.slug }}-next" aria-label="Open {{ project.label }} next actions, {{ project.report.next_actions | length }} items"><span>Next</span><strong>{{ project.report.next_actions | length }}</strong><small>Open section</small></button>
+            <button class="sitrep-metric metric-blocked" type="button" data-sitrep-section="blocked" aria-expanded="false" aria-controls="{{ project.slug }}-blocked" aria-label="Open {{ project.label }} blockers, {{ project.report.blocked | length }} items"><span>Blocked</span><strong>{{ project.report.blocked | length }}</strong><small>Open section</small></button>
+            <button class="sitrep-metric metric-hmmm" type="button" data-sitrep-section="hmmm" aria-expanded="false" aria-controls="{{ project.slug }}-hmmm" aria-label="Open {{ project.label }} hmmm items, {{ project.report.hmmm | length }} items"><span>hmmm</span><strong>{{ project.report.hmmm | length }}</strong><small>Open section</small></button>
+          </div>
           {% else %}
           <div class="hmmm"><strong>hmmm</strong><p>No report was supplied to the skill-lib projection. No project state has been synthesized.</p></div>
           {% endif %}
@@ -135,10 +177,10 @@ description: A live, provenance-preserving view of METAPAT, UCNS, EDCM, a0, and 
       <details class="sitrep-details">
         <summary><span>Open full report</span><small>Frontier · next actions · blockers · relations · hmmm</small></summary>
         <div class="sitrep-detail-grid">
-          <section class="detail-frontier"><h4>Active frontier</h4><ul>{% for item in project.report.active_frontier %}<li>{{ item }}</li>{% else %}<li>None declared.</li>{% endfor %}</ul></section>
-          <section class="detail-next"><h4>Next actions</h4><ul>{% for item in project.report.next_actions %}<li>{{ item.action }}{% if item.dependency %}<small>Dependency: {{ item.dependency }}</small>{% endif %}</li>{% else %}<li>None declared.</li>{% endfor %}</ul></section>
-          <section class="detail-blocked"><h4>Blocked</h4><ul>{% for item in project.report.blocked %}<li>{{ item }}</li>{% else %}<li>None declared.</li>{% endfor %}</ul></section>
-          <section class="detail-hmmm"><h4>hmmm</h4><ul>{% for item in project.report.hmmm %}<li>{{ item }}</li>{% else %}<li>None declared.</li>{% endfor %}</ul></section>
+          <section class="detail-frontier" id="{{ project.slug }}-frontier" data-sitrep-detail="frontier" tabindex="-1"><h4>Active frontier</h4><ul>{% for item in project.report.active_frontier %}<li>{{ item }}</li>{% else %}<li>None declared.</li>{% endfor %}</ul></section>
+          <section class="detail-next" id="{{ project.slug }}-next" data-sitrep-detail="next" tabindex="-1"><h4>Next actions</h4><ul>{% for item in project.report.next_actions %}<li>{{ item.action }}{% if item.dependency %}<small>Dependency: {{ item.dependency }}</small>{% endif %}</li>{% else %}<li>None declared.</li>{% endfor %}</ul></section>
+          <section class="detail-blocked" id="{{ project.slug }}-blocked" data-sitrep-detail="blocked" tabindex="-1"><h4>Blocked</h4><ul>{% for item in project.report.blocked %}<li>{{ item }}</li>{% else %}<li>None declared.</li>{% endfor %}</ul></section>
+          <section class="detail-hmmm" id="{{ project.slug }}-hmmm" data-sitrep-detail="hmmm" tabindex="-1"><h4>hmmm</h4><ul>{% for item in project.report.hmmm %}<li>{{ item }}</li>{% else %}<li>None declared.</li>{% endfor %}</ul></section>
           <section class="sitrep-relations"><h4>Cross-repository relations</h4><ul>{% for relation in project.report.cross_repository_relations %}<li><code>{{ relation.repository }}</code><span>{{ relation.relation }}</span><small>authority transfer: false</small></li>{% else %}<li>None declared.</li>{% endfor %}</ul></section>
         </div>
       </details>
@@ -147,24 +189,6 @@ description: A live, provenance-preserving view of METAPAT, UCNS, EDCM, a0, and 
     {% endfor %}
   </div>
 </section>
-
-{% if generated.sitrep.portfolio %}
-<section class="sitrep-work-graph" aria-labelledby="work-graph-title">
-  <p class="eyebrow">Deterministic relation projection</p>
-  <h2 id="work-graph-title">Current work graph</h2>
-  <p class="section-intro">These edges are emitted from repo-owned relation declarations by the skill-lib projection. Connection does not transfer authority, proof status, measurement validity, empirical status, or publication ownership.</p>
-  <details class="sitrep-graph-details">
-    <summary>Show {{ generated.sitrep.portfolio.cross_repository_dependencies | length }} projected relation(s)</summary>
-    <ol class="relation-list">
-      {% for relation in generated.sitrep.portfolio.cross_repository_dependencies %}
-      <li><code>{{ relation.from }}</code><span aria-hidden="true">→</span><code>{{ relation.to }}</code><strong>{{ relation.relation }}</strong></li>
-      {% else %}
-      <li>No cross-repository relations were projected.</li>
-      {% endfor %}
-    </ol>
-  </details>
-</section>
-{% endif %}
 
 <section class="sitrep-boundary panel" aria-labelledby="sitrep-boundary-title">
   <p class="eyebrow">Invariant</p>
