@@ -35,14 +35,24 @@ test('SITREP presentation keeps declared situation separate from observed GitHub
   assert.match(template, /authority transfer: false/);
 });
 
-test('SITREP formatting exposes scan, summary, and evidence depths without hiding hmmm', async () => {
-  const template = await readFile('src/sitrep/index.njk', 'utf8');
+test('SITREP formatting exposes scan, map, actionable summaries, and evidence without hiding hmmm', async () => {
+  const [template, interaction] = await Promise.all([
+    readFile('src/sitrep/index.njk', 'utf8'),
+    readFile('src/assets/js/sitrep.js', 'utf8')
+  ]);
   assert.match(template, /aria-label="Repository situation index"/);
   assert.match(template, /Portfolio scan/);
+  assert.match(template, /Repository dependency map/);
+  assert.match(template, /data-sitrep-map-viewport/);
+  assert.match(template, /data-sitrep-map-edge/);
+  assert.match(template, /data-sitrep-section="frontier"/);
+  assert.match(template, /aria-controls="{{ project\.slug }}-frontier"/);
   assert.match(template, /Current claim/);
   assert.match(template, /Open full report/);
   assert.match(template, /Show exact source identities/);
   assert.match(template, /Honest incompletion stays visible and countable/);
+  assert.match(interaction, /renderDependencyMap/);
+  assert.match(interaction, /activateMetricDisclosures/);
   assert.doesNotMatch(template, /sitrep-orbit/);
 });
 
