@@ -82,6 +82,21 @@ test('Article Lab uses literal Article and Footnotes labels and collapses proven
   assert.doesNotMatch(orientation, /Start here|separate speakers/);
 });
 
+test('technical provenance is opt-in rather than primary reading content', async () => {
+  const [gonol, edcm, orgMap] = await Promise.all([
+    readFile('src/artifacts/gonol-relationships.njk', 'utf8'),
+    readFile('src/artifacts/edcm-mathematics.njk', 'utf8'),
+    readFile('src/projects/map/index.njk', 'utf8')
+  ]);
+  for (const source of [gonol, edcm, orgMap]) {
+    assert.match(source, /<details class="provenance provenance-disclosure">\s*<summary>Provenance<\/summary>/);
+    assert.doesNotMatch(source, /<details class="provenance provenance-disclosure"\s+open/);
+  }
+  assert.doesNotMatch(gonol, /<section class="panel" aria-labelledby="source-identity-heading">/);
+  assert.doesNotMatch(edcm, /<section class="panel" aria-labelledby="source-identity">/);
+  assert.doesNotMatch(orgMap, /<section aria-labelledby="provenance-title">/);
+});
+
 test('Awakening owns one human continuation into the Way tree', async () => {
   const [layout, splash, home] = await Promise.all([
     readFile('src/_includes/layouts/splash.njk', 'utf8'),
