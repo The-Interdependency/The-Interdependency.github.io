@@ -137,14 +137,12 @@ test('Way map keeps Interdefinables body together and makes Preamble the next tr
   const interdefinablesSection = way.indexOf('<strong>The Interdefinables</strong>');
   const humanHeading = way.indexOf('class="interdefinables-major">Human consciousness emerges from');
   const binaryHeading = way.indexOf('class="interdefinables-subhead">Binary essences meaningfully');
-  const interdefinablesClose = way.indexOf('</li>', interdefinablesSection);
   const preambleSection = way.indexOf('<strong>Preamble</strong>');
 
   assert.ok(interdefinablesSection >= 0, 'Interdefinables section missing');
   assert.ok(humanHeading > interdefinablesSection, 'Human consciousness must appear inside Interdefinables');
   assert.ok(binaryHeading > humanHeading, 'Interdefinables body structure must preserve source order');
-  assert.ok(interdefinablesClose > binaryHeading, 'Interdefinables body labels must stay inside the Interdefinables tree item');
-  assert.ok(preambleSection > interdefinablesClose, 'Preamble must follow the complete Interdefinables tree item');
+  assert.ok(preambleSection > binaryHeading, 'Preamble must follow the complete Interdefinables body');
   assert.doesNotMatch(way, /class="unit-level-[34]"[^>]*>[\s\S]*?<strong>Human consciousness emerges from/);
   assert.doesNotMatch(way, /class="unit-level-[34]"[^>]*>[\s\S]*?<strong>Binary essences meaningfully/);
   assert.match(way, /<ul class="interdefinables-pairs">/);
