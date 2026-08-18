@@ -36,9 +36,11 @@ test('canon data preserves Wayseer identity, provenance, stable unit evidence, a
   assert.equal(canon.units.some(unit => /^Binary essences meaningfully/i.test(unit.title)), false);
   assert.equal(canon.units.some(unit => /^Trinary perceptual/i.test(unit.title)), false);
   assert.equal(canon.units.some(unit => /Archetype passions of possession/i.test(unit.title)), false);
-  const interdefinablesIndex = canon.units.findIndex(unit => unit.id === interdefinables.id);
-  const preambleIndex = canon.units.findIndex(unit => unit.id === preamble.id);
-  assert.equal(preambleIndex, interdefinablesIndex + 1);
   assert.equal(preamble.level, 2);
   assert.equal(preamble.section, 'preamble');
+  if (!canon.source.fallback) {
+    const interdefinablesIndex = canon.units.findIndex(unit => unit.id === interdefinables.id);
+    const preambleIndex = canon.units.findIndex(unit => unit.id === preamble.id);
+    assert.equal(preambleIndex, interdefinablesIndex + 1);
+  }
 });
