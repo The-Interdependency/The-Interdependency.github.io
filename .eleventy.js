@@ -29,6 +29,63 @@ import { installMathRenderer } from './scripts/markdown-math.mjs';
 // === END CONTRACTS ===
 // Usage: run `npm run build`; Eleventy emits the static site, copies root machine instructions, and preserves dependency-free public reading paths.
 
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+function renderInterdefinables(content) {
+  const lines = String(content || '').split(/\r?\n/).slice(1);
+  const pairs = [];
+  const body = [];
+
+  for (const sourceLine of lines) {
+    if (/^\s*---\s*$/.test(sourceLine)) break;
+    const cleaned = sourceLine
+      .trim()
+      .replace(/^#{1,6}\s+/, '')
+      .replace(/^[-*]\s+/, '')
+      .trim();
+    if (!cleaned) continue;
+
+    const pair = /^(One who is\s+.+?)\s*(?::\s*|\s+)(One who is not)\.?$/i.exec(cleaned);
+    if (pair) {
+      pairs.push([pair[1].replace(/[.:;]\s*$/, ''), pair[2]]);
+      continue;
+    }
+    body.push(cleaned);
+  }
+
+  const pairHtml = pairs.length
+    ? `<ul class="interdefinables-pairs">${pairs.map(([left, right]) => `<li><span>${escapeHtml(left)}</span><span class="interdefinables-divider" aria-hidden="true">:</span><span>${escapeHtml(right)}</span></li>`).join('')}</ul>`
+    : '';
+
+  const bodyHtml = body.map(line => {
+    if (line === '...') return '<p class="interdefinables-ellipsis" aria-hidden="true">…</p>';
+    if (/^Human consciousness emerges from:?$/i.test(line)) {
+      return `<h4 class="interdefinables-major">${escapeHtml(line.replace(/:\s*$/, ''))}</h4>`;
+    }
+    if (/^Binary essences meaningfully/i.test(line)) {
+      return `<h5 class="interdefinables-subhead">${escapeHtml(line)}</h5>`;
+    }
+    const trinary = /^(Trinary (?:perceptual focal (?:states|constructs) of complex system spirals|states of social perception|social perception focal states)):\s*(.*)$/i.exec(line);
+    if (trinary) {
+      return `<h5 class="interdefinables-subhead">${escapeHtml(trinary[1])}</h5>${trinary[2] ? `<p>${escapeHtml(trinary[2])}</p>` : ''}`;
+    }
+    const archetype = /^((?:Five dominant )?Archetype passions of possession)[.:]?\s*(.*)$/i.exec(line);
+    if (archetype) {
+      return `<h5 class="interdefinables-subhead">${escapeHtml(archetype[1])}</h5>${archetype[2] ? `<p>${escapeHtml(archetype[2])}</p>` : ''}`;
+    }
+    return `<p>${escapeHtml(line)}</p>`;
+  }).join('');
+
+  return `${pairHtml}<div class="interdefinables-structure">${bodyHtml}</div>`;
+}
+
 export default function configureEleventy(eleventyConfig) {
   const md = installMathRenderer(markdownIt({ html: false, linkify: true, typographer: true }));
   eleventyConfig.setLibrary('md', md);
@@ -50,6 +107,17 @@ export default function configureEleventy(eleventyConfig) {
   eleventyConfig.addFilter('edcmMarkdown', value => md.render(String(value || ''))
     .replace(/<pre(?![^>]*\btabindex=)([^>]*)>/g, '<pre tabindex="0"$1>')
     .replace(/<math(?![^>]*\btabindex=)(?=[^>]*\bdisplay="block")/g, '<math tabindex="0"'));
+  eleventyConfig.addFilter('canonInterdefinablesHtml', renderInterdefinables);
+
+  // Older publication surfaces predate the progressive-disclosure rule. Apply
+  // the same static build-time repair so provenance is available on demand even
+  // with JavaScript disabled, rather than appearing as primary reading content.
+  eleventyConfig.addTransform('legacy-provenance-disclosure', function(content) {
+    return String(content).replace(
+      /<section class="rhi-provenance" aria-labelledby="rhi-provenance-title">([\s\S]*?)<\/section>/,
+      '<details class="rhi-provenance provenance-disclosure"><summary>Provenance</summary>$1</details>'
+    );
+  });
 
   // The eight publication Article drafts predate the current human-facing UI.
   // Normalize their repeated presentation at build time so the Article is primary,

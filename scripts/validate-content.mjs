@@ -54,18 +54,28 @@ if (!canon.source.fallback && (!canon.source.commit || !canon.source.blob)) thro
 if (!canon.units.length || canon.units.some(unit => !unit.hash || !unit.id)) throw new Error('canon units missing identity or hash');
 
 const interdefinables = canon.units.find(unit => unit.title === 'The Interdefinables');
-const humanConsciousness = canon.units.find(unit => /^Human consciousness emerges from:?$/i.test(unit.title));
 const preamble = canon.units.find(unit => unit.title === 'Preamble');
-if (!interdefinables || !humanConsciousness || !preamble) throw new Error('canon missing Interdefinables, Human consciousness, or Preamble hierarchy unit');
-if (humanConsciousness.level !== 3) throw new Error('Human consciousness emerges from must be a level-3 subheading');
-if (humanConsciousness.section !== interdefinables.section) throw new Error('Human consciousness emerges from escaped The Interdefinables section');
-if (humanConsciousness.parentId !== interdefinables.id) throw new Error('Human consciousness emerges from must be parented by The Interdefinables');
-if (canon.sections.some(section => /^Human consciousness emerges from:?$/i.test(section.title))) throw new Error('Human consciousness emerges from must not be promoted to a peer section');
-if (preamble.level !== 2 || preamble.section !== 'preamble') throw new Error('Preamble must remain the next major section boundary');
+if (!interdefinables || !preamble) throw new Error('canon missing Interdefinables or Preamble hierarchy unit');
+for (const pattern of [
+  /Human consciousness emerges from/i,
+  /Binary essences meaningfully/i,
+  /Trinary perceptual/i,
+  /Archetype passions of possession/i
+]) {
+  if (!pattern.test(interdefinables.content)) throw new Error(`Interdefinables body lost required structure: ${pattern}`);
+}
+if (canon.units.some(unit => /^Human consciousness emerges from:?$/i.test(unit.title))) throw new Error('Human consciousness emerges from must remain body structure, not a tree unit');
+if (canon.units.some(unit => /^Binary essences meaningfully/i.test(unit.title))) throw new Error('Binary essences must remain body structure, not a tree unit');
+if (canon.units.some(unit => /^Trinary (?:perceptual|states of social perception|social perception)/i.test(unit.title))) throw new Error('Trinary Interdefinables labels must remain body structure, not tree units');
+if (canon.units.some(unit => /Archetype passions of possession/i.test(unit.title))) throw new Error('Archetype passions must remain body structure, not a tree unit');
+if (preamble.level !== 2 || preamble.section !== 'preamble') throw new Error('Preamble must remain a major section boundary');
 if (!canon.source.fallback) {
-  const interdefinablesIndex = canon.sections.findIndex(section => section.title === 'The Interdefinables');
-  const preambleIndex = canon.sections.findIndex(section => section.title === 'Preamble');
-  if (interdefinablesIndex < 0 || preambleIndex !== interdefinablesIndex + 1) throw new Error('Preamble must be the next major section after The Interdefinables');
+  const interdefinablesUnitIndex = canon.units.findIndex(unit => unit.id === interdefinables.id);
+  const preambleUnitIndex = canon.units.findIndex(unit => unit.id === preamble.id);
+  if (interdefinablesUnitIndex < 0 || preambleUnitIndex !== interdefinablesUnitIndex + 1) throw new Error('Preamble must be the next Way-tree heading after The Interdefinables');
+  const interdefinablesSectionIndex = canon.sections.findIndex(section => section.title === 'The Interdefinables');
+  const preambleSectionIndex = canon.sections.findIndex(section => section.title === 'Preamble');
+  if (interdefinablesSectionIndex < 0 || preambleSectionIndex !== interdefinablesSectionIndex + 1) throw new Error('Preamble must be the next major section after The Interdefinables');
 }
 
 if (textbook.schema !== 'interdependency.distributed-textbook/1.0.0') throw new Error(`unexpected textbook schema: ${textbook.schema}`);

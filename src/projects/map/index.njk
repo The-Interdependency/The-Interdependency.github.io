@@ -91,16 +91,16 @@ description: A build-time, provenance-bearing relationship map generated from re
   {% else %}<p>No broken or ambiguous graph targets in this snapshot. Opaque non-graph targets remain represented in the machine artifact.</p>{% endif %}
 </section>
 
-<section aria-labelledby="provenance-title">
-  <p class="eyebrow">Build receipt</p>
-  <h2 id="provenance-title">Consumed source identities</h2>
+<details class="provenance provenance-disclosure">
+  <summary>Provenance</summary>
+  <h2>Consumed source identities</h2>
   <p class="section-intro">The snapshot identity is <code>{{ map.sourceSnapshot.stateDigest }}</code>. Its source time is the latest consumed repository head time, {{ map.sourceSnapshot.latestHeadCommittedAt or 'hmmm' }}. Rebuilding against unchanged heads and collection bytes produces the same JSON.</p>
   <ul class="org-map-receipts">
     {% for repo in map.repositories %}
     <li><strong>{{ repo.name }}</strong> · head <code>{{ repo.headSha or 'hmmm' }}</code> · collection <code>{{ repo.collection.path }}</code> · SHA-256 <code>{{ repo.collection.sha256 or 'hmmm' }}</code>{% if repo.collection.declaredSourceCommit %} · declared source <code>{{ repo.collection.declaredSourceCommit }}</code>{% endif %}{% if repo.collection.sourceCommitMatchesHead == false %} · <strong>source-commit mismatch</strong>{% endif %}</li>
     {% endfor %}
   </ul>
-</section>
+</details>
 
 <section class="hmmm" aria-labelledby="map-hmmm-title">
   <h2 id="map-hmmm-title">hmmm</h2>

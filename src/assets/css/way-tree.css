@@ -1,0 +1,59 @@
+/*
+ * Usage: loaded by the base layout. These rules only enhance the Explore The Way
+ * rendering of The Interdefinables; exact source remains available in its disclosure.
+ */
+.canon-unit-body { min-width: 0; }
+.canon-unit-body > :first-child { margin-top: 0; }
+.canon-unit-body > :last-child { margin-bottom: 0; }
+
+.canon-interdefinables {
+  border-left-color: var(--cyan);
+  background: linear-gradient(145deg, rgba(12, 28, 43, .92), rgba(16, 24, 42, .9));
+}
+
+.interdefinables-pairs {
+  display: grid;
+  gap: .55rem;
+  margin: 1rem 0 1.4rem;
+  padding: 0;
+  list-style: none;
+}
+
+.interdefinables-pairs li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: .7rem;
+  align-items: baseline;
+  padding: .72rem .85rem;
+  border: 1px solid rgba(123, 201, 216, .28);
+  border-radius: .7rem;
+  background: rgba(9, 13, 24, .66);
+}
+
+.interdefinables-pairs li > span:first-child { color: var(--starlight); font-weight: 750; }
+.interdefinables-pairs li > span:last-child { color: var(--silver); }
+.interdefinables-divider { color: var(--cyan); font-weight: 900; }
+
+.interdefinables-structure {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(123, 201, 216, .22);
+}
+
+.interdefinables-structure p { max-width: 70ch; margin: .55rem 0; color: var(--silver); }
+.interdefinables-major { margin: .2rem 0 .85rem; color: var(--starlight); font-size: clamp(1.2rem, 3vw, 1.55rem); }
+.interdefinables-subhead { margin: 1.15rem 0 .35rem; color: var(--cyan); font: 800 .82rem/1.45 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .03em; }
+.interdefinables-ellipsis { color: var(--cyan) !important; letter-spacing: .35em; }
+
+@media (max-width: 560px) {
+  .canon-interdefinables { padding: .9rem; }
+  .interdefinables-pairs li {
+    grid-template-columns: 1fr;
+    gap: .15rem;
+  }
+  .interdefinables-divider { display: none; }
+  .interdefinables-pairs li > span:last-child::before {
+    content: "↳ ";
+    color: var(--cyan);
+  }
+}

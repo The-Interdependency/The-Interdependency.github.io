@@ -15,9 +15,13 @@ description: A human-readable expandable map of The Interdependent Way with Arti
     <li class="unit-level-{{ unit.level }}" data-parent-id="{{ unit.parentId or '' }}">
       <details class="canon-unit" id="{{ unit.routeSlug }}">
         <summary class="canon-unit-summary"><strong>{{ unit.title }}</strong>{% if lab %} <span class="status status-interpretation">Article Lab</span>{% endif %}</summary>
-        <blockquote class="reading canon-reading">
+        <blockquote class="reading canon-reading{% if unit.title == 'The Interdefinables' %} canon-interdefinables{% endif %}">
           <p class="eyebrow">Canon text · {{ unit.title }}</p>
-          {% for line in unit.content | canonUnitBody %}<p>{{ line }}</p>{% endfor %}
+          {% if unit.title == 'The Interdefinables' %}
+            <div class="canon-unit-body">{{ unit.content | canonInterdefinablesHtml | safe }}</div>
+          {% else %}
+            <div class="canon-unit-body">{% for line in unit.content | canonUnitBody %}<p>{{ line }}</p>{% endfor %}</div>
+          {% endif %}
         </blockquote>
         {% if lab %}
           <details class="article-lab-box">

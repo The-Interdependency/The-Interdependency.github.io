@@ -14,47 +14,44 @@ test('Markdown recovery headings normalize to plain-canon parent levels', () => 
   assert.ok(data.sections.some(section => section.id === 'rights-and-definitions-of-the-way' && section.level === 2));
 });
 
-test('Interdefinables owns the Human consciousness hierarchy until Preamble', () => {
-  const data = parseCanon(`The Interdependent Way\n\nAwakening\nOpening.\n\nThe Interdefinables\nDefinitions.\n\nHuman consciousness emerges from\nBinary essences meaningfully, divided; then, rooted.\nBody.\nTrinary perceptual focal states of complex system spirals: mind (body) soul\nBody.\nPreamble\nCivic claim.`);
+test('Interdefinables remains one tree unit until Preamble', () => {
+  const data = parseCanon(`The Interdependent Way\n\nAwakening\nOpening.\n\nThe Interdefinables\nDefinitions.\n\nHuman consciousness emerges from\nBinary essences meaningfully, divided; then, rooted.\nBody.\nTrinary perceptual focal states of complex system spirals: mind (body) soul\nBody.\nArchetype passions of possession.\nCuriosity. Rage. Lust. Terror. Calm.\n\nPreamble\nCivic claim.`);
   const interdefinables = data.units.find(unit => unit.title === 'The Interdefinables');
-  const human = data.units.find(unit => unit.title === 'Human consciousness emerges from');
-  const binary = data.units.find(unit => unit.title.startsWith('Binary essences'));
-  const trinary = data.units.find(unit => unit.title.startsWith('Trinary perceptual'));
   const preamble = data.units.find(unit => unit.title === 'Preamble');
+  const interdefinablesIndex = data.units.findIndex(unit => unit.id === interdefinables.id);
+  const preambleIndex = data.units.findIndex(unit => unit.id === preamble.id);
 
   assert.equal(interdefinables.level, 2);
-  assert.equal(human.level, 3);
-  assert.equal(human.section, 'interdefinables');
-  assert.equal(human.parentId, interdefinables.id);
-  assert.equal(binary.level, 4);
-  assert.equal(binary.section, 'interdefinables');
-  assert.equal(binary.parentId, human.id);
-  assert.equal(trinary.level, 4);
-  assert.equal(trinary.parentId, human.id);
+  assert.match(interdefinables.content, /Human consciousness emerges from/);
+  assert.match(interdefinables.content, /Binary essences meaningfully/);
+  assert.match(interdefinables.content, /Trinary perceptual focal states/);
+  assert.match(interdefinables.content, /Archetype passions of possession/);
+  assert.equal(data.units.some(unit => /^Human consciousness/.test(unit.title)), false);
+  assert.equal(data.units.some(unit => /^Binary essences/.test(unit.title)), false);
+  assert.equal(data.units.some(unit => /^Trinary perceptual/.test(unit.title)), false);
   assert.equal(preamble.level, 2);
   assert.equal(preamble.section, 'preamble');
-  assert.equal(data.sections.some(section => /^Human consciousness/.test(section.title)), false);
+  assert.equal(preambleIndex, interdefinablesIndex + 1);
   assert.ok(data.sections.findIndex(section => section.title === 'The Interdefinables') < data.sections.findIndex(section => section.title === 'Preamble'));
-  assert.ok(data.edges.some(edge => edge.type === 'heading-parent' && edge.from === human.id && edge.to === interdefinables.id));
 });
 
-test('legacy Markdown title levels cannot promote Human consciousness to a peer section', () => {
-  const data = parseCanon(`# The Interdependent Way\n### The Interdefinables\nDefinitions.\n### Human consciousness emerges from:\n#### Binary essences meaningfully divided, then rooted:\nBody.\n### Preamble\nCivic claim.`);
+test('legacy Markdown body labels cannot split Interdefinables into tree headings', () => {
+  const data = parseCanon(`# The Interdependent Way\n### The Interdefinables\n- One who is novel : One who is not\n### Human consciousness emerges from:\n#### Binary essences meaningfully divided, then rooted:\nBody.\n#### Trinary social perception focal states:\nBody.\n### Preamble\nCivic claim.`);
   const interdefinables = data.units.find(unit => unit.title === 'The Interdefinables');
-  const human = data.units.find(unit => /^Human consciousness/.test(unit.title));
-  const binary = data.units.find(unit => unit.title.startsWith('Binary essences'));
   const preamble = data.units.find(unit => unit.title === 'Preamble');
+  const interdefinablesIndex = data.units.findIndex(unit => unit.id === interdefinables.id);
+  const preambleIndex = data.units.findIndex(unit => unit.id === preamble.id);
 
-  assert.equal(human.sourceLevel, 3);
-  assert.equal(human.level, 3);
-  assert.equal(human.section, 'interdefinables');
-  assert.equal(human.parentId, interdefinables.id);
-  assert.equal(binary.sourceLevel, 4);
-  assert.equal(binary.level, 4);
-  assert.equal(binary.parentId, human.id);
+  assert.match(interdefinables.content, /### Human consciousness emerges from:/);
+  assert.match(interdefinables.content, /#### Binary essences meaningfully divided/);
+  assert.match(interdefinables.content, /#### Trinary social perception focal states/);
+  assert.equal(data.units.some(unit => /^Human consciousness/.test(unit.title)), false);
+  assert.equal(data.units.some(unit => /^Binary essences/.test(unit.title)), false);
+  assert.equal(data.units.some(unit => /^Trinary social perception/.test(unit.title)), false);
   assert.equal(preamble.sourceLevel, 3);
   assert.equal(preamble.level, 2);
   assert.equal(preamble.section, 'preamble');
+  assert.equal(preambleIndex, interdefinablesIndex + 1);
 });
 
 test('multiple superscript note definitions on one physical line remain distinct', () => {

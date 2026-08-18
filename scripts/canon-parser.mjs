@@ -8,7 +8,7 @@ import slugify from 'slugify';
 //   summary: Parses canonical or recovery text into stable sections, nested heading units, notes, routes, and provenance-bearing hashes.
 //   owner: Erin Spencer
 //   public_surface: parseCanon, detectHeading, extractNotes
-//   internal_surface: slug, boundedRouteSlug, canonicalHeadingLevel, parseDefinitionLine, extractNoteMarkers
+//   internal_surface: slug, boundedRouteSlug, canonicalHeadingLevel, interdefinablesBodyLabel, parseDefinitionLine, extractNoteMarkers
 //   auth_boundary: none
 //   storage_boundary: none
 //   network_boundary: none
@@ -19,9 +19,9 @@ import slugify from 'slugify';
 //   rollback: restore the prior parser version and remove nested heading-parent edges
 // === END MODULE_BUILD ===
 // Usage: import parseCanon(text, provenance); run `node --test tests/canon-parser.test.mjs` for hierarchy, recovery, and note fixtures.
-// Limits: heading recognition is canon-specific; unknown headings retain normalized source levels and must surface as hmmm during editorial review.
+// Limits: heading recognition is canon-specific; labels inside The Interdefinables remain body structure so Preamble is the next tree heading.
 
-export const parserVersion = '0.6.0';
+export const parserVersion = '0.7.0';
 
 function slug(value) {
   return slugify(value, { lower: true, strict: true }) || 'unit';
@@ -40,14 +40,18 @@ function canonicalHeadingLevel(value) {
   if (/^(Awakening|The Interdefinables|Preamble|Etiquette of the Body Politic)$/i.test(title)) return 2;
   if (/^Rights.+of The Way[⁰¹²³⁴⁵⁶⁷⁸⁹]*$/i.test(title)) return 2;
   if (/^Addendum:\s+.+$/i.test(value.trim())) return 2;
-  if (/^Human consciousness emerges from$/i.test(title)) return 3;
   if (/^Article\s+(One|Two|Three|Four|Five|Six|Seven|Eight)(?:\s+\([^)]+\))?$/i.test(title)) return 3;
-  if (/^Binary essences meaningfully.*rooted[.]?$/i.test(title)) return 4;
-  if (/^Trinary perceptual focal (?:states|constructs) of complex system spirals/i.test(title)) return 4;
-  if (/^Trinary (?:states of social perception|social perception focal states)/i.test(title)) return 4;
-  if (/^(?:Five dominant )?Archetype passions of possession/i.test(title)) return 4;
   if (/^(Summary|One-sentence takeaway \(exactly as previously given\))$/i.test(title)) return 3;
   return null;
+}
+
+function interdefinablesBodyLabel(value) {
+  const title = value.trim().replace(/^#{1,6}\s+/, '').replace(/:\s*$/, '');
+  return /^Human consciousness emerges from$/i.test(title)
+    || /^Binary essences meaningfully.*rooted[.]?$/i.test(title)
+    || /^Trinary perceptual focal (?:states|constructs) of complex system spirals/i.test(title)
+    || /^Trinary (?:states of social perception|social perception focal states)/i.test(title)
+    || /^(?:Five dominant )?Archetype passions of possession/i.test(title);
 }
 
 export function detectHeading(line) {
@@ -55,16 +59,17 @@ export function detectHeading(line) {
   if (markdown) {
     const sourceLevel = markdown[1].length;
     const title = markdown[2].replace(/#+$/, '').trim();
+    if (interdefinablesBodyLabel(title)) return null;
     const declaredLevel = canonicalHeadingLevel(title);
-    // Recovery Markdown historically used H3 for both major sections and the
-    // Human-consciousness subheading. Canonical title semantics take priority;
-    // unknown headings retain the established H3→2 / H4→3 normalization.
+    // Recovery Markdown historically used H3 for major sections. Canonical title
+    // semantics take priority; unknown headings retain the established H3→2 /
+    // H4→3 normalization. Interdefinables body labels are deliberately excluded.
     const level = declaredLevel ?? (sourceLevel >= 3 ? sourceLevel - 1 : sourceLevel);
     return { level, sourceLevel, title, syntax: 'markdown' };
   }
 
   const title = line.trim();
-  if (!title) return null;
+  if (!title || interdefinablesBodyLabel(title)) return null;
   const level = canonicalHeadingLevel(title);
   if (!level) return null;
   return { level, sourceLevel: level, title, syntax: 'plain' };

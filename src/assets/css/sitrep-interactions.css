@@ -1,0 +1,145 @@
+/*
+ * Usage: loaded globally but scoped to SITREP classes. The dependency graph is an
+ * enhancement; the server-rendered relation list and report disclosures remain the fallback.
+ */
+.sitrep-work-graph {
+  margin: 2rem 0 4rem;
+  scroll-margin-top: 6rem;
+}
+
+.sitrep-map-shell {
+  margin-top: 1.2rem;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: linear-gradient(145deg, rgba(12, 18, 34, .98), rgba(7, 11, 21, .96));
+  box-shadow: 0 20px 55px rgba(0, 0, 0, .2);
+}
+
+.sitrep-map-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .8rem 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.sitrep-map-toolbar p { margin: 0; color: var(--silver); font-size: .88rem; }
+.sitrep-map-controls { display: flex; gap: .45rem; flex-wrap: wrap; }
+.sitrep-map-controls button {
+  min-width: 2.5rem;
+  min-height: 2.35rem;
+  padding: .4rem .7rem;
+  border: 1px solid var(--line);
+  border-radius: .55rem;
+  background: var(--night-raised);
+  color: var(--starlight);
+  font: 800 .8rem/1 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  cursor: pointer;
+}
+.sitrep-map-controls button:hover { border-color: var(--cyan); background: var(--night-soft); }
+
+.sitrep-map-viewport {
+  position: relative;
+  min-height: 28rem;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(123, 201, 216, .07), transparent 42%),
+    linear-gradient(rgba(42, 56, 87, .14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(42, 56, 87, .14) 1px, transparent 1px);
+  background-size: auto, 2.2rem 2.2rem, 2.2rem 2.2rem;
+  cursor: grab;
+  touch-action: none;
+}
+.sitrep-map-viewport.is-panning { cursor: grabbing; }
+.sitrep-map-viewport svg { display: block; width: 100%; height: 28rem; user-select: none; }
+.sitrep-map-placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: 2rem;
+  color: var(--silver);
+  text-align: center;
+}
+
+.sitrep-map-edge {
+  stroke: rgba(174, 187, 210, .48);
+  stroke-width: 2.1;
+  vector-effect: non-scaling-stroke;
+}
+.sitrep-map-edge:hover { stroke: var(--cyan); stroke-width: 3.2; }
+.sitrep-map-arrow { fill: var(--silver); }
+.sitrep-map-node circle {
+  fill: var(--night-raised);
+  stroke: var(--silver);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+.sitrep-map-node.is-participant circle { fill: rgba(123, 201, 216, .16); stroke: var(--cyan); stroke-width: 3; }
+.sitrep-map-node.is-dependency circle { fill: rgba(155, 135, 245, .08); stroke: var(--violet); }
+.sitrep-map-node text {
+  fill: var(--starlight);
+  font: 750 15px/1 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  paint-order: stroke;
+  stroke: var(--night);
+  stroke-width: 5px;
+  stroke-linejoin: round;
+}
+.sitrep-map-node:hover circle,
+.sitrep-map-node:focus circle { fill: rgba(240, 195, 106, .15); stroke: var(--amber); }
+.sitrep-map-node:focus { outline: none; }
+
+.sitrep-map-detail {
+  min-height: 2.8rem;
+  margin: 0;
+  padding: .72rem 1rem;
+  border-top: 1px solid var(--line);
+  color: var(--silver);
+  font-size: .88rem;
+}
+
+.sitrep-map-fallback { margin-top: .8rem; }
+.sitrep-map-fallback > summary { cursor: pointer; color: var(--cyan); }
+
+.sitrep-metric {
+  min-width: 0;
+  padding: .8rem .85rem;
+  border: 1px solid var(--line);
+  border-top: .22rem solid currentColor;
+  border-radius: .7rem;
+  background: rgba(7, 11, 21, .72);
+  color: var(--starlight);
+  text-align: left;
+  cursor: pointer;
+}
+.sitrep-metric > span,
+.sitrep-metric > small { display: block; }
+.sitrep-metric > span {
+  color: var(--silver);
+  font: 700 .66rem/1.3 ui-monospace, SFMono-Regular, Consolas, monospace;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+.sitrep-metric > strong { display: block; margin-top: .2rem; font: 800 1.65rem/1.1 Georgia, "Times New Roman", serif; }
+.sitrep-metric > small { margin-top: .2rem; color: var(--silver); font-size: .72rem; }
+.sitrep-metric:hover,
+.sitrep-metric.is-active { border-color: currentColor; background: rgba(22, 33, 58, .9); }
+.metric-frontier { color: #c2b7ff; }
+.metric-next { color: #85d3a6; }
+.metric-blocked { color: #ff8d94; }
+.metric-hmmm { color: var(--amber); }
+
+.sitrep-detail-grid > section[tabindex="-1"] { scroll-margin-top: 7rem; }
+.sitrep-detail-grid > section:focus { outline: 2px solid var(--amber); outline-offset: .35rem; }
+
+@media (max-width: 720px) {
+  .sitrep-map-toolbar { align-items: flex-start; flex-direction: column; }
+  .sitrep-map-viewport { min-height: 22rem; }
+  .sitrep-map-viewport svg { height: 22rem; }
+  .sitrep-map-controls { width: 100%; }
+  .sitrep-map-controls button { flex: 1; }
+  .sitrep-metric > small { font-size: .68rem; }
+}
