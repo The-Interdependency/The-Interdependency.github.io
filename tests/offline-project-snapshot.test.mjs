@@ -12,7 +12,7 @@ const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const scriptPath = join(repositoryRoot, 'scripts', 'fetch-github-org.mjs');
 
 // Usage: this runs the real refresh script in an isolated temporary working tree with OFFLINE=1.
-test('offline refresh preserves reviewed last-known-good editorial fields', async () => {
+test('offline refresh preserves reviewed active fields and excludes archived repositories', async () => {
   const root = await mkdtemp(join(tmpdir(), 'interdependency-project-snapshot-'));
   try {
     await mkdir(join(root, 'src', '_data', 'snapshots'), { recursive: true });
@@ -20,24 +20,37 @@ test('offline refresh preserves reviewed last-known-good editorial fields', asyn
     await writeFile(
       join(root, 'src', '_data', 'snapshots', 'repos.last-known-good.json'),
       JSON.stringify({
-        repositories: [{
-          name: 'reviewed-project',
-          slug: 'reviewed-project',
-          html_url: 'https://github.com/The-Interdependency/reviewed-project',
-          description: 'Reviewed summary',
-          purpose: 'Reviewed purpose',
-          status: 'implemented',
-          category: 'Mathematics & verification',
-          relationships: ['Depends on verified geometry.'],
-          primary_artifact: 'https://example.org/artifact',
-          docs: 'https://example.org/docs',
-          default_branch: 'main',
-          topics: ['verification'],
-          language: 'JavaScript',
-          homepage: 'https://example.org',
-          visibility: 'public',
-          hmmm: ['A reviewed unresolved remains visible.']
-        }]
+        repositories: [
+          {
+            name: 'reviewed-project',
+            slug: 'reviewed-project',
+            html_url: 'https://github.com/The-Interdependency/reviewed-project',
+            description: 'Reviewed summary',
+            purpose: 'Reviewed purpose',
+            status: 'implemented',
+            category: 'Mathematics & verification',
+            relationships: ['Depends on verified geometry.'],
+            primary_artifact: 'https://example.org/artifact',
+            docs: 'https://example.org/docs',
+            archived: false,
+            default_branch: 'main',
+            topics: ['verification'],
+            language: 'JavaScript',
+            homepage: 'https://example.org',
+            visibility: 'public',
+            hmmm: ['A reviewed unresolved remains visible.']
+          },
+          {
+            name: 'archived-project',
+            slug: 'archived-project',
+            html_url: 'https://github.com/The-Interdependency/archived-project',
+            description: 'Historical project',
+            archived: true,
+            default_branch: 'main',
+            visibility: 'public',
+            hmmm: []
+          }
+        ]
       }, null, 2)
     );
 
@@ -47,8 +60,13 @@ test('offline refresh preserves reviewed last-known-good editorial fields', asyn
     });
 
     const generated = JSON.parse(await readFile(join(root, 'src', '_data', 'generated', 'repos.json'), 'utf8'));
-    const [repo] = generated.repositories;
     assert.equal(generated.fallback, true);
+    assert.equal(generated.publicRepoCount, 1);
+    assert.equal(generated.generatedRouteCount, 1);
+    assert.equal(generated.excludedArchivedRepoCount, 1);
+    assert.deepEqual(generated.repositories.map(repo => repo.name), ['reviewed-project']);
+
+    const [repo] = generated.repositories;
     assert.equal(repo.description, 'Reviewed summary');
     assert.equal(repo.purpose, 'Reviewed purpose');
     assert.equal(repo.status, 'implemented');
