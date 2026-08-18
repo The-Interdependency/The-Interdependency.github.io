@@ -100,7 +100,7 @@ function renderDependencyMap(root) {
   const positions = positionsFor(nodes);
   const svg = svgElement('svg', {
     viewBox: '0 0 1200 800',
-    role: 'img',
+    role: 'group',
     'aria-label': 'Repository dependency graph. Nodes are repositories and directed lines are projected dependencies.'
   });
   const defs = svgElement('defs');
