@@ -97,7 +97,7 @@ test('technical provenance is opt-in rather than primary reading content', async
   assert.doesNotMatch(orgMap, /<section aria-labelledby="provenance-title">/);
 });
 
-test('Awakening owns one human continuation into the Way tree', async () => {
+test('founder-authored origin text owns the public threshold and one continuation into the Way tree', async () => {
   const [layout, splash, home] = await Promise.all([
     readFile('src/_includes/layouts/splash.njk', 'utf8'),
     readFile('src/index.njk', 'utf8'),
@@ -105,13 +105,15 @@ test('Awakening owns one human continuation into the Way tree', async () => {
   ]);
   assert.match(layout, /class="awakening-body"/);
   assert.match(layout, /class="awakening-splash"/);
+  assert.match(layout, /founder-authored public threshold/);
   assert.match(layout, /<script src="\/assets\/js\/site\.js" defer><\/script>/);
-  assert.match(splash, /generated\.canon\.units/);
-  assert.match(splash, /<h1>Awakening<\/h1>/);
+  assert.match(splash, /<h1>In Service to Love<\/h1>/);
+  assert.match(splash, /this is interdependence\. this is the way\./);
+  assert.match(splash, /til shade is gone,[\s\S]*til water is dry,[\s\S]*in service to love,/);
   assert.match(splash, /href="\/way\/"[^>]*>Enter The Way<\/a>/);
+  assert.doesNotMatch(splash, /generated\.canon\.units/);
   assert.doesNotMatch(splash, /href="\/preamble\/"/);
   assert.doesNotMatch(splash, /href="\/home\/"/);
-  assert.doesNotMatch(splash, /Exact source and provenance/);
   assert.match(home, /permalink: \/home\//);
   assert.match(home, /href="\/way\/"/);
   assert.doesNotMatch(home, /href="\/lab\/"/);
