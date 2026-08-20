@@ -1,11 +1,11 @@
 <!doctype html>
 <!-- === MODULE_BUILD ===
- id: awakening_splash_layout
+ id: public_threshold_layout
    module_name: splash-layout
    module_kind: route
-   summary: Renders the canon-derived Awakening as a dependency-light public threshold before the full knowledge-system chrome.
+   summary: Renders the founder-authored public threshold as a dependency-light reading surface before the full knowledge-system chrome.
    owner: Erin Spencer
-   public_surface: root HTML shell for Awakening
+   public_surface: root HTML shell for the public threshold
    internal_surface: title, description, canonical URL, site.css, awakening.css, content slot
    auth_boundary: none
    storage_boundary: none
@@ -14,9 +14,9 @@
    admin_only: false
    tests: tests/site-contract.test.mjs, tests/generated-site.test.mjs, tests/site.spec.mjs, tests/accessibility.spec.mjs
    rollout: selected by src/index.njk
-   rollback: restore layouts/base.njk on src/index.njk and remove this layout
+   rollback: restore the prior src/index.njk threshold content
 === END MODULE_BUILD === -->
-<!-- Usage: src/index.njk supplies the canon-derived Awakening content. The page remains readable with CSS disabled and uses no JavaScript. -->
+<!-- Usage: src/index.njk supplies the public origin text. The page remains readable with CSS disabled; JavaScript only adds optional copy/export controls. -->
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -32,7 +32,7 @@
   <script src="/assets/js/site.js" defer></script>
 </head>
 <body class="awakening-body">
-  <a class="skip-link" href="#content">Skip to Awakening</a>
+  <a class="skip-link" href="#content">Skip to the text</a>
   <main id="content" class="awakening-splash">{{ content | safe }}</main>
 </body>
 </html>
