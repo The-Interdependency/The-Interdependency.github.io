@@ -13,7 +13,7 @@ const labRoutes = articleLab.map(record => {
 });
 
 const routes = [
-  ['/', /You are not alone/],
+  ['/', /this is interdependence\. this is the way\./i],
   ['/home/', /Start with The Way/],
   ['/preamble/', /Humanity faces extinction/],
   ['/chapters/', /The Interdependency Textbook/],
@@ -43,11 +43,12 @@ test('primary public routes render meaningful headings', async ({ page }) => {
   }
 });
 
-test('Awakening is the public splash and has one human continuation into the Way', async ({ page }) => {
+test('founder-authored origin text is the public threshold and has one human continuation into the Way', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('.awakening-splash')).toBeVisible();
-  await expect(page.locator('h1')).toHaveText('Awakening');
-  await expect(page.locator('.awakening-text')).toContainText('You are not alone');
+  await expect(page.locator('h1')).toHaveText('In Service to Love');
+  await expect(page.locator('.awakening-text')).toContainText('I am a Marine.');
+  await expect(page.locator('.awakening-text')).toContainText('this is interdependence. this is the way.');
   await expect(page.locator('.awakening-text > .field-actions > .copy-button')).toHaveCount(3);
   await expect(page.locator('.site-header')).toHaveCount(0);
 
