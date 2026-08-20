@@ -1,11 +1,11 @@
 /* === MODULE_BUILD ===
- * id: awakening_splash_presentation
- *   module_name: awakening-splash-presentation
+ * id: public_threshold_presentation
+ *   module_name: public-threshold-presentation
  *   module_kind: ui_panel
- *   summary: Presents the canon-derived Awakening as a full-screen public threshold without hiding readable text behind animation or JavaScript.
+ *   summary: Presents the founder-authored public threshold as a long-form reading surface without hiding text behind animation or JavaScript.
  *   owner: Erin Spencer
- *   public_surface: root Awakening splash presentation
- *   internal_surface: awakening-body, awakening-splash, awakening-stage, awakening-orbit, awakening-copy, awakening-text
+ *   public_surface: root public-threshold presentation
+ *   internal_surface: awakening-body, awakening-splash, awakening-stage, awakening-orbit, awakening-copy, awakening-text, origin-stage, origin-copy, origin-text
  *   auth_boundary: none
  *   storage_boundary: none
  *   network_boundary: none
@@ -13,10 +13,10 @@
  *   admin_only: false
  *   tests: tests/generated-site.test.mjs, tests/site.spec.mjs, tests/accessibility.spec.mjs
  *   rollout: loaded only by layouts/splash.njk for the public threshold
- *   rollback: remove the splash stylesheet link and restore the prior root template
+ *   rollback: restore the prior threshold stylesheet and root template
  * === END MODULE_BUILD ===
  * Usage: loaded by src/_includes/layouts/splash.njk; verify with npm run check and npm run test:browser.
- * Limits: visual rings are decorative; all canon text and continuation links remain ordinary readable HTML.
+ * Limits: visual rings are decorative; the full text and continuation link remain ordinary readable HTML with CSS and JavaScript disabled.
  */
 .awakening-body {
   min-height: 100vh;
@@ -26,14 +26,12 @@
 .awakening-body::before {
   opacity: .7;
   background:
-    radial-gradient(circle at 50% 44%, rgba(123, 201, 216, .12), transparent 0 18rem),
-    radial-gradient(circle at 50% 44%, transparent 0 22rem, rgba(155, 135, 245, .18) 22.08rem 22.15rem, transparent 22.22rem 31rem, rgba(42, 56, 87, .55) 31.08rem 31.15rem, transparent 31.22rem),
+    radial-gradient(circle at 50% 16rem, rgba(123, 201, 216, .12), transparent 0 18rem),
+    radial-gradient(circle at 50% 16rem, transparent 0 22rem, rgba(155, 135, 245, .18) 22.08rem 22.15rem, transparent 22.22rem 31rem, rgba(42, 56, 87, .55) 31.08rem 31.15rem, transparent 31.22rem),
     linear-gradient(180deg, #050711, #090d18 68%, #050711);
 }
 .awakening-splash {
   position: relative;
-  display: grid;
-  place-items: center;
   min-height: 100vh;
   padding: clamp(1.25rem, 4vw, 4rem);
   overflow: hidden;
@@ -42,18 +40,17 @@
 .awakening-stage {
   position: relative;
   width: min(76rem, 100%);
-  min-height: min(88vh, 58rem);
-  display: grid;
-  place-items: center;
+  margin: 0 auto;
+  padding: clamp(3rem, 8vw, 7rem) 0 clamp(4rem, 10vw, 8rem);
 }
 .awakening-orbit {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: 13rem;
   width: min(92vw, 70rem);
   aspect-ratio: 1;
   translate: -50% -50%;
-  opacity: .7;
+  opacity: .52;
   pointer-events: none;
 }
 .awakening-orbit::before,
@@ -71,31 +68,56 @@
   position: relative;
   z-index: 2;
   width: min(68rem, 100%);
-  text-align: center;
+  margin: 0 auto;
 }
-.awakening-copy .eyebrow { margin: 0; }
+.awakening-copy > .eyebrow {
+  width: min(70ch, 100%);
+  margin: 0 auto .55rem;
+  text-align: left;
+}
 .awakening-copy h1 {
-  margin: .2rem 0 clamp(1.25rem, 3vw, 2.4rem);
-  font-size: clamp(4.25rem, 15vw, 11rem);
+  width: min(70ch, 100%);
+  margin: 0 auto clamp(1.5rem, 4vw, 3rem);
+  font-size: clamp(3rem, 9vw, 7.25rem);
   font-weight: 500;
-  line-height: .88;
-  letter-spacing: -.065em;
+  line-height: .94;
+  letter-spacing: -.055em;
+  text-align: left;
   text-shadow: 0 0 4rem rgba(155, 135, 245, .22);
 }
 .awakening-text {
   max-width: 70ch;
   margin: 0 auto;
-  padding: clamp(1.1rem, 3vw, 2rem);
-  white-space: pre-line;
+  padding: clamp(1.2rem, 3vw, 2.35rem);
   text-align: left;
   color: #dce6fa;
-  background: rgba(5, 7, 17, .72);
+  background: rgba(5, 7, 17, .78);
   border: 1px solid rgba(174, 187, 210, .2);
   border-left: .3rem solid var(--cyan);
   border-radius: var(--radius);
   box-shadow: 0 2rem 6rem rgba(0, 0, 0, .3);
-  font: clamp(1.02rem, 1.7vw, 1.3rem)/1.7 Georgia, "Times New Roman", serif;
+  font: clamp(1.02rem, 1.45vw, 1.2rem)/1.72 Georgia, "Times New Roman", serif;
   backdrop-filter: blur(14px);
+}
+.awakening-text p {
+  margin: 0 0 1.35em;
+}
+.awakening-text p:last-child {
+  margin-bottom: 0;
+}
+.awakening-text .field-actions {
+  margin-bottom: 1.5rem;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+.origin-declaration {
+  margin: 2.1em 0 !important;
+  font-size: 1.16em;
+  font-weight: 700;
+  letter-spacing: .015em;
+}
+.origin-signoff {
+  margin-top: 2.5em !important;
+  font-style: italic;
 }
 .awakening-actions {
   display: flex;
@@ -103,7 +125,8 @@
   justify-content: center;
   align-items: center;
   gap: .75rem;
-  margin-top: clamp(1.2rem, 3vw, 2rem);
+  width: min(70ch, 100%);
+  margin: clamp(1.5rem, 4vw, 2.75rem) auto 0;
 }
 .awakening-source {
   padding: .7rem .2rem;
@@ -118,20 +141,24 @@
   overflow-wrap: anywhere;
 }
 @media (max-width: 640px) {
-  .awakening-splash { align-items: start; padding-top: 9vh; }
-  .awakening-stage { min-height: auto; }
-  .awakening-copy h1 { font-size: clamp(3.6rem, 20vw, 6rem); }
-  .awakening-text { font-size: 1rem; line-height: 1.62; }
+  .awakening-splash { padding: 1rem; }
+  .awakening-stage { padding-top: 4rem; }
+  .awakening-orbit { top: 10rem; opacity: .42; }
+  .awakening-copy h1 { font-size: clamp(3rem, 17vw, 5.2rem); }
+  .awakening-text { padding: 1.1rem; font-size: 1rem; line-height: 1.65; }
   .awakening-actions { align-items: stretch; flex-direction: column; }
   .awakening-actions .button { width: 100%; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .awakening-orbit { opacity: .55; }
+  .awakening-orbit { opacity: .45; }
 }
 @media print {
   .awakening-body { background: white; color: black; }
   .awakening-body::before, .awakening-orbit { display: none; }
   .awakening-splash { display: block; min-height: auto; padding: 0; }
-  .awakening-text { color: black; background: white; border-color: black; box-shadow: none; }
+  .awakening-stage { width: 100%; padding: 0; }
+  .awakening-copy h1, .awakening-copy > .eyebrow { width: 100%; color: black; }
+  .awakening-text { max-width: none; color: black; background: white; border-color: black; box-shadow: none; }
   .awakening-provenance { color: black; }
+  .awakening-actions { display: none; }
 }
