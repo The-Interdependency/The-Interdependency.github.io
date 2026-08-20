@@ -23,9 +23,9 @@ This site displays exact, provenance-bearing chapter snapshots. It does not merg
 
 ## Architecture
 
-- `/` is the canon-derived **Awakening** splash page and public threshold.
+- `/` is the founder-authored **In Service to Love** public threshold: a lived beginning of the Way presented before the formal canon tree.
 - `/home/` is the complete living knowledge-system entrance.
-- `/preamble/` remains one click from Awakening and from the primary navigation.
+- `/preamble/` remains available within the canonical reading system and primary navigation.
 - `/chapters/` is the unified index for the eight-repository textbook.
 - `/chapters/chapter-zero/` through `/chapters/chapter-seven/` render exact source Markdown with commit, blob, digest, and repository links.
 - `/eai/aicontext.md` begins with Erin's exact connection contract and then publishes the exact canon copy, all eight textbook chapters, a public-scope JSON-LD biography, and machine-readable work-graph and publication identities.
@@ -64,7 +64,7 @@ An offline build uses the retained last-known-good textbook snapshot when one ex
 Route checks after a build:
 
 ```text
-/                               Awakening threshold
+/                               In Service to Love threshold
 /home/                          knowledge-system entrance
 /preamble/                      direct canonical Preamble
 /chapters/                      textbook index

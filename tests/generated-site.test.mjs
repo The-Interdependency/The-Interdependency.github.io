@@ -49,9 +49,10 @@ test('generated deployment artifact contains the unified routes', async () => {
   ]);
 
   assert.match(splash, /class="awakening-splash"/);
-  assert.match(splash, /<h1>Awakening<\/h1>/);
-  assert.match(splash, /5d explodes out of 4d/);
-  assert.match(splash, /You are not alone/);
+  assert.match(splash, /<h1>In Service to Love<\/h1>/);
+  assert.match(splash, /I am a Marine\./);
+  assert.match(splash, /this is interdependence\. this is the way\./);
+  assert.match(splash, /til shade is gone,[\s\S]*til water is dry,[\s\S]*in service to love,/);
   assert.match(splash, /href="\/way\/"[^>]*>Enter The Way/);
   assert.doesNotMatch(splash, /href="\/preamble\/"[^>]*>Read the Preamble/);
   assert.doesNotMatch(splash, /href="\/home\/"[^>]*>Enter the living system/);
