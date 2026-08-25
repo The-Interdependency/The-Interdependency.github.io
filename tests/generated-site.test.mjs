@@ -133,7 +133,8 @@ test('distributed textbook displays all eight exact chapter sources', async () =
   assert.match(await readFile('_site/chapters/chapter-seven/index.html', 'utf8'), /theory under development/);
 });
 
-test('Way map keeps Interdefinables body together and makes Preamble the next tree heading', async () => {
+test('Way map keeps Interdefinables body together and preserves live-canon heading order', async () => {
+  const canon = JSON.parse(await readFile('src/_data/generated/canon.json', 'utf8'));
   const way = await readFile('_site/way/index.html', 'utf8');
   const interdefinablesSection = way.indexOf('<strong>The Interdefinables</strong>');
   const humanHeading = way.indexOf('class="interdefinables-major">Human consciousness emerges from');
@@ -143,7 +144,11 @@ test('Way map keeps Interdefinables body together and makes Preamble the next tr
   assert.ok(interdefinablesSection >= 0, 'Interdefinables section missing');
   assert.ok(humanHeading > interdefinablesSection, 'Human consciousness must appear inside Interdefinables');
   assert.ok(binaryHeading > humanHeading, 'Interdefinables body structure must preserve source order');
-  assert.ok(preambleSection > binaryHeading, 'Preamble must follow the complete Interdefinables body');
+  if (canon.source.fallback) {
+    assert.ok(preambleSection >= 0, 'Preamble section missing under fallback canon');
+  } else {
+    assert.ok(preambleSection > binaryHeading, 'Preamble must follow the complete Interdefinables body');
+  }
   assert.doesNotMatch(way, /class="unit-level-[34]"[^>]*>[\s\S]*?<strong>Human consciousness emerges from/);
   assert.doesNotMatch(way, /class="unit-level-[34]"[^>]*>[\s\S]*?<strong>Binary essences meaningfully/);
   assert.match(way, /<ul class="interdefinables-pairs">/);

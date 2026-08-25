@@ -1,0 +1,2132 @@
+{
+  "schema": "the-interdependency.website-sitrep-view",
+  "version": "1.0.0",
+  "snapshotAt": "2026-08-25T02:33:29.296Z",
+  "fallback": false,
+  "fallbackReason": null,
+  "sourceSnapshotAt": null,
+  "controlPlane": {
+    "repository": "The-Interdependency/skill-lib",
+    "commit": "6ef2e4c123225f9db20e5230e5894c9c86b42ee6",
+    "skill": "interdependent-work-graph",
+    "reportSchemaVersion": "1.0.0",
+    "reportSchemaPath": "interdependent-work-graph/repository-plan-report.schema.json",
+    "reportSchemaBlob": "9b347b2dff7692054b571602f30ee6d00c2e7265",
+    "portfolioScriptPath": "interdependent-work-graph/portfolio_plan.py",
+    "portfolioScriptBlob": "97b8b546b4151486164c8a4b730c24a8c895b25b",
+    "executor": "python3"
+  },
+  "portfolio": {
+    "active_frontier": [
+      {
+        "item": "decide whether producer repositories should emit repository_dispatch events for near-immediate refresh in addition to the hourly bounded refresh",
+        "repository": "The-Interdependency/The-Interdependency.github.io"
+      },
+      {
+        "item": "decide whether long-term SITREP history should persist as an auditable snapshot series rather than only current build output",
+        "repository": "The-Interdependency/The-Interdependency.github.io"
+      },
+      {
+        "item": "decide which additional repositories, if any, intentionally join the public SITREP portfolio after the initial five-surface scope",
+        "repository": "The-Interdependency/The-Interdependency.github.io"
+      },
+      {
+        "item": "retain explicit distinction between a report source commit differing from HEAD and a demonstrated substantive report-staleness claim",
+        "repository": "The-Interdependency/The-Interdependency.github.io"
+      },
+      {
+        "item": "keep the skill-lib control-plane pin deliberate so future contract or projection upgrades are reviewed rather than silently inherited",
+        "repository": "The-Interdependency/The-Interdependency.github.io"
+      },
+      {
+        "item": "realize the PlatonicAgent definition, instance, run, semantic-memory, and runtime-state regions in the durable backend without creating a competing agent ontology",
+        "repository": "The-Interdependency/a0"
+      },
+      {
+        "item": "preserve the existing PTCNA adapter only as a historical scaffold-state region; do not optimize, repair, or label it as canonical intended PTCNA while the UCNS neural-audit prerequisite is unmet",
+        "repository": "The-Interdependency/a0"
+      },
+      {
+        "item": "prepare a0 to consume a future separately identified audit-derived PTCNA producer contract without hard-coding the historical scaffold topology into a0-owned records",
+        "repository": "The-Interdependency/a0"
+      },
+      {
+        "item": "implement and test Guardian/PCEA minimum-necessary projection, cross-owner memory access audit, disclosure, export, correction, retention, redaction, and deletion behavior",
+        "repository": "The-Interdependency/a0"
+      },
+      {
+        "item": "complete consent-scoped resource-to-need matching and introduction flows",
+        "repository": "The-Interdependency/a0"
+      },
+      {
+        "item": "continue recovering existing and newly legible agent semantics into PlatonicAgent regions without treating the current map as exhaustive",
+        "repository": "The-Interdependency/a0"
+      },
+      {
+        "item": "complete deployment, worker-leadership, storage, migration, and release evidence required for the promised a0 delivery",
+        "repository": "The-Interdependency/a0"
+      },
+      {
+        "item": "preserve the current UCNS consumer boundary: xkcd 1,000 floor candidate; OEWN 2025 Core corpus; characters -> morphology -> definitions -> recursive gonol relations; relationships intrinsic to gonols; completed gonols atomic at the next scale",
+        "repository": "The-Interdependency/edcm"
+      },
+      {
+        "item": "prepare a fail-closed EDCM consumer contract for exact source-bound UCNS atomic word, morphology, definition, and recursive-gonol receipts once the upstream producer exists",
+        "repository": "The-Interdependency/edcm"
+      },
+      {
+        "item": "do not impose all-pairs materialization, external semantic-edge authority, or mandatory intermediate-scale reopening on the upstream UCNS representation",
+        "repository": "The-Interdependency/edcm"
+      },
+      {
+        "item": "define the smallest preregistered EDCM evaluation that can test semantic behavior, compression, reconstruction, or other declared hypotheses without promoting architecture into efficacy",
+        "repository": "The-Interdependency/edcm"
+      },
+      {
+        "item": "design the next genuinely new measurement candidate under the sealed holdout boundary rather than tuning the failed candidate",
+        "repository": "The-Interdependency/edcm"
+      },
+      {
+        "item": "preserve development, validation, sealed-test, candidate, witness, and decision authority separation",
+        "repository": "The-Interdependency/edcm"
+      },
+      {
+        "item": "pressure measurement candidates against real-system outcomes while retaining falsified and weak results",
+        "repository": "The-Interdependency/edcm"
+      },
+      {
+        "item": "integrate METAPAT constraints only through exact semantic identities and explicit transfer limits",
+        "repository": "The-Interdependency/edcm"
+      },
+      {
+        "item": "keep EDCM activation distinct from package availability, UCNS proof status, representation availability, and candidate evidence",
+        "repository": "The-Interdependency/edcm"
+      },
+      {
+        "item": "define downstream topology-binding records for exact UCNS parent, payload path, ordered child hashes, authorization digest, and encoding-policy identity",
+        "repository": "The-Interdependency/metapat"
+      },
+      {
+        "item": "add fail-closed checks for missing declarations, order drift, object-hash drift, canon drift, and external-edge-as-containment substitution",
+        "repository": "The-Interdependency/metapat"
+      },
+      {
+        "item": "define testable physical variables and boundaries for the quantum-magnetism application and derive predictions that differ from restating established physics",
+        "repository": "The-Interdependency/metapat"
+      },
+      {
+        "item": "implement a separate EDCM semantic consumer that keeps semantic labels distinct from metric values",
+        "repository": "The-Interdependency/metapat"
+      },
+      {
+        "item": "build the shared METAPAT-UCNS-EDCM fixture once the downstream semantic consumer exists",
+        "repository": "The-Interdependency/metapat"
+      }
+    ],
+    "blocked": [
+      {
+        "item": "the promised a0 delivery is not complete while durable agent-region persistence/API integration and release evidence remain unfinished",
+        "repository": "The-Interdependency/a0"
+      },
+      {
+        "item": "public release of the full system-primary memory contract is blocked until executable privacy boundaries and matching tests exist",
+        "repository": "The-Interdependency/a0"
+      },
+      {
+        "item": "an intended/canonical PTCNA runtime-state region is BLOCKED until UCNS completes the prerequisite neural audit and PTCNA publishes a separately identified architecture derived from that evidence",
+        "repository": "The-Interdependency/a0"
+      },
+      {
+        "item": "a0 may preserve the existing PTCNA scaffold region but is blocked from using its topology, whole-string hash input, or sealed evaluation as authority for the future PTCNA region",
+        "repository": "The-Interdependency/a0"
+      },
+      {
+        "item": "final deployment claims are blocked on resolved hosting, worker-leadership, durable-state, migration, and operational evidence",
+        "repository": "The-Interdependency/a0"
+      },
+      {
+        "item": "Google Cloud deployment is BLOCKED until an authorized operator sets repository variable GCP_DEPLOY_ENABLED=true and repository secrets GCP_PROJECT_ID and GCP_SA_KEY",
+        "repository": "The-Interdependency/a0"
+      },
+      {
+        "item": "EDCM semantic integration is BLOCKED until UCNS pins exact xkcd 1,000 and OEWN 2025 Core sources and emits the corrected atomic recursive gonol receipts; EDCM must not rebuild the missing upstream semantics itself",
+        "repository": "The-Interdependency/edcm"
+      },
+      {
+        "item": "shared stack fixture is blocked on a downstream EDCM semantic consumer and exact topology-bound Phi integration",
+        "repository": "The-Interdependency/metapat"
+      }
+    ],
+    "contract": {
+      "report_schema_blob_sha": "9b347b2dff7692054b571602f30ee6d00c2e7265",
+      "report_schema_path": "interdependent-work-graph/repository-plan-report.schema.json",
+      "report_schema_version": "1.0.0",
+      "repository": "The-Interdependency/skill-lib"
+    },
+    "cross_repository_dependencies": [
+      {
+        "authority_transfer": false,
+        "from": "The-Interdependency/The-Interdependency.github.io",
+        "relation": "repo-owned runtime situation report presented without runtime or deployment authority transfer",
+        "to": "The-Interdependency/a0"
+      },
+      {
+        "authority_transfer": false,
+        "from": "The-Interdependency/The-Interdependency.github.io",
+        "measurement_status_transfer": false,
+        "relation": "repo-owned measurement situation report presented without measurement-status transfer",
+        "to": "The-Interdependency/edcm"
+      },
+      {
+        "authority_transfer": false,
+        "from": "The-Interdependency/The-Interdependency.github.io",
+        "relation": "repo-owned semantic situation report presented without semantic authority transfer",
+        "to": "The-Interdependency/metapat"
+      },
+      {
+        "authority_transfer": false,
+        "from": "The-Interdependency/The-Interdependency.github.io",
+        "relation": "report-contract and deterministic work-graph projection authority consumed by the website",
+        "to": "The-Interdependency/skill-lib"
+      },
+      {
+        "authority_transfer": false,
+        "from": "The-Interdependency/The-Interdependency.github.io",
+        "proof_status_transfer": false,
+        "relation": "repo-owned mathematical and representation situation report presented without proof-status transfer",
+        "to": "The-Interdependency/ucns"
+      },
+      {
+        "authority_transfer": false,
+        "from": "The-Interdependency/a0",
+        "measurement_status_transfer": false,
+        "relation": "separate measurement authority consumed by a0 runtime surfaces without transfer of measurement validity",
+        "to": "The-Interdependency/edcm"
+      },
+      {
+        "authority_transfer": false,
+        "from": "The-Interdependency/a0",
+        "relation": "semantic and boundary consultation source constraining how relations are distinguished without owning a0 agent architecture",
+        "to": "The-Interdependency/metapat"
+      },
+      {
+        "authority_transfer": false,
+        "from": "The-Interdependency/a0",
+        "relation": "Guardian privacy primitive producer consumed by the PlatonicAgent privacy-projection region",
+        "to": "The-Interdependency/pcea"
+      },
+      {
+        "authority_transfer": false,
+        "from": "The-Interdependency/a0",
+        "relation": "current producer of a historical pre-audit scaffold state that a0 can preserve exactly; a future intended PTCNA region requires a new audit-derived producer identity and cannot inherit scaffold authority by default",
+        "to": "The-Interdependency/ptcna"
+      },
+      {
+        "authority_transfer": false,
+        "from": "The-Interdependency/a0",
+        "relation": "build, domain-claim, module, evidence, and cross-repository workflow doctrine",
+        "to": "The-Interdependency/skill-lib"
+      },
+      {
+        "authority_transfer": false,
+        "from": "The-Interdependency/a0",
+        "relation": "mathematical representation authority and upstream owner of the conventional-neural-network audit prerequisite whose evidence must precede construction of intended PTCNA",
+        "to": "The-Interdependency/ucns"
+      },
+      {
+        "authority_transfer": false,
+        "from": "The-Interdependency/a0",
+        "relation": "producer authority for the inference/self-awareness event bound within the PlatonicAgent inference region",
+        "to": "The-Interdependency/zfae"
+      },
+      {
+        "authority_transfer": false,
+        "from": "The-Interdependency/edcm",
+        "measurement_status_transfer": false,
+        "relation": "optional semantic-constraint producer whose exact identities may bound interpretation",
+        "semantic_status_transfer": false,
+        "to": "The-Interdependency/metapat"
+      },
+      {
+        "authority_transfer": false,
+        "from": "The-Interdependency/edcm",
+        "relation": "build/evidence doctrine and current scale-affixiation / atomic-closure procedural boundary; no UCNS geometry authority transfer",
+        "to": "The-Interdependency/skill-lib"
+      },
+      {
+        "authority_transfer": false,
+        "from": "The-Interdependency/edcm",
+        "measurement_status_transfer": false,
+        "proof_status_transfer": false,
+        "relation": "upstream authority for xkcd/OEWN lexical source binding, Unicode-character gonols, Mobius glyph-axis word construction, morphology, semantic definition gonols, atomic closure, direct interscale coupling, and recursive gonol construction",
+        "to": "The-Interdependency/ucns"
+      },
+      {
+        "authority_transfer": false,
+        "from": "The-Interdependency/metapat",
+        "measurement_status_transfer": false,
+        "relation": "downstream semantic consumer and separate measurement authority",
+        "to": "The-Interdependency/edcm"
+      },
+      {
+        "authority_transfer": false,
+        "from": "The-Interdependency/metapat",
+        "relation": "build/evidence doctrine and cross-repository coordination source",
+        "to": "The-Interdependency/skill-lib"
+      },
+      {
+        "authority_transfer": false,
+        "from": "The-Interdependency/metapat",
+        "proof_status_transfer": false,
+        "relation": "geometry adapter target and separate mathematical authority; receives exact semantic envelopes and explicit Phi authorizations",
+        "to": "The-Interdependency/ucns"
+      }
+    ],
+    "generated_from": [
+      {
+        "report_sha256": "8d60112cc4a9fbafcabf9a2603167384c8c89b65c6a3b5aff12500256edccee0",
+        "repository": "The-Interdependency/The-Interdependency.github.io",
+        "source_commit": "66b16842774731514c9fd15757e8af36270fccd1"
+      },
+      {
+        "report_sha256": "02071b45c3980d1e0dac1251c77435eaedf2f40805eb2641136c26428f01404e",
+        "repository": "The-Interdependency/a0",
+        "source_commit": "fa889c6d2e3bd3fe32b78e3cb1daed81d26198f1"
+      },
+      {
+        "report_sha256": "6a278621ef8a38cb059c1944b4df83998fe900d6ac225631cd65d69f5614ca19",
+        "repository": "The-Interdependency/edcm",
+        "source_commit": "060d3c64e2758f4d4f4fbfd1351294faa8fc3c2b"
+      },
+      {
+        "report_sha256": "9c54b6387d3620071e9cf365d65c690f43356140fd6c0f32bd7e8548fda7e21d",
+        "repository": "The-Interdependency/metapat",
+        "source_commit": "1fc2e5a273721acb0297dccc4cbfe3a3e3e9cd72"
+      }
+    ],
+    "hmmm": [
+      {
+        "item": "producer-side repository_dispatch coverage for near-immediate SITREP rebuilds",
+        "repository": "The-Interdependency/The-Interdependency.github.io"
+      },
+      {
+        "item": "whether the public portfolio remains exactly METAPAT, UCNS, EDCM, a0, and website or later admits additional intentional members",
+        "repository": "The-Interdependency/The-Interdependency.github.io"
+      },
+      {
+        "item": "long-term historical SITREP snapshot retention and public timeline policy",
+        "repository": "The-Interdependency/The-Interdependency.github.io"
+      },
+      {
+        "item": "cryptographic producer authentication beyond GitHub transport and content identities",
+        "repository": "The-Interdependency/The-Interdependency.github.io"
+      },
+      {
+        "item": "whether a future report-freshness vocabulary should distinguish substantive repository changes from report-only coordination commits",
+        "repository": "The-Interdependency/The-Interdependency.github.io"
+      },
+      {
+        "item": "exhaustive PlatonicAgent dimension set and semantic-region map",
+        "repository": "The-Interdependency/a0"
+      },
+      {
+        "item": "which region memberships are universal to agency versus contingent on a0",
+        "repository": "The-Interdependency/a0"
+      },
+      {
+        "item": "whether and how individual dimensions or semantic regions should receive UCNS representation",
+        "repository": "The-Interdependency/a0"
+      },
+      {
+        "item": "exact durable serialization/realization contract from PlatonicAgent regions into backend records",
+        "repository": "The-Interdependency/a0"
+      },
+      {
+        "item": "identity continuity, fork, merge, and termination criteria under transformation",
+        "repository": "The-Interdependency/a0"
+      },
+      {
+        "item": "the exact future a0 adapter contract for an audit-derived PTCNA whose architecture is not yet known",
+        "repository": "The-Interdependency/a0"
+      },
+      {
+        "item": "the preservation/retirement boundary for historical PTCNA scaffold state after a future intended PTCNA exists",
+        "repository": "The-Interdependency/a0"
+      },
+      {
+        "item": "complete executable Guardian/PCEA projection policy around global system-primary memory read authority",
+        "repository": "The-Interdependency/a0"
+      },
+      {
+        "item": "final EULA and interface language after actual privacy controls are implemented",
+        "repository": "The-Interdependency/a0"
+      },
+      {
+        "item": "production retention, redaction, deletion, consent-expiry, worker-leadership, storage, and hosting defaults",
+        "repository": "The-Interdependency/a0"
+      },
+      {
+        "item": "authorized Google Cloud project and service-account credentials; no repository configuration currently supplies GCP_DEPLOY_ENABLED, GCP_PROJECT_ID, or GCP_SA_KEY",
+        "repository": "The-Interdependency/a0"
+      },
+      {
+        "item": "the exact upstream xkcd 1,000 and OEWN 2025 Core source receipt identities and recursive UCNS producer identity",
+        "repository": "The-Interdependency/edcm"
+      },
+      {
+        "item": "the EDCM projection, information-loss accounting, metric, benchmark, and falsifier for evaluating future atomic recursive gonol representations",
+        "repository": "The-Interdependency/edcm"
+      },
+      {
+        "item": "empirical validity of maintained and current candidate measurement surfaces",
+        "repository": "The-Interdependency/edcm"
+      },
+      {
+        "item": "selection of any final EDCM or joint UCNS-EDCM canon",
+        "repository": "The-Interdependency/edcm"
+      },
+      {
+        "item": "external custody arrangement for the next sealed test",
+        "repository": "The-Interdependency/edcm"
+      },
+      {
+        "item": "human outcome-label authority and adjudication protocol for future domains",
+        "repository": "The-Interdependency/edcm"
+      },
+      {
+        "item": "METAPAT activation and exact semantic constraints for measurement runs",
+        "repository": "The-Interdependency/edcm"
+      },
+      {
+        "item": "generalization beyond the declared corpora and bounded experiments",
+        "repository": "The-Interdependency/edcm"
+      },
+      {
+        "item": "migration consequences for future catalog or canon rotations",
+        "repository": "The-Interdependency/metapat"
+      },
+      {
+        "item": "whether later catalog versions require additional relation kinds",
+        "repository": "The-Interdependency/metapat"
+      },
+      {
+        "item": "exact downstream topology-binding record for Phi authorization",
+        "repository": "The-Interdependency/metapat"
+      },
+      {
+        "item": "official UCNS bridge-record consumption if UCNS standardizes one",
+        "repository": "The-Interdependency/metapat"
+      },
+      {
+        "item": "any semantic mapping beyond external-provenance and explicit constitutive-simultaneous authorization",
+        "repository": "The-Interdependency/metapat"
+      },
+      {
+        "item": "physical validation and differentiated predictions for the quantum-magnetism application",
+        "repository": "The-Interdependency/metapat"
+      },
+      {
+        "item": "EDCM semantic consumer implementation",
+        "repository": "The-Interdependency/metapat"
+      },
+      {
+        "item": "shared cross-repository stack fixture",
+        "repository": "The-Interdependency/metapat"
+      }
+    ],
+    "next_actions": [
+      {
+        "action": "add producer-side org-repo-updated dispatch only where repository permissions and failure behavior can be kept explicit",
+        "dependency": "deliberate per-repository permission and trigger decision; hourly refresh already provides bounded eventual update",
+        "owner": "participating repositories",
+        "repository": "The-Interdependency/The-Interdependency.github.io"
+      },
+      {
+        "action": "define a durable historical snapshot contract before presenting SITREP changes as a public timeline",
+        "dependency": "must preserve repo-owned source identity and avoid turning presentation snapshots into canonical project history",
+        "owner": "The-Interdependency/The-Interdependency.github.io + The-Interdependency/skill-lib",
+        "repository": "The-Interdependency/The-Interdependency.github.io"
+      },
+      {
+        "action": "add future public portfolio members only by explicit membership decision and valid repo-owned report",
+        "dependency": "maintainer-selected public portfolio scope",
+        "owner": "The-Interdependency/The-Interdependency.github.io + The-Interdependency/skill-lib",
+        "repository": "The-Interdependency/The-Interdependency.github.io"
+      },
+      {
+        "action": "bind the durable AgentDefinition and AgentInstance persistence/API implementation explicitly to PlatonicAgent definition and instance region projections",
+        "dependency": "merged PlatonicAgent subsumption contract at 7251f0f9fba5265ebeb8dbfe8ff4dc5826dfe62c",
+        "owner": "The-Interdependency/a0",
+        "repository": "The-Interdependency/a0"
+      },
+      {
+        "action": "complete AgentRun lineage, semantic-memory events/branches, run artifacts, and runtime-state persistence while retaining separate region and merge authorities; keep historical PTCNA scaffold snapshots explicitly typed as historical",
+        "dependency": "durable schema and migration cutover",
+        "owner": "The-Interdependency/a0",
+        "repository": "The-Interdependency/a0"
+      },
+      {
+        "action": "consume the corrected PTCNA construction boundary: preserve the sealed scaffold result and adapter, stop treating the scaffold as canonical intended PTCNA, and wait for the future UCNS-audit-derived PTCNA producer before adding an intended PTCNA runtime-state realization",
+        "dependency": "PTCNA docs/INTENDED_CONSTRUCTION_GATE.md and UCNS docs/PTCNA_NEURAL_AUDIT_PREREQUISITE.md",
+        "owner": "The-Interdependency/a0 + The-Interdependency/ptcna + The-Interdependency/ucns",
+        "repository": "The-Interdependency/a0"
+      },
+      {
+        "action": "implement the privacy-projection region as executable Guardian/PCEA projection, cross-owner audit, consent, disclosure, retention, redaction, deletion, and export controls",
+        "dependency": "Guardian/PCEA integration and policy tests",
+        "owner": "The-Interdependency/a0",
+        "repository": "The-Interdependency/a0"
+      },
+      {
+        "action": "complete resource-to-need matching as a consent-bearing bounded realization rather than a privacy bypass",
+        "dependency": "privacy projection and disclosure ledger",
+        "owner": "The-Interdependency/a0",
+        "repository": "The-Interdependency/a0"
+      },
+      {
+        "action": "close hosting, worker-leadership, snapshot storage, migration, and release gates required to truthfully call a0 delivered",
+        "dependency": "durable state externalization and operational runbook",
+        "owner": "The-Interdependency/a0",
+        "repository": "The-Interdependency/a0"
+      },
+      {
+        "action": "consume no new lexical semantic representation until UCNS freezes exact xkcd 1,000 and OEWN 2025 Core source receipts and emits replayable atomic gonol receipts; reject tokenizer IDs, subword units, opaque vectors, whole-string hashes, pairwise-sidecar substitution, and forced intermediate reopening",
+        "dependency": "upstream UCNS source identities and recursive producer must exist first",
+        "owner": "The-Interdependency/edcm",
+        "repository": "The-Interdependency/edcm"
+      },
+      {
+        "action": "after the upstream representation exists, freeze one EDCM projection, information-loss declaration, baseline set, hypotheses, metric, aggregation, partitions, stopping rules, and falsifiers before semantic/compression/reconstruction outcome inspection",
+        "dependency": "exact UCNS source identities and source-bound atomic gonol receipts",
+        "owner": "The-Interdependency/edcm",
+        "repository": "The-Interdependency/edcm"
+      },
+      {
+        "action": "freeze the next experiment packet around one genuinely new measurement candidate with preregistered hypotheses, partitions, custody, stopping rules, failure conditions, and provenance",
+        "dependency": "must not tune on the sealed MultiWOZ booking test set",
+        "owner": "The-Interdependency/edcm",
+        "repository": "The-Interdependency/edcm"
+      },
+      {
+        "action": "run the next candidate through development and validation before any sealed external test evaluation",
+        "dependency": "new candidate and test-custody boundary must be frozen first",
+        "owner": "The-Interdependency/edcm",
+        "repository": "The-Interdependency/edcm"
+      },
+      {
+        "action": "bind any METAPAT or UCNS inputs to exact source identities in experiment manifests",
+        "dependency": "producer identities and mappings must be explicit and independently checkable",
+        "owner": "The-Interdependency/edcm",
+        "repository": "The-Interdependency/edcm"
+      },
+      {
+        "action": "specify the topology-bound Phi integration record without importing UCNS geometry authority into METAPAT",
+        "dependency": "exact UCNS parent identity and encoding surface must be available",
+        "owner": "The-Interdependency/metapat + The-Interdependency/ucns",
+        "repository": "The-Interdependency/metapat"
+      },
+      {
+        "action": "implement or coordinate the EDCM semantic consumer against exact catalog/application identities",
+        "dependency": "consumer must preserve METAPAT, UCNS, and EDCM identities separately",
+        "owner": "The-Interdependency/edcm",
+        "repository": "The-Interdependency/metapat"
+      },
+      {
+        "action": "construct the shared stack fixture after the downstream consumer exists",
+        "dependency": "topology binding and EDCM semantic-consumer path",
+        "owner": "The-Interdependency/metapat + The-Interdependency/ucns + The-Interdependency/edcm",
+        "repository": "The-Interdependency/metapat"
+      }
+    ],
+    "portfolio_plan_sha256": "619bc6c640c16d7f6e91e9578b4b502245f6489e6ab695049f4a25c5a5b08ad2",
+    "repositories": [
+      {
+        "authority": {
+          "does_not_own": [
+            "METAPAT semantic canon or ontology validity",
+            "UCNS mathematical representation, geometry, or proof status",
+            "EDCM measurement validity, empirical results, or experiment authority",
+            "a0 runtime, agent identity, memory, privacy, or deployment authority",
+            "skill-lib reusable skill doctrine, repository-plan-report contract, or portfolio projection semantics"
+          ],
+          "non_transfer": [
+            "publication on this website does not transfer producer-repository authority to the website",
+            "GitHub workflow success does not establish semantic, mathematical, measurement, empirical, or runtime validity",
+            "the SITREP presentation view does not become a second source of repository canon",
+            "a missing or HEAD-different repository report remains visibly incomplete or different rather than being reconstructed from telemetry or memory",
+            "skill-lib validation and deterministic projection constrain coordination representation but do not decide substantive project truth"
+          ],
+          "owns": [
+            "public website presentation, navigation, static build behavior, and publication surfaces for interdependentway.org",
+            "website-local data fetching, caching, fallback behavior, accessibility, and presentation contracts",
+            "public rendering of repository-owned reports and GitHub telemetry without altering their source authority",
+            "the website-specific SITREP presentation view and its machine-readable public copy"
+          ]
+        },
+        "delivered": [
+          {
+            "boundary": "publication and rendering do not establish the validity of producer-repository claims",
+            "status": "implemented and deployed",
+            "surface": "static-first public knowledge system"
+          },
+          {
+            "boundary": "project discovery and GitHub metadata do not constitute portfolio membership or repository-plan status",
+            "status": "implemented build-time GitHub observation and reviewed project-manifest presentation",
+            "surface": "generated organization project map"
+          },
+          {
+            "boundary": "collector executes a commit- and blob-pinned skill-lib portfolio_plan.py rather than reimplementing its projection semantics",
+            "status": "deployed and release-gated",
+            "surface": "skill-lib-governed repository SITREP collector"
+          },
+          {
+            "boundary": "presentation does not reconcile report/HEAD differences or upgrade source claims",
+            "status": "deployed at /sitrep/ with declared-versus-observed separation and explicit fallback",
+            "surface": "repository SITREP infogram page"
+          },
+          {
+            "boundary": "generated JSON is a presentation projection and not a replacement for repo-owned reports",
+            "status": "deployed at /assets/data/sitrep.json and regenerated by the site build",
+            "surface": "machine-readable public SITREP view"
+          },
+          {
+            "boundary": "producer-side dispatch coverage is not yet installed across all participating repositories",
+            "status": "hourly Pages rebuild plus existing repository_dispatch entrypoint",
+            "surface": "scheduled SITREP refresh"
+          }
+        ],
+        "machine_entrypoints": {
+          "project_manifest": ".interdependency/project.yml",
+          "public_sitrep_data": "assets/data/sitrep.json",
+          "release_workflow": ".github/workflows/pages.yml",
+          "repo_report": "docs/work-graphs/repository-plan-report.json",
+          "site_configuration": ".eleventy.js",
+          "sitrep_collector": "scripts/fetch-sitrep.mjs",
+          "sitrep_page": "src/sitrep/index.njk",
+          "sitrep_styles": "src/assets/css/sitrep.css"
+        },
+        "portfolio_role": {
+          "downstream_contract": "The website exposes human-readable infograms and a machine-readable generated SITREP view while preserving source identities, fallback state, and authority-transfer boundaries.",
+          "reports_to": {
+            "relation": "repo-owned publication and observability status input; no authority transfer",
+            "repository": "The-Interdependency/skill-lib",
+            "skill": "interdependent-work-graph"
+          },
+          "summary": "Provide the public presentation and observability surface for repo-owned situation reports: consume the exact skill-lib work-graph contract and projection, overlay separately observed GitHub activity, and make current relations, blockers, next actions, and unresolved boundaries legible without centralizing repository canon.",
+          "upstream_contract": "Participating repositories own the claims in their repository-plan-report.json files; skill-lib owns the frozen report contract and deterministic projection instrument."
+        },
+        "repository": "The-Interdependency/The-Interdependency.github.io",
+        "status": {
+          "current_claim": "The deployed website presents METAPAT, UCNS, EDCM, a0, and itself through repo-owned repository-plan reports projected by the exact pinned skill-lib interdependent-work-graph instrument, with GitHub telemetry kept separate from declared situation, missing reports left visible, and public failure output classified rather than leaking raw command details.",
+          "deployment_evidence": {
+            "browser_accessibility": "success",
+            "build": "success",
+            "custom_domain_identity": "verified",
+            "merge_commit": "66b16842774731514c9fd15757e8af36270fccd1",
+            "pages_deploy": "success",
+            "pages_identity": "verified",
+            "workflow_run": 31865480540
+          },
+          "latest_main_milestone": {
+            "commit": "66b16842774731514c9fd15757e8af36270fccd1",
+            "description": "merged and deployed the skill-lib-governed dynamic repository SITREP with five project views, machine-readable public projection, hourly refresh, and explicit declared-versus-observed boundaries"
+          },
+          "state": "deployed static public knowledge system with skill-lib-governed dynamic repository SITREP"
+        }
+      },
+      {
+        "authority": {
+          "does_not_own": [
+            "ZFAE conceptual ontology or inference-event semantics beyond a0's runtime binding",
+            "PTCNA architecture, UCNS neural-audit evidence, or future audit-derived tensor-state semantics",
+            "PCEA cryptographic/privacy primitive semantics",
+            "UCNS mathematical representation or proof status",
+            "EDCM empirical measurement validity",
+            "METAPAT semantic canon",
+            "skill-lib organization-wide build and cross-repository workflow doctrine"
+          ],
+          "non_transfer": [
+            "subsuming a producer-backed semantic region into PlatonicAgent does not transfer producer authority into a0",
+            "a provider model is an energy provider relation and does not become the agent identity",
+            "historical PTCNA scaffold state and semantic memory remain distinct regions and distinct merge-authority channels",
+            "the existing PTCNA scaffold region is not the intended PTCNA merely because a0 can persist and restore it",
+            "the sealed PTCNA scaffold falsification does not establish failure or success of a future audit-derived PTCNA",
+            "run artifacts are not semantic memory merely because they are produced by an agent run",
+            "global system-primary read authority does not imply disclosure authority",
+            "runtime integration does not transfer theorem, semantic, measurement, certification, or empirical status from producer repositories",
+            "published EULA language is not a substitute for executable privacy enforcement and tests"
+          ],
+          "owns": [
+            "a0 application runtime and promised agent-system delivery behavior",
+            "the Platonic Agent as a0's open maximal whole-agent object and the a0-owned mapping of existing agent semantics into distinct semantic regions",
+            "durable agent definitions, runtime-instance identities, run lineage, semantic-memory persistence, and owner-scoped service contracts as realizations within the Platonic Agent",
+            "a0-side bindings to ZFAE inference, historical PTCNA scaffold state, PCEA/Guardian privacy projection, provider routing, tool execution, and lifecycle behavior",
+            "resource-to-need matching workflow and consent-mediated disclosure behavior implemented by the platform"
+          ]
+        },
+        "delivered": [
+          {
+            "boundary": "the current dimension and region sets are open and not claimed exhaustive or empirically validated",
+            "status": "implemented provisional architecture surface with executable dimensions, semantic regions, projections, and focused witnesses",
+            "surface": "Platonic Agent whole-agent object and subsumption map"
+          },
+          {
+            "boundary": "a0 preserves this historical research state exactly; it must not be represented as the intended PTCNA, whose construction is blocked on UCNS neural-audit evidence",
+            "status": "producer-backed target/fallback scaffold state, UCNS candidate receipt, Platonic projection, checkpoint/restart, and tamper rejection implemented",
+            "surface": "historical PTCNA scaffold runtime-state realization"
+          },
+          {
+            "boundary": "ZFAE is bound within the inference region; it is not the whole agent and its conceptual authority remains in the ZFAE repository",
+            "status": "implemented research-instrument surface",
+            "surface": "persistent ZFAE primary-agent runtime"
+          },
+          {
+            "boundary": "an implemented runtime surface is not equivalent to completed a0 delivery",
+            "status": "Express public boundary, Python/FastAPI orchestration, and React/Vite console are implemented",
+            "surface": "three-process web runtime"
+          },
+          {
+            "boundary": "the present region membership may refine; distinct identities, state channels, and authority boundaries may not be silently collapsed",
+            "status": "AgentDefinition, AgentInstance, AgentRun, semantic memory, runtime state, artifacts, provider, privacy, and spawn/merge semantics are settled enough to be mapped as distinct PlatonicAgent regions",
+            "surface": "durable agent foundation semantics"
+          },
+          {
+            "boundary": "live schema-authority cutover and final durable backend migration remain separate work",
+            "status": "versioned Alembic baseline and preservation evidence exist in repository history",
+            "surface": "reviewed migration foundation"
+          },
+          {
+            "boundary": "knowledge does not imply disclosure authority; public/full release requires executable enforcement and matching user-facing disclosure",
+            "status": "backend semantics specified",
+            "surface": "system-primary memory authority and mediated matching contract"
+          }
+        ],
+        "machine_entrypoints": {
+          "backend_foundation": "docs/replit-backend-foundation.md",
+          "backend_work_graph": "docs/work-graphs/replit-backend-foundation.json",
+          "frontend_root": "client/",
+          "legacy_frozen_spec": "spec.md",
+          "platonic_agent": "docs/platonic-agent.md",
+          "platonic_agent_core": "python/agents/platonic.py",
+          "platonic_agent_regions": "python/agents/platonic_regions.py",
+          "platonic_agent_work_graph": "docs/work-graphs/platonic-agent.json",
+          "repo_report": "docs/work-graphs/repository-plan-report.json",
+          "runtime_root": "python/",
+          "system_overview": "README.md"
+        },
+        "portfolio_role": {
+          "downstream_contract": "a0 exposes operational agent definitions, instances, runs, scoped memory projections, tools, audited actions, interfaces, APIs, and deployment behavior as bounded realizations of PlatonicAgent regions.",
+          "reports_to": {
+            "relation": "repo-owned whole-agent, runtime, memory, privacy, delivery, and deployment-plan input; no authority transfer",
+            "repository": "The-Interdependency/skill-lib",
+            "skill": "interdependent-work-graph"
+          },
+          "summary": "Deliver the a0 agent system by realizing bounded operational agents from an open Platonic Agent object while composing persistent identity, inference, runtime state, memory, tools, privacy, provenance, provider relations, lifecycle, and resource-to-need behavior without collapsing their distinctions or absorbing producer authority.",
+          "upstream_contract": "a0 consumes exact upstream producer identities through bounded region bindings/adapters and keeps their authority separate from a0-owned whole-agent semantics. Intended PTCNA remains unavailable until its UCNS neural-audit prerequisite is satisfied upstream."
+        },
+        "repository": "The-Interdependency/a0",
+        "status": {
+          "current_claim": "PlatonicAgent subsumes the presently legible a0 agent semantics as distinct executable regions. a0 can persist and restore the exact historical PTCNA scaffold state and routing receipts, but that region is now explicitly historical: the intended PTCNA has not been built and is BLOCKED until UCNS audits a functioning conventional neural network and PTCNA derives a new candidate from that evidence. The sealed scaffold role-acquisition result remains FALSIFIED for both usefulness and superiority on its exact tested scope. Other durable a0 regions remain incomplete.",
+          "deployed_identity": "a0p is an existing research-instrument runtime surface; it is not evidence that the promised a0 delivery is complete",
+          "latest_main_milestone": {
+            "commit": "fa889c6d2e3bd3fe32b78e3cb1daed81d26198f1",
+            "description": "refreshed the repo-owned portfolio report to current main before the PTCNA prerequisite correction"
+          },
+          "state": "active implementation; promised a0 delivery remains incomplete"
+        }
+      },
+      {
+        "authority": {
+          "does_not_own": [
+            "UCNS mathematical representation canon or UCNS proof status",
+            "UCNS xkcd/OEWN source selection, Unicode-character-gonol identity, Mobius glyph-axis construction, morphology, word-gonol construction, definition-gonol construction, atomic closure, or direct interscale coupling law",
+            "METAPAT semantic or ontology validity",
+            "a0 runtime, agent identity, deployment, or orchestration authority",
+            "skill-lib organization-wide build and cross-repository workflow doctrine"
+          ],
+          "non_transfer": [
+            "UCNS proof status does not establish EDCM empirical validity",
+            "EDCM empirical fit does not establish UCNS proof status",
+            "candidate registration or development-fixture success does not select canon",
+            "integrity of the maintained baseline does not establish empirical validation",
+            "a UCNS gonol representation does not activate EDCM measurement or establish semantic validity",
+            "a definition-gonol semantic role does not establish vector-embedding equivalence or efficacy",
+            "historical lexical-floor-named artifacts do not restore the deprecated NGSL floor premise as current architecture",
+            "EDCM may not externalize intrinsic UCNS semantic relationships merely because a graph projection is convenient",
+            "a falsified hypothesis remains research evidence and is not repaired by relabeling status"
+          ],
+          "owns": [
+            "EDCM measurement, projection, diagnostic, and result contracts",
+            "EDCM-maintained baseline implementation and integrity evidence",
+            "EDCM experiment designs, candidate-measured results, falsification records, and evidence-state labels",
+            "EDCM corpus runners, receipts, provenance, and measurement-side activation boundaries",
+            "EDCM consumer contracts and evaluation boundaries for exact upstream gonol representations"
+          ]
+        },
+        "delivered": [
+          {
+            "boundary": "implementation integrity is not empirical validation or final UCNS-EDCM canon",
+            "status": "executable and integrity-checked candidate baseline",
+            "surface": "frozen maintained EDCM baseline"
+          },
+          {
+            "boundary": "structural and measurement candidates remain reciprocal and non-self-canonizing",
+            "status": "reproducible experiment-first framework",
+            "surface": "UCNS-EDCM experiment program"
+          },
+          {
+            "boundary": "controlled evidence is not real-system empirical validation",
+            "status": "sealed candidate-measured evidence",
+            "surface": "controlled goal-vector contradiction experiment"
+          },
+          {
+            "boundary": "corpus reconciliation does not create formal UCNS geometry or measurement validity",
+            "status": "source-native corpus evidence and completion receipts",
+            "surface": "MultiWOZ 2.1 full-corpus observation and completion path"
+          },
+          {
+            "boundary": "balanced-accuracy interval spans chance; sensitivity hypothesis is falsified; canon_selection remains null",
+            "status": "sealed bounded candidate-measured holdout evidence",
+            "surface": "externally labelled MultiWOZ booking-outcome holdout"
+          },
+          {
+            "boundary": "documentation does not implement upstream gonols or select an EDCM semantic metric",
+            "status": "documented against current UCNS atomic lexical recursion",
+            "surface": "gonol-native language consumer boundary"
+          },
+          {
+            "boundary": "the historical name and artifacts remain unchanged for reproduction; they do not own current UCNS semantic construction",
+            "status": "sealed historical evidence and acquisition/replay precedent",
+            "surface": "OEWN 2025 lexical-floor-named experiment"
+          }
+        ],
+        "machine_entrypoints": {
+          "canon": "CANON.md",
+          "gonol_language_boundary": "docs/GONOL_LANGUAGE_BOUNDARY.md",
+          "historical_english_lexical_floor_run": "docs/ENGLISH_LEXICAL_FLOOR.md",
+          "joint_experiment_program": "docs/UCNS_EDCM_EXPERIMENT_PROGRAM.md",
+          "latest_holdout_design": "docs/experiments/2026-08-02-multiwoz-booking-outcome-holdout-design.md",
+          "latest_holdout_findings": "docs/experiments/2026-08-02-multiwoz-booking-outcome-holdout-findings.md",
+          "mathematics_index": "docs/EDCM_MATHEMATICS.md",
+          "repo_report": "docs/work-graphs/repository-plan-report.json",
+          "system_overview": "README.md"
+        },
+        "portfolio_role": {
+          "downstream_contract": "EDCM emits measurement artifacts, experiment findings, receipts, and explicit evidence statuses that downstream systems may consume without upgrading them.",
+          "reports_to": {
+            "relation": "repo-owned measurement-plan and evidence-status input; no authority transfer",
+            "repository": "The-Interdependency/skill-lib",
+            "skill": "interdependent-work-graph"
+          },
+          "summary": "Measure and pressure responses under declared constraints, maintain falsifiable measurement candidates and evidence states, and consume exact upstream gonol representations without treating representation as measurement validity or silently inserting token, subword, opaque-vector, whole-string-hash, pairwise-sidecar, or intermediate-scale-reopening substitutions.",
+          "upstream_contract": "EDCM consumes exact source evidence and pinned UCNS gonol receipts without inheriting their authority. The current upstream lexical sequence is characters -> morphology -> definitions -> recursive gonol relations, with xkcd 1,000 as floor candidate and OEWN 2025 Core as primary corpus. Relationships enter gonols and completed gonols are atomic at the next scale."
+        },
+        "repository": "The-Interdependency/edcm",
+        "status": {
+          "current_claim": "EDCM supports represented, candidate-measured, and experiment-supported evidence in declared scopes; canon_selection remains null and empirical validation is not established. For language, EDCM is a downstream consumer of the current UCNS atomic lexical recursion: xkcd 1,000 floor candidate, OEWN 2025 Core corpus, characters -> morphology -> definitions -> recursive gonol relations, intrinsic semantic relationships, atomic closure, scale-invariant affixiation, and permitted direct interscale coupling. Historical NGSL and Scrabble planning no longer define the active source path.",
+          "latest_main_milestone": {
+            "commit": "060d3c64e2758f4d4f4fbfd1351294faa8fc3c2b",
+            "description": "aligned EDCM's consumer boundary with current UCNS xkcd/OEWN atomic lexical recursion"
+          },
+          "state": "active research and measurement"
+        }
+      },
+      {
+        "authority": {
+          "does_not_own": [
+            "UCNS geometry, carrier algebra, object topology, or UCNS proof status",
+            "EDCM metric values, measurement validity, or empirical result authority",
+            "a0 runtime, agent lifecycle, deployment, or orchestration authority",
+            "skill-lib organization-wide build and cross-repository workflow doctrine"
+          ],
+          "non_transfer": [
+            "METAPAT claim status does not become application or empirical validation",
+            "UCNS theorem or domain status does not establish METAPAT ontology validity",
+            "METAPAT semantic authorization does not define UCNS geometry",
+            "METAPAT constraints do not become EDCM metric values",
+            "cross-domain application hypotheses do not alter root canon"
+          ],
+          "owns": [
+            "Meta Energy Theory semantic canon, terminology, interpretation constraints, derivation declarations, and claim-status labels",
+            "byte-complete METAPAT canon identity and addressable semantic catalog identities",
+            "METAPAT semantic module envelopes, application modules, provenance, and evidence firewalls",
+            "explicit METAPAT authorization of the constitutive-simultaneous UCNS Phi semantic relation"
+          ]
+        },
+        "delivered": [
+          {
+            "boundary": "digest identity is not empirical validation or formal proof of the ontology",
+            "status": "implemented and continuously checked",
+            "surface": "byte-complete canon identity"
+          },
+          {
+            "boundary": "catalog status does not transfer into applications, UCNS objects, EDCM measurements, or downstream theorems",
+            "status": "implemented with deterministic identities and 52 declared derivation edges",
+            "surface": "semantic module envelope and complete 39-module catalog"
+          },
+          {
+            "boundary": "root impact is none; physics validation and differentiated predictions remain unresolved",
+            "status": "first source-checked vertical slice at CROSS-DOMAIN-HYPOTHESIS status",
+            "surface": "quantum-magnetism application module"
+          },
+          {
+            "boundary": "METAPAT defines no local UCNS geometry or composition algebra",
+            "status": "implemented optional adapter with external-provenance default",
+            "surface": "actual UCNS adapter"
+          },
+          {
+            "boundary": "authorization binds semantic meaning only; exact UCNS topology binding remains downstream work",
+            "status": "implemented explicit-only constitutive-simultaneous policy",
+            "surface": "UCNS Phi semantic authorization"
+          }
+        ],
+        "machine_entrypoints": {
+          "application_api": "src/metapat/application.py",
+          "canon_api": "src/metapat/canon.py",
+          "catalog_api": "src/metapat/catalog.py",
+          "claims_ledger": "docs/claims-ledger.md",
+          "envelope_api": "src/metapat/envelope.py",
+          "repo_report": "docs/work-graphs/repository-plan-report.json",
+          "roadmap": "ROADMAP.md",
+          "system_overview": "README.md"
+        },
+        "portfolio_role": {
+          "downstream_contract": "UCNS and EDCM consumers may bind exact METAPAT modules and constraints while preserving separate geometry, measurement, proof, and application identities.",
+          "reports_to": {
+            "relation": "repo-owned semantic-plan and claim-status input; no authority transfer",
+            "repository": "The-Interdependency/skill-lib",
+            "skill": "interdependent-work-graph"
+          },
+          "summary": "Provide the semantic authority layer: exact doctrine identities, interpretation constraints, bounded application mappings, and explicit semantic authorizations while keeping geometry, measurement, and empirical evidence answerable to their owning repositories.",
+          "upstream_contract": "METAPAT canon and application sources remain source-checked and byte-addressable; external domain evidence remains external authority."
+        },
+        "repository": "The-Interdependency/metapat",
+        "status": {
+          "canon_version": "metapat-canon-v1",
+          "catalog_version": "metapat-semantic-catalog-v1",
+          "current_claim": "METAPAT canon, catalog, envelopes, one application vertical slice, actual-UCNS adapter, and explicit Phi semantic authorization are implemented; physics validation, downstream EDCM semantic consumption, and the shared stack fixture remain unresolved.",
+          "state": "active semantic canon and integration research"
+        }
+      }
+    ],
+    "schema": "the-interdependency.portfolio-plan",
+    "version": "1.0.0"
+  },
+  "missingReports": [
+    {
+      "repository": "The-Interdependency/ucns",
+      "reason": "The-Interdependency/ucns unavailable"
+    }
+  ],
+  "projects": [
+    {
+      "repository": "The-Interdependency/metapat",
+      "name": "metapat",
+      "label": "METAPAT",
+      "slug": "metapat",
+      "report": {
+        "schema": "the-interdependency.repository-plan-report",
+        "version": "1.0.0",
+        "repository": "The-Interdependency/metapat",
+        "contract": {
+          "repository": "The-Interdependency/skill-lib",
+          "path": "interdependent-work-graph/repository-plan-report.schema.json",
+          "version": "1.0.0",
+          "blob_sha": "9b347b2dff7692054b571602f30ee6d00c2e7265"
+        },
+        "source": {
+          "branch": "main",
+          "commit": "1fc2e5a273721acb0297dccc4cbfe3a3e3e9cd72",
+          "generated_at": "2026-08-07",
+          "note": "This report describes the cited METAPAT main commit. The report commit is coordination metadata and does not alter canon, ontology validity, domain validity, proof status, or measurement validity."
+        },
+        "authority": {
+          "owns": [
+            "Meta Energy Theory semantic canon, terminology, interpretation constraints, derivation declarations, and claim-status labels",
+            "byte-complete METAPAT canon identity and addressable semantic catalog identities",
+            "METAPAT semantic module envelopes, application modules, provenance, and evidence firewalls",
+            "explicit METAPAT authorization of the constitutive-simultaneous UCNS Phi semantic relation"
+          ],
+          "does_not_own": [
+            "UCNS geometry, carrier algebra, object topology, or UCNS proof status",
+            "EDCM metric values, measurement validity, or empirical result authority",
+            "a0 runtime, agent lifecycle, deployment, or orchestration authority",
+            "skill-lib organization-wide build and cross-repository workflow doctrine"
+          ],
+          "non_transfer": [
+            "METAPAT claim status does not become application or empirical validation",
+            "UCNS theorem or domain status does not establish METAPAT ontology validity",
+            "METAPAT semantic authorization does not define UCNS geometry",
+            "METAPAT constraints do not become EDCM metric values",
+            "cross-domain application hypotheses do not alter root canon"
+          ]
+        },
+        "portfolio_role": {
+          "summary": "Provide the semantic authority layer: exact doctrine identities, interpretation constraints, bounded application mappings, and explicit semantic authorizations while keeping geometry, measurement, and empirical evidence answerable to their owning repositories.",
+          "upstream_contract": "METAPAT canon and application sources remain source-checked and byte-addressable; external domain evidence remains external authority.",
+          "downstream_contract": "UCNS and EDCM consumers may bind exact METAPAT modules and constraints while preserving separate geometry, measurement, proof, and application identities.",
+          "reports_to": {
+            "repository": "The-Interdependency/skill-lib",
+            "skill": "interdependent-work-graph",
+            "relation": "repo-owned semantic-plan and claim-status input; no authority transfer"
+          }
+        },
+        "status": {
+          "state": "active semantic canon and integration research",
+          "current_claim": "METAPAT canon, catalog, envelopes, one application vertical slice, actual-UCNS adapter, and explicit Phi semantic authorization are implemented; physics validation, downstream EDCM semantic consumption, and the shared stack fixture remain unresolved.",
+          "canon_version": "metapat-canon-v1",
+          "catalog_version": "metapat-semantic-catalog-v1"
+        },
+        "delivered": [
+          {
+            "surface": "byte-complete canon identity",
+            "status": "implemented and continuously checked",
+            "boundary": "digest identity is not empirical validation or formal proof of the ontology"
+          },
+          {
+            "surface": "semantic module envelope and complete 39-module catalog",
+            "status": "implemented with deterministic identities and 52 declared derivation edges",
+            "boundary": "catalog status does not transfer into applications, UCNS objects, EDCM measurements, or downstream theorems"
+          },
+          {
+            "surface": "quantum-magnetism application module",
+            "status": "first source-checked vertical slice at CROSS-DOMAIN-HYPOTHESIS status",
+            "boundary": "root impact is none; physics validation and differentiated predictions remain unresolved"
+          },
+          {
+            "surface": "actual UCNS adapter",
+            "status": "implemented optional adapter with external-provenance default",
+            "boundary": "METAPAT defines no local UCNS geometry or composition algebra"
+          },
+          {
+            "surface": "UCNS Phi semantic authorization",
+            "status": "implemented explicit-only constitutive-simultaneous policy",
+            "boundary": "authorization binds semantic meaning only; exact UCNS topology binding remains downstream work"
+          }
+        ],
+        "active_frontier": [
+          "define downstream topology-binding records for exact UCNS parent, payload path, ordered child hashes, authorization digest, and encoding-policy identity",
+          "add fail-closed checks for missing declarations, order drift, object-hash drift, canon drift, and external-edge-as-containment substitution",
+          "define testable physical variables and boundaries for the quantum-magnetism application and derive predictions that differ from restating established physics",
+          "implement a separate EDCM semantic consumer that keeps semantic labels distinct from metric values",
+          "build the shared METAPAT-UCNS-EDCM fixture once the downstream semantic consumer exists"
+        ],
+        "next_actions": [
+          {
+            "action": "specify the topology-bound Phi integration record without importing UCNS geometry authority into METAPAT",
+            "owner": "The-Interdependency/metapat + The-Interdependency/ucns",
+            "dependency": "exact UCNS parent identity and encoding surface must be available"
+          },
+          {
+            "action": "implement or coordinate the EDCM semantic consumer against exact catalog/application identities",
+            "owner": "The-Interdependency/edcm",
+            "dependency": "consumer must preserve METAPAT, UCNS, and EDCM identities separately"
+          },
+          {
+            "action": "construct the shared stack fixture after the downstream consumer exists",
+            "owner": "The-Interdependency/metapat + The-Interdependency/ucns + The-Interdependency/edcm",
+            "dependency": "topology binding and EDCM semantic-consumer path"
+          }
+        ],
+        "blocked": [
+          "shared stack fixture is blocked on a downstream EDCM semantic consumer and exact topology-bound Phi integration"
+        ],
+        "cross_repository_relations": [
+          {
+            "repository": "The-Interdependency/ucns",
+            "relation": "geometry adapter target and separate mathematical authority; receives exact semantic envelopes and explicit Phi authorizations",
+            "authority_transfer": false,
+            "proof_status_transfer": false
+          },
+          {
+            "repository": "The-Interdependency/edcm",
+            "relation": "downstream semantic consumer and separate measurement authority",
+            "authority_transfer": false,
+            "measurement_status_transfer": false
+          },
+          {
+            "repository": "The-Interdependency/skill-lib",
+            "relation": "build/evidence doctrine and cross-repository coordination source",
+            "authority_transfer": false
+          }
+        ],
+        "machine_entrypoints": {
+          "repo_report": "docs/work-graphs/repository-plan-report.json",
+          "system_overview": "README.md",
+          "roadmap": "ROADMAP.md",
+          "claims_ledger": "docs/claims-ledger.md",
+          "canon_api": "src/metapat/canon.py",
+          "catalog_api": "src/metapat/catalog.py",
+          "application_api": "src/metapat/application.py",
+          "envelope_api": "src/metapat/envelope.py"
+        },
+        "hmmm": [
+          "migration consequences for future catalog or canon rotations",
+          "whether later catalog versions require additional relation kinds",
+          "exact downstream topology-binding record for Phi authorization",
+          "official UCNS bridge-record consumption if UCNS standardizes one",
+          "any semantic mapping beyond external-provenance and explicit constitutive-simultaneous authorization",
+          "physical validation and differentiated predictions for the quantum-magnetism application",
+          "EDCM semantic consumer implementation",
+          "shared cross-repository stack fixture"
+        ]
+      },
+      "reportBlob": "19c8e36ac40df98f61f99925b5904a3634d8a11f",
+      "portfolio": {
+        "authority": {
+          "does_not_own": [
+            "UCNS geometry, carrier algebra, object topology, or UCNS proof status",
+            "EDCM metric values, measurement validity, or empirical result authority",
+            "a0 runtime, agent lifecycle, deployment, or orchestration authority",
+            "skill-lib organization-wide build and cross-repository workflow doctrine"
+          ],
+          "non_transfer": [
+            "METAPAT claim status does not become application or empirical validation",
+            "UCNS theorem or domain status does not establish METAPAT ontology validity",
+            "METAPAT semantic authorization does not define UCNS geometry",
+            "METAPAT constraints do not become EDCM metric values",
+            "cross-domain application hypotheses do not alter root canon"
+          ],
+          "owns": [
+            "Meta Energy Theory semantic canon, terminology, interpretation constraints, derivation declarations, and claim-status labels",
+            "byte-complete METAPAT canon identity and addressable semantic catalog identities",
+            "METAPAT semantic module envelopes, application modules, provenance, and evidence firewalls",
+            "explicit METAPAT authorization of the constitutive-simultaneous UCNS Phi semantic relation"
+          ]
+        },
+        "delivered": [
+          {
+            "boundary": "digest identity is not empirical validation or formal proof of the ontology",
+            "status": "implemented and continuously checked",
+            "surface": "byte-complete canon identity"
+          },
+          {
+            "boundary": "catalog status does not transfer into applications, UCNS objects, EDCM measurements, or downstream theorems",
+            "status": "implemented with deterministic identities and 52 declared derivation edges",
+            "surface": "semantic module envelope and complete 39-module catalog"
+          },
+          {
+            "boundary": "root impact is none; physics validation and differentiated predictions remain unresolved",
+            "status": "first source-checked vertical slice at CROSS-DOMAIN-HYPOTHESIS status",
+            "surface": "quantum-magnetism application module"
+          },
+          {
+            "boundary": "METAPAT defines no local UCNS geometry or composition algebra",
+            "status": "implemented optional adapter with external-provenance default",
+            "surface": "actual UCNS adapter"
+          },
+          {
+            "boundary": "authorization binds semantic meaning only; exact UCNS topology binding remains downstream work",
+            "status": "implemented explicit-only constitutive-simultaneous policy",
+            "surface": "UCNS Phi semantic authorization"
+          }
+        ],
+        "machine_entrypoints": {
+          "application_api": "src/metapat/application.py",
+          "canon_api": "src/metapat/canon.py",
+          "catalog_api": "src/metapat/catalog.py",
+          "claims_ledger": "docs/claims-ledger.md",
+          "envelope_api": "src/metapat/envelope.py",
+          "repo_report": "docs/work-graphs/repository-plan-report.json",
+          "roadmap": "ROADMAP.md",
+          "system_overview": "README.md"
+        },
+        "portfolio_role": {
+          "downstream_contract": "UCNS and EDCM consumers may bind exact METAPAT modules and constraints while preserving separate geometry, measurement, proof, and application identities.",
+          "reports_to": {
+            "relation": "repo-owned semantic-plan and claim-status input; no authority transfer",
+            "repository": "The-Interdependency/skill-lib",
+            "skill": "interdependent-work-graph"
+          },
+          "summary": "Provide the semantic authority layer: exact doctrine identities, interpretation constraints, bounded application mappings, and explicit semantic authorizations while keeping geometry, measurement, and empirical evidence answerable to their owning repositories.",
+          "upstream_contract": "METAPAT canon and application sources remain source-checked and byte-addressable; external domain evidence remains external authority."
+        },
+        "repository": "The-Interdependency/metapat",
+        "status": {
+          "canon_version": "metapat-canon-v1",
+          "catalog_version": "metapat-semantic-catalog-v1",
+          "current_claim": "METAPAT canon, catalog, envelopes, one application vertical slice, actual-UCNS adapter, and explicit Phi semantic authorization are implemented; physics validation, downstream EDCM semantic consumption, and the shared stack fixture remain unresolved.",
+          "state": "active semantic canon and integration research"
+        }
+      },
+      "telemetry": {
+        "branch": "main",
+        "head": "e3111d9bf34eae17255af96d2e4f6c072ef16dc4",
+        "headDate": "2026-08-24T06:26:45Z",
+        "pushedAt": "2026-08-24T06:26:46Z",
+        "updatedAt": "2026-08-24T06:26:57Z",
+        "openPullRequests": 0,
+        "latestWorkflow": {
+          "name": "CI",
+          "status": "completed",
+          "conclusion": "success",
+          "event": "push",
+          "headSha": "e3111d9bf34eae17255af96d2e4f6c072ef16dc4",
+          "updatedAt": "2026-08-24T06:28:40Z",
+          "url": "https://github.com/The-Interdependency/metapat/actions/runs/32697362440"
+        }
+      },
+      "reportFreshness": "HEAD differs"
+    },
+    {
+      "repository": "The-Interdependency/ucns",
+      "name": "ucns",
+      "label": "UCNS",
+      "slug": "ucns",
+      "report": null,
+      "reportBlob": null,
+      "portfolio": null,
+      "telemetry": {
+        "branch": "main",
+        "head": "52ce6839c3f884d01a3cf561ae96fd2ef4c35ab8",
+        "headDate": "2026-08-25T02:14:29Z",
+        "pushedAt": "2026-08-25T02:14:35Z",
+        "updatedAt": "2026-08-25T02:14:57Z",
+        "openPullRequests": 0,
+        "latestWorkflow": {
+          "name": "geometry-ci",
+          "status": "completed",
+          "conclusion": "success",
+          "event": "push",
+          "headSha": "52ce6839c3f884d01a3cf561ae96fd2ef4c35ab8",
+          "updatedAt": "2026-08-25T02:17:54Z",
+          "url": "https://github.com/The-Interdependency/ucns/actions/runs/32800659731"
+        }
+      },
+      "reportFreshness": "missing"
+    },
+    {
+      "repository": "The-Interdependency/edcm",
+      "name": "edcm",
+      "label": "EDCM",
+      "slug": "edcm",
+      "report": {
+        "schema": "the-interdependency.repository-plan-report",
+        "version": "1.0.0",
+        "repository": "The-Interdependency/edcm",
+        "contract": {
+          "repository": "The-Interdependency/skill-lib",
+          "path": "interdependent-work-graph/repository-plan-report.schema.json",
+          "version": "1.0.0",
+          "blob_sha": "9b347b2dff7692054b571602f30ee6d00c2e7265"
+        },
+        "source": {
+          "branch": "main",
+          "commit": "060d3c64e2758f4d4f4fbfd1351294faa8fc3c2b",
+          "generated_at": "2026-08-18",
+          "note": "This report describes the cited EDCM state plus the current repo-owned plan. Report-only and language-boundary documentation commits are coordination metadata; they do not upgrade measurement, empirical, proof, semantic, or canon status. The current upstream UCNS lexical program selects the xkcd constrained-English 1,000-word vocabulary as lexical-floor candidate and OEWN 2025 Core as the primary contemporary lexical-semantic corpus."
+        },
+        "authority": {
+          "owns": [
+            "EDCM measurement, projection, diagnostic, and result contracts",
+            "EDCM-maintained baseline implementation and integrity evidence",
+            "EDCM experiment designs, candidate-measured results, falsification records, and evidence-state labels",
+            "EDCM corpus runners, receipts, provenance, and measurement-side activation boundaries",
+            "EDCM consumer contracts and evaluation boundaries for exact upstream gonol representations"
+          ],
+          "does_not_own": [
+            "UCNS mathematical representation canon or UCNS proof status",
+            "UCNS xkcd/OEWN source selection, Unicode-character-gonol identity, Mobius glyph-axis construction, morphology, word-gonol construction, definition-gonol construction, atomic closure, or direct interscale coupling law",
+            "METAPAT semantic or ontology validity",
+            "a0 runtime, agent identity, deployment, or orchestration authority",
+            "skill-lib organization-wide build and cross-repository workflow doctrine"
+          ],
+          "non_transfer": [
+            "UCNS proof status does not establish EDCM empirical validity",
+            "EDCM empirical fit does not establish UCNS proof status",
+            "candidate registration or development-fixture success does not select canon",
+            "integrity of the maintained baseline does not establish empirical validation",
+            "a UCNS gonol representation does not activate EDCM measurement or establish semantic validity",
+            "a definition-gonol semantic role does not establish vector-embedding equivalence or efficacy",
+            "historical lexical-floor-named artifacts do not restore the deprecated NGSL floor premise as current architecture",
+            "EDCM may not externalize intrinsic UCNS semantic relationships merely because a graph projection is convenient",
+            "a falsified hypothesis remains research evidence and is not repaired by relabeling status"
+          ]
+        },
+        "portfolio_role": {
+          "summary": "Measure and pressure responses under declared constraints, maintain falsifiable measurement candidates and evidence states, and consume exact upstream gonol representations without treating representation as measurement validity or silently inserting token, subword, opaque-vector, whole-string-hash, pairwise-sidecar, or intermediate-scale-reopening substitutions.",
+          "upstream_contract": "EDCM consumes exact source evidence and pinned UCNS gonol receipts without inheriting their authority. The current upstream lexical sequence is characters -> morphology -> definitions -> recursive gonol relations, with xkcd 1,000 as floor candidate and OEWN 2025 Core as primary corpus. Relationships enter gonols and completed gonols are atomic at the next scale.",
+          "downstream_contract": "EDCM emits measurement artifacts, experiment findings, receipts, and explicit evidence statuses that downstream systems may consume without upgrading them.",
+          "reports_to": {
+            "repository": "The-Interdependency/skill-lib",
+            "skill": "interdependent-work-graph",
+            "relation": "repo-owned measurement-plan and evidence-status input; no authority transfer"
+          }
+        },
+        "status": {
+          "state": "active research and measurement",
+          "current_claim": "EDCM supports represented, candidate-measured, and experiment-supported evidence in declared scopes; canon_selection remains null and empirical validation is not established. For language, EDCM is a downstream consumer of the current UCNS atomic lexical recursion: xkcd 1,000 floor candidate, OEWN 2025 Core corpus, characters -> morphology -> definitions -> recursive gonol relations, intrinsic semantic relationships, atomic closure, scale-invariant affixiation, and permitted direct interscale coupling. Historical NGSL and Scrabble planning no longer define the active source path.",
+          "latest_main_milestone": {
+            "commit": "060d3c64e2758f4d4f4fbfd1351294faa8fc3c2b",
+            "description": "aligned EDCM's consumer boundary with current UCNS xkcd/OEWN atomic lexical recursion"
+          }
+        },
+        "delivered": [
+          {
+            "surface": "frozen maintained EDCM baseline",
+            "status": "executable and integrity-checked candidate baseline",
+            "boundary": "implementation integrity is not empirical validation or final UCNS-EDCM canon"
+          },
+          {
+            "surface": "UCNS-EDCM experiment program",
+            "status": "reproducible experiment-first framework",
+            "boundary": "structural and measurement candidates remain reciprocal and non-self-canonizing"
+          },
+          {
+            "surface": "controlled goal-vector contradiction experiment",
+            "status": "sealed candidate-measured evidence",
+            "boundary": "controlled evidence is not real-system empirical validation"
+          },
+          {
+            "surface": "MultiWOZ 2.1 full-corpus observation and completion path",
+            "status": "source-native corpus evidence and completion receipts",
+            "boundary": "corpus reconciliation does not create formal UCNS geometry or measurement validity"
+          },
+          {
+            "surface": "externally labelled MultiWOZ booking-outcome holdout",
+            "status": "sealed bounded candidate-measured holdout evidence",
+            "boundary": "balanced-accuracy interval spans chance; sensitivity hypothesis is falsified; canon_selection remains null"
+          },
+          {
+            "surface": "gonol-native language consumer boundary",
+            "status": "documented against current UCNS atomic lexical recursion",
+            "boundary": "documentation does not implement upstream gonols or select an EDCM semantic metric"
+          },
+          {
+            "surface": "OEWN 2025 lexical-floor-named experiment",
+            "status": "sealed historical evidence and acquisition/replay precedent",
+            "boundary": "the historical name and artifacts remain unchanged for reproduction; they do not own current UCNS semantic construction"
+          }
+        ],
+        "active_frontier": [
+          "preserve the current UCNS consumer boundary: xkcd 1,000 floor candidate; OEWN 2025 Core corpus; characters -> morphology -> definitions -> recursive gonol relations; relationships intrinsic to gonols; completed gonols atomic at the next scale",
+          "prepare a fail-closed EDCM consumer contract for exact source-bound UCNS atomic word, morphology, definition, and recursive-gonol receipts once the upstream producer exists",
+          "do not impose all-pairs materialization, external semantic-edge authority, or mandatory intermediate-scale reopening on the upstream UCNS representation",
+          "define the smallest preregistered EDCM evaluation that can test semantic behavior, compression, reconstruction, or other declared hypotheses without promoting architecture into efficacy",
+          "design the next genuinely new measurement candidate under the sealed holdout boundary rather than tuning the failed candidate",
+          "preserve development, validation, sealed-test, candidate, witness, and decision authority separation",
+          "pressure measurement candidates against real-system outcomes while retaining falsified and weak results",
+          "integrate METAPAT constraints only through exact semantic identities and explicit transfer limits",
+          "keep EDCM activation distinct from package availability, UCNS proof status, representation availability, and candidate evidence"
+        ],
+        "next_actions": [
+          {
+            "action": "consume no new lexical semantic representation until UCNS freezes exact xkcd 1,000 and OEWN 2025 Core source receipts and emits replayable atomic gonol receipts; reject tokenizer IDs, subword units, opaque vectors, whole-string hashes, pairwise-sidecar substitution, and forced intermediate reopening",
+            "owner": "The-Interdependency/edcm",
+            "dependency": "upstream UCNS source identities and recursive producer must exist first"
+          },
+          {
+            "action": "after the upstream representation exists, freeze one EDCM projection, information-loss declaration, baseline set, hypotheses, metric, aggregation, partitions, stopping rules, and falsifiers before semantic/compression/reconstruction outcome inspection",
+            "owner": "The-Interdependency/edcm",
+            "dependency": "exact UCNS source identities and source-bound atomic gonol receipts"
+          },
+          {
+            "action": "freeze the next experiment packet around one genuinely new measurement candidate with preregistered hypotheses, partitions, custody, stopping rules, failure conditions, and provenance",
+            "owner": "The-Interdependency/edcm",
+            "dependency": "must not tune on the sealed MultiWOZ booking test set"
+          },
+          {
+            "action": "run the next candidate through development and validation before any sealed external test evaluation",
+            "owner": "The-Interdependency/edcm",
+            "dependency": "new candidate and test-custody boundary must be frozen first"
+          },
+          {
+            "action": "bind any METAPAT or UCNS inputs to exact source identities in experiment manifests",
+            "owner": "The-Interdependency/edcm",
+            "dependency": "producer identities and mappings must be explicit and independently checkable"
+          }
+        ],
+        "blocked": [
+          "EDCM semantic integration is BLOCKED until UCNS pins exact xkcd 1,000 and OEWN 2025 Core sources and emits the corrected atomic recursive gonol receipts; EDCM must not rebuild the missing upstream semantics itself"
+        ],
+        "cross_repository_relations": [
+          {
+            "repository": "The-Interdependency/ucns",
+            "relation": "upstream authority for xkcd/OEWN lexical source binding, Unicode-character gonols, Mobius glyph-axis word construction, morphology, semantic definition gonols, atomic closure, direct interscale coupling, and recursive gonol construction",
+            "authority_transfer": false,
+            "proof_status_transfer": false,
+            "measurement_status_transfer": false
+          },
+          {
+            "repository": "The-Interdependency/metapat",
+            "relation": "optional semantic-constraint producer whose exact identities may bound interpretation",
+            "authority_transfer": false,
+            "semantic_status_transfer": false,
+            "measurement_status_transfer": false
+          },
+          {
+            "repository": "The-Interdependency/skill-lib",
+            "relation": "build/evidence doctrine and current scale-affixiation / atomic-closure procedural boundary; no UCNS geometry authority transfer",
+            "authority_transfer": false
+          }
+        ],
+        "machine_entrypoints": {
+          "repo_report": "docs/work-graphs/repository-plan-report.json",
+          "system_overview": "README.md",
+          "canon": "CANON.md",
+          "gonol_language_boundary": "docs/GONOL_LANGUAGE_BOUNDARY.md",
+          "historical_english_lexical_floor_run": "docs/ENGLISH_LEXICAL_FLOOR.md",
+          "mathematics_index": "docs/EDCM_MATHEMATICS.md",
+          "joint_experiment_program": "docs/UCNS_EDCM_EXPERIMENT_PROGRAM.md",
+          "latest_holdout_design": "docs/experiments/2026-08-02-multiwoz-booking-outcome-holdout-design.md",
+          "latest_holdout_findings": "docs/experiments/2026-08-02-multiwoz-booking-outcome-holdout-findings.md"
+        },
+        "hmmm": [
+          "the exact upstream xkcd 1,000 and OEWN 2025 Core source receipt identities and recursive UCNS producer identity",
+          "the EDCM projection, information-loss accounting, metric, benchmark, and falsifier for evaluating future atomic recursive gonol representations",
+          "empirical validity of maintained and current candidate measurement surfaces",
+          "selection of any final EDCM or joint UCNS-EDCM canon",
+          "external custody arrangement for the next sealed test",
+          "human outcome-label authority and adjudication protocol for future domains",
+          "METAPAT activation and exact semantic constraints for measurement runs",
+          "generalization beyond the declared corpora and bounded experiments"
+        ]
+      },
+      "reportBlob": "427b6707f3f083fc28523d3dcefdb7ffa638580b",
+      "portfolio": {
+        "authority": {
+          "does_not_own": [
+            "UCNS mathematical representation canon or UCNS proof status",
+            "UCNS xkcd/OEWN source selection, Unicode-character-gonol identity, Mobius glyph-axis construction, morphology, word-gonol construction, definition-gonol construction, atomic closure, or direct interscale coupling law",
+            "METAPAT semantic or ontology validity",
+            "a0 runtime, agent identity, deployment, or orchestration authority",
+            "skill-lib organization-wide build and cross-repository workflow doctrine"
+          ],
+          "non_transfer": [
+            "UCNS proof status does not establish EDCM empirical validity",
+            "EDCM empirical fit does not establish UCNS proof status",
+            "candidate registration or development-fixture success does not select canon",
+            "integrity of the maintained baseline does not establish empirical validation",
+            "a UCNS gonol representation does not activate EDCM measurement or establish semantic validity",
+            "a definition-gonol semantic role does not establish vector-embedding equivalence or efficacy",
+            "historical lexical-floor-named artifacts do not restore the deprecated NGSL floor premise as current architecture",
+            "EDCM may not externalize intrinsic UCNS semantic relationships merely because a graph projection is convenient",
+            "a falsified hypothesis remains research evidence and is not repaired by relabeling status"
+          ],
+          "owns": [
+            "EDCM measurement, projection, diagnostic, and result contracts",
+            "EDCM-maintained baseline implementation and integrity evidence",
+            "EDCM experiment designs, candidate-measured results, falsification records, and evidence-state labels",
+            "EDCM corpus runners, receipts, provenance, and measurement-side activation boundaries",
+            "EDCM consumer contracts and evaluation boundaries for exact upstream gonol representations"
+          ]
+        },
+        "delivered": [
+          {
+            "boundary": "implementation integrity is not empirical validation or final UCNS-EDCM canon",
+            "status": "executable and integrity-checked candidate baseline",
+            "surface": "frozen maintained EDCM baseline"
+          },
+          {
+            "boundary": "structural and measurement candidates remain reciprocal and non-self-canonizing",
+            "status": "reproducible experiment-first framework",
+            "surface": "UCNS-EDCM experiment program"
+          },
+          {
+            "boundary": "controlled evidence is not real-system empirical validation",
+            "status": "sealed candidate-measured evidence",
+            "surface": "controlled goal-vector contradiction experiment"
+          },
+          {
+            "boundary": "corpus reconciliation does not create formal UCNS geometry or measurement validity",
+            "status": "source-native corpus evidence and completion receipts",
+            "surface": "MultiWOZ 2.1 full-corpus observation and completion path"
+          },
+          {
+            "boundary": "balanced-accuracy interval spans chance; sensitivity hypothesis is falsified; canon_selection remains null",
+            "status": "sealed bounded candidate-measured holdout evidence",
+            "surface": "externally labelled MultiWOZ booking-outcome holdout"
+          },
+          {
+            "boundary": "documentation does not implement upstream gonols or select an EDCM semantic metric",
+            "status": "documented against current UCNS atomic lexical recursion",
+            "surface": "gonol-native language consumer boundary"
+          },
+          {
+            "boundary": "the historical name and artifacts remain unchanged for reproduction; they do not own current UCNS semantic construction",
+            "status": "sealed historical evidence and acquisition/replay precedent",
+            "surface": "OEWN 2025 lexical-floor-named experiment"
+          }
+        ],
+        "machine_entrypoints": {
+          "canon": "CANON.md",
+          "gonol_language_boundary": "docs/GONOL_LANGUAGE_BOUNDARY.md",
+          "historical_english_lexical_floor_run": "docs/ENGLISH_LEXICAL_FLOOR.md",
+          "joint_experiment_program": "docs/UCNS_EDCM_EXPERIMENT_PROGRAM.md",
+          "latest_holdout_design": "docs/experiments/2026-08-02-multiwoz-booking-outcome-holdout-design.md",
+          "latest_holdout_findings": "docs/experiments/2026-08-02-multiwoz-booking-outcome-holdout-findings.md",
+          "mathematics_index": "docs/EDCM_MATHEMATICS.md",
+          "repo_report": "docs/work-graphs/repository-plan-report.json",
+          "system_overview": "README.md"
+        },
+        "portfolio_role": {
+          "downstream_contract": "EDCM emits measurement artifacts, experiment findings, receipts, and explicit evidence statuses that downstream systems may consume without upgrading them.",
+          "reports_to": {
+            "relation": "repo-owned measurement-plan and evidence-status input; no authority transfer",
+            "repository": "The-Interdependency/skill-lib",
+            "skill": "interdependent-work-graph"
+          },
+          "summary": "Measure and pressure responses under declared constraints, maintain falsifiable measurement candidates and evidence states, and consume exact upstream gonol representations without treating representation as measurement validity or silently inserting token, subword, opaque-vector, whole-string-hash, pairwise-sidecar, or intermediate-scale-reopening substitutions.",
+          "upstream_contract": "EDCM consumes exact source evidence and pinned UCNS gonol receipts without inheriting their authority. The current upstream lexical sequence is characters -> morphology -> definitions -> recursive gonol relations, with xkcd 1,000 as floor candidate and OEWN 2025 Core as primary corpus. Relationships enter gonols and completed gonols are atomic at the next scale."
+        },
+        "repository": "The-Interdependency/edcm",
+        "status": {
+          "current_claim": "EDCM supports represented, candidate-measured, and experiment-supported evidence in declared scopes; canon_selection remains null and empirical validation is not established. For language, EDCM is a downstream consumer of the current UCNS atomic lexical recursion: xkcd 1,000 floor candidate, OEWN 2025 Core corpus, characters -> morphology -> definitions -> recursive gonol relations, intrinsic semantic relationships, atomic closure, scale-invariant affixiation, and permitted direct interscale coupling. Historical NGSL and Scrabble planning no longer define the active source path.",
+          "latest_main_milestone": {
+            "commit": "060d3c64e2758f4d4f4fbfd1351294faa8fc3c2b",
+            "description": "aligned EDCM's consumer boundary with current UCNS xkcd/OEWN atomic lexical recursion"
+          },
+          "state": "active research and measurement"
+        }
+      },
+      "telemetry": {
+        "branch": "main",
+        "head": "ac78cc458cbae11f47e29629dda3c9a76265ceff",
+        "headDate": "2026-08-24T06:26:37Z",
+        "pushedAt": "2026-08-24T06:26:39Z",
+        "updatedAt": "2026-08-24T06:27:36Z",
+        "openPullRequests": 0,
+        "latestWorkflow": {
+          "name": "skill and metadata compliance",
+          "status": "completed",
+          "conclusion": "success",
+          "event": "push",
+          "headSha": "ac78cc458cbae11f47e29629dda3c9a76265ceff",
+          "updatedAt": "2026-08-24T06:27:05Z",
+          "url": "https://github.com/The-Interdependency/edcm/actions/runs/32697353718"
+        }
+      },
+      "reportFreshness": "HEAD differs"
+    },
+    {
+      "repository": "The-Interdependency/a0",
+      "name": "a0",
+      "label": "a0",
+      "slug": "a0",
+      "report": {
+        "schema": "the-interdependency.repository-plan-report",
+        "version": "1.0.0",
+        "repository": "The-Interdependency/a0",
+        "contract": {
+          "repository": "The-Interdependency/skill-lib",
+          "path": "interdependent-work-graph/repository-plan-report.schema.json",
+          "version": "1.0.0",
+          "blob_sha": "9b347b2dff7692054b571602f30ee6d00c2e7265"
+        },
+        "source": {
+          "branch": "main",
+          "commit": "fa889c6d2e3bd3fe32b78e3cb1daed81d26198f1",
+          "generated_at": "2026-08-17",
+          "note": "This report describes the cited a0 main commit plus the current repo-owned plan. The 2026-08-17 PTCNA correction reclassifies a0's existing PTCNA region as a historical pre-audit scaffold integration and blocks intended PTCNA integration until UCNS produces neural-audit-derived construction evidence. The report commit itself does not change runtime, persistence, privacy, deployment, or upstream producer authority."
+        },
+        "authority": {
+          "owns": [
+            "a0 application runtime and promised agent-system delivery behavior",
+            "the Platonic Agent as a0's open maximal whole-agent object and the a0-owned mapping of existing agent semantics into distinct semantic regions",
+            "durable agent definitions, runtime-instance identities, run lineage, semantic-memory persistence, and owner-scoped service contracts as realizations within the Platonic Agent",
+            "a0-side bindings to ZFAE inference, historical PTCNA scaffold state, PCEA/Guardian privacy projection, provider routing, tool execution, and lifecycle behavior",
+            "resource-to-need matching workflow and consent-mediated disclosure behavior implemented by the platform"
+          ],
+          "does_not_own": [
+            "ZFAE conceptual ontology or inference-event semantics beyond a0's runtime binding",
+            "PTCNA architecture, UCNS neural-audit evidence, or future audit-derived tensor-state semantics",
+            "PCEA cryptographic/privacy primitive semantics",
+            "UCNS mathematical representation or proof status",
+            "EDCM empirical measurement validity",
+            "METAPAT semantic canon",
+            "skill-lib organization-wide build and cross-repository workflow doctrine"
+          ],
+          "non_transfer": [
+            "subsuming a producer-backed semantic region into PlatonicAgent does not transfer producer authority into a0",
+            "a provider model is an energy provider relation and does not become the agent identity",
+            "historical PTCNA scaffold state and semantic memory remain distinct regions and distinct merge-authority channels",
+            "the existing PTCNA scaffold region is not the intended PTCNA merely because a0 can persist and restore it",
+            "the sealed PTCNA scaffold falsification does not establish failure or success of a future audit-derived PTCNA",
+            "run artifacts are not semantic memory merely because they are produced by an agent run",
+            "global system-primary read authority does not imply disclosure authority",
+            "runtime integration does not transfer theorem, semantic, measurement, certification, or empirical status from producer repositories",
+            "published EULA language is not a substitute for executable privacy enforcement and tests"
+          ]
+        },
+        "portfolio_role": {
+          "summary": "Deliver the a0 agent system by realizing bounded operational agents from an open Platonic Agent object while composing persistent identity, inference, runtime state, memory, tools, privacy, provenance, provider relations, lifecycle, and resource-to-need behavior without collapsing their distinctions or absorbing producer authority.",
+          "upstream_contract": "a0 consumes exact upstream producer identities through bounded region bindings/adapters and keeps their authority separate from a0-owned whole-agent semantics. Intended PTCNA remains unavailable until its UCNS neural-audit prerequisite is satisfied upstream.",
+          "downstream_contract": "a0 exposes operational agent definitions, instances, runs, scoped memory projections, tools, audited actions, interfaces, APIs, and deployment behavior as bounded realizations of PlatonicAgent regions.",
+          "reports_to": {
+            "repository": "The-Interdependency/skill-lib",
+            "skill": "interdependent-work-graph",
+            "relation": "repo-owned whole-agent, runtime, memory, privacy, delivery, and deployment-plan input; no authority transfer"
+          }
+        },
+        "status": {
+          "state": "active implementation; promised a0 delivery remains incomplete",
+          "current_claim": "PlatonicAgent subsumes the presently legible a0 agent semantics as distinct executable regions. a0 can persist and restore the exact historical PTCNA scaffold state and routing receipts, but that region is now explicitly historical: the intended PTCNA has not been built and is BLOCKED until UCNS audits a functioning conventional neural network and PTCNA derives a new candidate from that evidence. The sealed scaffold role-acquisition result remains FALSIFIED for both usefulness and superiority on its exact tested scope. Other durable a0 regions remain incomplete.",
+          "latest_main_milestone": {
+            "commit": "fa889c6d2e3bd3fe32b78e3cb1daed81d26198f1",
+            "description": "refreshed the repo-owned portfolio report to current main before the PTCNA prerequisite correction"
+          },
+          "deployed_identity": "a0p is an existing research-instrument runtime surface; it is not evidence that the promised a0 delivery is complete"
+        },
+        "delivered": [
+          {
+            "surface": "Platonic Agent whole-agent object and subsumption map",
+            "status": "implemented provisional architecture surface with executable dimensions, semantic regions, projections, and focused witnesses",
+            "boundary": "the current dimension and region sets are open and not claimed exhaustive or empirically validated"
+          },
+          {
+            "surface": "historical PTCNA scaffold runtime-state realization",
+            "status": "producer-backed target/fallback scaffold state, UCNS candidate receipt, Platonic projection, checkpoint/restart, and tamper rejection implemented",
+            "boundary": "a0 preserves this historical research state exactly; it must not be represented as the intended PTCNA, whose construction is blocked on UCNS neural-audit evidence"
+          },
+          {
+            "surface": "persistent ZFAE primary-agent runtime",
+            "status": "implemented research-instrument surface",
+            "boundary": "ZFAE is bound within the inference region; it is not the whole agent and its conceptual authority remains in the ZFAE repository"
+          },
+          {
+            "surface": "three-process web runtime",
+            "status": "Express public boundary, Python/FastAPI orchestration, and React/Vite console are implemented",
+            "boundary": "an implemented runtime surface is not equivalent to completed a0 delivery"
+          },
+          {
+            "surface": "durable agent foundation semantics",
+            "status": "AgentDefinition, AgentInstance, AgentRun, semantic memory, runtime state, artifacts, provider, privacy, and spawn/merge semantics are settled enough to be mapped as distinct PlatonicAgent regions",
+            "boundary": "the present region membership may refine; distinct identities, state channels, and authority boundaries may not be silently collapsed"
+          },
+          {
+            "surface": "reviewed migration foundation",
+            "status": "versioned Alembic baseline and preservation evidence exist in repository history",
+            "boundary": "live schema-authority cutover and final durable backend migration remain separate work"
+          },
+          {
+            "surface": "system-primary memory authority and mediated matching contract",
+            "status": "backend semantics specified",
+            "boundary": "knowledge does not imply disclosure authority; public/full release requires executable enforcement and matching user-facing disclosure"
+          }
+        ],
+        "active_frontier": [
+          "realize the PlatonicAgent definition, instance, run, semantic-memory, and runtime-state regions in the durable backend without creating a competing agent ontology",
+          "preserve the existing PTCNA adapter only as a historical scaffold-state region; do not optimize, repair, or label it as canonical intended PTCNA while the UCNS neural-audit prerequisite is unmet",
+          "prepare a0 to consume a future separately identified audit-derived PTCNA producer contract without hard-coding the historical scaffold topology into a0-owned records",
+          "implement and test Guardian/PCEA minimum-necessary projection, cross-owner memory access audit, disclosure, export, correction, retention, redaction, and deletion behavior",
+          "complete consent-scoped resource-to-need matching and introduction flows",
+          "continue recovering existing and newly legible agent semantics into PlatonicAgent regions without treating the current map as exhaustive",
+          "complete deployment, worker-leadership, storage, migration, and release evidence required for the promised a0 delivery"
+        ],
+        "next_actions": [
+          {
+            "action": "bind the durable AgentDefinition and AgentInstance persistence/API implementation explicitly to PlatonicAgent definition and instance region projections",
+            "owner": "The-Interdependency/a0",
+            "dependency": "merged PlatonicAgent subsumption contract at 7251f0f9fba5265ebeb8dbfe8ff4dc5826dfe62c"
+          },
+          {
+            "action": "complete AgentRun lineage, semantic-memory events/branches, run artifacts, and runtime-state persistence while retaining separate region and merge authorities; keep historical PTCNA scaffold snapshots explicitly typed as historical",
+            "owner": "The-Interdependency/a0",
+            "dependency": "durable schema and migration cutover"
+          },
+          {
+            "action": "consume the corrected PTCNA construction boundary: preserve the sealed scaffold result and adapter, stop treating the scaffold as canonical intended PTCNA, and wait for the future UCNS-audit-derived PTCNA producer before adding an intended PTCNA runtime-state realization",
+            "owner": "The-Interdependency/a0 + The-Interdependency/ptcna + The-Interdependency/ucns",
+            "dependency": "PTCNA docs/INTENDED_CONSTRUCTION_GATE.md and UCNS docs/PTCNA_NEURAL_AUDIT_PREREQUISITE.md"
+          },
+          {
+            "action": "implement the privacy-projection region as executable Guardian/PCEA projection, cross-owner audit, consent, disclosure, retention, redaction, deletion, and export controls",
+            "owner": "The-Interdependency/a0",
+            "dependency": "Guardian/PCEA integration and policy tests"
+          },
+          {
+            "action": "complete resource-to-need matching as a consent-bearing bounded realization rather than a privacy bypass",
+            "owner": "The-Interdependency/a0",
+            "dependency": "privacy projection and disclosure ledger"
+          },
+          {
+            "action": "close hosting, worker-leadership, snapshot storage, migration, and release gates required to truthfully call a0 delivered",
+            "owner": "The-Interdependency/a0",
+            "dependency": "durable state externalization and operational runbook"
+          }
+        ],
+        "blocked": [
+          "the promised a0 delivery is not complete while durable agent-region persistence/API integration and release evidence remain unfinished",
+          "public release of the full system-primary memory contract is blocked until executable privacy boundaries and matching tests exist",
+          "an intended/canonical PTCNA runtime-state region is BLOCKED until UCNS completes the prerequisite neural audit and PTCNA publishes a separately identified architecture derived from that evidence",
+          "a0 may preserve the existing PTCNA scaffold region but is blocked from using its topology, whole-string hash input, or sealed evaluation as authority for the future PTCNA region",
+          "final deployment claims are blocked on resolved hosting, worker-leadership, durable-state, migration, and operational evidence",
+          "Google Cloud deployment is BLOCKED until an authorized operator sets repository variable GCP_DEPLOY_ENABLED=true and repository secrets GCP_PROJECT_ID and GCP_SA_KEY"
+        ],
+        "cross_repository_relations": [
+          {
+            "repository": "The-Interdependency/zfae",
+            "relation": "producer authority for the inference/self-awareness event bound within the PlatonicAgent inference region",
+            "authority_transfer": false
+          },
+          {
+            "repository": "The-Interdependency/ptcna",
+            "relation": "current producer of a historical pre-audit scaffold state that a0 can preserve exactly; a future intended PTCNA region requires a new audit-derived producer identity and cannot inherit scaffold authority by default",
+            "authority_transfer": false
+          },
+          {
+            "repository": "The-Interdependency/ucns",
+            "relation": "mathematical representation authority and upstream owner of the conventional-neural-network audit prerequisite whose evidence must precede construction of intended PTCNA",
+            "authority_transfer": false
+          },
+          {
+            "repository": "The-Interdependency/pcea",
+            "relation": "Guardian privacy primitive producer consumed by the PlatonicAgent privacy-projection region",
+            "authority_transfer": false
+          },
+          {
+            "repository": "The-Interdependency/edcm",
+            "relation": "separate measurement authority consumed by a0 runtime surfaces without transfer of measurement validity",
+            "authority_transfer": false,
+            "measurement_status_transfer": false
+          },
+          {
+            "repository": "The-Interdependency/metapat",
+            "relation": "semantic and boundary consultation source constraining how relations are distinguished without owning a0 agent architecture",
+            "authority_transfer": false
+          },
+          {
+            "repository": "The-Interdependency/skill-lib",
+            "relation": "build, domain-claim, module, evidence, and cross-repository workflow doctrine",
+            "authority_transfer": false
+          }
+        ],
+        "machine_entrypoints": {
+          "repo_report": "docs/work-graphs/repository-plan-report.json",
+          "system_overview": "README.md",
+          "platonic_agent": "docs/platonic-agent.md",
+          "platonic_agent_core": "python/agents/platonic.py",
+          "platonic_agent_regions": "python/agents/platonic_regions.py",
+          "platonic_agent_work_graph": "docs/work-graphs/platonic-agent.json",
+          "backend_foundation": "docs/replit-backend-foundation.md",
+          "backend_work_graph": "docs/work-graphs/replit-backend-foundation.json",
+          "legacy_frozen_spec": "spec.md",
+          "runtime_root": "python/",
+          "frontend_root": "client/"
+        },
+        "hmmm": [
+          "exhaustive PlatonicAgent dimension set and semantic-region map",
+          "which region memberships are universal to agency versus contingent on a0",
+          "whether and how individual dimensions or semantic regions should receive UCNS representation",
+          "exact durable serialization/realization contract from PlatonicAgent regions into backend records",
+          "identity continuity, fork, merge, and termination criteria under transformation",
+          "the exact future a0 adapter contract for an audit-derived PTCNA whose architecture is not yet known",
+          "the preservation/retirement boundary for historical PTCNA scaffold state after a future intended PTCNA exists",
+          "complete executable Guardian/PCEA projection policy around global system-primary memory read authority",
+          "final EULA and interface language after actual privacy controls are implemented",
+          "production retention, redaction, deletion, consent-expiry, worker-leadership, storage, and hosting defaults",
+          "authorized Google Cloud project and service-account credentials; no repository configuration currently supplies GCP_DEPLOY_ENABLED, GCP_PROJECT_ID, or GCP_SA_KEY"
+        ]
+      },
+      "reportBlob": "c75ffbdf5e1347cd98223f54f00b079b927a5d88",
+      "portfolio": {
+        "authority": {
+          "does_not_own": [
+            "ZFAE conceptual ontology or inference-event semantics beyond a0's runtime binding",
+            "PTCNA architecture, UCNS neural-audit evidence, or future audit-derived tensor-state semantics",
+            "PCEA cryptographic/privacy primitive semantics",
+            "UCNS mathematical representation or proof status",
+            "EDCM empirical measurement validity",
+            "METAPAT semantic canon",
+            "skill-lib organization-wide build and cross-repository workflow doctrine"
+          ],
+          "non_transfer": [
+            "subsuming a producer-backed semantic region into PlatonicAgent does not transfer producer authority into a0",
+            "a provider model is an energy provider relation and does not become the agent identity",
+            "historical PTCNA scaffold state and semantic memory remain distinct regions and distinct merge-authority channels",
+            "the existing PTCNA scaffold region is not the intended PTCNA merely because a0 can persist and restore it",
+            "the sealed PTCNA scaffold falsification does not establish failure or success of a future audit-derived PTCNA",
+            "run artifacts are not semantic memory merely because they are produced by an agent run",
+            "global system-primary read authority does not imply disclosure authority",
+            "runtime integration does not transfer theorem, semantic, measurement, certification, or empirical status from producer repositories",
+            "published EULA language is not a substitute for executable privacy enforcement and tests"
+          ],
+          "owns": [
+            "a0 application runtime and promised agent-system delivery behavior",
+            "the Platonic Agent as a0's open maximal whole-agent object and the a0-owned mapping of existing agent semantics into distinct semantic regions",
+            "durable agent definitions, runtime-instance identities, run lineage, semantic-memory persistence, and owner-scoped service contracts as realizations within the Platonic Agent",
+            "a0-side bindings to ZFAE inference, historical PTCNA scaffold state, PCEA/Guardian privacy projection, provider routing, tool execution, and lifecycle behavior",
+            "resource-to-need matching workflow and consent-mediated disclosure behavior implemented by the platform"
+          ]
+        },
+        "delivered": [
+          {
+            "boundary": "the current dimension and region sets are open and not claimed exhaustive or empirically validated",
+            "status": "implemented provisional architecture surface with executable dimensions, semantic regions, projections, and focused witnesses",
+            "surface": "Platonic Agent whole-agent object and subsumption map"
+          },
+          {
+            "boundary": "a0 preserves this historical research state exactly; it must not be represented as the intended PTCNA, whose construction is blocked on UCNS neural-audit evidence",
+            "status": "producer-backed target/fallback scaffold state, UCNS candidate receipt, Platonic projection, checkpoint/restart, and tamper rejection implemented",
+            "surface": "historical PTCNA scaffold runtime-state realization"
+          },
+          {
+            "boundary": "ZFAE is bound within the inference region; it is not the whole agent and its conceptual authority remains in the ZFAE repository",
+            "status": "implemented research-instrument surface",
+            "surface": "persistent ZFAE primary-agent runtime"
+          },
+          {
+            "boundary": "an implemented runtime surface is not equivalent to completed a0 delivery",
+            "status": "Express public boundary, Python/FastAPI orchestration, and React/Vite console are implemented",
+            "surface": "three-process web runtime"
+          },
+          {
+            "boundary": "the present region membership may refine; distinct identities, state channels, and authority boundaries may not be silently collapsed",
+            "status": "AgentDefinition, AgentInstance, AgentRun, semantic memory, runtime state, artifacts, provider, privacy, and spawn/merge semantics are settled enough to be mapped as distinct PlatonicAgent regions",
+            "surface": "durable agent foundation semantics"
+          },
+          {
+            "boundary": "live schema-authority cutover and final durable backend migration remain separate work",
+            "status": "versioned Alembic baseline and preservation evidence exist in repository history",
+            "surface": "reviewed migration foundation"
+          },
+          {
+            "boundary": "knowledge does not imply disclosure authority; public/full release requires executable enforcement and matching user-facing disclosure",
+            "status": "backend semantics specified",
+            "surface": "system-primary memory authority and mediated matching contract"
+          }
+        ],
+        "machine_entrypoints": {
+          "backend_foundation": "docs/replit-backend-foundation.md",
+          "backend_work_graph": "docs/work-graphs/replit-backend-foundation.json",
+          "frontend_root": "client/",
+          "legacy_frozen_spec": "spec.md",
+          "platonic_agent": "docs/platonic-agent.md",
+          "platonic_agent_core": "python/agents/platonic.py",
+          "platonic_agent_regions": "python/agents/platonic_regions.py",
+          "platonic_agent_work_graph": "docs/work-graphs/platonic-agent.json",
+          "repo_report": "docs/work-graphs/repository-plan-report.json",
+          "runtime_root": "python/",
+          "system_overview": "README.md"
+        },
+        "portfolio_role": {
+          "downstream_contract": "a0 exposes operational agent definitions, instances, runs, scoped memory projections, tools, audited actions, interfaces, APIs, and deployment behavior as bounded realizations of PlatonicAgent regions.",
+          "reports_to": {
+            "relation": "repo-owned whole-agent, runtime, memory, privacy, delivery, and deployment-plan input; no authority transfer",
+            "repository": "The-Interdependency/skill-lib",
+            "skill": "interdependent-work-graph"
+          },
+          "summary": "Deliver the a0 agent system by realizing bounded operational agents from an open Platonic Agent object while composing persistent identity, inference, runtime state, memory, tools, privacy, provenance, provider relations, lifecycle, and resource-to-need behavior without collapsing their distinctions or absorbing producer authority.",
+          "upstream_contract": "a0 consumes exact upstream producer identities through bounded region bindings/adapters and keeps their authority separate from a0-owned whole-agent semantics. Intended PTCNA remains unavailable until its UCNS neural-audit prerequisite is satisfied upstream."
+        },
+        "repository": "The-Interdependency/a0",
+        "status": {
+          "current_claim": "PlatonicAgent subsumes the presently legible a0 agent semantics as distinct executable regions. a0 can persist and restore the exact historical PTCNA scaffold state and routing receipts, but that region is now explicitly historical: the intended PTCNA has not been built and is BLOCKED until UCNS audits a functioning conventional neural network and PTCNA derives a new candidate from that evidence. The sealed scaffold role-acquisition result remains FALSIFIED for both usefulness and superiority on its exact tested scope. Other durable a0 regions remain incomplete.",
+          "deployed_identity": "a0p is an existing research-instrument runtime surface; it is not evidence that the promised a0 delivery is complete",
+          "latest_main_milestone": {
+            "commit": "fa889c6d2e3bd3fe32b78e3cb1daed81d26198f1",
+            "description": "refreshed the repo-owned portfolio report to current main before the PTCNA prerequisite correction"
+          },
+          "state": "active implementation; promised a0 delivery remains incomplete"
+        }
+      },
+      "telemetry": {
+        "branch": "main",
+        "head": "55ca5f87dd7ba264d1534eacdbe92c2fcb1b230f",
+        "headDate": "2026-08-24T06:26:35Z",
+        "pushedAt": "2026-08-24T06:26:37Z",
+        "updatedAt": "2026-08-24T12:33:36Z",
+        "openPullRequests": 0,
+        "latestWorkflow": {
+          "name": "Clean Build Check",
+          "status": "completed",
+          "conclusion": "success",
+          "event": "push",
+          "headSha": "55ca5f87dd7ba264d1534eacdbe92c2fcb1b230f",
+          "updatedAt": "2026-08-24T06:27:16Z",
+          "url": "https://github.com/The-Interdependency/a0/actions/runs/32697351385"
+        }
+      },
+      "reportFreshness": "HEAD differs"
+    },
+    {
+      "repository": "The-Interdependency/The-Interdependency.github.io",
+      "name": "The-Interdependency.github.io",
+      "label": "Website",
+      "slug": "website",
+      "localReport": true,
+      "report": {
+        "schema": "the-interdependency.repository-plan-report",
+        "version": "1.0.0",
+        "repository": "The-Interdependency/The-Interdependency.github.io",
+        "contract": {
+          "repository": "The-Interdependency/skill-lib",
+          "path": "interdependent-work-graph/repository-plan-report.schema.json",
+          "version": "1.0.0",
+          "blob_sha": "9b347b2dff7692054b571602f30ee6d00c2e7265"
+        },
+        "source": {
+          "branch": "main",
+          "commit": "66b16842774731514c9fd15757e8af36270fccd1",
+          "generated_at": "2026-08-14",
+          "note": "This report describes the deployed SITREP merge commit and its successful Pages release evidence. The report-refresh commit is coordination metadata and does not acquire semantic, mathematical, measurement, runtime, empirical, or publication authority from the repositories the website presents."
+        },
+        "authority": {
+          "owns": [
+            "public website presentation, navigation, static build behavior, and publication surfaces for interdependentway.org",
+            "website-local data fetching, caching, fallback behavior, accessibility, and presentation contracts",
+            "public rendering of repository-owned reports and GitHub telemetry without altering their source authority",
+            "the website-specific SITREP presentation view and its machine-readable public copy"
+          ],
+          "does_not_own": [
+            "METAPAT semantic canon or ontology validity",
+            "UCNS mathematical representation, geometry, or proof status",
+            "EDCM measurement validity, empirical results, or experiment authority",
+            "a0 runtime, agent identity, memory, privacy, or deployment authority",
+            "skill-lib reusable skill doctrine, repository-plan-report contract, or portfolio projection semantics"
+          ],
+          "non_transfer": [
+            "publication on this website does not transfer producer-repository authority to the website",
+            "GitHub workflow success does not establish semantic, mathematical, measurement, empirical, or runtime validity",
+            "the SITREP presentation view does not become a second source of repository canon",
+            "a missing or HEAD-different repository report remains visibly incomplete or different rather than being reconstructed from telemetry or memory",
+            "skill-lib validation and deterministic projection constrain coordination representation but do not decide substantive project truth"
+          ]
+        },
+        "portfolio_role": {
+          "summary": "Provide the public presentation and observability surface for repo-owned situation reports: consume the exact skill-lib work-graph contract and projection, overlay separately observed GitHub activity, and make current relations, blockers, next actions, and unresolved boundaries legible without centralizing repository canon.",
+          "upstream_contract": "Participating repositories own the claims in their repository-plan-report.json files; skill-lib owns the frozen report contract and deterministic projection instrument.",
+          "downstream_contract": "The website exposes human-readable infograms and a machine-readable generated SITREP view while preserving source identities, fallback state, and authority-transfer boundaries.",
+          "reports_to": {
+            "repository": "The-Interdependency/skill-lib",
+            "skill": "interdependent-work-graph",
+            "relation": "repo-owned publication and observability status input; no authority transfer"
+          }
+        },
+        "status": {
+          "state": "deployed static public knowledge system with skill-lib-governed dynamic repository SITREP",
+          "current_claim": "The deployed website presents METAPAT, UCNS, EDCM, a0, and itself through repo-owned repository-plan reports projected by the exact pinned skill-lib interdependent-work-graph instrument, with GitHub telemetry kept separate from declared situation, missing reports left visible, and public failure output classified rather than leaking raw command details.",
+          "latest_main_milestone": {
+            "commit": "66b16842774731514c9fd15757e8af36270fccd1",
+            "description": "merged and deployed the skill-lib-governed dynamic repository SITREP with five project views, machine-readable public projection, hourly refresh, and explicit declared-versus-observed boundaries"
+          },
+          "deployment_evidence": {
+            "workflow_run": 31865480540,
+            "merge_commit": "66b16842774731514c9fd15757e8af36270fccd1",
+            "build": "success",
+            "browser_accessibility": "success",
+            "pages_deploy": "success",
+            "pages_identity": "verified",
+            "custom_domain_identity": "verified"
+          }
+        },
+        "delivered": [
+          {
+            "surface": "static-first public knowledge system",
+            "status": "implemented and deployed",
+            "boundary": "publication and rendering do not establish the validity of producer-repository claims"
+          },
+          {
+            "surface": "generated organization project map",
+            "status": "implemented build-time GitHub observation and reviewed project-manifest presentation",
+            "boundary": "project discovery and GitHub metadata do not constitute portfolio membership or repository-plan status"
+          },
+          {
+            "surface": "skill-lib-governed repository SITREP collector",
+            "status": "deployed and release-gated",
+            "boundary": "collector executes a commit- and blob-pinned skill-lib portfolio_plan.py rather than reimplementing its projection semantics"
+          },
+          {
+            "surface": "repository SITREP infogram page",
+            "status": "deployed at /sitrep/ with declared-versus-observed separation and explicit fallback",
+            "boundary": "presentation does not reconcile report/HEAD differences or upgrade source claims"
+          },
+          {
+            "surface": "machine-readable public SITREP view",
+            "status": "deployed at /assets/data/sitrep.json and regenerated by the site build",
+            "boundary": "generated JSON is a presentation projection and not a replacement for repo-owned reports"
+          },
+          {
+            "surface": "scheduled SITREP refresh",
+            "status": "hourly Pages rebuild plus existing repository_dispatch entrypoint",
+            "boundary": "producer-side dispatch coverage is not yet installed across all participating repositories"
+          }
+        ],
+        "active_frontier": [
+          "decide whether producer repositories should emit repository_dispatch events for near-immediate refresh in addition to the hourly bounded refresh",
+          "decide whether long-term SITREP history should persist as an auditable snapshot series rather than only current build output",
+          "decide which additional repositories, if any, intentionally join the public SITREP portfolio after the initial five-surface scope",
+          "retain explicit distinction between a report source commit differing from HEAD and a demonstrated substantive report-staleness claim",
+          "keep the skill-lib control-plane pin deliberate so future contract or projection upgrades are reviewed rather than silently inherited"
+        ],
+        "next_actions": [
+          {
+            "action": "add producer-side org-repo-updated dispatch only where repository permissions and failure behavior can be kept explicit",
+            "owner": "participating repositories",
+            "dependency": "deliberate per-repository permission and trigger decision; hourly refresh already provides bounded eventual update"
+          },
+          {
+            "action": "define a durable historical snapshot contract before presenting SITREP changes as a public timeline",
+            "owner": "The-Interdependency/The-Interdependency.github.io + The-Interdependency/skill-lib",
+            "dependency": "must preserve repo-owned source identity and avoid turning presentation snapshots into canonical project history"
+          },
+          {
+            "action": "add future public portfolio members only by explicit membership decision and valid repo-owned report",
+            "owner": "The-Interdependency/The-Interdependency.github.io + The-Interdependency/skill-lib",
+            "dependency": "maintainer-selected public portfolio scope"
+          }
+        ],
+        "blocked": [],
+        "cross_repository_relations": [
+          {
+            "repository": "The-Interdependency/skill-lib",
+            "relation": "report-contract and deterministic work-graph projection authority consumed by the website",
+            "authority_transfer": false
+          },
+          {
+            "repository": "The-Interdependency/metapat",
+            "relation": "repo-owned semantic situation report presented without semantic authority transfer",
+            "authority_transfer": false
+          },
+          {
+            "repository": "The-Interdependency/ucns",
+            "relation": "repo-owned mathematical and representation situation report presented without proof-status transfer",
+            "authority_transfer": false,
+            "proof_status_transfer": false
+          },
+          {
+            "repository": "The-Interdependency/edcm",
+            "relation": "repo-owned measurement situation report presented without measurement-status transfer",
+            "authority_transfer": false,
+            "measurement_status_transfer": false
+          },
+          {
+            "repository": "The-Interdependency/a0",
+            "relation": "repo-owned runtime situation report presented without runtime or deployment authority transfer",
+            "authority_transfer": false
+          }
+        ],
+        "machine_entrypoints": {
+          "repo_report": "docs/work-graphs/repository-plan-report.json",
+          "sitrep_collector": "scripts/fetch-sitrep.mjs",
+          "sitrep_page": "src/sitrep/index.njk",
+          "sitrep_styles": "src/assets/css/sitrep.css",
+          "public_sitrep_data": "assets/data/sitrep.json",
+          "project_manifest": ".interdependency/project.yml",
+          "site_configuration": ".eleventy.js",
+          "release_workflow": ".github/workflows/pages.yml"
+        },
+        "hmmm": [
+          "producer-side repository_dispatch coverage for near-immediate SITREP rebuilds",
+          "whether the public portfolio remains exactly METAPAT, UCNS, EDCM, a0, and website or later admits additional intentional members",
+          "long-term historical SITREP snapshot retention and public timeline policy",
+          "cryptographic producer authentication beyond GitHub transport and content identities",
+          "whether a future report-freshness vocabulary should distinguish substantive repository changes from report-only coordination commits"
+        ]
+      },
+      "reportBlob": null,
+      "portfolio": {
+        "authority": {
+          "does_not_own": [
+            "METAPAT semantic canon or ontology validity",
+            "UCNS mathematical representation, geometry, or proof status",
+            "EDCM measurement validity, empirical results, or experiment authority",
+            "a0 runtime, agent identity, memory, privacy, or deployment authority",
+            "skill-lib reusable skill doctrine, repository-plan-report contract, or portfolio projection semantics"
+          ],
+          "non_transfer": [
+            "publication on this website does not transfer producer-repository authority to the website",
+            "GitHub workflow success does not establish semantic, mathematical, measurement, empirical, or runtime validity",
+            "the SITREP presentation view does not become a second source of repository canon",
+            "a missing or HEAD-different repository report remains visibly incomplete or different rather than being reconstructed from telemetry or memory",
+            "skill-lib validation and deterministic projection constrain coordination representation but do not decide substantive project truth"
+          ],
+          "owns": [
+            "public website presentation, navigation, static build behavior, and publication surfaces for interdependentway.org",
+            "website-local data fetching, caching, fallback behavior, accessibility, and presentation contracts",
+            "public rendering of repository-owned reports and GitHub telemetry without altering their source authority",
+            "the website-specific SITREP presentation view and its machine-readable public copy"
+          ]
+        },
+        "delivered": [
+          {
+            "boundary": "publication and rendering do not establish the validity of producer-repository claims",
+            "status": "implemented and deployed",
+            "surface": "static-first public knowledge system"
+          },
+          {
+            "boundary": "project discovery and GitHub metadata do not constitute portfolio membership or repository-plan status",
+            "status": "implemented build-time GitHub observation and reviewed project-manifest presentation",
+            "surface": "generated organization project map"
+          },
+          {
+            "boundary": "collector executes a commit- and blob-pinned skill-lib portfolio_plan.py rather than reimplementing its projection semantics",
+            "status": "deployed and release-gated",
+            "surface": "skill-lib-governed repository SITREP collector"
+          },
+          {
+            "boundary": "presentation does not reconcile report/HEAD differences or upgrade source claims",
+            "status": "deployed at /sitrep/ with declared-versus-observed separation and explicit fallback",
+            "surface": "repository SITREP infogram page"
+          },
+          {
+            "boundary": "generated JSON is a presentation projection and not a replacement for repo-owned reports",
+            "status": "deployed at /assets/data/sitrep.json and regenerated by the site build",
+            "surface": "machine-readable public SITREP view"
+          },
+          {
+            "boundary": "producer-side dispatch coverage is not yet installed across all participating repositories",
+            "status": "hourly Pages rebuild plus existing repository_dispatch entrypoint",
+            "surface": "scheduled SITREP refresh"
+          }
+        ],
+        "machine_entrypoints": {
+          "project_manifest": ".interdependency/project.yml",
+          "public_sitrep_data": "assets/data/sitrep.json",
+          "release_workflow": ".github/workflows/pages.yml",
+          "repo_report": "docs/work-graphs/repository-plan-report.json",
+          "site_configuration": ".eleventy.js",
+          "sitrep_collector": "scripts/fetch-sitrep.mjs",
+          "sitrep_page": "src/sitrep/index.njk",
+          "sitrep_styles": "src/assets/css/sitrep.css"
+        },
+        "portfolio_role": {
+          "downstream_contract": "The website exposes human-readable infograms and a machine-readable generated SITREP view while preserving source identities, fallback state, and authority-transfer boundaries.",
+          "reports_to": {
+            "relation": "repo-owned publication and observability status input; no authority transfer",
+            "repository": "The-Interdependency/skill-lib",
+            "skill": "interdependent-work-graph"
+          },
+          "summary": "Provide the public presentation and observability surface for repo-owned situation reports: consume the exact skill-lib work-graph contract and projection, overlay separately observed GitHub activity, and make current relations, blockers, next actions, and unresolved boundaries legible without centralizing repository canon.",
+          "upstream_contract": "Participating repositories own the claims in their repository-plan-report.json files; skill-lib owns the frozen report contract and deterministic projection instrument."
+        },
+        "repository": "The-Interdependency/The-Interdependency.github.io",
+        "status": {
+          "current_claim": "The deployed website presents METAPAT, UCNS, EDCM, a0, and itself through repo-owned repository-plan reports projected by the exact pinned skill-lib interdependent-work-graph instrument, with GitHub telemetry kept separate from declared situation, missing reports left visible, and public failure output classified rather than leaking raw command details.",
+          "deployment_evidence": {
+            "browser_accessibility": "success",
+            "build": "success",
+            "custom_domain_identity": "verified",
+            "merge_commit": "66b16842774731514c9fd15757e8af36270fccd1",
+            "pages_deploy": "success",
+            "pages_identity": "verified",
+            "workflow_run": 31865480540
+          },
+          "latest_main_milestone": {
+            "commit": "66b16842774731514c9fd15757e8af36270fccd1",
+            "description": "merged and deployed the skill-lib-governed dynamic repository SITREP with five project views, machine-readable public projection, hourly refresh, and explicit declared-versus-observed boundaries"
+          },
+          "state": "deployed static public knowledge system with skill-lib-governed dynamic repository SITREP"
+        }
+      },
+      "telemetry": {
+        "branch": "main",
+        "head": "ca4c698d5c8819cd84c89927439b3ebe892987e2",
+        "headDate": "2026-08-20T08:20:36Z",
+        "pushedAt": "2026-08-20T08:20:36Z",
+        "updatedAt": "2026-08-20T08:21:38Z",
+        "openPullRequests": 0,
+        "latestWorkflow": {
+          "name": "Pages",
+          "status": "completed",
+          "conclusion": "failure",
+          "event": "schedule",
+          "headSha": "ca4c698d5c8819cd84c89927439b3ebe892987e2",
+          "updatedAt": "2026-08-25T01:57:18Z",
+          "url": "https://github.com/The-Interdependency/The-Interdependency.github.io/actions/runs/32799461649"
+        }
+      },
+      "reportFreshness": "HEAD differs"
+    }
+  ]
+}

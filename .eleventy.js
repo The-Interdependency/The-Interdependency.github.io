@@ -42,9 +42,13 @@ function renderInterdefinables(content) {
   const lines = String(content || '').split(/\r?\n/).slice(1);
   const pairs = [];
   const body = [];
+  let inStructure = false;
 
   for (const sourceLine of lines) {
-    if (/^\s*---\s*$/.test(sourceLine)) break;
+    if (/^\s*---\s*$/.test(sourceLine)) {
+      inStructure = true;
+      continue;
+    }
     const cleaned = sourceLine
       .trim()
       .replace(/^#{1,6}\s+/, '')
@@ -54,7 +58,8 @@ function renderInterdefinables(content) {
 
     const pair = /^(One who is\s+.+?)\s*(?::\s*|\s+)(One who is not)\.?$/i.exec(cleaned);
     if (pair) {
-      pairs.push([pair[1].replace(/[.:;]\s*$/, ''), pair[2]]);
+      if (inStructure) body.push(cleaned);
+      else pairs.push([pair[1].replace(/[.:;]\s*$/, ''), pair[2]]);
       continue;
     }
     body.push(cleaned);

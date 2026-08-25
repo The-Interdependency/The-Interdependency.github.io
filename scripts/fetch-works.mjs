@@ -99,6 +99,12 @@ export const IFRAME_EMBED_HOSTS = new Set([
 const IMAGE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg', '.avif'];
 const AUDIO_EXTENSIONS = ['.mp3', '.ogg', '.wav', '.m4a', '.flac', '.opus'];
 
+function publicErrorMessage(error) {
+  return String(error?.message || error)
+    .replace(/Authorization:\s*Bearer\s+\S+/gi, 'Authorization: Bearer [redacted]')
+    .replace(/Authorization,\s*Bearer\s+\S+/gi, 'Authorization, Bearer [redacted]');
+}
+
 // Derive how a display source is shown. The site never fetches or stores the
 // bytes — these are pointers the visitor's browser loads from the creator's
 // own hosting at view time (display, not host).
@@ -256,7 +262,7 @@ async function main() {
       await writeFile(snapshotPath, JSON.stringify(dataset, null, 2));
     } catch (error) {
       const previous = await readSnapshot();
-      const message = String(error?.message || error);
+      const message = publicErrorMessage(error);
       dataset = previous
         ? { ...previous, fallback: true, retrievalError: message }
         : { schema: 'interdependency.related-works/1.0.0', generatedAt: null, fallback: true, retrievalError: message, works: [], excluded: [] };

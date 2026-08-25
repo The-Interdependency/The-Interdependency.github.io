@@ -1,6 +1,6 @@
 import { execFileSync } from 'node:child_process';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
-import yaml from 'js-yaml';
+import { load as loadYaml } from 'js-yaml';
 
 // === MODULE_BUILD ===
 // id: organization_project_map
@@ -83,7 +83,7 @@ function getManifest(repoName, headSha) {
   try {
     if (!headSha) return null;
     const safeRepo = normalizeRepoName(repoName);
-    return yaml.load(getText(rawGithubUrl(safeRepo, headSha, '.interdependency/project.yml'))) || null;
+    return loadYaml(getText(rawGithubUrl(safeRepo, headSha, '.interdependency/project.yml'))) || null;
   } catch {
     return null;
   }
@@ -103,7 +103,7 @@ function categoryFor(repo, editorial) {
 let fallback = false;
 let rawRepos = [];
 let overrides = {};
-try { overrides = yaml.load(await readFile('src/_data/project-overrides.yml', 'utf8')) || {}; } catch {}
+try { overrides = loadYaml(await readFile('src/_data/project-overrides.yml', 'utf8')) || {}; } catch {}
 try {
   if (process.env.OFFLINE === '1') throw new Error('offline requested');
   for (let page = 1; ; page += 1) {

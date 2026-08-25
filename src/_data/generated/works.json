@@ -1,8 +1,8 @@
 {
   "schema": "interdependency.related-works/1.0.0",
-  "generatedAt": "2026-07-29T12:03:40.212Z",
-  "fallback": true,
-  "retrievalError": "offline requested; retained last-known-good works registry",
+  "generatedAt": "2026-08-25T02:33:35.914Z",
+  "fallback": false,
+  "retrievalError": null,
   "works": [],
   "excluded": []
 }

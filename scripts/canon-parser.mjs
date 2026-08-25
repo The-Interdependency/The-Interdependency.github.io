@@ -103,7 +103,27 @@ function parseDefinitionLine(line) {
 }
 
 export function extractNotes(content) {
-  return content.split(/\r?\n/).flatMap(parseDefinitionLine);
+  const notes = [];
+  let inBulletNotes = false;
+  let bulletIndex = 0;
+  for (const line of content.split(/\r?\n/)) {
+    if (/^\s*\*\*\[Notes\b[^\]]*\]\*\*\s*$/.test(line)) {
+      inBulletNotes = true;
+      bulletIndex = 0;
+      continue;
+    }
+    if (inBulletNotes) {
+      const bullet = /^\s*-\s+(.+?)\s*$/.exec(line);
+      if (bullet) {
+        bulletIndex += 1;
+        notes.push({ marker: `[${bulletIndex}]`, text: bullet[1].trim() });
+        continue;
+      }
+      if (line.trim() && !/^\s*---\s*$/.test(line)) inBulletNotes = false;
+    }
+    notes.push(...parseDefinitionLine(line));
+  }
+  return notes;
 }
 
 function extractNoteMarkers(content) {

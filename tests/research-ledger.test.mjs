@@ -3,7 +3,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import yaml from 'js-yaml';
+import { load as loadYaml } from 'js-yaml';
 import loadResearchData from '../src/_data/research_data.js';
 
 const manifestPath = 'src/_data/research/ledger-manifest.json';
@@ -30,7 +30,7 @@ async function readYamlLedgers(paths, kind) {
   for (const path of paths) {
     assert.equal(typeof path, 'string');
     assert.match(path, ledgerPathPattern, `${kind} ledger path must remain beneath src/_data/research`);
-    const parsed = yaml.load(await readFile(path, 'utf8'));
+    const parsed = loadYaml(await readFile(path, 'utf8'));
     assert.ok(Array.isArray(parsed) && parsed.length > 0, `${path} must contain a non-empty YAML list`);
     ledgers.push(parsed);
   }

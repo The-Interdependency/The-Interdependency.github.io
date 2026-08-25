@@ -20,6 +20,8 @@ _site/
 
 # Build-time generated data
 /src/_data/generated/canon.json
+/src/_data/generated/orgMsdmd.json
+/src/_data/generated/sitrep.json
 /src/_data/generated/textbook.json
 
 # Python

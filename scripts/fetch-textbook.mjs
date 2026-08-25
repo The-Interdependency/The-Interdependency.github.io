@@ -45,6 +45,12 @@ const generatedPath = 'src/_data/generated/textbook.json';
 const githubHeaders = ['-H', 'Accept: application/vnd.github+json', '-H', 'X-GitHub-Api-Version: 2022-11-28'];
 if (process.env.GITHUB_TOKEN) githubHeaders.push('-H', `Authorization: Bearer ${process.env.GITHUB_TOKEN}`);
 
+function publicErrorMessage(error) {
+  return String(error?.message || error)
+    .replace(/Authorization:\s*Bearer\s+\S+/gi, 'Authorization: Bearer [redacted]')
+    .replace(/Authorization,\s*Bearer\s+\S+/gi, 'Authorization, Bearer [redacted]');
+}
+
 function curlText(target, extraHeaders = []) {
   const url = target instanceof URL ? target : new URL(target);
   if (url.protocol !== 'https:' || !allowedOrigins.has(url.origin)) throw new Error(`refusing non-allowlisted textbook target: ${url.origin}`);
@@ -153,7 +159,7 @@ for (const source of manifest) {
     chapters.push(fetchOne(source));
   } catch (error) {
     const retained = previousByNumber.get(source.number);
-    const message = String(error?.message || error);
+    const message = publicErrorMessage(error);
     chapters.push(retained ? { ...retained, ...source, fallback: true, retrievalError: message } : metadataOnly(source, message));
   }
 }

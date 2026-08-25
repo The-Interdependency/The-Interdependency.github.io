@@ -62,6 +62,20 @@ test('multiple superscript note definitions on one physical line remain distinct
   ]);
 });
 
+test('explicit Notes blocks preserve unnumbered bullet notes', () => {
+  assert.deepEqual(extractNotes(`Body.
+
+**[Notes on Article One]**
+
+- first note
+- second note
+
+---`), [
+    { marker: '[1]', text: 'first note' },
+    { marker: '[2]', text: 'second note' }
+  ]);
+});
+
 test('the checked-in recovery mirror yields correctly parented rights articles', async () => {
   const mirror = await readFile('canon/the_interdependent_way.md', 'utf8');
   const data = parseCanon(mirror, { repository: 'recovery', fallback: true });

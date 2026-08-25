@@ -1,5 +1,5 @@
 import { readFile } from 'node:fs/promises';
-import yaml from 'js-yaml';
+import { load as loadYaml } from 'js-yaml';
 
 // === MODULE_BUILD ===
 // id: article_lab_research_data_adapter
@@ -50,7 +50,7 @@ function validateLedgerPaths(paths, kind) {
 }
 
 async function readYamlList(path) {
-  const parsed = yaml.load(await readFile(path, 'utf8'));
+  const parsed = loadYaml(await readFile(path, 'utf8'));
   if (!Array.isArray(parsed)) throw new TypeError(`${path} must contain a YAML list`);
   return parsed;
 }

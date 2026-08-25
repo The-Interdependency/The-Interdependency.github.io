@@ -205,10 +205,6 @@ function gitBlob(path) {
   }
 }
 
-function exactBlock(content) {
-  return content.endsWith('\n') ? content : `${content}\n`;
-}
-
 export function canonTextFromSnapshot(snapshot) {
   const text = snapshot.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '');
   if (!text.trim()) throw new Error('aicontext canonical snapshot is empty');
@@ -408,7 +404,7 @@ export function renderAiContext({ canon, canonText, textbook, biography, biograp
   output += '<SOURCE PROVENANCE format="application/json">\n```json\n';
   output += `${JSON.stringify(publication.sources[0], null, 2)}\n`;
   output += '```\n</SOURCE PROVENANCE>\n<CANON COPY>\n';
-  output += exactBlock(canonText);
+  output += canonText;
   output += '</CANON COPY>\n</THE INTERDEPENDENT WAY>\n\n';
 
   output += '<OPERATING MANUAL FOR THE INTERDEPENDENT WAY>\n';
@@ -420,7 +416,7 @@ export function renderAiContext({ canon, canonText, textbook, biography, biograp
     output += '<SOURCE PROVENANCE format="application/json">\n```json\n';
     output += `${JSON.stringify(source, null, 2)}\n`;
     output += '```\n</SOURCE PROVENANCE>\n<EXACT CHAPTER COPY>\n';
-    output += exactBlock(chapter.content);
+    output += chapter.content;
     output += '</EXACT CHAPTER COPY>\n</TEXTBOOK CHAPTER>\n\n';
   }
   output += '</TIW TEXTBOOK>\n</OPERATING MANUAL FOR THE INTERDEPENDENT WAY>\n\n';

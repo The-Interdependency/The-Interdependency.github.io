@@ -28,6 +28,12 @@ const allowedOrigins = new Set([githubApiOrigin, rawOrigin]);
 const githubHeaders = ['-H', 'Accept: application/vnd.github+json', '-H', 'X-GitHub-Api-Version: 2022-11-28'];
 if (process.env.GITHUB_TOKEN) githubHeaders.push('-H', `Authorization: Bearer ${process.env.GITHUB_TOKEN}`);
 
+function publicErrorMessage(error) {
+  return String(error?.message || error)
+    .replace(/Authorization:\s*Bearer\s+\S+/gi, 'Authorization: Bearer [redacted]')
+    .replace(/Authorization,\s*Bearer\s+\S+/gi, 'Authorization, Bearer [redacted]');
+}
+
 function curlText(target, extraHeaders = []) {
   const url = target instanceof URL ? target : new URL(target);
   if (url.protocol !== 'https:' || !allowedOrigins.has(url.origin)) {
@@ -76,7 +82,7 @@ try {
   text = remote.text;
 } catch (error) {
   fallback = true;
-  retrievalError = String(error?.message || error);
+  retrievalError = publicErrorMessage(error);
   text = await readFile(localMirror, 'utf8');
 }
 if (!text.trim()) throw new Error('canonical text is empty');
