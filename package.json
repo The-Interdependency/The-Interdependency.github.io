@@ -27,15 +27,15 @@
     "test:e2e": "playwright test tests/site.spec.mjs",
     "test:a11y": "playwright test tests/accessibility.spec.mjs",
     "test:links": "node tests/links.test.mjs",
-    "test:performance": "node scripts/performance-placeholder.mjs",
-    "check": "npm run audit:workflows && npm run check:llms && npm run check:edcm-reference && npm run check:gonol-relationships && npm run build && npm test && npm run test:generated",
+    "test:performance": "node scripts/performance-budgets.mjs",
+    "check": "npm run audit:workflows && npm run check:llms && npm run check:edcm-reference && npm run check:gonol-relationships && npm run build && npm test && npm run test:generated && npm run test:performance",
     "refresh:works": "node scripts/fetch-works.mjs"
   },
   "dependencies": {
     "@11ty/eleventy": "3.1.6",
     "@pagefind/default-ui": "1.5.2",
     "gray-matter": "4.0.3",
-    "js-yaml": "5.3.0",
+    "js-yaml": "5.4.1",
     "markdown-it": "15.0.0",
     "sanitize-html": "2.17.7",
     "slugify": "1.6.9",

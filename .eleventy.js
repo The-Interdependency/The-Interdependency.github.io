@@ -91,8 +91,35 @@ function renderInterdefinables(content) {
   return `${pairHtml}<div class="interdefinables-structure">${bodyHtml}</div>`;
 }
 
+function resolveSourceReference(value, sourceUrl) {
+  const reference = String(value || '');
+  if (!sourceUrl || !reference || reference.startsWith('#') || reference.startsWith('/') || reference.startsWith('//')) return reference;
+  if (/^[a-z][a-z0-9+.-]*:/i.test(reference)) return reference;
+  try {
+    return new URL(reference, sourceUrl).href;
+  } catch {
+    return reference;
+  }
+}
+
+function installSourceReferenceRenderer(md) {
+  const linkOpen = md.renderer.rules.link_open || ((tokens, index, options, _env, self) => self.renderToken(tokens, index, options));
+  md.renderer.rules.link_open = (tokens, index, options, env, self) => {
+    const hrefIndex = tokens[index].attrIndex('href');
+    if (hrefIndex >= 0) tokens[index].attrs[hrefIndex][1] = resolveSourceReference(tokens[index].attrs[hrefIndex][1], env?.sourceUrl);
+    return linkOpen(tokens, index, options, env, self);
+  };
+  const image = md.renderer.rules.image || ((tokens, index, options, _env, self) => self.renderToken(tokens, index, options));
+  md.renderer.rules.image = (tokens, index, options, env, self) => {
+    const srcIndex = tokens[index].attrIndex('src');
+    if (srcIndex >= 0) tokens[index].attrs[srcIndex][1] = resolveSourceReference(tokens[index].attrs[srcIndex][1], env?.sourceUrl);
+    return image(tokens, index, options, env, self);
+  };
+  return md;
+}
+
 export default function configureEleventy(eleventyConfig) {
-  const md = installMathRenderer(markdownIt({ html: false, linkify: true, typographer: true }));
+  const md = installSourceReferenceRenderer(installMathRenderer(markdownIt({ html: false, linkify: true, typographer: true })));
   eleventyConfig.setLibrary('md', md);
   eleventyConfig.addPassthroughCopy({
     'src/assets': 'assets',
@@ -109,6 +136,7 @@ export default function configureEleventy(eleventyConfig) {
   eleventyConfig.addFilter('where', (items, key, value) => (items || []).filter(item => item?.[key] === value));
   eleventyConfig.addFilter('statusClass', value => `status-${String(value || 'hmmm').toLowerCase().replace(/[^a-z0-9]+/g, '-')}`);
   eleventyConfig.addFilter('markdown', value => md.render(String(value || '')));
+  eleventyConfig.addFilter('textbookMarkdown', chapter => md.render(String(chapter?.content || ''), { sourceUrl: chapter?.sourceUrl }));
   eleventyConfig.addFilter('edcmMarkdown', value => md.render(String(value || ''))
     .replace(/<pre(?![^>]*\btabindex=)([^>]*)>/g, '<pre tabindex="0"$1>')
     .replace(/<math(?![^>]*\btabindex=)(?=[^>]*\bdisplay="block")/g, '<math tabindex="0"'));

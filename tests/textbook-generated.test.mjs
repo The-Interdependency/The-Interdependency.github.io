@@ -26,3 +26,15 @@ test('public build identity binds chapters zero through seven to source commits'
     assert.equal(publicChapter.fallback, false);
   }
 });
+
+test('source-relative chapter links retain their exact repository and commit context', async () => {
+  const textbook = JSON.parse(await readFile('src/_data/generated/textbook.json', 'utf8'));
+  const chapter = textbook.chapters[1];
+  const html = await readFile('_site/chapters/chapter-one/index.html', 'utf8');
+  assert.match(chapter.commit, /^[a-f0-9]{40}$/);
+  assert.ok(chapter.content.includes('../CANON.md'), 'UCNS source fixture must exercise source-relative link resolution');
+  assert.match(
+    html,
+    new RegExp(`href="https://github\\.com/The-Interdependency/ucns/blob/${chapter.commit}/CANON\\.md"`)
+  );
+});
