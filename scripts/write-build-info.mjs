@@ -5,10 +5,10 @@ import { readFile, writeFile } from 'node:fs/promises';
 // id: public_build_identity
 //   module_name: write-build-info
 //   module_kind: worker
-//   summary: Publishes machine-readable site, canon, and distributed-textbook identities for post-deployment verification.
+//   summary: Publishes machine-readable site, canon, textbook, and dynamic-source identities for post-deployment verification.
 //   owner: Erin Spencer
 //   public_surface: _site/build.json
-//   internal_surface: git commit resolution, canonical provenance projection, chapter-source identity projection
+//   internal_surface: git commit resolution, canonical provenance projection, chapter-source identity projection, dynamic-source fallback receipts
 //   auth_boundary: none
 //   storage_boundary: write
 //   network_boundary: none
@@ -23,7 +23,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 
 // === BOUNDARIES ===
 // id: public_build_identity_boundary
-//   summary: Reads canon and textbook provenance and writes public build identity into the generated site.
+//   summary: Reads canon, textbook, and dynamic-source provenance and writes public build identity into the generated site.
 //   auth_boundary: none
 //   storage_boundary: write
 //   network_boundary: none
@@ -45,6 +45,10 @@ function localCommit() {
 
 const canon = JSON.parse(await readFile('src/_data/generated/canon.json', 'utf8'));
 const textbook = JSON.parse(await readFile('src/_data/generated/textbook.json', 'utf8'));
+const repositories = JSON.parse(await readFile('src/_data/generated/repos.json', 'utf8'));
+const organizationMsdmd = JSON.parse(await readFile('src/_data/generated/orgMsdmd.json', 'utf8'));
+const sitrep = JSON.parse(await readFile('src/_data/generated/sitrep.json', 'utf8'));
+const works = JSON.parse(await readFile('src/_data/generated/works.json', 'utf8'));
 const commit = process.env.GITHUB_SHA || localCommit();
 const info = {
   repository: process.env.GITHUB_REPOSITORY || 'The-Interdependency/The-Interdependency.github.io',
@@ -75,6 +79,34 @@ const info = {
       status: chapter.status,
       fallback: Boolean(chapter.fallback)
     }))
+  },
+  dynamicSources: {
+    organizationRepositories: {
+      snapshotAt: repositories.snapshotAt || null,
+      fallback: Boolean(repositories.fallback),
+      publicRepoCount: repositories.publicRepoCount,
+      excludedArchivedRepoCount: repositories.excludedArchivedRepoCount
+    },
+    organizationMsdmd: {
+      schema: organizationMsdmd.schema,
+      fallback: Boolean(organizationMsdmd.fallback),
+      stateDigest: organizationMsdmd.sourceSnapshot?.stateDigest || null,
+      summary: organizationMsdmd.summary
+    },
+    sitrep: {
+      schema: sitrep.schema,
+      version: sitrep.version,
+      fallback: Boolean(sitrep.fallback),
+      sourceSnapshotAt: sitrep.sourceSnapshotAt || null,
+      missingReportCount: Array.isArray(sitrep.missingReports) ? sitrep.missingReports.length : null
+    },
+    relatedWorks: {
+      schema: works.schema,
+      generatedAt: works.generatedAt || null,
+      fallback: Boolean(works.fallback),
+      workCount: Array.isArray(works.works) ? works.works.length : null,
+      excludedCount: Array.isArray(works.excluded) ? works.excluded.length : null
+    }
   }
 };
 

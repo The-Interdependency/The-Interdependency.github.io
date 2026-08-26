@@ -31,13 +31,14 @@ This site displays exact, provenance-bearing chapter snapshots. It does not merg
 - `/eai/aicontext.md` begins with Erin's exact connection contract and then publishes the exact canon copy, all eight textbook chapters, a public-scope JSON-LD biography, and machine-readable work-graph and publication identities.
 - Eleventy generates complete HTML into `_site`.
 - Pagefind supplies static search.
+- The release gate verifies every generated internal link and fragment, and enforces documented static transfer-size budgets.
 - GitHub organization, canon, and textbook source data are retrieved at build time, never in a visitor’s browser.
 - Every public organization repository receives a generated project page.
 - `.interdependency/project.yml` supplies reviewed project purpose, maturity, relationships, and links.
 - `fallback/` is a dependency-free emergency edition.
 - `src/artifacts/edcm-mathematics.njk` publishes an exact commit-pinned reproduction of `The-Interdependency/edcm:docs/EDCM_MATHEMATICS.md` at `/artifacts/edcm-mathematics/`; correct the EDCM source first and run `npm run check:edcm-reference` before updating the copy.
 - `artifacts/four-cuts-1.html` is deliberately published at `/artifacts/four-cuts/` through Eleventy passthrough.
-- `_site/build.json` publishes the site commit and canonical source identity for live deployment verification.
+- `_site/build.json` publishes the site commit, canonical and textbook source identities, and explicit fallback receipts for repository discovery, the organization msdmd graph, SITREP, and Works.
 
 ## Usage guidance
 
@@ -102,6 +103,6 @@ Place that file at `.interdependency/project.yml`. Until it exists, the public p
 
 ## Release discipline
 
-GitHub Actions runs the workflow action audit, canon and textbook provenance refresh, article-to-canon exactness gate, build, validation, tests, static search generation, browser checks, accessibility checks, deployment, and live build-identity verification. The textbook gate requires all eight current source files during an online production build and rejects missing content, reordered chapters, changed source locations, missing source identities, or silent fallback. The workflow action audit requires full-length commit SHA pins and rejects tag refs, short SHAs, stale SHAs, or unapproved pins for the GitHub-owned actions used by this site. Failed builds do not replace the last successful Pages artifact. Emergency fallback deployment is explicit rather than automatic.
+GitHub Actions runs the workflow action audit, canon and textbook provenance refresh, article-to-canon exactness gate, build, validation, tests, internal-link and static performance-budget checks, static search generation, browser checks, accessibility checks, deployment, and live build-identity verification. The textbook gate requires all eight current source files during an online production build and rejects missing content, reordered chapters, changed source locations, missing source identities, or silent fallback. The workflow action audit requires full-length commit SHA pins and rejects tag refs, short SHAs, stale SHAs, or unapproved pins for the GitHub-owned actions used by this site. Failed builds do not replace the last successful Pages artifact. Emergency fallback deployment is explicit rather than automatic. Budget definitions and usage are in [`docs/performance.md`](docs/performance.md).
 
 Repository source cannot configure the Pages source, custom domain, DNS, HTTPS, or branch protection. The required administrative settings and the release-truth contract are documented in [`docs/pages-release.md`](docs/pages-release.md).

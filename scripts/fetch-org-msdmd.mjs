@@ -511,6 +511,25 @@ async function fetchRepositoryInputs(repositories) {
   return inputs;
 }
 
+export function immutableCollectionRegressions(inputs, previousSnapshot) {
+  const previousByName = new Map((previousSnapshot?.repositories || []).map(repo => [repo.name, repo]));
+  return inputs.filter(input => {
+    if (input.collectionStatus === 'ok') return false;
+    const previous = previousByName.get(input.name);
+    return previous?.headSha === input.headSha
+      && previous?.collection?.path === input.collectionPath
+      && previous?.collection?.status === 'ok';
+  }).map(input => input.name).sort();
+}
+
+async function readSnapshot() {
+  try {
+    return JSON.parse(await readFile(SNAPSHOT_OUT, 'utf8'));
+  } catch {
+    return null;
+  }
+}
+
 async function main() {
   await mkdir('src/_data/generated', { recursive: true });
   await mkdir('src/_data/snapshots', { recursive: true });
@@ -526,7 +545,12 @@ async function main() {
 
   try {
     const repoData = JSON.parse(await readFile(GENERATED_REPOS, 'utf8'));
+    const previous = await readSnapshot();
     const inputs = await fetchRepositoryInputs(repoData.repositories || []);
+    const regressions = immutableCollectionRegressions(inputs, previous);
+    if (regressions.length) {
+      throw new Error(`immutable collection retrieval regressed at unchanged heads: ${regressions.join(', ')}`);
+    }
     const data = buildOrgMap(inputs);
     await writeFile(GENERATED_OUT, stableJson(data));
     await writeFile(SNAPSHOT_OUT, stableJson(data));

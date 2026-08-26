@@ -19,7 +19,7 @@ eleventyComputed:
 </header>
 {% if chapter.content %}
 <article class="textbook-chapter" data-chapter-number="{{ chapter.number }}" data-source-repository="{{ chapter.repository }}">
-  {{ chapter.content | markdown | safe }}
+  {{ chapter | textbookMarkdown | safe }}
 </article>
 <details class="provenance chapter-provenance">
   <summary>Source &amp; provenance</summary>

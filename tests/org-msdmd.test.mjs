@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { buildOrgMap, parseCollectionText } from '../scripts/fetch-org-msdmd.mjs';
+import { buildOrgMap, immutableCollectionRegressions, parseCollectionText } from '../scripts/fetch-org-msdmd.mjs';
 
 // Usage: `node --test tests/org-msdmd.test.mjs`; all fixtures are local and perform no network requests.
 
@@ -87,4 +87,27 @@ test('flags collection source commit drift without rejecting the source bytes', 
   const repo = data.repositories[0];
   assert.equal(repo.collection.sourceCommitMatchesHead, false);
   assert.ok(repo.hmmm.some(item => /does not match/.test(item)));
+});
+
+test('unchanged immutable heads cannot silently lose a previously retrieved collection', () => {
+  const headSha = 'a'.repeat(40);
+  const previous = {
+    repositories: [{
+      name: 'alpha',
+      headSha,
+      collection: { status: 'ok', path: 'alpha_msdmd.ts' }
+    }]
+  };
+  assert.deepEqual(immutableCollectionRegressions([{
+    name: 'alpha',
+    headSha,
+    collectionPath: 'alpha_msdmd.ts',
+    collectionStatus: 'missing'
+  }], previous), ['alpha']);
+  assert.deepEqual(immutableCollectionRegressions([{
+    name: 'alpha',
+    headSha: 'b'.repeat(40),
+    collectionPath: 'alpha_msdmd.ts',
+    collectionStatus: 'missing'
+  }], previous), [], 'a new head may deliberately remove its collection and must remain visible as missing');
 });

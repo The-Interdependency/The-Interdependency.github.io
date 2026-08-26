@@ -103,6 +103,22 @@ test('generated deployment artifact contains the unified routes', async () => {
   ]) assert.match(articles, new RegExp(title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
 });
 
+test('public build identity records every dynamic source fallback boundary', async () => {
+  const [build, repositories] = await Promise.all([
+    readFile('_site/build.json', 'utf8').then(JSON.parse),
+    readFile('src/_data/generated/repos.json', 'utf8').then(JSON.parse)
+  ]);
+  assert.equal(build.dynamicSources.organizationRepositories.publicRepoCount, repositories.publicRepoCount);
+  assert.equal(typeof build.dynamicSources.organizationRepositories.fallback, 'boolean');
+  assert.equal(build.dynamicSources.organizationMsdmd.schema, 'interdependency.org-msdmd-map/0.1.0');
+  assert.match(build.dynamicSources.organizationMsdmd.stateDigest, /^[a-f0-9]{64}$/);
+  assert.equal(typeof build.dynamicSources.organizationMsdmd.fallback, 'boolean');
+  assert.equal(build.dynamicSources.sitrep.schema, 'the-interdependency.website-sitrep-view');
+  assert.equal(typeof build.dynamicSources.sitrep.fallback, 'boolean');
+  assert.equal(build.dynamicSources.relatedWorks.schema, 'interdependency.related-works/1.0.0');
+  assert.equal(typeof build.dynamicSources.relatedWorks.fallback, 'boolean');
+});
+
 test('distributed textbook displays all eight exact chapter sources', async () => {
   const textbook = JSON.parse(await readFile('src/_data/generated/textbook.json', 'utf8'));
   const index = await readFile('_site/chapters/index.html', 'utf8');
