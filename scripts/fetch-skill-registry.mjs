@@ -11,7 +11,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 // === BOUNDARIES ===
 // id: skill_registry_source_boundary
 //   network: reads only commit-pinned raw.githubusercontent.com/The-Interdependency/skill-lib/<commit>/skills.json
-//   storage: writes generated and last-known-good JSON snapshots only
+//   storage: writes generated, public asset, and last-known-good JSON snapshots only
 //   authority: The-Interdependency/skill-lib remains canonical; this website publishes a derived registry projection for browser tools
 //   failure: a network or parse failure falls back only to a previously verified snapshot; absence of both fails closed
 // === END BOUNDARIES ===
@@ -34,6 +34,7 @@ const SOURCE_PATH = 'skills.json';
 const RAW_GITHUB_ORIGIN = 'https://raw.githubusercontent.com';
 const GENERATED_REPOS = 'src/_data/generated/repos.json';
 const GENERATED_OUT = 'src/_data/generated/skillRegistry.json';
+const PUBLIC_OUT = 'src/assets/data/skill-registry.json';
 const SNAPSHOT_OUT = 'src/_data/snapshots/skill-registry.last-known-good.json';
 
 function sha256(value) {
@@ -110,16 +111,22 @@ async function readFallback() {
   return parsed;
 }
 
-async function writeGenerated(registry, fallback, hmmm = []) {
-  await mkdir('src/_data/generated', { recursive: true });
-  const output = { ...registry, fallback, hmmm };
-  await writeFile(GENERATED_OUT, stableJson(output));
+async function writeProjection(registry, fallback, hmmm = []) {
+  await Promise.all([
+    mkdir('src/_data/generated', { recursive: true }),
+    mkdir('src/assets/data', { recursive: true })
+  ]);
+  const serialized = stableJson({ ...registry, fallback, hmmm });
+  await Promise.all([
+    writeFile(GENERATED_OUT, serialized),
+    writeFile(PUBLIC_OUT, serialized)
+  ]);
 }
 
 async function main() {
   if (process.env.OFFLINE === '1') {
     const snapshot = await readFallback();
-    await writeGenerated(snapshot, true, ['offline build: using last-known-good skill registry snapshot']);
+    await writeProjection(snapshot, true, ['offline build: using last-known-good skill registry snapshot']);
     return;
   }
 
@@ -132,11 +139,11 @@ async function main() {
     const registry = normalizeRegistry(sourceText, skillLib.head_sha);
     await mkdir('src/_data/snapshots', { recursive: true });
     await writeFile(SNAPSHOT_OUT, stableJson(registry));
-    await writeGenerated(registry, false);
+    await writeProjection(registry, false);
   } catch (error) {
     try {
       const snapshot = await readFallback();
-      await writeGenerated(snapshot, true, [`registry refresh failed: ${error.message}`]);
+      await writeProjection(snapshot, true, [`registry refresh failed: ${error.message}`]);
     } catch (fallbackError) {
       throw new Error(`skill registry refresh failed and no valid snapshot exists: ${error.message}; fallback: ${fallbackError.message}`);
     }
