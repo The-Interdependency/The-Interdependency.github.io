@@ -1,0 +1,53 @@
+---
+layout: layouts/base.njk
+title: The Interdependency WebMCP
+description: Browser-native, read-only WebMCP access to the commit-pinned The Interdependency skill registry.
+permalink: /webmcp/
+webmcp: true
+---
+<section class="panel" aria-labelledby="webmcp-title">
+  <p class="eyebrow">WebMCP Challenge · implemented public surface</p>
+  <h1 id="webmcp-title">The Interdependency WebMCP</h1>
+  <p>This page is both the human-readable boundary and the browser-native WebMCP provider for The Interdependency skill registry. The website owns the registered tools; <code>The-Interdependency/skill-lib</code> remains the canonical source for skill definitions.</p>
+</section>
+
+<section class="panel" aria-labelledby="webmcp-status-title">
+  <h2 id="webmcp-status-title">Runtime status</h2>
+  <p data-webmcp-status data-state="hmmm">Loading the commit-pinned skill registry and checking this browser for WebMCP support…</p>
+  <p><strong>Registry source:</strong> <span data-webmcp-source>resolving…</span></p>
+  <noscript><p>JavaScript is disabled, so WebMCP tools cannot register. The rest of the website remains statically readable.</p></noscript>
+</section>
+
+<section class="panel" aria-labelledby="webmcp-tools-title">
+  <h2 id="webmcp-tools-title">Registered v0 tools</h2>
+  <dl>
+    <dt><code>tiw_registry_status</code></dt>
+    <dd>Provenance, registry version, skill count, and fallback state.</dd>
+    <dt><code>tiw_list_skills</code></dt>
+    <dd>List registered skills, optionally filtered by exact skill kind.</dd>
+    <dt><code>tiw_find_skill</code></dt>
+    <dd>Search the registry by task words, names, paths, and descriptions while returning only a bounded relevant set.</dd>
+    <dt><code>tiw_inspect_skill</code></dt>
+    <dd>Inspect one skill and receive its declared dependencies plus a commit-pinned canonical source URL.</dd>
+    <dt><code>tiw_resolve_skill_closure</code></dt>
+    <dd>Resolve the smallest dependency-first transitive closure required by one registered skill.</dd>
+  </dl>
+</section>
+
+<section class="panel" aria-labelledby="webmcp-architecture-title">
+  <h2 id="webmcp-architecture-title">Authority boundary</h2>
+  <pre tabindex="0">skill-lib/SKILL.md + skills.json
+        ↓ commit-pinned build projection
+interdependentway.org skill registry
+        ↓ browser-native WebMCP registration
+read-only agent tools</pre>
+  <p>The browser tools do not mutate GitHub, install skills, change canon, or create a competing skill definition. Their job is discovery, inspection, and dependency resolution.</p>
+</section>
+
+<section class="panel" aria-labelledby="webmcp-usage-title">
+  <h2 id="webmcp-usage-title">Usage guidance</h2>
+  <p>Open this route in a WebMCP-capable browser or in-app browser, then ask the browser agent to find or inspect an Interdependency skill. For example: <em>“Find the skill for auditing and repairing a repository, then resolve its dependency closure.”</em></p>
+  <p>In an ordinary browser without WebMCP support, this page remains a truthful status and documentation surface; it does not fake tool availability.</p>
+</section>
+
+<div class="hmmm-boundary"><strong>hmmm</strong><span>Write-capable operations are intentionally absent from v0. Any future install, propagation, or repository-changing tool requires a separate authenticated boundary rather than quietly upgrading this read-only surface.</span></div>

@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Usage: every ordinary site page inherits a human-facing navigation. Machine-readable context remains discoverable through head metadata and dedicated routes without occupying the visible reading path. -->
+<!-- Usage: every ordinary site page inherits a human-facing navigation. Machine-readable context remains discoverable through head metadata and dedicated routes without occupying the visible reading path. Routes with `webmcp: true` additionally load the browser-native WebMCP provider module. -->
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -19,6 +19,7 @@
   <script src="/assets/js/site.js" defer></script>
   <script src="/assets/js/org-map.js" type="module"></script>
   <script src="/assets/js/sitrep.js" type="module"></script>
+  {% if webmcp %}<script src="/assets/js/webmcp.js" type="module"></script>{% endif %}
 </head>
 <body>
   <a class="skip-link" href="#content">Skip to content</a>
