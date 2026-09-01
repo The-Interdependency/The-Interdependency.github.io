@@ -26,7 +26,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 //   then: every dependency names another skill in the same registry
 //   class: correctness
 // === END CONTRACTS ===
-// Usage: run `npm run refresh:skills` after `npm run refresh:github`; WebMCP consumes `/assets/data/skill-registry.json`. Use `OFFLINE=1` only after at least one verified online refresh has created the last-known-good snapshot.
+// Usage: run `npm run refresh:skills` after `npm run refresh:github`; WebMCP consumes `/assets/data/skill-registry.json`. `OFFLINE=1 npm run refresh:skills` is valid on a clean checkout because the committed bootstrap snapshot is pinned to an exact skill-lib commit and Git blob; successful online refreshes replace it with the newest verified normalized snapshot.
 
 const ORGANIZATION = 'The-Interdependency';
 const REPOSITORY = 'skill-lib';
@@ -36,9 +36,19 @@ const GENERATED_REPOS = 'src/_data/generated/repos.json';
 const GENERATED_OUT = 'src/_data/generated/skillRegistry.json';
 const PUBLIC_OUT = 'src/assets/data/skill-registry.json';
 const SNAPSHOT_OUT = 'src/_data/snapshots/skill-registry.last-known-good.json';
+const BOOTSTRAP_SNAPSHOT_COMMIT = '260671303733a45c8f8d5563e41d8854e09856e6';
+const BOOTSTRAP_SNAPSHOT_BLOB = '7f71adeadac07a751b953c39e38dd78be599976f';
 
 function sha256(value) {
   return createHash('sha256').update(value).digest('hex');
+}
+
+function gitBlobSha1(value) {
+  const body = Buffer.from(value);
+  return createHash('sha1')
+    .update(`blob ${body.length}\0`)
+    .update(body)
+    .digest('hex');
 }
 
 function stableJson(value) {
@@ -102,13 +112,23 @@ export function normalizeRegistry(sourceText, commit) {
   };
 }
 
-async function readFallback() {
+export async function readFallback() {
   const text = await readFile(SNAPSHOT_OUT, 'utf8');
   const parsed = JSON.parse(text);
-  if (!parsed?.source?.commit || !Array.isArray(parsed.skills) || parsed.skills.length === 0) {
-    throw new Error('last-known-good skill registry snapshot is invalid');
+
+  if (parsed?.source?.commit && Array.isArray(parsed.skills) && parsed.skills.length > 0) {
+    return parsed;
   }
-  return parsed;
+
+  if (parsed?.repo === `${ORGANIZATION}/${REPOSITORY}` && Array.isArray(parsed.skills) && parsed.skills.length > 0) {
+    const actualBlob = gitBlobSha1(text);
+    if (actualBlob !== BOOTSTRAP_SNAPSHOT_BLOB) {
+      throw new Error(`bootstrap skill registry snapshot blob mismatch: ${actualBlob}`);
+    }
+    return normalizeRegistry(text, BOOTSTRAP_SNAPSHOT_COMMIT);
+  }
+
+  throw new Error('last-known-good skill registry snapshot is invalid');
 }
 
 async function writeProjection(registry, fallback, hmmm = []) {

@@ -1,10 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { normalizeRegistry } from '../scripts/fetch-skill-registry.mjs';
+import { normalizeRegistry, readFallback } from '../scripts/fetch-skill-registry.mjs';
 import { createSkillRegistry } from '../src/assets/js/webmcp-registry.js';
 
-// Usage: run with `npm test`; these checks verify registry provenance, dependency closure, WebMCP tool names/read-only annotations, and the dedicated provider route without requiring a WebMCP-capable test browser.
+// Usage: run with `npm test`; these checks verify registry provenance, dependency closure, clean-checkout fallback identity, WebMCP tool names/read-only annotations, and the dedicated provider route without requiring a WebMCP-capable test browser.
 
 const sourceRegistry = JSON.stringify({
   version: 1,
@@ -41,6 +41,16 @@ test('skill registry projection preserves exact source identity and rejects unre
   assert.throws(() => normalizeRegistry(broken, 'abc'), /unresolved skill dependency/);
 });
 
+test('committed fallback snapshot is exact, usable on a clean checkout, and retains source provenance', async () => {
+  const snapshot = await readFallback();
+  assert.equal(snapshot.source.repository, 'The-Interdependency/skill-lib');
+  assert.equal(snapshot.source.commit, '260671303733a45c8f8d5563e41d8854e09856e6');
+  assert.equal(snapshot.source.path, 'skills.json');
+  assert.match(snapshot.source.sha256, /^[a-f0-9]{64}$/);
+  assert.ok(snapshot.skills.length > 0);
+  assert.ok(snapshot.skills.some(skill => skill.name === 'repo-audit-repair'));
+});
+
 test('registry adapter finds skills and resolves the smallest dependency-first closure', () => {
   const registry = createSkillRegistry(sampleProjection());
   const matches = registry.findSkills({ query: 'audit repository' });
@@ -51,7 +61,7 @@ test('registry adapter finds skills and resolves the smallest dependency-first c
   assert.match(closure[1].canonical_url, /The-Interdependency\/skill-lib\/blob\/0123456789abcdef/);
 });
 
-test('WebMCP provider registers only the five declared read-only registry tools', async () => {
+test('WebMCP provider registers only the five declared read-only registry tools through navigator.modelContext', async () => {
   const source = await readFile('src/assets/js/webmcp.js', 'utf8');
   for (const name of [
     'tiw_registry_status',
@@ -63,8 +73,18 @@ test('WebMCP provider registers only the five declared read-only registry tools'
     assert.match(source, new RegExp(`name: '${name}'`));
   }
   assert.equal((source.match(/annotations: \{ readOnlyHint: true/g) || []).length, 5);
-  assert.match(source, /document\.modelContext\.registerTool/);
+  assert.match(source, /globalThis\.navigator\?\.modelContext/);
+  assert.doesNotMatch(source, /document\.modelContext/);
   assert.doesNotMatch(source, /unregisterTool|install_skill|propagate_skill|update_file|create_file/);
+});
+
+test('registry provenance resolves before unsupported-browser WebMCP return', async () => {
+  const source = await readFile('src/assets/js/webmcp.js', 'utf8');
+  const loadIndex = source.indexOf('const data = await loadRegistry();');
+  const sourceIndex = source.indexOf('updateSource(status);');
+  const unsupportedIndex = source.indexOf("if (!modelContext()?.registerTool)");
+  assert.ok(loadIndex >= 0 && sourceIndex > loadIndex);
+  assert.ok(unsupportedIndex > sourceIndex);
 });
 
 test('dedicated WebMCP route loads the provider explicitly and keeps unsupported browsers truthful', async () => {

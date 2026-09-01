@@ -20,11 +20,12 @@ import { createSkillRegistry } from './webmcp-registry.js';
 //   then: execution reads the generated registry projection and returns structured results without mutating the site, GitHub, or skill-lib
 //   class: safety
 // === END CONTRACTS ===
-// Usage: open `/webmcp/` in a WebMCP-capable browser or in-app browser. The page registers five read-only tools. Unsupported browsers still show the human-readable capability/status page and do not polyfill or fake WebMCP support.
+// Usage: open `/webmcp/` in a WebMCP-capable browser or in-app browser. The page registers five read-only tools through `navigator.modelContext`. Unsupported browsers still resolve and display registry provenance without polyfilling or faking WebMCP support.
 
 const REGISTRY_URL = '/assets/data/skill-registry.json';
 const statusElement = () => document.querySelector('[data-webmcp-status]');
 const sourceElement = () => document.querySelector('[data-webmcp-source]');
+const modelContext = () => globalThis.navigator?.modelContext;
 
 function setStatus(message, state = 'hmmm') {
   const target = statusElement();
@@ -51,22 +52,24 @@ function updateSource(status) {
 }
 
 async function registerTool(tool) {
-  await document.modelContext.registerTool(tool);
+  const context = modelContext();
+  if (!context?.registerTool) throw new Error('WebMCP API unavailable during tool registration');
+  await context.registerTool(tool);
 }
 
 export async function registerInterdependencyWebMCP() {
-  if (!document.modelContext?.registerTool) {
-    setStatus('WebMCP API unavailable in this browser. The registry projection is live; tool registration requires a WebMCP-capable browser.', 'hmmm');
-    return { registered: false, reason: 'webmcp-unavailable' };
-  }
-  if (globalThis.__interdependencyWebMcpRegistered) {
-    return { registered: true, reused: true };
-  }
-
   const data = await loadRegistry();
   const registry = createSkillRegistry(data);
   const status = registry.getRegistryStatus();
   updateSource(status);
+
+  if (!modelContext()?.registerTool) {
+    setStatus(`WebMCP API unavailable in this browser. Registry provenance resolved for ${status.skill_count} skills; tool registration requires a WebMCP-capable browser.`, 'hmmm');
+    return { registered: false, reason: 'webmcp-unavailable', registry: status };
+  }
+  if (globalThis.__interdependencyWebMcpRegistered) {
+    return { registered: true, reused: true, registry: status };
+  }
 
   await registerTool({
     name: 'tiw_registry_status',
