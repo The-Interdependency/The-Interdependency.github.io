@@ -8,7 +8,7 @@ webmcp: true
 <section class="panel" aria-labelledby="webmcp-title">
   <p class="eyebrow">WebMCP Challenge · live public surface</p>
   <h1 id="webmcp-title">The Interdependency WebMCP</h1>
-  <p><strong>The page is the provider.</strong> Human and agent use the same commit-pinned skill material. A human chooses the skill; the page records that exact selection; the agent can then use the selected canonical skill with its separately authorized tools to deliver the requested change.</p>
+  <p><strong>The page is the provider.</strong> Human and agent use the same commit-pinned skill material. A human chooses the skill, writes the outcome they want in ordinary language, and explicitly sends that handoff to the browser agent. The agent receives the exact selected skill, its required skill set, provenance, and the human request.</p>
   <p><strong>Remote MCP:</strong> <code>https://the-interdependency-mcp.onrender.com/mcp</code></p>
   <p><a href="https://the-interdependency-mcp.onrender.com/health">Open remote MCP health check</a></p>
 </section>
@@ -18,13 +18,13 @@ webmcp: true
   <p data-webmcp-status data-state="hmmm">Loading the commit-pinned registry and checking browser WebMCP support…</p>
   <p data-remote-mcp-status data-state="hmmm">Checking remote MCP health…</p>
   <p><strong>Registry source:</strong> <span data-webmcp-source>resolving…</span></p>
-  <noscript><p>JavaScript is disabled, so browser WebMCP registration and selection handoff cannot run. The human-readable catalogue remains available, and the remote MCP endpoint remains independent.</p></noscript>
+  <noscript><p>JavaScript is disabled, so browser WebMCP registration and the human-to-agent handoff cannot run. The human-readable catalogue remains available, and the remote MCP endpoint remains independent.</p></noscript>
 </section>
 
 <section class="panel" aria-labelledby="skill-catalog-title">
-  <p class="eyebrow">Human selection surface</p>
+  <p class="eyebrow">Shared human + agent material</p>
   <h2 id="skill-catalog-title">Choose the skill the agent should use</h2>
-  <p>The public human catalogue is deliberately narrow: msdmd and its metadata-block applications first, followed by the METAPAT meta skill. Other <code>skill-lib</code> skills remain canonical and available to agents, but are not presented as primary human choices here.</p>
+  <p>The public catalogue is deliberately narrow: msdmd and its metadata-block applications first, followed by the METAPAT meta skill. The browser agent sees this same public set. Other <code>skill-lib</code> skills remain canonical in the source library rather than becoming competing definitions here.</p>
 
   <form data-human-skill-filter-form>
     <label for="human-skill-filter">Optional search</label>
@@ -88,19 +88,28 @@ webmcp: true
     <button type="button" data-selected-action="inspect" disabled>Inspect selected skill</button>
     <button type="button" data-selected-action="closure" disabled>Show required skill set</button>
   </p>
+
+  <form data-human-handoff-form>
+    <label for="human-handoff-intent"><strong>What do you want the agent to change or produce?</strong></label>
+    <textarea id="human-handoff-intent" data-human-handoff-intent name="intent" rows="5" maxlength="4000" required placeholder="Describe the desired outcome in ordinary language. Include the repository, project, folder, or other target only if the agent cannot already infer it from your context."></textarea>
+    <p><button type="submit" data-human-handoff-send disabled>Send selected skill + request to agent</button></p>
+    <p data-human-handoff-status data-state="hmmm" aria-live="polite">Select a skill first. Nothing is sent merely by typing.</p>
+  </form>
+
   <pre tabindex="0" data-webmcp-output>Select a skill above. No internal skill name needs to be typed.</pre>
 </section>
 
 <section class="panel" aria-labelledby="webmcp-boundary-title">
-  <h2 id="webmcp-boundary-title">Same material, meaningful human selection</h2>
+  <h2 id="webmcp-boundary-title">Same material, explicit human handoff</h2>
   <pre tabindex="0">skill-lib/SKILL.md + skills.json
         ↓ commit-pinned projection
-human-readable card ↔ selected exact skill ↔ agent-visible page state
-                                    ↓
-                         browser WebMCP / remote MCP
-                                    ↓
+human-readable card ↔ selected exact skill ↔ browser agent
+                         + human request          ↑
+                               ↓                  │
+                         explicit SEND ── tiw_human_handoff
+                               ↓
                      agent's authorized change tools</pre>
-  <p>The human selects meaning, not an internal identifier. The agent receives the exact skill identity, dependencies, provenance, and canonical source from that selection. Selection constrains how the agent should work; actual changes still occur only through the agent's separately authorized tool boundary.</p>
+  <p>Pressing Send does not modify a repository and does not post the human text to the public remote MCP server. It creates an ephemeral, page-session WebMCP handoff that the browser agent can discover and read. The selected skill constrains how the agent should work; actual changes still require the agent's separately authorized repository, filesystem, deployment, or other tools.</p>
 </section>
 
-<div class="hmmm-boundary"><strong>hmmm</strong><span>Selection is instruction, not permission. PEBKAC should not have to memorize the machine's nouns.</span></div>
+<div class="hmmm-boundary"><strong>hmmm</strong><span>WebMCP can expose a newly sent handoff to the agent; the current web standard does not give a page authority to force the browser agent to read it or to inject a prompt into the agent.</span></div>
