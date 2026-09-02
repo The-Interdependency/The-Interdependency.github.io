@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { normalizeRegistry, readFallback } from '../scripts/fetch-skill-registry.mjs';
 import { createSkillRegistry } from '../src/assets/js/webmcp-registry.js';
 
-// Usage: run with `npm test`; these checks verify registry provenance, dependency closure, clean-checkout fallback identity, current WebMCP Document API usage, live human controls, and the visible remote MCP endpoint without requiring a WebMCP-capable test browser.
+// Usage: run with `npm test`; these checks verify registry provenance, dependency closure, clean-checkout fallback identity, current WebMCP Document API usage, the build-time human-readable skill catalogue, live human controls, and the visible remote MCP endpoint without requiring a WebMCP-capable test browser.
 
 const BOOTSTRAP_SNAPSHOT_COMMIT = '260671303733a45c8f8d5563e41d8854e09856e6';
 const SNAPSHOT_PATH = 'src/_data/snapshots/skill-registry.last-known-good.json';
@@ -90,18 +90,20 @@ test('WebMCP provider registers only the five declared read-only registry tools 
   assert.doesNotMatch(source, /unregisterTool|install_skill|propagate_skill|update_file|create_file/);
 });
 
-test('registry provenance and human controls resolve before unsupported-browser WebMCP return', async () => {
+test('human catalogue and controls resolve before unsupported-browser WebMCP return', async () => {
   const source = await readFile('src/assets/js/webmcp.js', 'utf8');
   const loadIndex = source.indexOf('const data = await loadRegistry();');
   const sourceIndex = source.indexOf('updateSource(status);');
+  const catalogueIndex = source.indexOf('bindHumanCatalogue();');
   const controlsIndex = source.indexOf('bindHumanControls(registry);');
   const unsupportedIndex = source.indexOf("if (!modelContext()?.registerTool)");
   assert.ok(loadIndex >= 0 && sourceIndex > loadIndex);
-  assert.ok(controlsIndex > sourceIndex);
+  assert.ok(catalogueIndex > sourceIndex);
+  assert.ok(controlsIndex > catalogueIndex);
   assert.ok(unsupportedIndex > controlsIndex);
 });
 
-test('dedicated WebMCP route is the visible browser and remote MCP front door', async () => {
+test('dedicated WebMCP route is a human-readable skill browser and the agent front door', async () => {
   const [page, layout, packageJson] = await Promise.all([
     readFile('src/webmcp/index.njk', 'utf8'),
     readFile('src/_includes/layouts/base.njk', 'utf8'),
@@ -114,6 +116,15 @@ test('dedicated WebMCP route is the visible browser and remote MCP front door', 
   assert.match(page, /document\.modelContext\.registerTool/);
   assert.match(page, /https:\/\/the-interdependency-mcp\.onrender\.com\/mcp/);
   assert.match(page, /data-remote-mcp-status/);
+
+  assert.match(page, /id="skill-catalog-title">Skill catalogue/);
+  assert.match(page, /generated\.skillRegistry\.skills/);
+  assert.match(page, /data-human-skill-filter/);
+  assert.match(page, /data-human-skill-catalog/);
+  assert.match(page, /data-human-skill/);
+  assert.match(page, /skill\.description/);
+  assert.match(page, /Read canonical SKILL\.md/);
+
   assert.match(page, /data-webmcp-action="status"/);
   assert.match(page, /data-webmcp-find/);
   assert.match(page, /data-webmcp-inspect/);
