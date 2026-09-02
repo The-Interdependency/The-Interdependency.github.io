@@ -2,30 +2,33 @@ import { createSkillRegistry } from './webmcp-registry.js';
 
 // === MODULE_BUILD ===
 // id: interdependency_webmcp_surface
-//   purpose: Register the website-owned, read-only WebMCP tool surface over the commit-pinned skill-lib registry projection.
+//   purpose: Register the website-owned, read-only WebMCP tool surface and provide the same registry operations to the human-facing demo page.
 //   entrypoint: /webmcp/
 //   tests: tests/webmcp.test.mjs
 // === END MODULE_BUILD ===
 // === BOUNDARIES ===
 // id: interdependency_webmcp_surface_boundary
-//   network: same-origin GET of /assets/data/skill-registry.json only
+//   network: same-origin GET of /assets/data/skill-registry.json plus read-only health GET to the website-owned Render MCP runtime
 //   storage: none
 //   user_data: none
 //   operational_effects: none; v0 exposes registry discovery and dependency resolution only
-//   authority: the website owns tool registration; The-Interdependency/skill-lib remains authority for skill definitions
+//   authority: the website owns tool registration and remote runtime; The-Interdependency/skill-lib remains authority for skill definitions
 // === END BOUNDARIES ===
 // === CONTRACTS ===
 // id: webmcp_tools_are_read_only_registry_operations
-//   given: an agent invokes any v0 tool
+//   given: a human control or browser agent invokes any v0 operation
 //   then: execution reads the generated registry projection and returns structured results without mutating the site, GitHub, or skill-lib
 //   class: safety
 // === END CONTRACTS ===
-// Usage: open `/webmcp/` in a WebMCP-capable browser or in-app browser. The page registers five read-only tools through `navigator.modelContext`. Unsupported browsers still resolve and display registry provenance without polyfilling or faking WebMCP support.
+// Usage: open `/webmcp/` in any browser to exercise the five registry operations directly. In a WebMCP-capable browser the same operations register through `document.modelContext.registerTool(...)`. The remote MCP endpoint is independently health-checked and remains read-only.
 
 const REGISTRY_URL = '/assets/data/skill-registry.json';
+const REMOTE_MCP_BASE = 'https://the-interdependency-mcp.onrender.com';
 const statusElement = () => document.querySelector('[data-webmcp-status]');
 const sourceElement = () => document.querySelector('[data-webmcp-source]');
-const modelContext = () => globalThis.navigator?.modelContext;
+const remoteStatusElement = () => document.querySelector('[data-remote-mcp-status]');
+const outputElement = () => document.querySelector('[data-webmcp-output]');
+const modelContext = () => globalThis.document?.modelContext;
 
 function setStatus(message, state = 'hmmm') {
   const target = statusElement();
@@ -34,8 +37,21 @@ function setStatus(message, state = 'hmmm') {
   target.dataset.state = state;
 }
 
+function setRemoteStatus(message, state = 'hmmm') {
+  const target = remoteStatusElement();
+  if (!target) return;
+  target.textContent = message;
+  target.dataset.state = state;
+}
+
 function jsonResult(value) {
   return JSON.stringify(value, null, 2);
+}
+
+function showResult(label, value) {
+  const target = outputElement();
+  if (!target) return;
+  target.textContent = `${label}\n\n${jsonResult(value)}`;
 }
 
 async function loadRegistry() {
@@ -51,6 +67,56 @@ function updateSource(status) {
   target.textContent = `${status.source.repository}@${status.source.commit.slice(0, 12)}:${status.source.path}${suffix}`;
 }
 
+async function checkRemoteMcp() {
+  try {
+    const response = await fetch(`${REMOTE_MCP_BASE}/health`, { headers: { accept: 'application/json' } });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const health = await response.json();
+    if (!health?.ok || health.endpoint !== '/mcp') throw new Error('invalid health response');
+    setRemoteStatus(`Remote MCP LIVE · ${health.skill_count} skills · ${REMOTE_MCP_BASE}/mcp`, 'implemented');
+    return health;
+  } catch (error) {
+    setRemoteStatus(`Remote MCP health unresolved: ${error.message}`, 'hmmm');
+    return null;
+  }
+}
+
+function bindHumanControls(registry) {
+  document.querySelector('[data-webmcp-action="status"]')?.addEventListener('click', () => {
+    showResult('STATUS', registry.getRegistryStatus());
+  });
+
+  document.querySelector('[data-webmcp-action="list"]')?.addEventListener('click', () => {
+    showResult('LIST', registry.listSkills());
+  });
+
+  document.querySelector('[data-webmcp-find]')?.addEventListener('submit', event => {
+    event.preventDefault();
+    const query = String(new FormData(event.currentTarget).get('query') || '').trim();
+    showResult('FIND', registry.findSkills({ query }));
+  });
+
+  document.querySelector('[data-webmcp-inspect]')?.addEventListener('submit', event => {
+    event.preventDefault();
+    const name = String(new FormData(event.currentTarget).get('name') || '').trim();
+    try {
+      showResult('INSPECT', registry.inspectSkill({ name }));
+    } catch (error) {
+      showResult('INSPECT', { error: error.message });
+    }
+  });
+
+  document.querySelector('[data-webmcp-closure]')?.addEventListener('submit', event => {
+    event.preventDefault();
+    const name = String(new FormData(event.currentTarget).get('name') || '').trim();
+    try {
+      showResult('RESOLVE CLOSURE', registry.resolveSkillClosure({ name }));
+    } catch (error) {
+      showResult('RESOLVE CLOSURE', { error: error.message });
+    }
+  });
+}
+
 async function registerTool(tool) {
   const context = modelContext();
   if (!context?.registerTool) throw new Error('WebMCP API unavailable during tool registration');
@@ -62,9 +128,11 @@ export async function registerInterdependencyWebMCP() {
   const registry = createSkillRegistry(data);
   const status = registry.getRegistryStatus();
   updateSource(status);
+  bindHumanControls(registry);
+  void checkRemoteMcp();
 
   if (!modelContext()?.registerTool) {
-    setStatus(`WebMCP API unavailable in this browser. Registry provenance resolved for ${status.skill_count} skills; tool registration requires a WebMCP-capable browser.`, 'hmmm');
+    setStatus(`Registry live for ${status.skill_count} skills. Browser WebMCP registration requires a WebMCP-capable browser; the human controls and remote MCP server remain usable.`, 'hmmm');
     return { registered: false, reason: 'webmcp-unavailable', registry: status };
   }
   if (globalThis.__interdependencyWebMcpRegistered) {
@@ -142,7 +210,7 @@ export async function registerInterdependencyWebMCP() {
   });
 
   globalThis.__interdependencyWebMcpRegistered = true;
-  setStatus(`WebMCP live: 5 read-only tools registered over ${status.skill_count} skills.`, status.fallback ? 'hmmm' : 'implemented');
+  setStatus(`WebMCP LIVE · 5 read-only tools registered over ${status.skill_count} skills.`, status.fallback ? 'hmmm' : 'implemented');
   return { registered: true, tools: 5, registry: status };
 }
 

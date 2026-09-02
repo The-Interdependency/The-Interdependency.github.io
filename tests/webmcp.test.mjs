@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { normalizeRegistry, readFallback } from '../scripts/fetch-skill-registry.mjs';
 import { createSkillRegistry } from '../src/assets/js/webmcp-registry.js';
 
-// Usage: run with `npm test`; these checks verify registry provenance, dependency closure, clean-checkout fallback identity, WebMCP tool names/read-only annotations, and the dedicated provider route without requiring a WebMCP-capable test browser.
+// Usage: run with `npm test`; these checks verify registry provenance, dependency closure, clean-checkout fallback identity, current WebMCP Document API usage, live human controls, and the visible remote MCP endpoint without requiring a WebMCP-capable test browser.
 
 const BOOTSTRAP_SNAPSHOT_COMMIT = '260671303733a45c8f8d5563e41d8854e09856e6';
 const SNAPSHOT_PATH = 'src/_data/snapshots/skill-registry.last-known-good.json';
@@ -73,7 +73,7 @@ test('registry adapter finds skills and resolves the smallest dependency-first c
   assert.match(closure[1].canonical_url, /The-Interdependency\/skill-lib\/blob\/0123456789abcdef/);
 });
 
-test('WebMCP provider registers only the five declared read-only registry tools through navigator.modelContext', async () => {
+test('WebMCP provider registers only the five declared read-only registry tools through document.modelContext', async () => {
   const source = await readFile('src/assets/js/webmcp.js', 'utf8');
   for (const name of [
     'tiw_registry_status',
@@ -85,21 +85,23 @@ test('WebMCP provider registers only the five declared read-only registry tools 
     assert.match(source, new RegExp(`name: '${name}'`));
   }
   assert.equal((source.match(/annotations: \{ readOnlyHint: true/g) || []).length, 5);
-  assert.match(source, /globalThis\.navigator\?\.modelContext/);
-  assert.doesNotMatch(source, /document\.modelContext/);
+  assert.match(source, /globalThis\.document\?\.modelContext/);
+  assert.doesNotMatch(source, /navigator\?\.modelContext|provideContext/);
   assert.doesNotMatch(source, /unregisterTool|install_skill|propagate_skill|update_file|create_file/);
 });
 
-test('registry provenance resolves before unsupported-browser WebMCP return', async () => {
+test('registry provenance and human controls resolve before unsupported-browser WebMCP return', async () => {
   const source = await readFile('src/assets/js/webmcp.js', 'utf8');
   const loadIndex = source.indexOf('const data = await loadRegistry();');
   const sourceIndex = source.indexOf('updateSource(status);');
+  const controlsIndex = source.indexOf('bindHumanControls(registry);');
   const unsupportedIndex = source.indexOf("if (!modelContext()?.registerTool)");
   assert.ok(loadIndex >= 0 && sourceIndex > loadIndex);
-  assert.ok(unsupportedIndex > sourceIndex);
+  assert.ok(controlsIndex > sourceIndex);
+  assert.ok(unsupportedIndex > controlsIndex);
 });
 
-test('dedicated WebMCP route loads the provider explicitly and keeps unsupported browsers truthful', async () => {
+test('dedicated WebMCP route is the visible browser and remote MCP front door', async () => {
   const [page, layout, packageJson] = await Promise.all([
     readFile('src/webmcp/index.njk', 'utf8'),
     readFile('src/_includes/layouts/base.njk', 'utf8'),
@@ -108,8 +110,14 @@ test('dedicated WebMCP route loads the provider explicitly and keeps unsupported
   assert.match(page, /permalink: \/webmcp\//);
   assert.match(page, /webmcp: true/);
   assert.match(page, /The Interdependency WebMCP/);
-  assert.match(page, /data-webmcp-status/);
-  assert.match(page, /does not fake tool availability/);
+  assert.match(page, /The page is the provider/);
+  assert.match(page, /document\.modelContext\.registerTool/);
+  assert.match(page, /https:\/\/the-interdependency-mcp\.onrender\.com\/mcp/);
+  assert.match(page, /data-remote-mcp-status/);
+  assert.match(page, /data-webmcp-action="status"/);
+  assert.match(page, /data-webmcp-find/);
+  assert.match(page, /data-webmcp-inspect/);
+  assert.match(page, /data-webmcp-closure/);
   assert.match(layout, /\{% if webmcp %\}<script src="\/assets\/js\/webmcp\.js" type="module"><\/script>\{% endif %\}/);
   assert.match(packageJson, /"refresh:skills": "node scripts\/fetch-skill-registry\.mjs"/);
   assert.match(packageJson, /refresh:github && npm run refresh:skills && npm run refresh:msdmd/);
