@@ -4,8 +4,6 @@ import { readFile } from 'node:fs/promises';
 import { normalizeRegistry, readFallback } from '../scripts/fetch-skill-registry.mjs';
 import { createSkillRegistry } from '../src/assets/js/webmcp-registry.js';
 
-// Usage: run with `npm test`; these checks verify registry provenance, the shared curated human/agent catalogue, current WebMCP Document API usage, click-driven human selection, explicit human handoff publication, and the visible remote MCP endpoint without requiring a WebMCP-capable test browser.
-
 const BOOTSTRAP_SNAPSHOT_COMMIT = '260671303733a45c8f8d5563e41d8854e09856e6';
 const SNAPSHOT_PATH = 'src/_data/snapshots/skill-registry.last-known-good.json';
 
@@ -18,6 +16,7 @@ const sourceRegistry = JSON.stringify({
     { name: 'msdmd', path: 'msdmd/SKILL.md', kind: 'metadata-block', description: 'foundational metadata convention' },
     { name: 'cap-build', path: 'cap-build/SKILL.md', kind: 'metadata-block', depends_on: ['msdmd'], description: 'capability inventory' },
     { name: 'meta', path: 'meta/SKILL.md', kind: 'procedural', description: 'METAPAT consultation router' },
+    { name: 'fresh-making', path: 'fresh-making/SKILL.md', kind: 'procedural', description: 'deterministic restoration of derived artifact consistency' },
     { name: 'repo-audit-repair', path: 'repo-audit-repair/SKILL.md', kind: 'procedural', description: 'audit and repair a repository' }
   ]
 });
@@ -64,22 +63,23 @@ test('committed or refreshed fallback snapshot is exact, usable, and retains sou
   assert.ok(snapshot.skills.some(skill => skill.name === 'repo-audit-repair'));
 });
 
-test('public registry presents the same msdmd-plus-meta catalogue to human and agent surfaces', () => {
+test('public registry presents msdmd, meta, and fresh-making while hiding unrelated specialist skills', () => {
   const registry = createSkillRegistry(sampleProjection());
-  assert.deepEqual(registry.listSkills().map(skill => skill.name), ['msdmd', 'cap-build', 'meta']);
+  assert.deepEqual(registry.listSkills().map(skill => skill.name), ['msdmd', 'cap-build', 'meta', 'fresh-making']);
   assert.equal(registry.findSkills({ query: 'audit repository' }).length, 0);
   assert.equal(registry.findSkills({ query: 'capability' })[0].name, 'cap-build');
+  assert.equal(registry.findSkills({ query: 'derived artifact' })[0].name, 'fresh-making');
   assert.throws(() => registry.inspectSkill({ name: 'repo-audit-repair' }), /unknown public skill/);
 
-  const closure = registry.resolveSkillClosure({ name: 'cap-build' });
-  assert.deepEqual(closure.map(skill => skill.name), ['msdmd', 'cap-build']);
+  assert.deepEqual(registry.resolveSkillClosure({ name: 'cap-build' }).map(skill => skill.name), ['msdmd', 'cap-build']);
+  assert.deepEqual(registry.resolveSkillClosure({ name: 'fresh-making' }).map(skill => skill.name), ['fresh-making']);
   const status = registry.getRegistryStatus();
-  assert.equal(status.skill_count, 3);
-  assert.equal(status.source_skill_count, 4);
-  assert.equal(status.public_scope, 'metadata-block plus meta');
+  assert.equal(status.skill_count, 4);
+  assert.equal(status.source_skill_count, 5);
+  assert.equal(status.public_scope, 'metadata-block plus meta plus fresh-making');
 });
 
-test('WebMCP provider registers five base registry tools and one explicit dynamic handoff tool through document.modelContext', async () => {
+test('WebMCP provider registers five base registry tools and one explicit dynamic browser handoff', async () => {
   const source = await readFile('src/assets/js/webmcp.js', 'utf8');
   for (const name of [
     'tiw_registry_status',
@@ -87,9 +87,8 @@ test('WebMCP provider registers five base registry tools and one explicit dynami
     'tiw_find_skill',
     'tiw_inspect_skill',
     'tiw_resolve_skill_closure'
-  ]) {
-    assert.match(source, new RegExp(`name: '${name}'`));
-  }
+  ]) assert.match(source, new RegExp(`name: '${name}'`));
+
   assert.match(source, /HANDOFF_TOOL_NAME = 'tiw_human_handoff'/);
   assert.match(source, /name: HANDOFF_TOOL_NAME/);
   assert.equal((source.match(/annotations: \{ readOnlyHint: true/g) || []).length, 6);
@@ -98,34 +97,36 @@ test('WebMCP provider registers five base registry tools and one explicit dynami
   assert.match(source, /\{ signal: controller\.signal \}/);
   assert.match(source, /globalThis\.document\?\.modelContext/);
   assert.doesNotMatch(source, /navigator\?\.modelContext|provideContext/);
-  assert.doesNotMatch(source, /install_skill|propagate_skill|update_file|create_file/);
+  assert.doesNotMatch(source, /\/handoff\/|remote_session|writeKey|install_skill|propagate_skill|update_file|create_file/);
 });
 
-test('human selection carries exact registry identity without typed internal skill names', async () => {
+test('human selection carries exact skill and repository identity without typed machine identifiers', async () => {
   const source = await readFile('src/assets/js/webmcp.js', 'utf8');
-  assert.match(source, /bindHumanCatalogue\(registry\)/);
   assert.match(source, /dataset\.skillName/);
-  assert.match(source, /registry\.inspectSkill\(\{ name \}\)/);
+  assert.match(source, /data-human-repository-target/);
+  assert.match(source, /dataset\.repositoryHead/);
+  assert.match(source, /target_repository: repository/);
+  assert.match(source, /observed_head_sha/);
   assert.match(source, /searchParams\.set\('skill', skill\.name\)/);
+  assert.match(source, /searchParams\.set\('repo', repository\.name\)/);
   assert.match(source, /history\.replaceState/);
-  assert.match(source, /data-selected-action/);
 });
 
-test('human handoff requires explicit submit and carries selected skill, closure, provenance, and human request without persistence', async () => {
+test('fresh-making supplies an editable default refresh request and still requires explicit Send', async () => {
   const source = await readFile('src/assets/js/webmcp.js', 'utf8');
-  assert.match(source, /data-human-handoff-form/);
+  assert.match(source, /FRESH_MAKING_INTENT/);
+  assert.match(source, /name === 'fresh-making'/);
+  assert.match(source, /minimal affected closure/);
   assert.match(source, /new FormData\(event\.currentTarget\)\.get\('intent'\)/);
   assert.match(source, /registry\.resolveSkillClosure\(\{ name: selectedName \}\)/);
   assert.match(source, /human_request: intent/);
-  assert.match(source, /remote_mcp_storage: false/);
+  assert.match(source, /repository_write_authority: 'not granted by this handoff'/);
   assert.match(source, /persistence: 'page session only'/);
   assert.match(source, /publishHandoffTool\(handoff\)/);
-  assert.match(source, /clearPublishedHandoff\('Request text changed/);
-  assert.match(source, /clearPublishedHandoff\('Skill selection changed/);
   assert.doesNotMatch(source, /localStorage|sessionStorage|indexedDB/);
 });
 
-test('dedicated WebMCP route presents collapsible click-select cards and one ordinary-language send box', async () => {
+test('dedicated WebMCP route presents collapsible skill cards, every generated repo target, and one send box', async () => {
   const [page, layout, packageJson] = await Promise.all([
     readFile('src/webmcp/index.njk', 'utf8'),
     readFile('src/_includes/layouts/base.njk', 'utf8'),
@@ -134,22 +135,22 @@ test('dedicated WebMCP route presents collapsible click-select cards and one ord
   assert.match(page, /permalink: \/webmcp\//);
   assert.match(page, /webmcp: true/);
   assert.match(page, /The page is the provider/);
-  assert.match(page, /https:\/\/the-interdependency-mcp\.onrender\.com\/mcp/);
   assert.match(page, /skill\.kind == "metadata-block"/);
   assert.match(page, /skill\.name == "meta"/);
+  assert.match(page, /skill\.name == "fresh-making"/);
   assert.match(page, /<details data-skill-description>/);
   assert.match(page, /<summary>Description<\/summary>/);
-  assert.match(page, /data-select-skill/);
-  assert.match(page, /data-selected-skill/);
-  assert.match(page, /data-selected-action="inspect"/);
-  assert.match(page, /data-selected-action="closure"/);
+  assert.match(page, /generated\.repos\.repositories/);
+  assert.match(page, /data-human-repository-target/);
+  assert.match(page, /data-repository-head=/);
+  assert.match(page, /data-selected-repository/);
   assert.match(page, /data-human-handoff-form/);
   assert.match(page, /<textarea[^>]+data-human-handoff-intent/);
   assert.match(page, /data-human-handoff-send disabled/);
-  assert.match(page, /Nothing is sent merely by typing/);
-  assert.match(page, /Send selected skill \+ request to agent/);
-  assert.doesNotMatch(page, /data-webmcp-find|data-webmcp-inspect|data-webmcp-closure/);
-  assert.match(page, /No internal skill name needs to be typed/);
+  assert.match(page, /Nothing is sent merely by selecting or typing/);
+  assert.match(page, /Send skill \+ repository \+ request to agent/);
+  assert.match(page, /No internal skill or repository identifier needs to be typed/);
   assert.match(layout, /\{% if webmcp %\}<script src="\/assets\/js\/webmcp\.js" type="module"><\/script>\{% endif %\}/);
+  assert.match(packageJson, /"refresh:github": "node scripts\/fetch-github-org\.mjs"/);
   assert.match(packageJson, /"refresh:skills": "node scripts\/fetch-skill-registry\.mjs"/);
 });
