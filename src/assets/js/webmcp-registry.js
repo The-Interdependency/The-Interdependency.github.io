@@ -14,7 +14,7 @@
 // === CONTRACTS ===
 // id: webmcp_public_catalogue_matches_human_catalogue
 //   given: the source registry contains public-facing and internal/specialist skills
-//   then: public list/find/inspect/closure expose only metadata-block msdmd applications plus the exact meta skill, matching the human card catalogue
+//   then: public list/find/inspect/closure expose msdmd metadata-block applications, the exact meta skill, and fresh-making, matching the human card catalogue
 //   class: correctness
 //
 // id: webmcp_registry_smallest_dependency_closure
@@ -22,14 +22,14 @@
 //   then: resolveSkillClosure returns that skill plus every presented transitive depends_on prerequisite exactly once in dependency-first order
 //   class: correctness
 // === END CONTRACTS ===
-// Usage: `const registry = createSkillRegistry(data); registry.findSkills({ query: 'documentation' })`. Consumers pass the generated registry projection; the adapter derives one shared public view rather than inventing separate human and agent registries.
+// Usage: `const registry = createSkillRegistry(data); registry.findSkills({ query: 'documentation' })`.
 
 function normalizeText(value) {
   return String(value || '').trim().toLowerCase();
 }
 
 function isPresentedSkill(skill) {
-  return skill?.kind === 'metadata-block' || skill?.name === 'meta';
+  return skill?.kind === 'metadata-block' || skill?.name === 'meta' || skill?.name === 'fresh-making';
 }
 
 function publicSkill(skill, source) {
@@ -129,7 +129,7 @@ export function createSkillRegistry(registryData) {
       registry_version: registryData.version,
       skill_count: skills.length,
       source_skill_count: registryData.skills.length,
-      public_scope: 'metadata-block plus meta',
+      public_scope: 'metadata-block plus meta plus fresh-making',
       source: { ...source },
       fallback: Boolean(registryData.fallback),
       hmmm: Array.isArray(registryData.hmmm) ? [...registryData.hmmm] : []
