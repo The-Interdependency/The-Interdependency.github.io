@@ -1,8 +1,8 @@
 // === MODULE_BUILD ===
 // id: webmcp_skill_registry_adapter
-//   purpose: Provide deterministic, read-only operations over the website's commit-pinned skill-lib registry projection.
-//   entrypoint: imported by /assets/js/webmcp.js and tests/webmcp.test.mjs
-//   tests: tests/webmcp.test.mjs
+//   purpose: Provide deterministic read-only operations over the public human-and-agent view of the website's commit-pinned skill-lib registry projection.
+//   entrypoint: imported by /assets/js/webmcp.js, server/mcp-protocol.mjs, and tests
+//   tests: tests/webmcp.test.mjs, tests/mcp-server.test.mjs
 // === END MODULE_BUILD ===
 // === BOUNDARIES ===
 // id: webmcp_skill_registry_read_boundary
@@ -12,15 +12,24 @@
 //   operational_effects: none; all exported operations are read-only transformations over supplied registry data
 // === END BOUNDARIES ===
 // === CONTRACTS ===
+// id: webmcp_public_catalogue_matches_human_catalogue
+//   given: the source registry contains public-facing and internal/specialist skills
+//   then: public list/find/inspect/closure expose only metadata-block msdmd applications plus the exact meta skill, matching the human card catalogue
+//   class: correctness
+//
 // id: webmcp_registry_smallest_dependency_closure
-//   given: a registered skill name
-//   then: resolveSkillClosure returns that skill plus every transitive depends_on prerequisite exactly once in dependency-first order
+//   given: a presented registered skill name
+//   then: resolveSkillClosure returns that skill plus every presented transitive depends_on prerequisite exactly once in dependency-first order
 //   class: correctness
 // === END CONTRACTS ===
-// Usage: `const registry = createSkillRegistry(data); registry.findSkills({ query: 'repository audit' })`. Consumers must pass the generated `/assets/data/skill-registry.json` projection, never invent skill records locally.
+// Usage: `const registry = createSkillRegistry(data); registry.findSkills({ query: 'documentation' })`. Consumers pass the generated registry projection; the adapter derives one shared public view rather than inventing separate human and agent registries.
 
 function normalizeText(value) {
   return String(value || '').trim().toLowerCase();
+}
+
+function isPresentedSkill(skill) {
+  return skill?.kind === 'metadata-block' || skill?.name === 'meta';
 }
 
 function publicSkill(skill, source) {
@@ -40,17 +49,26 @@ export function createSkillRegistry(registryData) {
   }
 
   const source = registryData.source;
-  const byName = new Map(registryData.skills.map(skill => [skill.name, skill]));
+  const skills = registryData.skills.filter(isPresentedSkill);
+  const byName = new Map(skills.map(skill => [skill.name, skill]));
+
+  for (const skill of skills) {
+    for (const dependency of skill.depends_on) {
+      if (!byName.has(dependency)) {
+        throw new Error(`presented skill dependency is not presented: ${skill.name} -> ${dependency}`);
+      }
+    }
+  }
 
   function requireSkill(name) {
     const skill = byName.get(String(name || '').trim());
-    if (!skill) throw new Error(`unknown skill: ${name}`);
+    if (!skill) throw new Error(`unknown public skill: ${name}`);
     return skill;
   }
 
   function listSkills({ kind = '' } = {}) {
     const normalizedKind = normalizeText(kind);
-    return registryData.skills
+    return skills
       .filter(skill => !normalizedKind || normalizeText(skill.kind) === normalizedKind)
       .map(skill => publicSkill(skill, source));
   }
@@ -61,7 +79,7 @@ export function createSkillRegistry(registryData) {
     const boundedLimit = Math.max(1, Math.min(Number(limit) || 8, 20));
     if (terms.length === 0) return listSkills({ kind }).slice(0, boundedLimit);
 
-    return registryData.skills
+    return skills
       .filter(skill => !normalizedKind || normalizeText(skill.kind) === normalizedKind)
       .map(skill => {
         const name = normalizeText(skill.name);
@@ -109,7 +127,9 @@ export function createSkillRegistry(registryData) {
   function getRegistryStatus() {
     return {
       registry_version: registryData.version,
-      skill_count: registryData.skills.length,
+      skill_count: skills.length,
+      source_skill_count: registryData.skills.length,
+      public_scope: 'metadata-block plus meta',
       source: { ...source },
       fallback: Boolean(registryData.fallback),
       hmmm: Array.isArray(registryData.hmmm) ? [...registryData.hmmm] : []
