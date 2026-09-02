@@ -1,34 +1,35 @@
 ---
 layout: layouts/base.njk
 title: The Interdependency WebMCP
-description: Live browser-native WebMCP and remote MCP access to the commit-pinned The Interdependency skill registry.
+description: Live browser-native WebMCP over shared skill and repository material.
 permalink: /webmcp/
 webmcp: true
 ---
 <section class="panel" aria-labelledby="webmcp-title">
   <p class="eyebrow">WebMCP Challenge · live public surface</p>
   <h1 id="webmcp-title">The Interdependency WebMCP</h1>
-  <p><strong>The page is the provider.</strong> Human and agent use the same commit-pinned skill material. A human chooses the skill, writes the outcome they want in ordinary language, and explicitly sends that handoff to the browser agent. The agent receives the exact selected skill, its required skill set, provenance, and the human request.</p>
-  <p><strong>Remote MCP:</strong> <code>https://the-interdependency-mcp.onrender.com/mcp</code></p>
+  <p><strong>The page is the provider.</strong> Human and browser agent use the same skill material and the same repository identity. The human chooses a skill, chooses a repository, and states the desired outcome; Send exposes that exact handoff to the browser agent.</p>
+  <p><strong>Remote MCP registry:</strong> <code>https://the-interdependency-mcp.onrender.com/mcp</code></p>
   <p><a href="https://the-interdependency-mcp.onrender.com/health">Open remote MCP health check</a></p>
 </section>
 
 <section class="panel" aria-labelledby="webmcp-status-title">
   <h2 id="webmcp-status-title">LIVE</h2>
-  <p data-webmcp-status data-state="hmmm">Loading the commit-pinned registry and checking browser WebMCP support…</p>
+  <p data-webmcp-status data-state="hmmm">Loading the commit-pinned skill registry and checking browser WebMCP support…</p>
   <p data-remote-mcp-status data-state="hmmm">Checking remote MCP health…</p>
-  <p><strong>Registry source:</strong> <span data-webmcp-source>resolving…</span></p>
-  <noscript><p>JavaScript is disabled, so browser WebMCP registration and the human-to-agent handoff cannot run. The human-readable catalogue remains available, and the remote MCP endpoint remains independent.</p></noscript>
+  <p><strong>Skill source:</strong> <span data-webmcp-source>resolving…</span></p>
+  <p><strong>Repository projection:</strong> {{ generated.repos.publicRepoCount }} active public repositories · snapshot {{ generated.repos.snapshotAt }}</p>
+  <noscript><p>JavaScript is disabled, so browser WebMCP registration and the human-to-agent handoff cannot run. The skill and repository catalogues remain readable.</p></noscript>
 </section>
 
 <section class="panel" aria-labelledby="skill-catalog-title">
-  <p class="eyebrow">Shared human + agent material</p>
-  <h2 id="skill-catalog-title">Choose the skill the agent should use</h2>
-  <p>The public catalogue is deliberately narrow: msdmd and its metadata-block applications first, followed by the METAPAT meta skill. The browser agent sees this same public set. <strong>msdmd is source-tree and forge neutral:</strong> it applies to local workspaces, Git, Mercurial, Jujutsu, Subversion, GitHub, GitLab, Bitbucket, Codeberg, Forgejo/Gitea, self-hosted forges, and unhosted source snapshots. The selected skill does not grant access; the agent uses whatever separately authorized repository or filesystem tools are available for the target. Other <code>skill-lib</code> skills remain canonical in the source library rather than becoming competing definitions here.</p>
+  <p class="eyebrow">Shared human + agent skill material</p>
+  <h2 id="skill-catalog-title">1. Choose how the agent should work</h2>
+  <p>The public skill surface is deliberately narrow: msdmd and its metadata-block applications first, then the METAPAT <code>meta</code> skill, plus <code>fresh-making</code> for deterministic refresh of derived artifacts. Other <code>skill-lib</code> skills remain canonical in the source library rather than becoming competing definitions here.</p>
 
   <form data-human-skill-filter-form>
-    <label for="human-skill-filter">Optional search</label>
-    <input id="human-skill-filter" data-human-skill-filter name="skill-filter" type="search" placeholder="documentation, capabilities, boundaries, meta…" autocomplete="off">
+    <label for="human-skill-filter">Optional skill search</label>
+    <input id="human-skill-filter" data-human-skill-filter name="skill-filter" type="search" placeholder="documentation, capabilities, boundaries, meta, refresh…" autocomplete="off">
     <span aria-live="polite" data-human-skill-count>Presented skills shown</span>
   </form>
 
@@ -56,24 +57,37 @@ webmcp: true
     {% endfor %}
   </div>
 
-  <h3>meta skills</h3>
+  <h3>meta</h3>
   <div class="grid" data-human-skill-catalog data-skill-group="meta">
     {% for skill in generated.skillRegistry.skills %}
     {% if skill.name == "meta" %}
     <article class="card" data-human-skill data-skill-name="{{ skill.name }}" data-skill-kind="{{ skill.kind }}">
       <p class="eyebrow">{{ skill.kind }}</p>
-      <h4>{{ skill.name | replace("-", " ") }}</h4>
+      <h4>{{ skill.name }}</h4>
+      <details data-skill-description>
+        <summary>Description</summary>
+        <p>{{ skill.description }}</p>
+      </details>
+      <p><button type="button" data-select-skill aria-pressed="false">Select this skill</button></p>
+      <p><a href="https://github.com/{{ generated.skillRegistry.source.repository }}/blob/{{ generated.skillRegistry.source.commit }}/{{ skill.path }}">Read canonical SKILL.md</a></p>
+    </article>
+    {% endif %}
+    {% endfor %}
+  </div>
+
+  <h3>refresh</h3>
+  <div class="grid" data-human-skill-catalog data-skill-group="refresh">
+    {% for skill in generated.skillRegistry.skills %}
+    {% if skill.name == "fresh-making" %}
+    <article class="card" data-human-skill data-skill-name="{{ skill.name }}" data-skill-kind="{{ skill.kind }}">
+      <p class="eyebrow">refresh · {{ skill.kind }}</p>
+      <h4>Make derived artifacts fresh</h4>
       <p><code>{{ skill.name }}</code></p>
       <details data-skill-description>
         <summary>Description</summary>
         <p>{{ skill.description }}</p>
       </details>
-      {% if skill.depends_on and skill.depends_on.length %}
-      <p><strong>Depends on:</strong> {% for dependency in skill.depends_on %}<code>{{ dependency }}</code>{% if not loop.last %}, {% endif %}{% endfor %}</p>
-      {% else %}
-      <p><strong>Depends on:</strong> none declared</p>
-      {% endif %}
-      <p><button type="button" data-select-skill aria-pressed="false">Select this skill</button></p>
+      <p><button type="button" data-select-skill aria-pressed="false">Select refresh</button></p>
       <p><a href="https://github.com/{{ generated.skillRegistry.source.repository }}/blob/{{ generated.skillRegistry.source.commit }}/{{ skill.path }}">Read canonical SKILL.md</a></p>
     </article>
     {% endif %}
@@ -82,34 +96,63 @@ webmcp: true
 
   <div class="hmmm-boundary" data-selected-skill-boundary>
     <strong>Selected skill</strong>
-    <span data-selected-skill>No skill selected. Choose a card above; the exact canonical skill identity will be carried automatically.</span>
+    <span data-selected-skill>No skill selected.</span>
   </div>
-  <p>
-    <button type="button" data-selected-action="inspect" disabled>Inspect selected skill</button>
-    <button type="button" data-selected-action="closure" disabled>Show required skill set</button>
-  </p>
+</section>
+
+<section class="panel" aria-labelledby="repository-target-title">
+  <p class="eyebrow">Shared human + agent repository material</p>
+  <h2 id="repository-target-title">2. Choose the repository</h2>
+  <p>The list is generated from the current active public repositories in <code>The-Interdependency</code>. The selected repository's exact observed default-branch head travels with the handoff. Selection grants no write permission.</p>
+  <label for="human-repository-target">Target repository</label>
+  <select id="human-repository-target" data-human-repository-target>
+    <option value="">Choose a repository…</option>
+    {% for repo in generated.repos.repositories %}
+    <option
+      value="{{ repo.name }}"
+      data-repository-url="{{ repo.html_url }}"
+      data-repository-head="{{ repo.head_sha or '' }}"
+      data-repository-branch="{{ repo.default_branch or '' }}"
+      data-repository-status="{{ repo.status or '' }}"
+      data-repository-category="{{ repo.category or '' }}"
+    >{{ repo.name }}{% if repo.category %} — {{ repo.category }}{% endif %}</option>
+    {% endfor %}
+  </select>
+  <div class="hmmm-boundary">
+    <strong>Selected repository</strong>
+    <span data-selected-repository>No repository selected.</span>
+  </div>
+</section>
+
+<section class="panel" aria-labelledby="human-handoff-title">
+  <p class="eyebrow">Human → browser agent</p>
+  <h2 id="human-handoff-title">3. State the outcome and send</h2>
+  <p><button type="button" data-selected-action="inspect" disabled>Inspect selected skill</button> <button type="button" data-selected-action="closure" disabled>Show required skill set</button></p>
 
   <form data-human-handoff-form>
     <label for="human-handoff-intent"><strong>What do you want the agent to change or produce?</strong></label>
-    <textarea id="human-handoff-intent" data-human-handoff-intent name="intent" rows="5" maxlength="4000" required placeholder="Describe the desired outcome in ordinary language. Include the repository, project, folder, or other target only if the agent cannot already infer it from your context."></textarea>
-    <p><button type="submit" data-human-handoff-send disabled>Send selected skill + request to agent</button></p>
-    <p data-human-handoff-status data-state="hmmm" aria-live="polite">Select a skill first. Nothing is sent merely by typing.</p>
+    <textarea id="human-handoff-intent" data-human-handoff-intent name="intent" rows="5" maxlength="4000" placeholder="Describe the desired outcome in ordinary language. The selected repository is carried automatically."></textarea>
+    <p><button type="submit" data-human-handoff-send disabled>Send skill + repository + request to agent</button></p>
+    <p data-human-handoff-status data-state="hmmm" aria-live="polite">Choose a skill and repository first. Nothing is sent merely by selecting or typing.</p>
   </form>
 
-  <pre tabindex="0" data-webmcp-output>Select a skill above. No internal skill name needs to be typed.</pre>
+  <pre tabindex="0" data-webmcp-output>Select a skill and repository. No internal skill or repository identifier needs to be typed.</pre>
 </section>
 
 <section class="panel" aria-labelledby="webmcp-boundary-title">
-  <h2 id="webmcp-boundary-title">Same material, explicit human handoff</h2>
-  <pre tabindex="0">skill-lib/SKILL.md + skills.json
-        ↓ commit-pinned projection
-human-readable card ↔ selected exact skill ↔ browser agent
-                         + human request          ↑
-                               ↓                  │
-                         explicit SEND ── tiw_human_handoff
-                               ↓
-                     agent's authorized change tools</pre>
-  <p>Pressing Send does not modify a repository and does not post the human text to the public remote MCP server. It creates an ephemeral, page-session WebMCP handoff that the browser agent can discover and read. The selected skill constrains how the agent should work; actual changes still require the agent's separately authorized repository, filesystem, deployment, or other tools.</p>
+  <h2 id="webmcp-boundary-title">Same material, meaningful human selection</h2>
+  <pre tabindex="0">skill-lib + current repository projection
+                 ↓
+human reads skill + chooses repo
+                 ↓
+          explicit SEND
+                 ↓
+      tiw_human_handoff
+                 ↓
+agent receives exact skill + closure + repo head + human request
+                 ↓
+agent's separately authorized change tools</pre>
+  <p>For <code>fresh-making</code>, choosing the skill automatically supplies the standard make-fresh request; the human may edit it. The browser handoff itself remains read-only and page-session-only. Actual repository changes require the agent's separately authorized repository, filesystem, deployment, or other tools.</p>
 </section>
 
-<div class="hmmm-boundary"><strong>hmmm</strong><span>WebMCP can expose a newly sent handoff to the agent; the current web standard does not give a page authority to force the browser agent to read it or to inject a prompt into the agent.</span></div>
+<div class="hmmm-boundary"><strong>hmmm</strong><span>Repository observation identifies the target; it does not authenticate the target, grant write authority, or prove that every declared freshness executor is available to the agent.</span></div>
