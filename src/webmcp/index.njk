@@ -8,8 +8,8 @@ webmcp: true
 <section class="panel" aria-labelledby="webmcp-title">
   <p class="eyebrow">WebMCP Challenge · live public surface</p>
   <h1 id="webmcp-title">The Interdependency WebMCP</h1>
-  <p><strong>The page is the provider.</strong> Human and agent use the same commit-pinned skill material. A human chooses the skill, writes the outcome they want in ordinary language, and explicitly sends that handoff to the browser agent. The agent receives the exact selected skill, its required skill set, provenance, and the human request.</p>
-  <p><strong>Remote MCP:</strong> <code>https://the-interdependency-mcp.onrender.com/mcp</code></p>
+  <p><strong>The page is the provider.</strong> Human and agent use the same commit-pinned skill material. A human chooses the skill, writes the outcome they want in ordinary language, and explicitly sends one handoff. A browser WebMCP agent receives it as a dynamic tool; a remote MCP agent connected to this page's opaque session receives the same handoff through the remote server.</p>
+  <p><strong>Public remote MCP:</strong> <code>https://the-interdependency-mcp.onrender.com/mcp</code></p>
   <p><a href="https://the-interdependency-mcp.onrender.com/health">Open remote MCP health check</a></p>
 </section>
 
@@ -18,13 +18,13 @@ webmcp: true
   <p data-webmcp-status data-state="hmmm">Loading the commit-pinned registry and checking browser WebMCP support…</p>
   <p data-remote-mcp-status data-state="hmmm">Checking remote MCP health…</p>
   <p><strong>Registry source:</strong> <span data-webmcp-source>resolving…</span></p>
-  <noscript><p>JavaScript is disabled, so browser WebMCP registration and the human-to-agent handoff cannot run. The human-readable catalogue remains available, and the remote MCP endpoint remains independent.</p></noscript>
+  <noscript><p>JavaScript is disabled, so browser WebMCP registration and the human-to-agent handoff cannot run. The human-readable catalogue remains available, and the public remote MCP endpoint remains independent.</p></noscript>
 </section>
 
 <section class="panel" aria-labelledby="skill-catalog-title">
   <p class="eyebrow">Shared human + agent material</p>
   <h2 id="skill-catalog-title">Choose the skill the agent should use</h2>
-  <p>The public catalogue is deliberately narrow: msdmd and its metadata-block applications first, followed by the METAPAT meta skill. The browser agent sees this same public set. <strong>msdmd is source-tree and forge neutral:</strong> it applies to local workspaces, Git, Mercurial, Jujutsu, Subversion, GitHub, GitLab, Bitbucket, Codeberg, Forgejo/Gitea, self-hosted forges, and unhosted source snapshots. The selected skill does not grant access; the agent uses whatever separately authorized repository or filesystem tools are available for the target. Other <code>skill-lib</code> skills remain canonical in the source library rather than becoming competing definitions here.</p>
+  <p>The public catalogue is deliberately narrow: msdmd and its metadata-block applications first, followed by the METAPAT meta skill. Browser and remote MCP agents see this same public set. <strong>msdmd is source-tree and forge neutral:</strong> it applies to local workspaces, Git, Mercurial, Jujutsu, Subversion, GitHub, GitLab, Bitbucket, Codeberg, Forgejo/Gitea, self-hosted forges, and unhosted source snapshots. The selected skill does not grant access; the agent uses whatever separately authorized repository or filesystem tools are available for the target. Other <code>skill-lib</code> skills remain canonical in the source library rather than becoming competing definitions here.</p>
 
   <form data-human-skill-filter-form>
     <label for="human-skill-filter">Optional search</label>
@@ -89,6 +89,12 @@ webmcp: true
     <button type="button" data-selected-action="closure" disabled>Show required skill set</button>
   </p>
 
+  <div class="hmmm-boundary">
+    <strong>Remote agent session MCP</strong>
+    <span>Connect one remote MCP agent to this opaque session URL. Keep it private: possession is read access to the handoff published from this page. The separate write key never leaves page memory.</span>
+  </div>
+  <p><input type="text" data-remote-handoff-url readonly aria-label="Remote agent session MCP URL" value="Generating secure session URL…"></p>
+
   <form data-human-handoff-form>
     <label for="human-handoff-intent"><strong>What do you want the agent to change or produce?</strong></label>
     <textarea id="human-handoff-intent" data-human-handoff-intent name="intent" rows="5" maxlength="4000" required placeholder="Describe the desired outcome in ordinary language. Include the repository, project, folder, or other target only if the agent cannot already infer it from your context."></textarea>
@@ -103,13 +109,18 @@ webmcp: true
   <h2 id="webmcp-boundary-title">Same material, explicit human handoff</h2>
   <pre tabindex="0">skill-lib/SKILL.md + skills.json
         ↓ commit-pinned projection
-human-readable card ↔ selected exact skill ↔ browser agent
-                         + human request          ↑
-                               ↓                  │
-                         explicit SEND ── tiw_human_handoff
+human-readable card ↔ selected exact skill
+                         + human request
                                ↓
+                         explicit SEND
+                         ↙           ↘
+      browser WebMCP tool       remote MCP session
+      tiw_human_handoff         tools/list_changed
+                                      ↓
+                              tiw_human_handoff
+                         ↘           ↙
                      agent's authorized change tools</pre>
-  <p>Pressing Send does not modify a repository and does not post the human text to the public remote MCP server. It creates an ephemeral, page-session WebMCP handoff that the browser agent can discover and read. The selected skill constrains how the agent should work; actual changes still require the agent's separately authorized repository, filesystem, deployment, or other tools.</p>
+  <p>Pressing Send does not modify a repository. It publishes the same bounded handoff to browser WebMCP and to volatile remote MCP session memory. A remote client that keeps the session notification stream open receives <code>notifications/tools/list_changed</code>, lists tools again, and can then invoke <code>tiw_human_handoff</code>. Editing the request or changing the selected skill retracts the handoff; remote records expire automatically after the bounded TTL. Actual changes still require the agent's separately authorized repository, filesystem, deployment, or other tools.</p>
 </section>
 
-<div class="hmmm-boundary"><strong>hmmm</strong><span>WebMCP can expose a newly sent handoff to the agent; the current web standard does not give a page authority to force the browser agent to read it or to inject a prompt into the agent.</span></div>
+<div class="hmmm-boundary"><strong>hmmm</strong><span>The page can notify a conforming remote MCP client that its tool list changed and can expose a dynamic browser WebMCP tool. Neither transport gives the page authority to force a model to reason or act; the agent host still decides when to invoke available tools.</span></div>
