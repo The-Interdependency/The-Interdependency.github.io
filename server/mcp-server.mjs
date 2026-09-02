@@ -7,24 +7,19 @@ import {
   MODERN_PROTOCOL_VERSION,
   SUPPORTED_PROTOCOL_VERSIONS
 } from './mcp-protocol.mjs';
-import {
-  createHandoffStore,
-  DEFAULT_HANDOFF_TTL_MS,
-  validHandoffToken
-} from './handoff-store.mjs';
 
 // === MODULE_BUILD ===
 // id: interdependency_remote_mcp_http_server
 //   module_name: remote_mcp_server
 //   module_kind: service
-//   summary: Public Streamable HTTP MCP endpoint over the website-owned public skill registry, with an opaque-session channel for short-lived human handoffs.
+//   summary: Public stateless Streamable HTTP MCP endpoint over the website-owned skill registry projection.
 //   owner: Erin Spencer
-//   public_surface: POST /mcp, GET /mcp?session=<opaque> SSE, POST|DELETE /handoff/<opaque>, GET /health
+//   public_surface: POST /mcp, GET /health
 //   internal_surface: createInterdependencyMcpServer, loadRegistryProjection
-//   auth_boundary: registry is public; handoff read uses an opaque session bearer; handoff publish/delete additionally requires a distinct write key and allowed website origin
-//   storage_boundary: human handoffs are volatile process memory only with bounded TTL/capacity
+//   auth_boundary: none
+//   storage_boundary: none
 //   network_boundary: external
-//   user_data_boundary: bounded human-entered request text may transit the handoff endpoint and session MCP tool
+//   user_data_boundary: none
 //   admin_only: false
 //   tests: tests/mcp-server.test.mjs
 //   rollout: Render web service using `node server/mcp-server.mjs`
@@ -32,31 +27,26 @@ import {
 // === END MODULE_BUILD ===
 // === BOUNDARIES ===
 // id: interdependency_remote_mcp_http_boundary
-//   summary: exposes public read-only skill tools and one ephemeral human handoff only to the opaque MCP session selected by the human
-//   auth_boundary: session id is read capability only; separate write key + explicit website origin is required to publish/delete handoff data
-//   storage_boundary: volatile in-process map, 30-minute default TTL, bounded record count, no disk/database
+//   summary: accepts public MCP requests and exposes only read-only operations over public skill registry data
+//   auth_boundary: none
+//   storage_boundary: none
 //   network_boundary: external
-//   user_data_boundary: human request is never indexed or listed; only a holder of the opaque session can read it through MCP
+//   user_data_boundary: none
 //   admin_only: false
-//   pii: human-entered text is unclassified and treated as untrusted
-//   secrets: write key is accepted only on the handoff mutation endpoint and never returned to MCP clients
-//   side_effects: handoff publish/delete changes only ephemeral handoff state and session tool availability; no repository mutation
+//   pii: none
+//   secrets: none
+//   side_effects: none
 //   owner: website-runtime
 // === END BOUNDARIES ===
 // === CONTRACTS ===
-// id: remote_mcp_streamable_http_session_notifications
-//   given: a client connects to GET /mcp?session=<opaque>
-//   then: an SSE notification stream stays open; human handoff publish/delete emits `notifications/tools/list_changed`; base GET /mcp without a session remains 405
+// id: remote_mcp_streamable_http_single_endpoint
+//   given: a client sends MCP JSON-RPC traffic
+//   then: POST /mcp returns JSON MCP responses and GET /mcp returns 405 because this server has no unsolicited SSE stream
 //   class: interoperability
-//
-// id: remote_mcp_handoff_write_is_separate_from_read
-//   given: a browser publishes or deletes /handoff/<session>
-//   then: the request must come from an explicitly allowed website origin and carry the distinct write key; a remote agent possessing only the MCP session URL cannot mutate the handoff
-//   class: security
 //
 // id: remote_mcp_origin_validation
 //   given: a request supplies an Origin header
-//   then: MCP/health requests accept only configured MCP origins; handoff mutation requests additionally require a present origin in the narrower handoff-origin set
+//   then: only an explicitly allowed origin is accepted, including for the browser-visible health route
 //   class: security
 //
 // id: remote_mcp_registry_source_is_verified_projection
@@ -64,23 +54,17 @@ import {
 //   then: it loads the generated commit-pinned registry projection or the verified last-known-good fallback and never invents skill records
 //   class: evidence
 // === END CONTRACTS ===
-// Usage: `PORT=3000 node server/mcp-server.mjs`; public clients connect to `/mcp`. Human/agent sessions use `/mcp?session=<opaque>`, with the website privately holding a different write key for `/handoff/<opaque>`.
+// Usage: `PORT=3000 node server/mcp-server.mjs`; connect an MCP client to `http://127.0.0.1:3000/mcp`. The production deployment is intentionally public and read-only; adding mutation requires a separate authenticated service boundary.
 
 const PUBLIC_REGISTRY_PATH = 'src/assets/data/skill-registry.json';
 const DEFAULT_PORT = 3000;
 const MAX_BODY_BYTES = 1_000_000;
-const SSE_HEARTBEAT_MS = 15_000;
 
 const DEFAULT_ALLOWED_ORIGINS = new Set([
   'https://interdependentway.org',
   'https://www.interdependentway.org',
   'https://chatgpt.com',
   'https://chat.openai.com'
-]);
-
-const DEFAULT_HANDOFF_ALLOWED_ORIGINS = new Set([
-  'https://interdependentway.org',
-  'https://www.interdependentway.org'
 ]);
 
 function rpcError(id, code, message, data) {
@@ -107,20 +91,12 @@ function sendEmpty(response, status, headers = {}) {
   response.end();
 }
 
-function originsFromEnvironment(variable, fallback) {
-  const configured = String(process.env[variable] || '')
+function allowedOriginsFromEnvironment() {
+  const configured = String(process.env.MCP_ALLOWED_ORIGINS || '')
     .split(',')
     .map(value => value.trim())
     .filter(Boolean);
-  return configured.length ? new Set(configured) : fallback;
-}
-
-function allowedOriginsFromEnvironment() {
-  return originsFromEnvironment('MCP_ALLOWED_ORIGINS', DEFAULT_ALLOWED_ORIGINS);
-}
-
-function handoffAllowedOriginsFromEnvironment() {
-  return originsFromEnvironment('MCP_HANDOFF_ALLOWED_ORIGINS', DEFAULT_HANDOFF_ALLOWED_ORIGINS);
+  return configured.length ? new Set(configured) : DEFAULT_ALLOWED_ORIGINS;
 }
 
 function isOriginAllowed(request, allowedOrigins) {
@@ -128,15 +104,10 @@ function isOriginAllowed(request, allowedOrigins) {
   return !origin || allowedOrigins.has(origin);
 }
 
-function isExplicitOriginAllowed(request, allowedOrigins) {
-  const origin = request.headers.origin;
-  return Boolean(origin && allowedOrigins.has(origin));
-}
-
 function corsHeaders(request, allowedOrigins) {
   const origin = request.headers.origin;
   return origin && allowedOrigins.has(origin)
-    ? { 'access-control-allow-origin': origin, vary: 'Origin' }
+    ? { 'access-control-allow-origin': origin }
     : {};
 }
 
@@ -188,24 +159,6 @@ function validateRoutingHeaders(request, message) {
   return null;
 }
 
-function handoffSessionFromUrl(url) {
-  const value = url.searchParams.get('session');
-  if (value === null || value === '') return null;
-  return validHandoffToken(value) ? value : false;
-}
-
-function handoffSessionFromPath(pathname) {
-  if (!pathname.startsWith('/handoff/')) return null;
-  const raw = pathname.slice('/handoff/'.length);
-  if (!raw || raw.includes('/')) return false;
-  try {
-    const value = decodeURIComponent(raw);
-    return validHandoffToken(value) ? value : false;
-  } catch {
-    return false;
-  }
-}
-
 export async function loadRegistryProjection() {
   try {
     return JSON.parse(await readFile(PUBLIC_REGISTRY_PATH, 'utf8'));
@@ -220,62 +173,9 @@ export async function loadRegistryProjection() {
 }
 
 export function createInterdependencyMcpServer(registryData, {
-  allowedOrigins = allowedOriginsFromEnvironment(),
-  handoffAllowedOrigins = handoffAllowedOriginsFromEnvironment(),
-  handoffStore = createHandoffStore()
+  allowedOrigins = allowedOriginsFromEnvironment()
 } = {}) {
-  const protocol = createMcpProtocol(registryData, { getHandoff: session => handoffStore.get(session) });
-  const streams = new Map();
-
-  const removeStream = (session, response) => {
-    const set = streams.get(session);
-    if (!set) return;
-    set.delete(response);
-    if (set.size === 0) streams.delete(session);
-  };
-
-  const broadcastToolListChanged = session => {
-    const set = streams.get(session);
-    if (!set?.size) return;
-    const payload = `data: ${JSON.stringify({ jsonrpc: '2.0', method: 'notifications/tools/list_changed' })}\n\n`;
-    for (const response of [...set]) {
-      try {
-        response.write(payload);
-      } catch {
-        removeStream(session, response);
-      }
-    }
-  };
-
-  const openNotificationStream = (request, response, session) => {
-    response.writeHead(200, {
-      'content-type': 'text/event-stream; charset=utf-8',
-      'cache-control': 'no-store, no-transform',
-      connection: 'keep-alive',
-      'x-accel-buffering': 'no',
-      ...corsHeaders(request, allowedOrigins)
-    });
-    response.write(': The Interdependency MCP handoff session connected\n\n');
-
-    let set = streams.get(session);
-    if (!set) {
-      set = new Set();
-      streams.set(session, set);
-    }
-    set.add(response);
-
-    const heartbeat = setInterval(() => {
-      if (!response.writableEnded) response.write(': keepalive\n\n');
-    }, SSE_HEARTBEAT_MS);
-    heartbeat.unref?.();
-
-    const cleanup = () => {
-      clearInterval(heartbeat);
-      removeStream(session, response);
-    };
-    request.once('close', cleanup);
-    response.once('close', cleanup);
-  };
+  const protocol = createMcpProtocol(registryData);
 
   return createServer(async (request, response) => {
     const url = new URL(request.url || '/', `http://${request.headers.host || 'localhost'}`);
@@ -288,77 +188,8 @@ export function createInterdependencyMcpServer(registryData, {
         ok: true,
         service: 'the-interdependency-mcp',
         endpoint: '/mcp',
-        session_endpoint: '/mcp?session=<opaque>',
-        handoff_ttl_seconds: Math.floor(handoffStore.ttlMs / 1000),
-        active_handoffs: handoffStore.size(),
         skill_count: protocol.registry.getRegistryStatus().skill_count
       }, corsHeaders(request, allowedOrigins));
-    }
-
-    const handoffPathSession = handoffSessionFromPath(url.pathname);
-    if (handoffPathSession !== null) {
-      if (handoffPathSession === false) {
-        return sendJson(response, 400, rpcError(null, -32602, 'Invalid handoff session'));
-      }
-      if (!isExplicitOriginAllowed(request, handoffAllowedOrigins)) {
-        return sendJson(response, 403, rpcError(null, -32000, 'Forbidden handoff origin'));
-      }
-
-      if (request.method === 'OPTIONS') {
-        return sendEmpty(response, 204, {
-          ...corsHeaders(request, handoffAllowedOrigins),
-          'access-control-allow-methods': 'POST, DELETE, OPTIONS',
-          'access-control-allow-headers': 'content-type, x-handoff-key',
-          'access-control-max-age': '600'
-        });
-      }
-
-      if (request.method !== 'POST' && request.method !== 'DELETE') {
-        return sendEmpty(response, 405, { allow: 'POST, DELETE, OPTIONS' });
-      }
-
-      const writeKey = String(request.headers['x-handoff-key'] || '');
-      if (!validHandoffToken(writeKey)) {
-        return sendJson(response, 403, rpcError(null, -32000, 'Invalid handoff write key'), corsHeaders(request, handoffAllowedOrigins));
-      }
-
-      if (request.method === 'DELETE') {
-        try {
-          const removed = handoffStore.remove(handoffPathSession, writeKey);
-          if (removed) broadcastToolListChanged(handoffPathSession);
-          return sendJson(response, 200, { ok: true, removed }, corsHeaders(request, handoffAllowedOrigins));
-        } catch (error) {
-          const status = error?.code === 'HANDOFF_WRITE_KEY_REJECTED' ? 403 : 400;
-          return sendJson(response, status, rpcError(null, -32000, error.message), corsHeaders(request, handoffAllowedOrigins));
-        }
-      }
-
-      let handoff;
-      try {
-        handoff = await readJsonBody(request);
-      } catch (error) {
-        return sendJson(
-          response,
-          error.statusCode || 400,
-          rpcError(null, error.parseError ? -32700 : -32600, error.message),
-          corsHeaders(request, handoffAllowedOrigins)
-        );
-      }
-
-      try {
-        const receipt = handoffStore.put(handoffPathSession, writeKey, handoff);
-        broadcastToolListChanged(handoffPathSession);
-        return sendJson(response, 201, {
-          ok: true,
-          session: handoffPathSession,
-          version: receipt.version,
-          expires_at: new Date(receipt.expiresAt).toISOString(),
-          mcp_path: `/mcp?session=${encodeURIComponent(handoffPathSession)}`
-        }, corsHeaders(request, handoffAllowedOrigins));
-      } catch (error) {
-        const status = error?.code === 'HANDOFF_WRITE_KEY_REJECTED' ? 403 : 400;
-        return sendJson(response, status, rpcError(null, -32602, error.message), corsHeaders(request, handoffAllowedOrigins));
-      }
     }
 
     if (url.pathname !== '/mcp') {
@@ -369,28 +200,21 @@ export function createInterdependencyMcpServer(registryData, {
       return sendJson(response, 403, rpcError(null, -32000, 'Forbidden origin'));
     }
 
-    const handoffSession = handoffSessionFromUrl(url);
-    if (handoffSession === false) {
-      return sendJson(response, 400, rpcError(null, -32602, 'Invalid handoff session'), corsHeaders(request, allowedOrigins));
-    }
-
     if (request.method === 'GET') {
-      if (!handoffSession) return sendEmpty(response, 405, { allow: 'POST, OPTIONS' });
-      openNotificationStream(request, response, handoffSession);
-      return;
+      return sendEmpty(response, 405, { allow: 'POST, OPTIONS' });
     }
 
     if (request.method === 'OPTIONS') {
       return sendEmpty(response, 204, {
         ...corsHeaders(request, allowedOrigins),
-        'access-control-allow-methods': 'GET, POST, OPTIONS',
+        'access-control-allow-methods': 'POST, OPTIONS',
         'access-control-allow-headers': 'content-type, accept, mcp-protocol-version, mcp-method, mcp-name',
         'access-control-max-age': '600'
       });
     }
 
     if (request.method !== 'POST') {
-      return sendEmpty(response, 405, { allow: 'GET, POST, OPTIONS' });
+      return sendEmpty(response, 405, { allow: 'POST, OPTIONS' });
     }
 
     let message;
@@ -400,14 +224,13 @@ export function createInterdependencyMcpServer(registryData, {
       return sendJson(
         response,
         error.statusCode || 400,
-        rpcError(null, error.parseError ? -32700 : -32600, error.message),
-        corsHeaders(request, allowedOrigins)
+        rpcError(null, error.parseError ? -32700 : -32600, error.message)
       );
     }
 
     const routingError = validateRoutingHeaders(request, message);
     if (routingError) {
-      return sendJson(response, 400, rpcError(message?.id, -32602, 'Invalid routing headers', { reason: routingError }), corsHeaders(request, allowedOrigins));
+      return sendJson(response, 400, rpcError(message?.id, -32602, 'Invalid routing headers', { reason: routingError }));
     }
 
     const protocolVersion = protocolVersionFor(request, message);
@@ -416,11 +239,11 @@ export function createInterdependencyMcpServer(registryData, {
       return sendJson(response, 400, rpcError(message?.id, -32602, 'Unsupported protocol version', {
         supported,
         requested: protocolVersion
-      }), corsHeaders(request, allowedOrigins));
+      }));
     }
 
-    const result = protocol.handle(message, { protocolVersion, handoffSession });
-    if (result?.notification) return sendEmpty(response, 202, corsHeaders(request, allowedOrigins));
+    const result = protocol.handle(message, { protocolVersion });
+    if (result?.notification) return sendEmpty(response, 202);
 
     return sendJson(response, 200, result, corsHeaders(request, allowedOrigins));
   });
@@ -433,7 +256,6 @@ async function main() {
   const host = process.env.HOST || '0.0.0.0';
   server.listen(port, host, () => {
     console.log(`The Interdependency MCP listening on http://${host}:${port}/mcp`);
-    console.log(`Ephemeral human handoff TTL: ${DEFAULT_HANDOFF_TTL_MS / 60000} minutes`);
   });
 }
 
