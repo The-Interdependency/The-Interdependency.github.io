@@ -8,7 +8,7 @@ webmcp: true
 <section class="panel" aria-labelledby="webmcp-title">
   <p class="eyebrow">WebMCP Challenge · live public surface</p>
   <h1 id="webmcp-title">The Interdependency WebMCP</h1>
-  <p><strong>The page is the provider.</strong> Humans can operate the registry here; WebMCP-capable browsers receive the same five tools through <code>document.modelContext.registerTool(...)</code>; remote MCP clients connect to the website-owned Render runtime.</p>
+  <p><strong>The page is the provider.</strong> Humans can browse and operate the skill registry here; WebMCP-capable browsers receive the same five operations through <code>document.modelContext.registerTool(...)</code>; remote MCP clients connect to the website-owned Render runtime.</p>
   <p><strong>Remote MCP:</strong> <code>https://the-interdependency-mcp.onrender.com/mcp</code></p>
   <p><a href="https://the-interdependency-mcp.onrender.com/health">Open remote MCP health check</a></p>
 </section>
@@ -18,12 +18,41 @@ webmcp: true
   <p data-webmcp-status data-state="hmmm">Loading the commit-pinned registry and checking browser WebMCP support…</p>
   <p data-remote-mcp-status data-state="hmmm">Checking remote MCP health…</p>
   <p><strong>Registry source:</strong> <span data-webmcp-source>resolving…</span></p>
-  <noscript><p>JavaScript is disabled, so browser WebMCP registration and the human controls below cannot run. The remote MCP endpoint remains independent.</p></noscript>
+  <noscript><p>JavaScript is disabled, so browser WebMCP registration and the interactive controls cannot run. The human-readable catalogue below remains available, and the remote MCP endpoint remains independent.</p></noscript>
+</section>
+
+<section class="panel" aria-labelledby="skill-catalog-title">
+  <p class="eyebrow">Human surface · {{ generated.skillRegistry.skills.length }} skills</p>
+  <h2 id="skill-catalog-title">Skill catalogue</h2>
+  <p>These are the skills exposed by the same commit-pinned registry used by WebMCP and the remote MCP server. The description shown here is the registry's human-readable statement of when and why each skill is used.</p>
+
+  <form data-human-skill-filter-form>
+    <label for="human-skill-filter">Search skills</label>
+    <input id="human-skill-filter" data-human-skill-filter name="skill-filter" type="search" placeholder="repository audit, UCNS, metadata, SSH…" autocomplete="off">
+    <span aria-live="polite" data-human-skill-count>{{ generated.skillRegistry.skills.length }} skills shown</span>
+  </form>
+
+  <div class="grid" data-human-skill-catalog>
+    {% for skill in generated.skillRegistry.skills %}
+    <article class="card" data-human-skill>
+      <p class="eyebrow">{{ skill.kind }}</p>
+      <h3>{{ skill.name | replace("-", " ") }}</h3>
+      <p><code>{{ skill.name }}</code></p>
+      <p>{{ skill.description }}</p>
+      {% if skill.depends_on and skill.depends_on.length %}
+      <p><strong>Depends on:</strong> {% for dependency in skill.depends_on %}<code>{{ dependency }}</code>{% if not loop.last %}, {% endif %}{% endfor %}</p>
+      {% else %}
+      <p><strong>Depends on:</strong> none declared</p>
+      {% endif %}
+      <p><a href="https://github.com/{{ generated.skillRegistry.source.repository }}/blob/{{ generated.skillRegistry.source.commit }}/{{ skill.path }}">Read canonical SKILL.md</a></p>
+    </article>
+    {% endfor %}
+  </div>
 </section>
 
 <section class="panel" aria-labelledby="webmcp-tools-title">
   <h2 id="webmcp-tools-title">Five registry operations</h2>
-  <p>The controls below execute the same read-only registry logic exposed to agents.</p>
+  <p>These controls execute the same read-only registry logic exposed to browser agents and remote MCP clients. The raw output is intentionally shown here as the machine-facing view of the same catalogue above.</p>
 
   <p>
     <button type="button" data-webmcp-action="status">STATUS</button>
@@ -52,13 +81,14 @@ webmcp: true
 </section>
 
 <section class="panel" aria-labelledby="webmcp-boundary-title">
-  <h2 id="webmcp-boundary-title">One source, two agent surfaces</h2>
+  <h2 id="webmcp-boundary-title">One source, three views</h2>
   <pre tabindex="0">skill-lib/SKILL.md + skills.json
         ↓ commit-pinned projection
 website registry logic
+        ├── human-readable skill catalogue
         ├── browser WebMCP provider
         └── remote Streamable HTTP MCP server</pre>
-  <p>The website owns both delivery surfaces. <code>The-Interdependency/skill-lib</code> remains authority for the skills themselves. All v0 operations are read-only.</p>
+  <p>The website owns the delivery surfaces. <code>The-Interdependency/skill-lib</code> remains authority for the skills themselves. All v0 operations are read-only.</p>
 </section>
 
 <div class="hmmm-boundary"><strong>hmmm</strong><span>Write-capable operations remain intentionally absent. Installing, propagating, or changing repository state requires a separate authenticated boundary rather than silently enlarging this public surface.</span></div>

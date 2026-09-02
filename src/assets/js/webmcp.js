@@ -2,7 +2,7 @@ import { createSkillRegistry } from './webmcp-registry.js';
 
 // === MODULE_BUILD ===
 // id: interdependency_webmcp_surface
-//   purpose: Register the website-owned, read-only WebMCP tool surface and provide the same registry operations to the human-facing demo page.
+//   purpose: Register the website-owned, read-only WebMCP tool surface, provide the same registry operations to the human-facing demo page, and filter the build-time human skill catalogue.
 //   entrypoint: /webmcp/
 //   tests: tests/webmcp.test.mjs
 // === END MODULE_BUILD ===
@@ -19,8 +19,13 @@ import { createSkillRegistry } from './webmcp-registry.js';
 //   given: a human control or browser agent invokes any v0 operation
 //   then: execution reads the generated registry projection and returns structured results without mutating the site, GitHub, or skill-lib
 //   class: safety
+//
+// id: webmcp_human_catalogue_remains_source_bound
+//   given: a visitor browses or filters the human-readable skill catalogue
+//   then: filtering only hides or reveals build-time cards derived from the same generated registry and never creates a second skill definition
+//   class: correctness
 // === END CONTRACTS ===
-// Usage: open `/webmcp/` in any browser to exercise the five registry operations directly. In a WebMCP-capable browser the same operations register through `document.modelContext.registerTool(...)`. The remote MCP endpoint is independently health-checked and remains read-only.
+// Usage: open `/webmcp/` in any browser to browse the human-readable skill catalogue and exercise the five registry operations directly. In a WebMCP-capable browser the same operations register through `document.modelContext.registerTool(...)`. The remote MCP endpoint is independently health-checked and remains read-only.
 
 const REGISTRY_URL = '/assets/data/skill-registry.json';
 const REMOTE_MCP_BASE = 'https://the-interdependency-mcp.onrender.com';
@@ -81,6 +86,30 @@ async function checkRemoteMcp() {
   }
 }
 
+function bindHumanCatalogue() {
+  const form = document.querySelector('[data-human-skill-filter-form]');
+  const input = document.querySelector('[data-human-skill-filter]');
+  const count = document.querySelector('[data-human-skill-count]');
+  const cards = [...document.querySelectorAll('[data-human-skill]')];
+
+  form?.addEventListener('submit', event => event.preventDefault());
+  if (!input || cards.length === 0) return;
+
+  const applyFilter = () => {
+    const query = String(input.value || '').trim().toLowerCase();
+    let visible = 0;
+    for (const card of cards) {
+      const show = !query || card.textContent.toLowerCase().includes(query);
+      card.hidden = !show;
+      if (show) visible += 1;
+    }
+    if (count) count.textContent = `${visible} of ${cards.length} skills shown`;
+  };
+
+  input.addEventListener('input', applyFilter);
+  applyFilter();
+}
+
 function bindHumanControls(registry) {
   document.querySelector('[data-webmcp-action="status"]')?.addEventListener('click', () => {
     showResult('STATUS', registry.getRegistryStatus());
@@ -128,11 +157,12 @@ export async function registerInterdependencyWebMCP() {
   const registry = createSkillRegistry(data);
   const status = registry.getRegistryStatus();
   updateSource(status);
+  bindHumanCatalogue();
   bindHumanControls(registry);
   void checkRemoteMcp();
 
   if (!modelContext()?.registerTool) {
-    setStatus(`Registry live for ${status.skill_count} skills. Browser WebMCP registration requires a WebMCP-capable browser; the human controls and remote MCP server remain usable.`, 'hmmm');
+    setStatus(`Registry live for ${status.skill_count} skills. Browser WebMCP registration requires a WebMCP-capable browser; the human catalogue, controls, and remote MCP server remain usable.`, 'hmmm');
     return { registered: false, reason: 'webmcp-unavailable', registry: status };
   }
   if (globalThis.__interdependencyWebMcpRegistered) {
