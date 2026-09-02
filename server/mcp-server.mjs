@@ -46,7 +46,7 @@ import {
 //
 // id: remote_mcp_origin_validation
 //   given: a request supplies an Origin header
-//   then: only an explicitly allowed origin is accepted
+//   then: only an explicitly allowed origin is accepted, including for the browser-visible health route
 //   class: security
 //
 // id: remote_mcp_registry_source_is_verified_projection
@@ -102,6 +102,13 @@ function allowedOriginsFromEnvironment() {
 function isOriginAllowed(request, allowedOrigins) {
   const origin = request.headers.origin;
   return !origin || allowedOrigins.has(origin);
+}
+
+function corsHeaders(request, allowedOrigins) {
+  const origin = request.headers.origin;
+  return origin && allowedOrigins.has(origin)
+    ? { 'access-control-allow-origin': origin }
+    : {};
 }
 
 async function readJsonBody(request) {
@@ -174,12 +181,15 @@ export function createInterdependencyMcpServer(registryData, {
     const url = new URL(request.url || '/', `http://${request.headers.host || 'localhost'}`);
 
     if (request.method === 'GET' && url.pathname === '/health') {
+      if (!isOriginAllowed(request, allowedOrigins)) {
+        return sendJson(response, 403, rpcError(null, -32000, 'Forbidden origin'));
+      }
       return sendJson(response, 200, {
         ok: true,
         service: 'the-interdependency-mcp',
         endpoint: '/mcp',
         skill_count: protocol.registry.getRegistryStatus().skill_count
-      });
+      }, corsHeaders(request, allowedOrigins));
     }
 
     if (url.pathname !== '/mcp') {
@@ -195,9 +205,8 @@ export function createInterdependencyMcpServer(registryData, {
     }
 
     if (request.method === 'OPTIONS') {
-      const origin = request.headers.origin;
       return sendEmpty(response, 204, {
-        ...(origin && allowedOrigins.has(origin) ? { 'access-control-allow-origin': origin } : {}),
+        ...corsHeaders(request, allowedOrigins),
         'access-control-allow-methods': 'POST, OPTIONS',
         'access-control-allow-headers': 'content-type, accept, mcp-protocol-version, mcp-method, mcp-name',
         'access-control-max-age': '600'
@@ -236,10 +245,7 @@ export function createInterdependencyMcpServer(registryData, {
     const result = protocol.handle(message, { protocolVersion });
     if (result?.notification) return sendEmpty(response, 202);
 
-    const origin = request.headers.origin;
-    return sendJson(response, 200, result, {
-      ...(origin && allowedOrigins.has(origin) ? { 'access-control-allow-origin': origin } : {})
-    });
+    return sendJson(response, 200, result, corsHeaders(request, allowedOrigins));
   });
 }
 
