@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { normalizeRegistry, readFallback } from '../scripts/fetch-skill-registry.mjs';
 import { createSkillRegistry } from '../src/assets/js/webmcp-registry.js';
 
-// Usage: run with `npm test`; these checks verify registry provenance, dependency closure, clean-checkout fallback identity, current WebMCP Document API usage, the build-time human-readable skill catalogue, live human controls, and the visible remote MCP endpoint without requiring a WebMCP-capable test browser.
+// Usage: run with `npm test`; these checks verify registry provenance, the shared curated human/agent catalogue, current WebMCP Document API usage, click-driven human selection, and the visible remote MCP endpoint without requiring a WebMCP-capable test browser.
 
 const BOOTSTRAP_SNAPSHOT_COMMIT = '260671303733a45c8f8d5563e41d8854e09856e6';
 const SNAPSHOT_PATH = 'src/_data/snapshots/skill-registry.last-known-good.json';
@@ -17,6 +17,7 @@ const sourceRegistry = JSON.stringify({
   skills: [
     { name: 'msdmd', path: 'msdmd/SKILL.md', kind: 'metadata-block', description: 'foundational metadata convention' },
     { name: 'cap-build', path: 'cap-build/SKILL.md', kind: 'metadata-block', depends_on: ['msdmd'], description: 'capability inventory' },
+    { name: 'meta', path: 'meta/SKILL.md', kind: 'procedural', description: 'METAPAT consultation router' },
     { name: 'repo-audit-repair', path: 'repo-audit-repair/SKILL.md', kind: 'procedural', description: 'audit and repair a repository' }
   ]
 });
@@ -63,14 +64,19 @@ test('committed or refreshed fallback snapshot is exact, usable, and retains sou
   assert.ok(snapshot.skills.some(skill => skill.name === 'repo-audit-repair'));
 });
 
-test('registry adapter finds skills and resolves the smallest dependency-first closure', () => {
+test('public registry presents the same msdmd-plus-meta catalogue to human and agent surfaces', () => {
   const registry = createSkillRegistry(sampleProjection());
-  const matches = registry.findSkills({ query: 'audit repository' });
-  assert.equal(matches[0].name, 'repo-audit-repair');
+  assert.deepEqual(registry.listSkills().map(skill => skill.name), ['msdmd', 'cap-build', 'meta']);
+  assert.equal(registry.findSkills({ query: 'audit repository' }).length, 0);
+  assert.equal(registry.findSkills({ query: 'capability' })[0].name, 'cap-build');
+  assert.throws(() => registry.inspectSkill({ name: 'repo-audit-repair' }), /unknown public skill/);
 
   const closure = registry.resolveSkillClosure({ name: 'cap-build' });
   assert.deepEqual(closure.map(skill => skill.name), ['msdmd', 'cap-build']);
-  assert.match(closure[1].canonical_url, /The-Interdependency\/skill-lib\/blob\/0123456789abcdef/);
+  const status = registry.getRegistryStatus();
+  assert.equal(status.skill_count, 3);
+  assert.equal(status.source_skill_count, 4);
+  assert.equal(status.public_scope, 'metadata-block plus meta');
 });
 
 test('WebMCP provider registers only the five declared read-only registry tools through document.modelContext', async () => {
@@ -90,20 +96,17 @@ test('WebMCP provider registers only the five declared read-only registry tools 
   assert.doesNotMatch(source, /unregisterTool|install_skill|propagate_skill|update_file|create_file/);
 });
 
-test('human catalogue and controls resolve before unsupported-browser WebMCP return', async () => {
+test('human selection carries exact registry identity without typed internal skill names', async () => {
   const source = await readFile('src/assets/js/webmcp.js', 'utf8');
-  const loadIndex = source.indexOf('const data = await loadRegistry();');
-  const sourceIndex = source.indexOf('updateSource(status);');
-  const catalogueIndex = source.indexOf('bindHumanCatalogue();');
-  const controlsIndex = source.indexOf('bindHumanControls(registry);');
-  const unsupportedIndex = source.indexOf("if (!modelContext()?.registerTool)");
-  assert.ok(loadIndex >= 0 && sourceIndex > loadIndex);
-  assert.ok(catalogueIndex > sourceIndex);
-  assert.ok(controlsIndex > catalogueIndex);
-  assert.ok(unsupportedIndex > controlsIndex);
+  assert.match(source, /bindHumanCatalogue\(registry\)/);
+  assert.match(source, /dataset\.skillName/);
+  assert.match(source, /registry\.inspectSkill\(\{ name \}\)/);
+  assert.match(source, /searchParams\.set\('skill', skill\.name\)/);
+  assert.match(source, /history\.replaceState/);
+  assert.match(source, /data-selected-action/);
 });
 
-test('dedicated WebMCP route is a human-readable skill browser and the agent front door', async () => {
+test('dedicated WebMCP route presents collapsible click-select cards before agent delivery', async () => {
   const [page, layout, packageJson] = await Promise.all([
     readFile('src/webmcp/index.njk', 'utf8'),
     readFile('src/_includes/layouts/base.njk', 'utf8'),
@@ -111,25 +114,19 @@ test('dedicated WebMCP route is a human-readable skill browser and the agent fro
   ]);
   assert.match(page, /permalink: \/webmcp\//);
   assert.match(page, /webmcp: true/);
-  assert.match(page, /The Interdependency WebMCP/);
   assert.match(page, /The page is the provider/);
   assert.match(page, /document\.modelContext\.registerTool/);
   assert.match(page, /https:\/\/the-interdependency-mcp\.onrender\.com\/mcp/);
-  assert.match(page, /data-remote-mcp-status/);
-
-  assert.match(page, /id="skill-catalog-title">Skill catalogue/);
-  assert.match(page, /generated\.skillRegistry\.skills/);
-  assert.match(page, /data-human-skill-filter/);
-  assert.match(page, /data-human-skill-catalog/);
-  assert.match(page, /data-human-skill/);
-  assert.match(page, /skill\.description/);
-  assert.match(page, /Read canonical SKILL\.md/);
-
-  assert.match(page, /data-webmcp-action="status"/);
-  assert.match(page, /data-webmcp-find/);
-  assert.match(page, /data-webmcp-inspect/);
-  assert.match(page, /data-webmcp-closure/);
+  assert.match(page, /skill\.kind == "metadata-block"/);
+  assert.match(page, /skill\.name == "meta"/);
+  assert.match(page, /<details data-skill-description>/);
+  assert.match(page, /<summary>Description<\/summary>/);
+  assert.match(page, /data-select-skill/);
+  assert.match(page, /data-selected-skill/);
+  assert.match(page, /data-selected-action="inspect"/);
+  assert.match(page, /data-selected-action="closure"/);
+  assert.doesNotMatch(page, /data-webmcp-find|data-webmcp-inspect|data-webmcp-closure/);
+  assert.match(page, /No internal skill name needs to be typed/);
   assert.match(layout, /\{% if webmcp %\}<script src="\/assets\/js\/webmcp\.js" type="module"><\/script>\{% endif %\}/);
   assert.match(packageJson, /"refresh:skills": "node scripts\/fetch-skill-registry\.mjs"/);
-  assert.match(packageJson, /refresh:github && npm run refresh:skills && npm run refresh:msdmd/);
 });
