@@ -6,6 +6,9 @@ import { createSkillRegistry } from '../src/assets/js/webmcp-registry.js';
 
 // Usage: run with `npm test`; these checks verify registry provenance, dependency closure, clean-checkout fallback identity, WebMCP tool names/read-only annotations, and the dedicated provider route without requiring a WebMCP-capable test browser.
 
+const BOOTSTRAP_SNAPSHOT_COMMIT = '260671303733a45c8f8d5563e41d8854e09856e6';
+const SNAPSHOT_PATH = 'src/_data/snapshots/skill-registry.last-known-good.json';
+
 const sourceRegistry = JSON.stringify({
   version: 1,
   repo: 'The-Interdependency/skill-lib',
@@ -41,12 +44,21 @@ test('skill registry projection preserves exact source identity and rejects unre
   assert.throws(() => normalizeRegistry(broken, 'abc'), /unresolved skill dependency/);
 });
 
-test('committed fallback snapshot is exact, usable on a clean checkout, and retains source provenance', async () => {
+test('committed or refreshed fallback snapshot is exact, usable, and retains source provenance', async () => {
+  const rawSnapshot = JSON.parse(await readFile(SNAPSHOT_PATH, 'utf8'));
   const snapshot = await readFallback();
   assert.equal(snapshot.source.repository, 'The-Interdependency/skill-lib');
-  assert.equal(snapshot.source.commit, '260671303733a45c8f8d5563e41d8854e09856e6');
   assert.equal(snapshot.source.path, 'skills.json');
+  assert.match(snapshot.source.commit, /^[a-f0-9]{40}$/);
   assert.match(snapshot.source.sha256, /^[a-f0-9]{64}$/);
+
+  if (rawSnapshot?.source?.commit) {
+    assert.equal(snapshot.source.commit, rawSnapshot.source.commit);
+    assert.equal(snapshot.source.sha256, rawSnapshot.source.sha256);
+  } else {
+    assert.equal(snapshot.source.commit, BOOTSTRAP_SNAPSHOT_COMMIT);
+  }
+
   assert.ok(snapshot.skills.length > 0);
   assert.ok(snapshot.skills.some(skill => skill.name === 'repo-audit-repair'));
 });
