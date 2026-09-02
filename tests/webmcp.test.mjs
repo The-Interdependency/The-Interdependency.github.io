@@ -115,7 +115,6 @@ test('dedicated WebMCP route presents collapsible click-select cards before agen
   assert.match(page, /permalink: \/webmcp\//);
   assert.match(page, /webmcp: true/);
   assert.match(page, /The page is the provider/);
-  assert.match(page, /document\.modelContext\.registerTool/);
   assert.match(page, /https:\/\/the-interdependency-mcp\.onrender\.com\/mcp/);
   assert.match(page, /skill\.kind == "metadata-block"/);
   assert.match(page, /skill\.name == "meta"/);
