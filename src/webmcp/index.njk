@@ -8,7 +8,7 @@ webmcp: true
 <section class="panel" aria-labelledby="webmcp-title">
   <p class="eyebrow">WebMCP Challenge · live public surface</p>
   <h1 id="webmcp-title">The Interdependency WebMCP</h1>
-  <p><strong>The page is the provider.</strong> Human and agent use the same commit-pinned skill material. A human chooses the skill; the page records that exact selection for the browser agent; the agent can then use the selected canonical skill with its authorized tools to deliver the requested change.</p>
+  <p><strong>The page is the provider.</strong> Human and agent use the same commit-pinned skill material. A human chooses the skill; the page records that exact selection; the agent can then use the selected canonical skill with its separately authorized tools to deliver the requested change.</p>
   <p><strong>Remote MCP:</strong> <code>https://the-interdependency-mcp.onrender.com/mcp</code></p>
   <p><a href="https://the-interdependency-mcp.onrender.com/health">Open remote MCP health check</a></p>
 </section>
@@ -24,10 +24,10 @@ webmcp: true
 <section class="panel" aria-labelledby="skill-catalog-title">
   <p class="eyebrow">Human selection surface</p>
   <h2 id="skill-catalog-title">Choose the skill the agent should use</h2>
-  <p>The public human catalogue is deliberately narrow: msdmd and its metadata-block applications first, followed by the METAPAT meta skill. The rest of <code>skill-lib</code> remains canonical in its source repository but is not presented as a human choice here.</p>
+  <p>The public human catalogue is deliberately narrow: msdmd and its metadata-block applications first, followed by the METAPAT meta skill. Other <code>skill-lib</code> skills remain canonical and available to agents, but are not presented as primary human choices here.</p>
 
   <form data-human-skill-filter-form>
-    <label for="human-skill-filter">Search presented skills</label>
+    <label for="human-skill-filter">Optional search</label>
     <input id="human-skill-filter" data-human-skill-filter name="skill-filter" type="search" placeholder="documentation, capabilities, boundaries, meta…" autocomplete="off">
     <span aria-live="polite" data-human-skill-count>Presented skills shown</span>
   </form>
@@ -82,50 +82,25 @@ webmcp: true
 
   <div class="hmmm-boundary" data-selected-skill-boundary>
     <strong>Selected skill</strong>
-    <span data-selected-skill>No skill selected. Choose a card above; selection will be written into this page's URL and agent-visible state.</span>
+    <span data-selected-skill>No skill selected. Choose a card above; the exact canonical skill identity will be carried automatically.</span>
   </div>
-</section>
-
-<section class="panel" aria-labelledby="webmcp-tools-title">
-  <h2 id="webmcp-tools-title">Agent view of the same material</h2>
-  <p>Selection does not itself mutate a repository. It identifies the exact skill the agent should load and use. Selecting a card automatically opens its description, fills the inspect and closure inputs, and publishes the same registry record below for agent handoff.</p>
-
   <p>
-    <button type="button" data-webmcp-action="status">STATUS</button>
-    <button type="button" data-webmcp-action="list">LIST</button>
+    <button type="button" data-selected-action="inspect" disabled>Inspect selected skill</button>
+    <button type="button" data-selected-action="closure" disabled>Show required skill set</button>
   </p>
-
-  <form data-webmcp-find>
-    <label for="webmcp-find-query">FIND</label>
-    <input id="webmcp-find-query" name="query" type="text" value="metadata" required>
-    <button type="submit">Find skill</button>
-  </form>
-
-  <form data-webmcp-inspect>
-    <label for="webmcp-inspect-name">INSPECT</label>
-    <input id="webmcp-inspect-name" name="name" type="text" value="msdmd" required>
-    <button type="submit">Inspect skill</button>
-  </form>
-
-  <form data-webmcp-closure>
-    <label for="webmcp-closure-name">RESOLVE CLOSURE</label>
-    <input id="webmcp-closure-name" name="name" type="text" value="msdmd" required>
-    <button type="submit">Resolve closure</button>
-  </form>
-
-  <pre tabindex="0" data-webmcp-output>Select a skill above, or choose STATUS, LIST, FIND, INSPECT, or RESOLVE CLOSURE.</pre>
+  <pre tabindex="0" data-webmcp-output>Select a skill above. No internal skill name needs to be typed.</pre>
 </section>
 
 <section class="panel" aria-labelledby="webmcp-boundary-title">
-  <h2 id="webmcp-boundary-title">One source, one selection, multiple delivery surfaces</h2>
+  <h2 id="webmcp-boundary-title">Same material, meaningful human selection</h2>
   <pre tabindex="0">skill-lib/SKILL.md + skills.json
         ↓ commit-pinned projection
-human-readable card ↔ selected skill ↔ agent-visible page state
+human-readable card ↔ selected exact skill ↔ agent-visible page state
                                     ↓
                          browser WebMCP / remote MCP
                                     ↓
                      agent's authorized change tools</pre>
-  <p>The website does not gain repository-write authority merely because a skill was selected. The selected skill constrains how the agent should work; any actual change still occurs through the agent's separately authorized tool boundary. <code>The-Interdependency/skill-lib</code> remains authority for the skill itself.</p>
+  <p>The human selects meaning, not an internal identifier. The agent receives the exact skill identity, dependencies, provenance, and canonical source from that selection. Selection constrains how the agent should work; actual changes still occur only through the agent's separately authorized tool boundary.</p>
 </section>
 
-<div class="hmmm-boundary"><strong>hmmm</strong><span>Selection is instruction, not permission. A useful skill can tell an agent how to change something without quietly granting it the authority to change everything.</span></div>
+<div class="hmmm-boundary"><strong>hmmm</strong><span>Selection is instruction, not permission. PEBKAC should not have to memorize the machine's nouns.</span></div>
