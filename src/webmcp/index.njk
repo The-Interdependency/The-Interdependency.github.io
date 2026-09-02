@@ -8,7 +8,7 @@ webmcp: true
 <section class="panel" aria-labelledby="webmcp-title">
   <p class="eyebrow">WebMCP Challenge · live public surface</p>
   <h1 id="webmcp-title">The Interdependency WebMCP</h1>
-  <p><strong>The page is the provider.</strong> Humans can browse and operate the skill registry here; WebMCP-capable browsers receive the same five operations through <code>document.modelContext.registerTool(...)</code>; remote MCP clients connect to the website-owned Render runtime.</p>
+  <p><strong>The page is the provider.</strong> Human and agent use the same commit-pinned skill material. A human chooses the skill; the page records that exact selection for the browser agent; the agent can then use the selected canonical skill with its authorized tools to deliver the requested change.</p>
   <p><strong>Remote MCP:</strong> <code>https://the-interdependency-mcp.onrender.com/mcp</code></p>
   <p><a href="https://the-interdependency-mcp.onrender.com/health">Open remote MCP health check</a></p>
 </section>
@@ -18,41 +18,77 @@ webmcp: true
   <p data-webmcp-status data-state="hmmm">Loading the commit-pinned registry and checking browser WebMCP support…</p>
   <p data-remote-mcp-status data-state="hmmm">Checking remote MCP health…</p>
   <p><strong>Registry source:</strong> <span data-webmcp-source>resolving…</span></p>
-  <noscript><p>JavaScript is disabled, so browser WebMCP registration and the interactive controls cannot run. The human-readable catalogue below remains available, and the remote MCP endpoint remains independent.</p></noscript>
+  <noscript><p>JavaScript is disabled, so browser WebMCP registration and selection handoff cannot run. The human-readable catalogue remains available, and the remote MCP endpoint remains independent.</p></noscript>
 </section>
 
 <section class="panel" aria-labelledby="skill-catalog-title">
-  <p class="eyebrow">Human surface · {{ generated.skillRegistry.skills.length }} skills</p>
-  <h2 id="skill-catalog-title">Skill catalogue</h2>
-  <p>These are the skills exposed by the same commit-pinned registry used by WebMCP and the remote MCP server. The description shown here is the registry's human-readable statement of when and why each skill is used.</p>
+  <p class="eyebrow">Human selection surface</p>
+  <h2 id="skill-catalog-title">Choose the skill the agent should use</h2>
+  <p>The public human catalogue is deliberately narrow: msdmd and its metadata-block applications first, followed by the METAPAT meta skill. The rest of <code>skill-lib</code> remains canonical in its source repository but is not presented as a human choice here.</p>
 
   <form data-human-skill-filter-form>
-    <label for="human-skill-filter">Search skills</label>
-    <input id="human-skill-filter" data-human-skill-filter name="skill-filter" type="search" placeholder="repository audit, UCNS, metadata, SSH…" autocomplete="off">
-    <span aria-live="polite" data-human-skill-count>{{ generated.skillRegistry.skills.length }} skills shown</span>
+    <label for="human-skill-filter">Search presented skills</label>
+    <input id="human-skill-filter" data-human-skill-filter name="skill-filter" type="search" placeholder="documentation, capabilities, boundaries, meta…" autocomplete="off">
+    <span aria-live="polite" data-human-skill-count>Presented skills shown</span>
   </form>
 
-  <div class="grid" data-human-skill-catalog>
+  <h3>msdmd skills</h3>
+  <div class="grid" data-human-skill-catalog data-skill-group="msdmd">
     {% for skill in generated.skillRegistry.skills %}
-    <article class="card" data-human-skill>
+    {% if skill.kind == "metadata-block" %}
+    <article class="card" data-human-skill data-skill-name="{{ skill.name }}" data-skill-kind="{{ skill.kind }}">
       <p class="eyebrow">{{ skill.kind }}</p>
-      <h3>{{ skill.name | replace("-", " ") }}</h3>
+      <h4>{{ skill.name | replace("-", " ") }}</h4>
       <p><code>{{ skill.name }}</code></p>
-      <p>{{ skill.description }}</p>
+      <details data-skill-description>
+        <summary>Description</summary>
+        <p>{{ skill.description }}</p>
+      </details>
       {% if skill.depends_on and skill.depends_on.length %}
       <p><strong>Depends on:</strong> {% for dependency in skill.depends_on %}<code>{{ dependency }}</code>{% if not loop.last %}, {% endif %}{% endfor %}</p>
       {% else %}
       <p><strong>Depends on:</strong> none declared</p>
       {% endif %}
+      <p><button type="button" data-select-skill aria-pressed="false">Select this skill</button></p>
       <p><a href="https://github.com/{{ generated.skillRegistry.source.repository }}/blob/{{ generated.skillRegistry.source.commit }}/{{ skill.path }}">Read canonical SKILL.md</a></p>
     </article>
+    {% endif %}
     {% endfor %}
+  </div>
+
+  <h3>meta skills</h3>
+  <div class="grid" data-human-skill-catalog data-skill-group="meta">
+    {% for skill in generated.skillRegistry.skills %}
+    {% if skill.name == "meta" %}
+    <article class="card" data-human-skill data-skill-name="{{ skill.name }}" data-skill-kind="{{ skill.kind }}">
+      <p class="eyebrow">{{ skill.kind }}</p>
+      <h4>{{ skill.name | replace("-", " ") }}</h4>
+      <p><code>{{ skill.name }}</code></p>
+      <details data-skill-description>
+        <summary>Description</summary>
+        <p>{{ skill.description }}</p>
+      </details>
+      {% if skill.depends_on and skill.depends_on.length %}
+      <p><strong>Depends on:</strong> {% for dependency in skill.depends_on %}<code>{{ dependency }}</code>{% if not loop.last %}, {% endif %}{% endfor %}</p>
+      {% else %}
+      <p><strong>Depends on:</strong> none declared</p>
+      {% endif %}
+      <p><button type="button" data-select-skill aria-pressed="false">Select this skill</button></p>
+      <p><a href="https://github.com/{{ generated.skillRegistry.source.repository }}/blob/{{ generated.skillRegistry.source.commit }}/{{ skill.path }}">Read canonical SKILL.md</a></p>
+    </article>
+    {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="hmmm-boundary" data-selected-skill-boundary>
+    <strong>Selected skill</strong>
+    <span data-selected-skill>No skill selected. Choose a card above; selection will be written into this page's URL and agent-visible state.</span>
   </div>
 </section>
 
 <section class="panel" aria-labelledby="webmcp-tools-title">
-  <h2 id="webmcp-tools-title">Five registry operations</h2>
-  <p>These controls execute the same read-only registry logic exposed to browser agents and remote MCP clients. The raw output is intentionally shown here as the machine-facing view of the same catalogue above.</p>
+  <h2 id="webmcp-tools-title">Agent view of the same material</h2>
+  <p>Selection does not itself mutate a repository. It identifies the exact skill the agent should load and use. Selecting a card automatically opens its description, fills the inspect and closure inputs, and publishes the same registry record below for agent handoff.</p>
 
   <p>
     <button type="button" data-webmcp-action="status">STATUS</button>
@@ -61,34 +97,35 @@ webmcp: true
 
   <form data-webmcp-find>
     <label for="webmcp-find-query">FIND</label>
-    <input id="webmcp-find-query" name="query" type="text" value="repository audit repair" required>
+    <input id="webmcp-find-query" name="query" type="text" value="metadata" required>
     <button type="submit">Find skill</button>
   </form>
 
   <form data-webmcp-inspect>
     <label for="webmcp-inspect-name">INSPECT</label>
-    <input id="webmcp-inspect-name" name="name" type="text" value="repo-audit-repair" required>
+    <input id="webmcp-inspect-name" name="name" type="text" value="msdmd" required>
     <button type="submit">Inspect skill</button>
   </form>
 
   <form data-webmcp-closure>
     <label for="webmcp-closure-name">RESOLVE CLOSURE</label>
-    <input id="webmcp-closure-name" name="name" type="text" value="repo-audit-repair" required>
+    <input id="webmcp-closure-name" name="name" type="text" value="msdmd" required>
     <button type="submit">Resolve closure</button>
   </form>
 
-  <pre tabindex="0" data-webmcp-output>Choose STATUS, LIST, FIND, INSPECT, or RESOLVE CLOSURE.</pre>
+  <pre tabindex="0" data-webmcp-output>Select a skill above, or choose STATUS, LIST, FIND, INSPECT, or RESOLVE CLOSURE.</pre>
 </section>
 
 <section class="panel" aria-labelledby="webmcp-boundary-title">
-  <h2 id="webmcp-boundary-title">One source, three views</h2>
+  <h2 id="webmcp-boundary-title">One source, one selection, multiple delivery surfaces</h2>
   <pre tabindex="0">skill-lib/SKILL.md + skills.json
         ↓ commit-pinned projection
-website registry logic
-        ├── human-readable skill catalogue
-        ├── browser WebMCP provider
-        └── remote Streamable HTTP MCP server</pre>
-  <p>The website owns the delivery surfaces. <code>The-Interdependency/skill-lib</code> remains authority for the skills themselves. All v0 operations are read-only.</p>
+human-readable card ↔ selected skill ↔ agent-visible page state
+                                    ↓
+                         browser WebMCP / remote MCP
+                                    ↓
+                     agent's authorized change tools</pre>
+  <p>The website does not gain repository-write authority merely because a skill was selected. The selected skill constrains how the agent should work; any actual change still occurs through the agent's separately authorized tool boundary. <code>The-Interdependency/skill-lib</code> remains authority for the skill itself.</p>
 </section>
 
-<div class="hmmm-boundary"><strong>hmmm</strong><span>Write-capable operations remain intentionally absent. Installing, propagating, or changing repository state requires a separate authenticated boundary rather than silently enlarging this public surface.</span></div>
+<div class="hmmm-boundary"><strong>hmmm</strong><span>Selection is instruction, not permission. A useful skill can tell an agent how to change something without quietly granting it the authority to change everything.</span></div>
