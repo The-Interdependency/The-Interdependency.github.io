@@ -2,16 +2,16 @@ import { createSkillRegistry } from './webmcp-registry.js';
 
 // === MODULE_BUILD ===
 // id: interdependency_webmcp_surface
-//   purpose: Register the website-owned read-only WebMCP registry tools, bind the shared human skill-selection surface, and publish an explicit ephemeral human-to-agent handoff tool only after the human presses Send.
+//   purpose: Register the website-owned read-only WebMCP registry tools, bind the shared human skill-selection surface, and publish one explicit human handoff to both the browser agent and an opaque remote MCP session after the human presses Send.
 //   entrypoint: /webmcp/
 //   tests: tests/webmcp.test.mjs
 // === END MODULE_BUILD ===
 // === BOUNDARIES ===
 // id: interdependency_webmcp_surface_boundary
-//   network: same-origin GET of /assets/data/skill-registry.json plus read-only health GET to the website-owned Render MCP runtime
-//   storage: none
-//   user_data: human-entered handoff text exists only in page memory and is returned only when the browser agent invokes the explicit handoff tool
-//   operational_effects: none; skill selection, handoff publication, registry inspection, and dependency resolution do not mutate repositories or external systems
+//   network: same-origin GET of /assets/data/skill-registry.json; health GET plus explicit handoff POST/DELETE to the website-owned Render MCP runtime
+//   storage: no browser persistence; remote handoff storage is volatile server process memory with bounded expiry
+//   user_data: human-entered handoff text exists in page memory and, only after explicit Send, in the opaque remote handoff session until expiry/retraction
+//   operational_effects: selection and handoff publication change only browser/remote MCP handoff state; they do not mutate repositories or external target systems
 //   authority: the website owns browser tool registration and remote runtime; The-Interdependency/skill-lib remains authority for skill definitions; external changes require separately authorized agent tools
 // === END BOUNDARIES ===
 // === CONTRACTS ===
@@ -27,24 +27,36 @@ import { createSkillRegistry } from './webmcp-registry.js';
 //
 // id: webmcp_human_handoff_requires_explicit_send
 //   given: a human has selected a skill and entered ordinary-language intent
-//   then: no agent handoff exists until submit; submit registers one page-session read-only `tiw_human_handoff` tool carrying the exact skill, closure, provenance, and human intent; later edits or selection changes invalidate it until Send is pressed again
+//   then: no agent handoff exists until submit; submit publishes one exact payload to browser WebMCP and the opaque remote MCP session; later edits or selection changes retract/invalidate it until Send is pressed again
 //   class: human_in_loop
+//
+// id: webmcp_remote_session_separates_read_and_write_capabilities
+//   given: the page creates a remote MCP session
+//   then: the human-visible session URL contains only the opaque read token; the distinct write key remains page-memory-only and is used solely to publish/retract handoff state
+//   class: security
 // === END CONTRACTS ===
-// Usage: open `/webmcp/`; select a card, describe the desired outcome, and press Send. WebMCP-capable browser agents then discover `tiw_human_handoff` alongside the five registry tools. The standard exposes the handoff as a tool; it does not let the page force an agent invocation.
+// Usage: open `/webmcp/`; give a remote agent the generated session MCP URL if desired, select a card, describe the outcome, and press Send. Browser WebMCP gets a dynamic `tiw_human_handoff`; a connected remote MCP agent receives tools/list_changed and can invoke the same named tool.
 
 const REGISTRY_URL = '/assets/data/skill-registry.json';
 const REMOTE_MCP_BASE = 'https://the-interdependency-mcp.onrender.com';
 const HANDOFF_TOOL_NAME = 'tiw_human_handoff';
+const HANDOFF_TTL_MINUTES = 30;
+
 const statusElement = () => document.querySelector('[data-webmcp-status]');
 const sourceElement = () => document.querySelector('[data-webmcp-source]');
 const remoteStatusElement = () => document.querySelector('[data-remote-mcp-status]');
 const outputElement = () => document.querySelector('[data-webmcp-output]');
 const selectedElement = () => document.querySelector('[data-selected-skill]');
 const handoffStatusElement = () => document.querySelector('[data-human-handoff-status]');
+const remoteSessionElement = () => document.querySelector('[data-remote-handoff-url]');
 const modelContext = () => globalThis.document?.modelContext;
 
 let currentHandoff = null;
 let handoffController = null;
+let remoteSessionToken = '';
+let remoteWriteKey = '';
+let remotePublished = false;
+let remoteMutationChain = Promise.resolve();
 
 function setStatus(message, state = 'hmmm') {
   const target = statusElement();
@@ -77,6 +89,36 @@ function showResult(label, value) {
   target.textContent = `${label}\n\n${jsonResult(value)}`;
 }
 
+function randomToken(bytes = 24) {
+  if (!globalThis.crypto?.getRandomValues) throw new Error('secure browser randomness unavailable');
+  const values = new Uint8Array(bytes);
+  globalThis.crypto.getRandomValues(values);
+  return [...values].map(value => value.toString(16).padStart(2, '0')).join('');
+}
+
+function remoteMcpUrl() {
+  return remoteSessionToken
+    ? `${REMOTE_MCP_BASE}/mcp?session=${encodeURIComponent(remoteSessionToken)}`
+    : '';
+}
+
+function initializeRemoteSession() {
+  if (!remoteSessionToken) remoteSessionToken = randomToken();
+  if (!remoteWriteKey) remoteWriteKey = randomToken();
+  const target = remoteSessionElement();
+  if (target) {
+    if ('value' in target) target.value = remoteMcpUrl();
+    else target.textContent = remoteMcpUrl();
+  }
+  return remoteMcpUrl();
+}
+
+function enqueueRemoteMutation(task) {
+  const next = remoteMutationChain.then(task, task);
+  remoteMutationChain = next.catch(() => undefined);
+  return next;
+}
+
 async function loadRegistry() {
   const response = await fetch(REGISTRY_URL, { headers: { accept: 'application/json' } });
   if (!response.ok) throw new Error(`registry HTTP ${response.status}`);
@@ -96,12 +138,49 @@ async function checkRemoteMcp() {
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const health = await response.json();
     if (!health?.ok || health.endpoint !== '/mcp') throw new Error('invalid health response');
-    setRemoteStatus(`Remote MCP LIVE · ${health.skill_count} public skills · ${REMOTE_MCP_BASE}/mcp`, 'implemented');
+    const ttl = Number(health.handoff_ttl_seconds) || HANDOFF_TTL_MINUTES * 60;
+    setRemoteStatus(`Remote MCP LIVE · ${health.skill_count} public skills · human handoffs expire after ${Math.round(ttl / 60)} minutes.`, 'implemented');
     return health;
   } catch (error) {
     setRemoteStatus(`Remote MCP health unresolved: ${error.message}`, 'hmmm');
     return null;
   }
+}
+
+async function publishRemoteHandoff(handoff) {
+  initializeRemoteSession();
+  return enqueueRemoteMutation(async () => {
+    const response = await fetch(`${REMOTE_MCP_BASE}/handoff/${encodeURIComponent(remoteSessionToken)}`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'x-handoff-key': remoteWriteKey
+      },
+      body: JSON.stringify(handoff)
+    });
+    const receipt = await response.json().catch(() => ({}));
+    if (!response.ok || !receipt?.ok) {
+      throw new Error(receipt?.error?.message || `remote handoff HTTP ${response.status}`);
+    }
+    remotePublished = true;
+    return receipt;
+  });
+}
+
+function retractRemoteHandoff(reason) {
+  if (!remoteSessionToken || !remoteWriteKey || !remotePublished) return;
+  remotePublished = false;
+  void enqueueRemoteMutation(async () => {
+    try {
+      const response = await fetch(`${REMOTE_MCP_BASE}/handoff/${encodeURIComponent(remoteSessionToken)}`, {
+        method: 'DELETE',
+        headers: { 'x-handoff-key': remoteWriteKey }
+      });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    } catch (error) {
+      setHandoffStatus(`${reason} Remote-session retraction could not be confirmed (${error.message}); the old remote handoff remains bounded by expiry.`, 'hmmm');
+    }
+  });
 }
 
 function clearPublishedHandoff(reason) {
@@ -110,16 +189,14 @@ function clearPublishedHandoff(reason) {
     handoffController.abort();
     handoffController = null;
   }
+  retractRemoteHandoff(reason || 'Handoff invalidated.');
   if (reason) setHandoffStatus(reason, 'hmmm');
 }
 
-async function publishHandoffTool(handoff) {
+async function publishBrowserHandoffTool(handoff) {
   currentHandoff = handoff;
   const context = modelContext();
-  if (!context?.registerTool) {
-    setHandoffStatus('Request prepared in this page, but browser WebMCP is unavailable here, so it cannot be exposed directly to a browser agent.', 'hmmm');
-    return false;
-  }
+  if (!context?.registerTool) return { ok: false, reason: 'browser WebMCP unavailable' };
 
   if (handoffController) handoffController.abort();
   const controller = new AbortController();
@@ -134,14 +211,12 @@ async function publishHandoffTool(handoff) {
       annotations: { readOnlyHint: true, untrustedContentHint: true },
       execute: async () => jsonResult(currentHandoff || { ready: false, hmmm: 'human handoff was invalidated before invocation' })
     }, { signal: controller.signal });
-    setHandoffStatus(`Sent to browser agent context · ${handoff.skill.name} · ${handoff.required_skills.length} required skill(s).`, 'implemented');
-    return true;
+    return { ok: true };
   } catch (error) {
-    if (controller.signal.aborted) return false;
+    if (controller.signal.aborted) return { ok: false, reason: 'handoff replaced' };
     currentHandoff = null;
     handoffController = null;
-    setHandoffStatus(`Could not expose the handoff to WebMCP: ${error.message}`, 'hmmm');
-    return false;
+    return { ok: false, reason: error.message };
   }
 }
 
@@ -178,8 +253,8 @@ function bindHumanCatalogue(registry) {
     const card = cards.find(candidate => candidate.dataset.skillName === name);
     if (!card) return false;
 
-    if (selectedName && selectedName !== name && currentHandoff) {
-      clearPublishedHandoff('Skill selection changed. Review the request and press Send again before the agent receives a new handoff.');
+    if (selectedName && selectedName !== name && (currentHandoff || remotePublished)) {
+      clearPublishedHandoff('Skill selection changed. Review the request and press Send again before either agent surface receives a new handoff.');
     }
 
     const skill = registry.inspectSkill({ name });
@@ -201,7 +276,7 @@ function bindHumanCatalogue(registry) {
     for (const action of selectedActions) action.disabled = false;
     showResult('SELECTED SKILL', skill);
     updateSendEnabled();
-    if (!currentHandoff) setHandoffStatus('Skill selected. Describe the desired outcome, then press Send.', 'hmmm');
+    if (!currentHandoff && !remotePublished) setHandoffStatus('Skill selected. Describe the desired outcome, then press Send.', 'hmmm');
 
     if (updateUrl) {
       const url = new URL(globalThis.location.href);
@@ -228,7 +303,9 @@ function bindHumanCatalogue(registry) {
   });
 
   intentInput?.addEventListener('input', () => {
-    if (currentHandoff) clearPublishedHandoff('Request text changed. Press Send again before the agent receives the revision.');
+    if (currentHandoff || remotePublished) {
+      clearPublishedHandoff('Request text changed. Press Send again before either agent surface receives the revision.');
+    }
     updateSendEnabled();
   });
 
@@ -244,6 +321,7 @@ function bindHumanCatalogue(registry) {
     const skill = registry.inspectSkill({ name: selectedName });
     const requiredSkills = registry.resolveSkillClosure({ name: selectedName });
     const registryStatus = registry.getRegistryStatus();
+    const sessionUrl = initializeRemoteSession();
     const handoff = {
       ready: true,
       sent_at: new Date().toISOString(),
@@ -251,16 +329,46 @@ function bindHumanCatalogue(registry) {
       required_skills: requiredSkills,
       registry: registryStatus,
       human_request: intent,
+      remote_session: {
+        mcp_url: sessionUrl,
+        ttl_minutes: HANDOFF_TTL_MINUTES,
+        persistence: 'volatile server process memory only'
+      },
       boundaries: {
         selection_is_instruction_not_permission: true,
         repository_write_authority: 'not granted by this handoff',
-        persistence: 'page session only',
-        remote_mcp_storage: false
+        browser_persistence: 'page memory only',
+        remote_mcp_storage: 'volatile memory only; expires automatically',
+        remote_session_url_is_bearer_read_capability: true,
+        write_key_shared_with_agent: false
       }
     };
 
+    setHandoffStatus('Sending the same handoff to browser WebMCP and the remote MCP session…', 'hmmm');
+
+    let remoteResult = { ok: false, reason: 'not attempted' };
+    try {
+      const receipt = await publishRemoteHandoff(handoff);
+      handoff.remote_session.expires_at = receipt.expires_at;
+      handoff.remote_session.version = receipt.version;
+      remoteResult = { ok: true, receipt };
+    } catch (error) {
+      remotePublished = false;
+      remoteResult = { ok: false, reason: error.message };
+    }
+
+    const browserResult = await publishBrowserHandoffTool(handoff);
     showResult('HUMAN → AGENT HANDOFF', handoff);
-    await publishHandoffTool(handoff);
+
+    if (browserResult.ok && remoteResult.ok) {
+      setHandoffStatus(`Sent · browser agent + remote MCP session · ${skill.name} · ${requiredSkills.length} required skill(s).`, 'implemented');
+    } else if (browserResult.ok) {
+      setHandoffStatus(`Sent to browser agent. Remote MCP handoff unresolved: ${remoteResult.reason}`, 'hmmm');
+    } else if (remoteResult.ok) {
+      setHandoffStatus(`Sent to remote MCP session. Browser WebMCP unavailable or unresolved: ${browserResult.reason}`, 'implemented');
+    } else {
+      setHandoffStatus(`Handoff could not reach either agent surface. Browser: ${browserResult.reason}. Remote: ${remoteResult.reason}.`, 'hmmm');
+    }
   });
 
   filterInput?.addEventListener('input', applyFilter);
@@ -280,6 +388,7 @@ async function registerTool(tool) {
 }
 
 export async function registerInterdependencyWebMCP() {
+  initializeRemoteSession();
   const data = await loadRegistry();
   const registry = createSkillRegistry(data);
   const status = registry.getRegistryStatus();
@@ -288,11 +397,11 @@ export async function registerInterdependencyWebMCP() {
   void checkRemoteMcp();
 
   if (!modelContext()?.registerTool) {
-    setStatus(`Registry live for ${status.skill_count} public skills. Browser WebMCP registration requires a WebMCP-capable browser; human browsing and the remote MCP server remain usable.`, 'hmmm');
-    return { registered: false, reason: 'webmcp-unavailable', registry: status };
+    setStatus(`Registry live for ${status.skill_count} public skills. Browser WebMCP registration is unavailable here; the human catalogue and remote MCP session remain usable.`, 'hmmm');
+    return { registered: false, reason: 'webmcp-unavailable', registry: status, remote_session_url: remoteMcpUrl() };
   }
   if (globalThis.__interdependencyWebMcpRegistered) {
-    return { registered: true, reused: true, registry: status };
+    return { registered: true, reused: true, registry: status, remote_session_url: remoteMcpUrl() };
   }
 
   await registerTool({
@@ -366,8 +475,14 @@ export async function registerInterdependencyWebMCP() {
   });
 
   globalThis.__interdependencyWebMcpRegistered = true;
-  setStatus(`WebMCP LIVE · 5 registry tools over ${status.skill_count} public skills. An ephemeral sixth handoff tool appears only after the human explicitly presses Send.`, status.fallback ? 'hmmm' : 'implemented');
-  return { registered: true, tools: 5, dynamic_handoff_tool: HANDOFF_TOOL_NAME, registry: status };
+  setStatus(`WebMCP LIVE · 5 registry tools over ${status.skill_count} public skills. Send creates the sixth handoff tool in browser context and the matching remote MCP session.`, status.fallback ? 'hmmm' : 'implemented');
+  return {
+    registered: true,
+    tools: 5,
+    dynamic_handoff_tool: HANDOFF_TOOL_NAME,
+    registry: status,
+    remote_session_url: remoteMcpUrl()
+  };
 }
 
 registerInterdependencyWebMCP().catch(error => {
