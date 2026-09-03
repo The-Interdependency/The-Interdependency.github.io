@@ -110,6 +110,13 @@ test('human selection carries exact skill and repository identity without typed 
   assert.match(source, /searchParams\.set\('skill', skill\.name\)/);
   assert.match(source, /searchParams\.set\('repo', repository\.name\)/);
   assert.match(source, /history\.replaceState/);
+  assert.match(source, /webmcp_repository_context_precedes_agent_work_selection/);
+  assert.match(source, /Choose a repository before choosing how the agent should work/);
+  assert.match(source, /const skillWasCleared = clearSelectedSkill\(\)/);
+  assert.ok(
+    source.indexOf("searchParams.get('repo')") < source.indexOf("searchParams.get('skill')"),
+    'URL restoration must establish repository context before restoring a skill selection'
+  );
 });
 
 test('fresh-making supplies an editable default refresh request and still requires explicit Send', async () => {
@@ -148,8 +155,14 @@ test('dedicated WebMCP route presents collapsible skill cards, every generated r
   assert.match(page, /<textarea[^>]+data-human-handoff-intent/);
   assert.match(page, /data-human-handoff-send disabled/);
   assert.match(page, /Nothing is sent merely by selecting or typing/);
-  assert.match(page, /Send skill \+ repository \+ request to agent/);
-  assert.match(page, /No internal skill or repository identifier needs to be typed/);
+  assert.match(page, /Send repository \+ skill \+ request to agent/);
+  assert.match(page, /No internal repository or skill identifier needs to be typed/);
+  assert.match(page, /data-human-skill-filter[^>]+disabled/);
+  assert.match(page, /data-select-skill[^>]+disabled/);
+  const repositoryStep = page.indexOf('1. Choose the repository');
+  const skillStep = page.indexOf('2. Choose how the agent should work');
+  const outcomeStep = page.indexOf('3. State the outcome and send');
+  assert.ok(repositoryStep >= 0 && repositoryStep < skillStep && skillStep < outcomeStep);
   assert.match(layout, /\{% if webmcp %\}<script src="\/assets\/js\/webmcp\.js" type="module"><\/script>\{% endif %\}/);
   assert.match(packageJson, /"refresh:github": "node scripts\/fetch-github-org\.mjs"/);
   assert.match(packageJson, /"refresh:skills": "node scripts\/fetch-skill-registry\.mjs"/);
