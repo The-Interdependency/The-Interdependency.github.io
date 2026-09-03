@@ -43,6 +43,34 @@ test('primary public routes render meaningful headings', async ({ page }) => {
   }
 });
 
+test('WebMCP establishes repository context before agent-work selection', async ({ page }) => {
+  await page.goto('/webmcp/');
+
+  const repository = page.locator('[data-human-repository-target]');
+  const skillFilter = page.locator('[data-human-skill-filter]');
+  const freshMaking = page.locator('[data-human-skill][data-skill-name="fresh-making"] [data-select-skill]');
+  const selectedSkill = page.locator('[data-selected-skill]');
+  const intent = page.locator('[data-human-handoff-intent]');
+  const send = page.locator('[data-human-handoff-send]');
+
+  await expect(skillFilter).toBeDisabled();
+  await expect(freshMaking).toBeDisabled();
+  await repository.selectOption('skill-lib');
+  await expect(skillFilter).toBeEnabled();
+  await expect(freshMaking).toBeEnabled();
+
+  await freshMaking.click();
+  await expect(selectedSkill).toContainText('fresh-making');
+  await expect(intent).toHaveValue(/minimal affected closure/);
+  await expect(send).toBeEnabled();
+
+  await repository.selectOption('ucns');
+  await expect(selectedSkill).toHaveText('No skill selected.');
+  await expect(intent).toHaveValue('');
+  await expect(send).toBeDisabled();
+  await expect(page).not.toHaveURL(/[?&]skill=/);
+});
+
 test('founder-authored origin text is the public threshold and has one human continuation into the Way', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('.awakening-splash')).toBeVisible();

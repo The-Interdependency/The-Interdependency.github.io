@@ -2,7 +2,7 @@ import { createSkillRegistry } from './webmcp-registry.js';
 
 // === MODULE_BUILD ===
 // id: interdependency_webmcp_surface
-//   purpose: Register website-owned read-only WebMCP skill tools and bind exact human-selected skill + repository + request into one ephemeral browser-agent handoff.
+//   purpose: Register website-owned read-only WebMCP skill tools and bind exact human-selected repository + skill + request into one ephemeral browser-agent handoff.
 //   entrypoint: /webmcp/
 //   tests: tests/webmcp.test.mjs
 // === END MODULE_BUILD ===
@@ -11,20 +11,26 @@ import { createSkillRegistry } from './webmcp-registry.js';
 //   network: same-origin GET of /assets/data/skill-registry.json plus read-only health GET to the website-owned Render MCP runtime
 //   storage: none
 //   user_data: human-entered handoff text exists only in page memory and is returned only when the browser agent invokes the explicit handoff tool
-//   operational_effects: none; skill/repository selection, handoff publication, registry inspection, and dependency resolution do not mutate repositories or external systems
+//   operational_effects: none; repository/skill selection, handoff publication, registry inspection, and dependency resolution do not mutate repositories or external systems
 //   authority: skill-lib owns skill definitions; the website build observes public repository identities; external changes require separately authorized agent tools
 // === END BOUNDARIES ===
 // === CONTRACTS ===
 // id: webmcp_human_selection_is_exact_skill_and_repository_identity
-//   given: a human selects a presented skill and repository
+//   given: a human selects a repository and then a presented skill
 //   then: the page records exact registered skill identity plus the repository's observed default-branch head without requiring typed machine identifiers
 //   class: correctness
+//
+// id: webmcp_repository_context_precedes_agent_work_selection
+//   given: no repository is selected or the selected repository changes
+//   then: skill controls remain disabled or the prior skill selection is invalidated so agent work is always chosen within the current repository context
+//   class: human_in_loop
 //
 // id: webmcp_human_handoff_requires_explicit_send
 //   given: a human has selected a skill and repository and supplied or accepted an ordinary-language intent
 //   then: no agent handoff exists until submit; submit registers one page-session read-only `tiw_human_handoff` carrying skill closure, registry provenance, repository identity, and human intent
 //   class: human_in_loop
 // === END CONTRACTS ===
+// Usage: on /webmcp/, choose a repository first, then choose a skill and describe the outcome. Changing the repository requires choosing the skill again; only explicit Send publishes the read-only page-session handoff.
 
 const REGISTRY_URL = '/assets/data/skill-registry.json';
 const REMOTE_MCP_BASE = 'https://the-interdependency-mcp.onrender.com';
@@ -37,6 +43,7 @@ const remoteStatusElement = () => document.querySelector('[data-remote-mcp-statu
 const outputElement = () => document.querySelector('[data-webmcp-output]');
 const selectedSkillElement = () => document.querySelector('[data-selected-skill]');
 const selectedRepositoryElement = () => document.querySelector('[data-selected-repository]');
+const skillStageStatusElement = () => document.querySelector('[data-skill-stage-status]');
 const handoffStatusElement = () => document.querySelector('[data-human-handoff-status]');
 const modelContext = () => globalThis.document?.modelContext;
 
@@ -124,12 +131,12 @@ async function publishHandoffTool(handoff) {
     await context.registerTool({
       name: HANDOFF_TOOL_NAME,
       title: 'Human-sent Interdependency handoff',
-      description: 'The human explicitly selected a public Interdependency skill and repository and pressed Send. Read this before planning or changing anything. Returns exact skill and dependency closure, skill-registry provenance, observed repository identity/head, and the human requested outcome. Selection is instruction, not permission.',
+      description: 'The human explicitly selected a public Interdependency repository, then a skill, and pressed Send. Read this before planning or changing anything. Returns the observed repository identity/head, exact skill and dependency closure, skill-registry provenance, and the human requested outcome. Selection is instruction, not permission.',
       inputSchema: { type: 'object', properties: {}, additionalProperties: false },
       annotations: { readOnlyHint: true, untrustedContentHint: true },
       execute: async () => jsonResult(currentHandoff || { ready: false, hmmm: 'human handoff was invalidated before invocation' })
     }, { signal: controller.signal });
-    setText(handoffStatusElement(), `Sent to browser agent context · ${handoff.skill.name} → ${handoff.target_repository.name}.`, 'implemented');
+    setText(handoffStatusElement(), `Sent to browser agent context · ${handoff.target_repository.name} → ${handoff.skill.name}.`, 'implemented');
     return true;
   } catch (error) {
     if (controller.signal.aborted) return false;
@@ -145,6 +152,7 @@ function bindHumanCatalogue(registry) {
   const filterInput = document.querySelector('[data-human-skill-filter]');
   const count = document.querySelector('[data-human-skill-count]');
   const cards = [...document.querySelectorAll('[data-human-skill]')];
+  const skillButtons = cards.map(card => card.querySelector('[data-select-skill]')).filter(Boolean);
   const selectedActions = [...document.querySelectorAll('[data-selected-action]')];
   const repositorySelect = document.querySelector('[data-human-repository-target]');
   const handoffForm = document.querySelector('[data-human-handoff-form]');
@@ -181,7 +189,43 @@ function bindHumanCatalogue(registry) {
     setText(selectedRepositoryElement(), `${repository.name} · ${repository.default_branch || 'branch hmmm'}@${head} · ${repository.status || 'status hmmm'}`);
   };
 
+  const setSkillStageEnabled = repository => {
+    const enabled = Boolean(repository);
+    if (filterInput) filterInput.disabled = !enabled;
+    for (const skillButton of skillButtons) skillButton.disabled = !enabled;
+    setText(
+      skillStageStatusElement(),
+      enabled
+        ? `${repository.name} selected. Now choose how the agent should work in this repository.`
+        : 'Choose a repository first to enable its agent-work choices.',
+      enabled ? 'implemented' : 'hmmm'
+    );
+  };
+
+  const clearSelectedSkill = () => {
+    if (!selectedName) return false;
+    const previousName = selectedName;
+    selectedName = '';
+    for (const card of cards) {
+      card.dataset.selected = 'false';
+      card.querySelector('[data-select-skill]')?.setAttribute('aria-pressed', 'false');
+    }
+    setText(selectedSkillElement(), 'No skill selected.');
+    for (const action of selectedActions) action.disabled = true;
+    if (previousName === 'fresh-making' && freshIntentIsAutomatic) {
+      intentInput.value = '';
+      freshIntentIsAutomatic = false;
+    }
+    return true;
+  };
+
   const setSelected = (name, { updateUrl = true } = {}) => {
+    const repository = selectedRepository(repositorySelect);
+    if (!repository) {
+      setText(handoffStatusElement(), 'Choose a repository before choosing how the agent should work.', 'hmmm');
+      repositorySelect?.focus();
+      return false;
+    }
     const card = cards.find(candidate => candidate.dataset.skillName === name);
     if (!card) return false;
 
@@ -202,7 +246,7 @@ function bindHumanCatalogue(registry) {
 
     setText(selectedSkillElement(), `${skill.name} · ${skill.kind} · ${skill.canonical_path}`);
     for (const action of selectedActions) action.disabled = false;
-    showResult('SELECTED SKILL', skill);
+    showResult('SELECTED REPOSITORY → SKILL', { target_repository: repository, skill });
 
     if (name === 'fresh-making' && (!intentInput.value.trim() || freshIntentIsAutomatic)) {
       intentInput.value = FRESH_MAKING_INTENT;
@@ -213,7 +257,7 @@ function bindHumanCatalogue(registry) {
     }
 
     updateSendEnabled();
-    if (!currentHandoff) setText(handoffStatusElement(), 'Skill selected. Choose a repository, review the outcome, then press Send.', 'hmmm');
+    if (!currentHandoff) setText(handoffStatusElement(), `${repository.name} and ${skill.name} selected. Review the outcome, then press Send.`, 'hmmm');
 
     if (updateUrl) {
       const url = new URL(globalThis.location.href);
@@ -229,13 +273,23 @@ function bindHumanCatalogue(registry) {
 
   repositorySelect?.addEventListener('change', () => {
     if (currentHandoff) clearPublishedHandoff('Repository selection changed. Press Send again before the agent receives a new handoff.');
+    const skillWasCleared = clearSelectedSkill();
     updateRepositoryDisplay();
-    updateSendEnabled();
     const repository = selectedRepository(repositorySelect);
+    setSkillStageEnabled(repository);
+    updateSendEnabled();
     const url = new URL(globalThis.location.href);
     if (repository) url.searchParams.set('repo', repository.name);
     else url.searchParams.delete('repo');
+    if (skillWasCleared) url.searchParams.delete('skill');
     globalThis.history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
+    setText(
+      handoffStatusElement(),
+      repository
+        ? `${repository.name} selected. Now choose how the agent should work in it.`
+        : 'Choose a repository first. Nothing is sent merely by selecting or typing.',
+      'hmmm'
+    );
   });
 
   document.querySelector('[data-selected-action="inspect"]')?.addEventListener('click', () => {
@@ -257,7 +311,7 @@ function bindHumanCatalogue(registry) {
     const repository = selectedRepository(repositorySelect);
     const intent = String(new FormData(event.currentTarget).get('intent') || '').trim();
     if (!selectedName || !repository || !intent) {
-      setText(handoffStatusElement(), 'Select a skill and repository and provide an outcome before sending.', 'hmmm');
+      setText(handoffStatusElement(), 'Select a repository, then a skill, and provide an outcome before sending.', 'hmmm');
       updateSendEnabled();
       return;
     }
@@ -266,10 +320,10 @@ function bindHumanCatalogue(registry) {
     const handoff = {
       ready: true,
       sent_at: new Date().toISOString(),
+      target_repository: repository,
       skill,
       required_skills: registry.resolveSkillClosure({ name: selectedName }),
       skill_registry: registry.getRegistryStatus(),
-      target_repository: repository,
       human_request: intent,
       boundaries: {
         selection_is_instruction_not_permission: true,
@@ -286,18 +340,30 @@ function bindHumanCatalogue(registry) {
 
   filterInput?.addEventListener('input', applyFilter);
   applyFilter();
-  updateRepositoryDisplay();
 
   const requestedUrl = new URL(globalThis.location.href);
-  const requestedSkill = requestedUrl.searchParams.get('skill');
-  if (requestedSkill) setSelected(requestedSkill, { updateUrl: false });
   const requestedRepo = requestedUrl.searchParams.get('repo');
   if (requestedRepo && repositorySelect) {
     const option = [...repositorySelect.options].find(candidate => candidate.value === requestedRepo);
     if (option) {
       repositorySelect.value = requestedRepo;
-      updateRepositoryDisplay();
     }
+  }
+  updateRepositoryDisplay();
+  const repository = selectedRepository(repositorySelect);
+  setSkillStageEnabled(repository);
+
+  const requestedSkill = requestedUrl.searchParams.get('skill');
+  if (requestedSkill && repository) {
+    if (!setSelected(requestedSkill, { updateUrl: false })) requestedUrl.searchParams.delete('skill');
+  } else if (requestedSkill) {
+    requestedUrl.searchParams.delete('skill');
+  }
+  if (requestedUrl.search !== globalThis.location.search) {
+    globalThis.history.replaceState(null, '', `${requestedUrl.pathname}${requestedUrl.search}${requestedUrl.hash}`);
+  }
+  if (repository && !selectedName) {
+    setText(handoffStatusElement(), `${repository.name} selected. Now choose how the agent should work in it.`, 'hmmm');
   }
   updateSendEnabled();
 
