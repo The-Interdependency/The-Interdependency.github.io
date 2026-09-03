@@ -60,7 +60,7 @@ test('WebMCP establishes repository context before agent-work selection', async 
   await expect(freshMaking).toBeEnabled();
 
   await freshMaking.click();
-  await expect(selectedSkill).toContainText('fresh-making');
+  await expect(selectedSkill).toContainText('Make derived artifacts fresh');
   await expect(intent).toHaveValue(/minimal affected closure/);
   await expect(send).toBeEnabled();
 

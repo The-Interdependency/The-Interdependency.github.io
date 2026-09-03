@@ -60,8 +60,8 @@ function jsonResult(value) {
   return JSON.stringify(value, null, 2);
 }
 
-function showResult(label, value) {
-  setText(outputElement(), `${label}\n\n${jsonResult(value)}`);
+function showHumanMessage(message) {
+  setText(outputElement(), message);
 }
 
 async function loadRegistry() {
@@ -72,7 +72,7 @@ async function loadRegistry() {
 
 function updateSource(status) {
   const suffix = status.fallback ? ' (last-known-good fallback)' : '';
-  setText(sourceElement(), `${status.source.repository}@${status.source.commit.slice(0, 12)}:${status.source.path}${suffix}`);
+  setText(sourceElement(), `The Interdependency skill library · commit-pinned verified snapshot${suffix}`);
 }
 
 async function checkRemoteMcp() {
@@ -81,7 +81,7 @@ async function checkRemoteMcp() {
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const health = await response.json();
     if (!health?.ok || health.endpoint !== '/mcp') throw new Error('invalid health response');
-    setText(remoteStatusElement(), `Remote MCP LIVE · ${health.skill_count} public skills · ${REMOTE_MCP_BASE}/mcp`, 'implemented');
+    setText(remoteStatusElement(), `Remote MCP LIVE · ${health.skill_count} public skills`, 'implemented');
     return health;
   } catch (error) {
     setText(remoteStatusElement(), `Remote MCP health unresolved: ${error.message}`, 'hmmm');
@@ -136,7 +136,7 @@ async function publishHandoffTool(handoff) {
       annotations: { readOnlyHint: true, untrustedContentHint: true },
       execute: async () => jsonResult(currentHandoff || { ready: false, hmmm: 'human handoff was invalidated before invocation' })
     }, { signal: controller.signal });
-    setText(handoffStatusElement(), `Sent to browser agent context · ${handoff.target_repository.name} → ${handoff.skill.name}.`, 'implemented');
+    setText(handoffStatusElement(), `Sent to browser agent context · ${handoff.target_repository.name} → ${handoff.skill.human_title || handoff.skill.name}.`, 'implemented');
     return true;
   } catch (error) {
     if (controller.signal.aborted) return false;
@@ -185,8 +185,8 @@ function bindHumanCatalogue(registry) {
       setText(selectedRepositoryElement(), 'No repository selected.');
       return;
     }
-    const head = repository.observed_head_sha ? repository.observed_head_sha.slice(0, 12) : 'head hmmm';
-    setText(selectedRepositoryElement(), `${repository.name} · ${repository.default_branch || 'branch hmmm'}@${head} · ${repository.status || 'status hmmm'}`);
+    const humanStatus = repository.category || repository.status || 'public repository';
+    setText(selectedRepositoryElement(), `${repository.name} · ${humanStatus}`);
   };
 
   const setSkillStageEnabled = repository => {
@@ -219,6 +219,14 @@ function bindHumanCatalogue(registry) {
     return true;
   };
 
+  const humanHeadingFor = name => {
+    const card = cards.find(candidate => candidate.dataset.skillName === name);
+    const cardHeading = card?.querySelector('h4')?.textContent?.trim();
+    if (cardHeading) return cardHeading;
+    const skill = registry.inspectSkill({ name });
+    return skill.human_title || skill.name;
+  };
+
   const setSelected = (name, { updateUrl = true } = {}) => {
     const repository = selectedRepository(repositorySelect);
     if (!repository) {
@@ -236,6 +244,7 @@ function bindHumanCatalogue(registry) {
     const previousName = selectedName;
     const skill = registry.inspectSkill({ name });
     selectedName = name;
+    const heading = humanHeadingFor(name);
 
     for (const candidate of cards) {
       const selected = candidate === card;
@@ -244,9 +253,9 @@ function bindHumanCatalogue(registry) {
       if (selected) candidate.querySelector('[data-skill-description]')?.setAttribute('open', '');
     }
 
-    setText(selectedSkillElement(), `${skill.name} · ${skill.kind} · ${skill.canonical_path}`);
+    setText(selectedSkillElement(), heading);
     for (const action of selectedActions) action.disabled = false;
-    showResult('SELECTED REPOSITORY → SKILL', { target_repository: repository, skill });
+    showHumanMessage(`Selected ${repository.name} with ${heading}. Press Send to hand the agent the exact repository identity, skill, and required skill set.`);
 
     if (name === 'fresh-making' && (!intentInput.value.trim() || freshIntentIsAutomatic)) {
       intentInput.value = FRESH_MAKING_INTENT;
@@ -257,7 +266,7 @@ function bindHumanCatalogue(registry) {
     }
 
     updateSendEnabled();
-    if (!currentHandoff) setText(handoffStatusElement(), `${repository.name} and ${skill.name} selected. Review the outcome, then press Send.`, 'hmmm');
+    if (!currentHandoff) setText(handoffStatusElement(), `${repository.name} and ${heading} selected. Review the outcome, then press Send.`, 'hmmm');
 
     if (updateUrl) {
       const url = new URL(globalThis.location.href);
@@ -293,11 +302,15 @@ function bindHumanCatalogue(registry) {
   });
 
   document.querySelector('[data-selected-action="inspect"]')?.addEventListener('click', () => {
-    if (selectedName) showResult('INSPECT SELECTED', registry.inspectSkill({ name: selectedName }));
+    if (!selectedName) return;
+    const skill = registry.inspectSkill({ name: selectedName });
+    showHumanMessage(`${skill.human_title || skill.name}: ${skill.description}`);
   });
 
   document.querySelector('[data-selected-action="closure"]')?.addEventListener('click', () => {
-    if (selectedName) showResult('REQUIRED SKILL SET', registry.resolveSkillClosure({ name: selectedName }));
+    if (!selectedName) return;
+    const closure = registry.resolveSkillClosure({ name: selectedName });
+    showHumanMessage(`Required skills: ${closure.map(skill => skill.human_title || skill.name).join(', ')}.`);
   });
 
   intentInput?.addEventListener('input', () => {
@@ -334,8 +347,12 @@ function bindHumanCatalogue(registry) {
       }
     };
 
-    showResult('HUMAN → AGENT HANDOFF', handoff);
-    await publishHandoffTool(handoff);
+    const published = await publishHandoffTool(handoff);
+    if (published) {
+      showHumanMessage(`Handoff sent to the browser agent: repository ${repository.name} · skill ${skill.human_title || skill.name}. The agent now holds the exact repository head, required skill set, registry provenance, and your request.`);
+    } else {
+      showHumanMessage('The request was prepared in this page, but it could not be exposed to a browser agent here. Nothing was sent.');
+    }
   });
 
   filterInput?.addEventListener('input', applyFilter);
@@ -445,7 +462,7 @@ export async function registerInterdependencyWebMCP() {
   });
 
   globalThis.__interdependencyWebMcpRegistered = true;
-  setText(statusElement(), `WebMCP LIVE · 5 registry tools over ${status.skill_count} public skills. An ephemeral sixth handoff tool appears only after explicit human Send.`, status.fallback ? 'hmmm' : 'implemented');
+  setText(statusElement(), `WebMCP LIVE · five read-only registry tools over ${status.skill_count} public skills. A sixth handoff tool appears only after you press Send.`, status.fallback ? 'hmmm' : 'implemented');
   return { registered: true, tools: 5, dynamic_handoff_tool: HANDOFF_TOOL_NAME, registry: status };
 }
 

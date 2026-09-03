@@ -32,12 +32,22 @@ function isPresentedSkill(skill) {
   return skill?.kind === 'metadata-block' || skill?.name === 'meta' || skill?.name === 'fresh-making';
 }
 
+export function humanTitle(description) {
+  const text = String(description || '').trim();
+  if (!text) return '';
+  const emDash = text.indexOf(' — ');
+  const period = text.indexOf('. ');
+  const cut = emDash >= 0 ? emDash : period >= 0 ? period : text.length;
+  return text.slice(0, cut).trim() || text;
+}
+
 function publicSkill(skill, source) {
   return {
     name: skill.name,
     kind: skill.kind,
     depends_on: [...skill.depends_on],
     description: skill.description,
+    human_title: skill.human_title || humanTitle(skill.description),
     canonical_path: skill.path,
     canonical_url: `https://github.com/${source.repository}/blob/${source.commit}/${skill.path}`
   };

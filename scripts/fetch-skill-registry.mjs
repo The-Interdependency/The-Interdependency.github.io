@@ -55,6 +55,19 @@ function stableJson(value) {
   return `${JSON.stringify(value, null, 2)}\n`;
 }
 
+export function humanTitle(description) {
+  const text = String(description || '').trim();
+  if (!text) return '';
+  const emDash = text.indexOf(' — ');
+  const period = text.indexOf('. ');
+  const cut = emDash >= 0 ? emDash : period >= 0 ? period : text.length;
+  return text.slice(0, cut).trim() || text;
+}
+
+function withHumanTitle(skill) {
+  return { ...skill, human_title: humanTitle(skill.description) };
+}
+
 function rawGithubUrl(commit) {
   return new URL(`/${ORGANIZATION}/${REPOSITORY}/${commit}/${SOURCE_PATH}`, RAW_GITHUB_ORIGIN);
 }
@@ -80,7 +93,7 @@ export function normalizeRegistry(sourceText, commit) {
     throw new Error('skill registry has no skills');
   }
 
-  const skills = parsed.skills.map(skill => ({
+  const skills = parsed.skills.map(skill => withHumanTitle({
     name: String(skill.name || '').trim(),
     path: String(skill.path || '').trim(),
     kind: String(skill.kind || '').trim(),
@@ -117,7 +130,7 @@ export async function readFallback() {
   const parsed = JSON.parse(text);
 
   if (parsed?.source?.commit && Array.isArray(parsed.skills) && parsed.skills.length > 0) {
-    return parsed;
+    return { ...parsed, skills: parsed.skills.map(withHumanTitle) };
   }
 
   if (parsed?.repo === `${ORGANIZATION}/${REPOSITORY}` && Array.isArray(parsed.skills) && parsed.skills.length > 0) {

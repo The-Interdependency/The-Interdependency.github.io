@@ -167,3 +167,23 @@ test('dedicated WebMCP route presents collapsible skill cards, every generated r
   assert.match(packageJson, /"refresh:github": "node scripts\/fetch-github-org\.mjs"/);
   assert.match(packageJson, /"refresh:skills": "node scripts\/fetch-skill-registry\.mjs"/);
 });
+
+test('human-readable surface keeps machine identifiers out of the visible reading path', async () => {
+  const [page, source] = await Promise.all([
+    readFile('src/webmcp/index.njk', 'utf8'),
+    readFile('src/assets/js/webmcp.js', 'utf8')
+  ]);
+
+  assert.match(page, /skill\.human_title or skill\.name/);
+  assert.doesNotMatch(page, /<code>\{\{\s*skill\.name\s*\}\}<\/code>/);
+  assert.doesNotMatch(page, /<code>\{\{\s*dependency\s*\}\}<\/code>/);
+  assert.doesNotMatch(page, /Depends on:/);
+  assert.doesNotMatch(page, /<p class="eyebrow">\{\{\s*skill\.kind\s*\}\}<\/p>/);
+  assert.doesNotMatch(page, /snapshot \{\{\s*generated\.repos\.snapshotAt\s*\}\}/);
+  assert.doesNotMatch(page, /tiw_human_handoff/);
+
+  assert.doesNotMatch(source, /\.slice\(0, 12\)/);
+  assert.doesNotMatch(source, /status\.source\.commit/);
+  assert.match(source, /The Interdependency skill library · commit-pinned verified snapshot/);
+  assert.match(source, /skill\.human_title \|\| skill\.name/);
+});

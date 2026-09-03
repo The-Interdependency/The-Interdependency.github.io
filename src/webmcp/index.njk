@@ -18,7 +18,7 @@ webmcp: true
   <p data-webmcp-status data-state="hmmm">Loading the commit-pinned skill registry and checking browser WebMCP support…</p>
   <p data-remote-mcp-status data-state="hmmm">Checking remote MCP health…</p>
   <p><strong>Skill source:</strong> <span data-webmcp-source>resolving…</span></p>
-  <p><strong>Repository projection:</strong> {{ generated.repos.publicRepoCount }} active public repositories · snapshot {{ generated.repos.snapshotAt }}</p>
+  <p><strong>Repository projection:</strong> {{ generated.repos.publicRepoCount }} active public repositories</p>
   <noscript><p>JavaScript is disabled, so browser WebMCP registration and the human-to-agent handoff cannot run. The skill and repository catalogues remain readable.</p></noscript>
 </section>
 
@@ -50,7 +50,7 @@ webmcp: true
   <p class="eyebrow">Shared human + agent skill material</p>
   <h2 id="skill-catalog-title">2. Choose how the agent should work</h2>
   <p data-skill-stage-status data-state="hmmm" aria-live="polite">Choose a repository first to enable its agent-work choices.</p>
-  <p>The public skill surface is deliberately narrow: msdmd and its metadata-block applications first, then the METAPAT <code>meta</code> skill, plus <code>fresh-making</code> for deterministic refresh of derived artifacts. Other <code>skill-lib</code> skills remain canonical in the source library rather than becoming competing definitions here.</p>
+  <p>The public skill surface is deliberately narrow: the metadata skills built on the module self-declared metadata convention, the METAPAT consultation router, and deterministic refresh of derived artifacts. The remaining skills stay canonical in the source library rather than becoming competing definitions here.</p>
 
   <form data-human-skill-filter-form>
     <label for="human-skill-filter">Optional skill search</label>
@@ -58,43 +58,37 @@ webmcp: true
     <span aria-live="polite" data-human-skill-count>Presented skills shown</span>
   </form>
 
-  <h3>msdmd skills</h3>
+  <h3>Metadata skills</h3>
   <div class="grid" data-human-skill-catalog data-skill-group="msdmd">
     {% for skill in generated.skillRegistry.skills %}
     {% if skill.kind == "metadata-block" %}
     <article class="card" data-human-skill data-skill-name="{{ skill.name }}" data-skill-kind="{{ skill.kind }}">
-      <p class="eyebrow">{{ skill.kind }}</p>
-      <h4>{{ skill.name | replace("-", " ") }}</h4>
-      <p><code>{{ skill.name }}</code></p>
+      <p class="eyebrow">metadata skill</p>
+      <h4>{{ skill.human_title or skill.name }}</h4>
       <details data-skill-description>
         <summary>Description</summary>
         <p>{{ skill.description }}</p>
       </details>
-      {% if skill.depends_on and skill.depends_on.length %}
-      <p><strong>Depends on:</strong> {% for dependency in skill.depends_on %}<code>{{ dependency }}</code>{% if not loop.last %}, {% endif %}{% endfor %}</p>
-      {% else %}
-      <p><strong>Depends on:</strong> none declared</p>
-      {% endif %}
       <p><button type="button" data-select-skill aria-pressed="false" disabled>Select this skill</button></p>
-      <p><a href="https://github.com/{{ generated.skillRegistry.source.repository }}/blob/{{ generated.skillRegistry.source.commit }}/{{ skill.path }}">Read canonical SKILL.md</a></p>
+      <p><a href="https://github.com/{{ generated.skillRegistry.source.repository }}/blob/{{ generated.skillRegistry.source.commit }}/{{ skill.path }}">Read the canonical skill definition</a></p>
     </article>
     {% endif %}
     {% endfor %}
   </div>
 
-  <h3>meta</h3>
+  <h3>Consultation router</h3>
   <div class="grid" data-human-skill-catalog data-skill-group="meta">
     {% for skill in generated.skillRegistry.skills %}
     {% if skill.name == "meta" %}
     <article class="card" data-human-skill data-skill-name="{{ skill.name }}" data-skill-kind="{{ skill.kind }}">
-      <p class="eyebrow">{{ skill.kind }}</p>
-      <h4>{{ skill.name }}</h4>
+      <p class="eyebrow">METAPAT</p>
+      <h4>{{ skill.human_title or skill.name }}</h4>
       <details data-skill-description>
         <summary>Description</summary>
         <p>{{ skill.description }}</p>
       </details>
       <p><button type="button" data-select-skill aria-pressed="false" disabled>Select this skill</button></p>
-      <p><a href="https://github.com/{{ generated.skillRegistry.source.repository }}/blob/{{ generated.skillRegistry.source.commit }}/{{ skill.path }}">Read canonical SKILL.md</a></p>
+      <p><a href="https://github.com/{{ generated.skillRegistry.source.repository }}/blob/{{ generated.skillRegistry.source.commit }}/{{ skill.path }}">Read the canonical skill definition</a></p>
     </article>
     {% endif %}
     {% endfor %}
@@ -105,15 +99,14 @@ webmcp: true
     {% for skill in generated.skillRegistry.skills %}
     {% if skill.name == "fresh-making" %}
     <article class="card" data-human-skill data-skill-name="{{ skill.name }}" data-skill-kind="{{ skill.kind }}">
-      <p class="eyebrow">refresh · {{ skill.kind }}</p>
+      <p class="eyebrow">refresh</p>
       <h4>Make derived artifacts fresh</h4>
-      <p><code>{{ skill.name }}</code></p>
       <details data-skill-description>
         <summary>Description</summary>
         <p>{{ skill.description }}</p>
       </details>
       <p><button type="button" data-select-skill aria-pressed="false" disabled>Select refresh</button></p>
-      <p><a href="https://github.com/{{ generated.skillRegistry.source.repository }}/blob/{{ generated.skillRegistry.source.commit }}/{{ skill.path }}">Read canonical SKILL.md</a></p>
+      <p><a href="https://github.com/{{ generated.skillRegistry.source.repository }}/blob/{{ generated.skillRegistry.source.commit }}/{{ skill.path }}">Read the canonical skill definition</a></p>
     </article>
     {% endif %}
     {% endfor %}
@@ -142,18 +135,18 @@ webmcp: true
 
 <section class="panel" aria-labelledby="webmcp-boundary-title">
   <h2 id="webmcp-boundary-title">Same material, meaningful human selection</h2>
-  <pre tabindex="0">current repository projection + skill-lib
+  <pre tabindex="0">current public repository projection + skill definitions
                  ↓
-human chooses repo + reads applicable skill
+human chooses repository + reads the applicable skill
                  ↓
           explicit SEND
                  ↓
-      tiw_human_handoff
+       one read-only handoff
                  ↓
-agent receives exact repo head + skill + closure + human request
+agent receives the exact repository, skill set, and human request
                  ↓
 agent's separately authorized change tools</pre>
-  <p>For <code>fresh-making</code>, choosing the skill automatically supplies the standard make-fresh request; the human may edit it. The browser handoff itself remains read-only and page-session-only. Actual repository changes require the agent's separately authorized repository, filesystem, deployment, or other tools.</p>
+  <p>For the refresh skill, choosing it automatically supplies the standard make-fresh request; the human may edit it. The browser handoff itself remains read-only and page-session-only. Actual repository changes require the agent's separately authorized repository, filesystem, deployment, or other tools.</p>
 </section>
 
 <div class="hmmm-boundary"><strong>hmmm</strong><span>Repository observation identifies the target; it does not authenticate the target, grant write authority, or prove that every declared freshness executor is available to the agent.</span></div>
