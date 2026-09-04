@@ -22,7 +22,7 @@ import { createSkillRegistry } from './webmcp-registry.js';
 //
 // id: webmcp_repository_context_precedes_agent_work_selection
 //   given: no repository is selected or the selected repository changes
-//   then: skill controls remain disabled or the prior skill selection is invalidated so agent work is always chosen within the current repository context
+//   then: skill controls remain disabled or the prior skill selection and visible output are invalidated so agent work is always chosen within the current repository context
 //   class: human_in_loop
 //
 // id: webmcp_human_handoff_requires_explicit_send
@@ -285,6 +285,11 @@ function bindHumanCatalogue(registry) {
     const skillWasCleared = clearSelectedSkill();
     updateRepositoryDisplay();
     const repository = selectedRepository(repositorySelect);
+    showHumanMessage(
+      repository
+        ? `${repository.name} selected. Previous skill or handoff output cleared. Choose how the agent should work in it.`
+        : 'Repository selection cleared. Previous skill or handoff output cleared.'
+    );
     setSkillStageEnabled(repository);
     updateSendEnabled();
     const url = new URL(globalThis.location.href);
