@@ -2,9 +2,9 @@
   "version": 1,
   "source": {
     "repository": "The-Interdependency/skill-lib",
-    "commit": "9353288221c29891860f0cd4568d5749de97ff78",
+    "commit": "22741dbad85c630e5e3239317a3ff47a630f0289",
     "path": "skills.json",
-    "sha256": "da69c1a92e74ced99687726bf8dcdcc90286b1bed081a096c0561f6b65de60b1"
+    "sha256": "9b1ccc7079c5d1af03230e6d63dced93a01a819a42bfb70ececf95589d6162b0"
   },
   "install_path": ".agents/skills/<skill-name>/",
   "superseded_skills": [
@@ -206,6 +206,14 @@
       "depends_on": [],
       "description": "Fail-closed rubric for comparing, retaining, rejecting, deprecating, and selecting UCNS options within an explicit scope. Load this when an agent asks which UCNS candidate should win, whether evidence authorizes selection, how an option moves from registered or implemented to selected, how to compare competing gonol constructors, carriers, geometries, policies, projections, or measurement candidates, or how to issue a scoped UCNS decision receipt. Do not load merely to register options, execute one already-selected option, or choose ordinary UI preferences. Never select universal UCNS canon by score, familiarity, implementation order, or EDCM-local evidence.",
       "human_title": "Fail-closed rubric for comparing, retaining, rejecting, deprecating, and selecting UCNS options within an explicit scope"
+    },
+    {
+      "name": "epac-selection-display",
+      "path": "epac-selection-display/SKILL.md",
+      "kind": "procedural",
+      "depends_on": [],
+      "description": "Evidence-bound EPAC target selection and display for WebMCP handoffs and other human-facing surfaces. Load this when choosing an EPAC element, molecule, construction receipt, comparison result, or available visualization to present; when preparing a receipt-backed EPAC display packet; or when exposing the EPAC workflow as a selectable WebMCP skill. Do not load to select EPAC or a UCNS candidate as canon, invent missing geometry, or make unrelated WebMCP catalogue changes.",
+      "human_title": "Evidence-bound EPAC target selection and display for WebMCP handoffs and other human-facing surfaces"
     },
     {
       "name": "the-interdependency",

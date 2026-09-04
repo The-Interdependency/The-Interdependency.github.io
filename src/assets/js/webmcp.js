@@ -419,7 +419,7 @@ export async function registerInterdependencyWebMCP() {
   await registerTool({
     name: 'tiw_list_skills',
     title: 'List public Interdependency skills',
-    description: 'List the same curated public skill set shown to the human: msdmd metadata-block applications, METAPAT meta, and fresh-making.',
+    description: 'List the same curated public skill set shown to the human: msdmd metadata-block applications, METAPAT meta, fresh-making, and evidence-bound EPAC selection/display.',
     inputSchema: { type: 'object', properties: { kind: { type: 'string' } }, additionalProperties: false },
     annotations: { readOnlyHint: true, untrustedContentHint: false },
     execute: async input => jsonResult(registry.listSkills(input))

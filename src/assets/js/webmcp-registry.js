@@ -14,7 +14,7 @@
 // === CONTRACTS ===
 // id: webmcp_public_catalogue_matches_human_catalogue
 //   given: the source registry contains public-facing and internal/specialist skills
-//   then: public list/find/inspect/closure expose msdmd metadata-block applications, the exact meta skill, and fresh-making, matching the human card catalogue
+//   then: public list/find/inspect/closure expose msdmd metadata-block applications, the exact meta skill, fresh-making, and epac-selection-display, matching the human card catalogue
 //   class: correctness
 //
 // id: webmcp_registry_smallest_dependency_closure
@@ -29,7 +29,10 @@ function normalizeText(value) {
 }
 
 function isPresentedSkill(skill) {
-  return skill?.kind === 'metadata-block' || skill?.name === 'meta' || skill?.name === 'fresh-making';
+  return skill?.kind === 'metadata-block'
+    || skill?.name === 'meta'
+    || skill?.name === 'fresh-making'
+    || skill?.name === 'epac-selection-display';
 }
 
 export function humanTitle(description) {
@@ -139,7 +142,7 @@ export function createSkillRegistry(registryData) {
       registry_version: registryData.version,
       skill_count: skills.length,
       source_skill_count: registryData.skills.length,
-      public_scope: 'metadata-block plus meta plus fresh-making',
+      public_scope: 'metadata-block plus meta plus fresh-making plus epac-selection-display',
       source: { ...source },
       fallback: Boolean(registryData.fallback),
       hmmm: Array.isArray(registryData.hmmm) ? [...registryData.hmmm] : []
