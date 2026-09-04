@@ -353,6 +353,8 @@ function bindHumanCatalogue(registry) {
     };
 
     const published = await publishHandoffTool(handoff);
+    const activeRepository = selectedRepository(repositorySelect);
+    if (activeRepository?.name !== repository.name || selectedName !== skill.name) return;
     if (published) {
       showHumanMessage(`Handoff sent to the browser agent: repository ${repository.name} · skill ${skill.human_title || skill.name}. The agent now holds the exact repository head, required skill set, registry provenance, and your request.`);
     } else {
