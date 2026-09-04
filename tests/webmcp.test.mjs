@@ -17,6 +17,7 @@ const sourceRegistry = JSON.stringify({
     { name: 'cap-build', path: 'cap-build/SKILL.md', kind: 'metadata-block', depends_on: ['msdmd'], description: 'capability inventory' },
     { name: 'meta', path: 'meta/SKILL.md', kind: 'procedural', description: 'METAPAT consultation router' },
     { name: 'fresh-making', path: 'fresh-making/SKILL.md', kind: 'procedural', description: 'deterministic restoration of derived artifact consistency' },
+    { name: 'epac-selection-display', path: 'epac-selection-display/SKILL.md', kind: 'procedural', description: 'receipt-backed EPAC element and molecule selection and display' },
     { name: 'repo-audit-repair', path: 'repo-audit-repair/SKILL.md', kind: 'procedural', description: 'audit and repair a repository' }
   ]
 });
@@ -63,20 +64,28 @@ test('committed or refreshed fallback snapshot is exact, usable, and retains sou
   assert.ok(snapshot.skills.some(skill => skill.name === 'repo-audit-repair'));
 });
 
-test('public registry presents msdmd, meta, and fresh-making while hiding unrelated specialist skills', () => {
+test('public registry presents msdmd, meta, fresh-making, and EPAC display while hiding unrelated specialist skills', () => {
   const registry = createSkillRegistry(sampleProjection());
-  assert.deepEqual(registry.listSkills().map(skill => skill.name), ['msdmd', 'cap-build', 'meta', 'fresh-making']);
+  assert.deepEqual(
+    registry.listSkills().map(skill => skill.name),
+    ['msdmd', 'cap-build', 'meta', 'fresh-making', 'epac-selection-display']
+  );
   assert.equal(registry.findSkills({ query: 'audit repository' }).length, 0);
   assert.equal(registry.findSkills({ query: 'capability' })[0].name, 'cap-build');
   assert.equal(registry.findSkills({ query: 'derived artifact' })[0].name, 'fresh-making');
+  assert.equal(registry.findSkills({ query: 'EPAC molecule' })[0].name, 'epac-selection-display');
   assert.throws(() => registry.inspectSkill({ name: 'repo-audit-repair' }), /unknown public skill/);
 
   assert.deepEqual(registry.resolveSkillClosure({ name: 'cap-build' }).map(skill => skill.name), ['msdmd', 'cap-build']);
   assert.deepEqual(registry.resolveSkillClosure({ name: 'fresh-making' }).map(skill => skill.name), ['fresh-making']);
+  assert.deepEqual(
+    registry.resolveSkillClosure({ name: 'epac-selection-display' }).map(skill => skill.name),
+    ['epac-selection-display']
+  );
   const status = registry.getRegistryStatus();
-  assert.equal(status.skill_count, 4);
-  assert.equal(status.source_skill_count, 5);
-  assert.equal(status.public_scope, 'metadata-block plus meta plus fresh-making');
+  assert.equal(status.skill_count, 5);
+  assert.equal(status.source_skill_count, 6);
+  assert.equal(status.public_scope, 'metadata-block plus meta plus fresh-making plus epac-selection-display');
 });
 
 test('WebMCP provider registers five base registry tools and one explicit dynamic browser handoff', async () => {
@@ -98,6 +107,7 @@ test('WebMCP provider registers five base registry tools and one explicit dynami
   assert.match(source, /globalThis\.document\?\.modelContext/);
   assert.doesNotMatch(source, /navigator\?\.modelContext|provideContext/);
   assert.doesNotMatch(source, /\/handoff\/|remote_session|writeKey|install_skill|propagate_skill|update_file|create_file/);
+  assert.doesNotMatch(source, /construct_element_gonol|construct_molecule|epac_public_gonol/);
 });
 
 test('human selection carries exact skill and repository identity without typed machine identifiers', async () => {
@@ -145,6 +155,9 @@ test('dedicated WebMCP route presents collapsible skill cards, every generated r
   assert.match(page, /skill\.kind == "metadata-block"/);
   assert.match(page, /skill\.name == "meta"/);
   assert.match(page, /skill\.name == "fresh-making"/);
+  assert.match(page, /skill\.name == "epac-selection-display"/);
+  assert.match(page, /data-skill-group="epac"/);
+  assert.match(page, /Select and display EPAC/);
   assert.match(page, /<details data-skill-description>/);
   assert.match(page, /<summary>Description<\/summary>/);
   assert.match(page, /generated\.repos\.repositories/);

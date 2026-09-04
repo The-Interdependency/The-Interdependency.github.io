@@ -50,11 +50,11 @@ webmcp: true
   <p class="eyebrow">Shared human + agent skill material</p>
   <h2 id="skill-catalog-title">2. Choose how the agent should work</h2>
   <p data-skill-stage-status data-state="hmmm" aria-live="polite">Choose a repository first to enable its agent-work choices.</p>
-  <p>The public skill surface is deliberately narrow: the metadata skills built on the module self-declared metadata convention, the METAPAT consultation router, and deterministic refresh of derived artifacts. The remaining skills stay canonical in the source library rather than becoming competing definitions here.</p>
+  <p>The public skill surface is deliberately narrow: the metadata skills built on the module self-declared metadata convention, the METAPAT consultation router, deterministic refresh of derived artifacts, and receipt-backed EPAC selection/display. The remaining skills stay canonical in the source library rather than becoming competing definitions here.</p>
 
   <form data-human-skill-filter-form>
     <label for="human-skill-filter">Optional skill search</label>
-    <input id="human-skill-filter" data-human-skill-filter name="skill-filter" type="search" placeholder="documentation, capabilities, boundaries, meta, refresh…" autocomplete="off" disabled>
+    <input id="human-skill-filter" data-human-skill-filter name="skill-filter" type="search" placeholder="documentation, capabilities, boundaries, meta, refresh, EPAC…" autocomplete="off" disabled>
     <span aria-live="polite" data-human-skill-count>Presented skills shown</span>
   </form>
 
@@ -112,6 +112,24 @@ webmcp: true
     {% endfor %}
   </div>
 
+  <h3>EPAC display</h3>
+  <div class="grid" data-human-skill-catalog data-skill-group="epac">
+    {% for skill in generated.skillRegistry.skills %}
+    {% if skill.name == "epac-selection-display" %}
+    <article class="card" data-human-skill data-skill-name="{{ skill.name }}" data-skill-kind="{{ skill.kind }}">
+      <p class="eyebrow">EPAC research presentation</p>
+      <h4>Select and display EPAC</h4>
+      <details data-skill-description>
+        <summary>Description</summary>
+        <p>{{ skill.description }}</p>
+      </details>
+      <p><button type="button" data-select-skill aria-pressed="false" disabled>Select EPAC display</button></p>
+      <p><a href="https://github.com/{{ generated.skillRegistry.source.repository }}/blob/{{ generated.skillRegistry.source.commit }}/{{ skill.path }}">Read the canonical skill definition</a></p>
+    </article>
+    {% endif %}
+    {% endfor %}
+  </div>
+
   <div class="hmmm-boundary" data-selected-skill-boundary>
     <strong>Selected skill</strong>
     <span data-selected-skill>No skill selected.</span>
@@ -146,7 +164,7 @@ human chooses repository + reads the applicable skill
 agent receives the exact repository, skill set, and human request
                  ↓
 agent's separately authorized change tools</pre>
-  <p>For the refresh skill, choosing it automatically supplies the standard make-fresh request; the human may edit it. The browser handoff itself remains read-only and page-session-only. Actual repository changes require the agent's separately authorized repository, filesystem, deployment, or other tools.</p>
+  <p>For the refresh skill, choosing it automatically supplies the standard make-fresh request; the human may edit it. For EPAC selection/display, the human names the target and representation; the server passes that request but does not construct or render the research artifact. The browser handoff itself remains read-only and page-session-only. Actual repository changes require the agent's separately authorized repository, filesystem, deployment, or other tools.</p>
 </section>
 
-<div class="hmmm-boundary"><strong>hmmm</strong><span>Repository observation identifies the target; it does not authenticate the target, grant write authority, or prove that every declared freshness executor is available to the agent.</span></div>
+<div class="hmmm-boundary"><strong>hmmm</strong><span>Repository observation identifies the target; it does not authenticate the target, grant write authority, prove that every declared freshness executor is available, or prove that a selected EPAC source contains a committed renderer.</span></div>
