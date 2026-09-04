@@ -4,7 +4,7 @@ import { createSkillRegistry } from './webmcp-registry.js';
 // id: interdependency_webmcp_surface
 //   purpose: Register website-owned read-only WebMCP skill tools and bind exact human-selected repository + skill + request into one ephemeral browser-agent handoff.
 //   entrypoint: /webmcp/
-//   tests: tests/webmcp.test.mjs
+//   tests: tests/webmcp.test.mjs; tests/webmcp-repository-output.test.mjs
 // === END MODULE_BUILD ===
 // === BOUNDARIES ===
 // id: interdependency_webmcp_surface_boundary
@@ -22,7 +22,7 @@ import { createSkillRegistry } from './webmcp-registry.js';
 //
 // id: webmcp_repository_context_precedes_agent_work_selection
 //   given: no repository is selected or the selected repository changes
-//   then: skill controls remain disabled or the prior skill selection is invalidated so agent work is always chosen within the current repository context
+//   then: skill controls remain disabled or the prior skill selection and visible output are invalidated so agent work is always chosen within the current repository context
 //   class: human_in_loop
 //
 // id: webmcp_human_handoff_requires_explicit_send
@@ -136,6 +136,7 @@ async function publishHandoffTool(handoff) {
       annotations: { readOnlyHint: true, untrustedContentHint: true },
       execute: async () => jsonResult(currentHandoff || { ready: false, hmmm: 'human handoff was invalidated before invocation' })
     }, { signal: controller.signal });
+    if (controller.signal.aborted || handoffController !== controller || currentHandoff !== handoff) return false;
     setText(handoffStatusElement(), `Sent to browser agent context · ${handoff.target_repository.name} → ${handoff.skill.human_title || handoff.skill.name}.`, 'implemented');
     return true;
   } catch (error) {
@@ -160,8 +161,14 @@ function bindHumanCatalogue(registry) {
   const sendButton = document.querySelector('[data-human-handoff-send]');
   let selectedName = '';
   let freshIntentIsAutomatic = false;
+  let handoffRevision = 0;
 
   filterForm?.addEventListener('submit', event => event.preventDefault());
+
+  const invalidatePublishedHandoff = reason => {
+    handoffRevision += 1;
+    clearPublishedHandoff(reason);
+  };
 
   const applyFilter = () => {
     const query = String(filterInput?.value || '').trim().toLowerCase();
@@ -238,7 +245,7 @@ function bindHumanCatalogue(registry) {
     if (!card) return false;
 
     if (selectedName && selectedName !== name && currentHandoff) {
-      clearPublishedHandoff('Skill selection changed. Review and press Send again before the agent receives a new handoff.');
+      invalidatePublishedHandoff('Skill selection changed. Review and press Send again before the agent receives a new handoff.');
     }
 
     const previousName = selectedName;
@@ -281,10 +288,15 @@ function bindHumanCatalogue(registry) {
   }
 
   repositorySelect?.addEventListener('change', () => {
-    if (currentHandoff) clearPublishedHandoff('Repository selection changed. Press Send again before the agent receives a new handoff.');
+    if (currentHandoff) invalidatePublishedHandoff('Repository selection changed. Press Send again before the agent receives a new handoff.');
     const skillWasCleared = clearSelectedSkill();
     updateRepositoryDisplay();
     const repository = selectedRepository(repositorySelect);
+    showHumanMessage(
+      repository
+        ? `${repository.name} selected. Previous skill or handoff output cleared. Choose how the agent should work in it.`
+        : 'Repository selection cleared. Previous skill or handoff output cleared.'
+    );
     setSkillStageEnabled(repository);
     updateSendEnabled();
     const url = new URL(globalThis.location.href);
@@ -315,7 +327,7 @@ function bindHumanCatalogue(registry) {
 
   intentInput?.addEventListener('input', () => {
     freshIntentIsAutomatic = false;
-    if (currentHandoff) clearPublishedHandoff('Request text changed. Press Send again before the agent receives the revision.');
+    if (currentHandoff) invalidatePublishedHandoff('Request text changed. Press Send again before the agent receives the revision.');
     updateSendEnabled();
   });
 
@@ -329,6 +341,7 @@ function bindHumanCatalogue(registry) {
       return;
     }
 
+    const submissionRevision = ++handoffRevision;
     const skill = registry.inspectSkill({ name: selectedName });
     const handoff = {
       ready: true,
@@ -348,6 +361,9 @@ function bindHumanCatalogue(registry) {
     };
 
     const published = await publishHandoffTool(handoff);
+    if (handoffRevision !== submissionRevision) return;
+    const activeRepository = selectedRepository(repositorySelect);
+    if (activeRepository?.name !== repository.name || selectedName !== skill.name) return;
     if (published) {
       showHumanMessage(`Handoff sent to the browser agent: repository ${repository.name} · skill ${skill.human_title || skill.name}. The agent now holds the exact repository head, required skill set, registry provenance, and your request.`);
     } else {
