@@ -18,3 +18,17 @@ test('repository changes invalidate stale human-visible output', async () => {
     'stale output must be replaced before the new repository skill stage is presented'
   );
 });
+
+
+test('invalidated async submits cannot overwrite current output or status', async () => {
+  const source = await readFile('src/assets/js/webmcp.js', 'utf8');
+
+  assert.match(source, /let handoffRevision = 0;/);
+  assert.match(source, /const invalidatePublishedHandoff = reason => \{\s*handoffRevision \+= 1;\s*clearPublishedHandoff\(reason\);/s);
+  assert.match(source, /const submissionRevision = \+\+handoffRevision;/);
+  assert.match(source, /const published = await publishHandoffTool\(handoff\);\s*if \(handoffRevision !== submissionRevision\) return;/s);
+  assert.match(
+    source,
+    /if \(controller\.signal\.aborted \|\| handoffController !== controller \|\| currentHandoff !== handoff\) return false;/
+  );
+});
