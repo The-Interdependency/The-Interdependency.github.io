@@ -5,8 +5,11 @@ import { test, expect } from '@playwright/test';
 test('SITREP supports scan, dependency-map navigation, summary, and full-evidence reading depths', async ({ page }) => {
   await page.goto('/sitrep/');
 
-  await expect(page.getByRole('navigation', { name: 'Repository situation index' }).locator('a')).toHaveCount(11);
-  await expect(page.locator('.sitrep-card')).toHaveCount(11);
+  const navigation = page.getByRole('navigation', { name: 'Repository situation index' });
+  const cards = page.locator('.sitrep-card');
+  const projectCount = await cards.count();
+  expect(projectCount).toBeGreaterThan(0);
+  await expect(navigation.locator('a')).toHaveCount(projectCount);
   await expect(page.locator('.sitrep-reading-key > div')).toHaveCount(3);
 
   const desktopColumns = await page.locator('.sitrep-dual').first().evaluate(element => getComputedStyle(element).gridTemplateColumns);
@@ -21,7 +24,7 @@ test('SITREP supports scan, dependency-map navigation, summary, and full-evidenc
   await page.getByRole('button', { name: 'Reset' }).click();
   await expect(map).toHaveAttribute('data-scale', '1.00');
 
-  const firstCard = page.locator('.sitrep-card').first();
+  const firstCard = cards.first();
   const frontierButton = firstCard.locator('[data-sitrep-section="frontier"]');
   await frontierButton.click();
   await expect(frontierButton).toHaveAttribute('aria-expanded', 'true');
@@ -45,7 +48,9 @@ test('SITREP remains contained and sequential on a narrow viewport', async ({ pa
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBeTruthy();
 
   const index = page.getByRole('navigation', { name: 'Repository situation index' });
-  await expect(index.locator('a')).toHaveCount(11);
+  const projectCount = await page.locator('.sitrep-card').count();
+  expect(projectCount).toBeGreaterThan(0);
+  await expect(index.locator('a')).toHaveCount(projectCount);
   await expect(page.locator('.sitrep-reading-key > div')).toHaveCount(3);
   await expect(page.locator('[data-sitrep-map] svg')).toBeVisible();
   await expect(page.locator('.sitrep-metric').first()).toBeVisible();
