@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
 const expected = [
-  [0, 'chapter-zero', 'Meta Energy Theory — Axioms, Postulates, and Theorems', 'The-Interdependency/metapat', 'CHAPTER_ZERO.md'],
+  [0, 'chapter-zero', 'Meta Energy Theory — Root Structure and Action', 'The-Interdependency/metapat', 'CHAPTER_ZERO.md'],
   [1, 'chapter-one', 'The Subtractive Foundations of the Unit Carrier', 'The-Interdependency/ucns', 'docs/chapter-1.md'],
   [2, 'chapter-two', 'Measurement Without Transfer', 'The-Interdependency/edcm', 'docs/chapter-2.md'],
   [3, 'chapter-three', 'Modules That Speak for Themselves', 'The-Interdependency/skill-lib', 'docs/chapter-3.md'],
