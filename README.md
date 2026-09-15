@@ -10,7 +10,7 @@ The **distributed Interdependency textbook** is a separate technical reading seq
 
 | Chapter | Title | Source |
 |---:|---|---|
-| 0 | Meta Energy Theory — Axioms, Postulates, and Theorems | `The-Interdependency/metapat:CHAPTER_ZERO.md` |
+| 0 | Meta Energy Theory — Root Structure and Action | `The-Interdependency/metapat:CHAPTER_ZERO.md` |
 | 1 | The Subtractive Foundations of the Unit Carrier | `The-Interdependency/ucns:docs/chapter-1.md` |
 | 2 | Measurement Without Transfer | `The-Interdependency/edcm:docs/chapter-2.md` |
 | 3 | Modules That Speak for Themselves | `The-Interdependency/skill-lib:docs/chapter-3.md` |
