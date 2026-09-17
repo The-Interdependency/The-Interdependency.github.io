@@ -13,7 +13,8 @@ const labRoutes = articleLab.map(record => {
 });
 
 const routes = [
-  ['/', /this is interdependence\. this is the way\./i],
+  ['/', /a tensored approach to social constructs/i],
+  ['/about-me/', /this is interdependence\. this is the way\./i],
   ['/home/', /Start with The Way/],
   ['/preamble/', /Humanity faces extinction/],
   ['/chapters/', /The Interdependency Textbook/],
