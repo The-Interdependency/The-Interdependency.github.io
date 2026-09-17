@@ -3,7 +3,7 @@
  id: public_threshold_layout
    module_name: splash-layout
    module_kind: route
-   summary: Renders the founder-authored public threshold as a dependency-light reading surface before the full knowledge-system chrome.
+   summary: Renders the public landing statement and founder narrative as dependency-light reading surfaces.
    owner: Erin Spencer
    public_surface: root HTML shell for the public threshold
    internal_surface: title, description, canonical URL, site.css, awakening.css, content slot
@@ -13,10 +13,10 @@
    user_data_boundary: none
    admin_only: false
    tests: tests/site-contract.test.mjs, tests/generated-site.test.mjs, tests/site.spec.mjs, tests/accessibility.spec.mjs
-   rollout: selected by src/index.njk
+   rollout: selected by src/index.njk and src/about-me.njk
    rollback: restore the prior src/index.njk threshold content
 === END MODULE_BUILD === -->
-<!-- Usage: src/index.njk supplies the public origin text. The page remains readable with CSS disabled; JavaScript only adds optional copy/export controls. -->
+<!-- Usage: src/index.njk supplies the landing statement; src/about-me.njk preserves the founder narrative. The page remains readable with CSS disabled; JavaScript only adds optional copy/export controls. -->
 <html lang="en">
 <head>
   <meta charset="utf-8">
