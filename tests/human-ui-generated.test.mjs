@@ -15,7 +15,7 @@ test('human reading surfaces keep provenance collapsed and Article labels litera
     readFile('_site/chapters/chapter-zero/index.html', 'utf8'),
     readFile(`_site/lab/${firstLabUnit.routeSlug}/index.html`, 'utf8'),
     readFile('_site/articles/article-one/index.html', 'utf8'),
-    readFile('_site/start/index.html', 'utf8'),
+    readFile('_site/about-the-site/index.html', 'utf8'),
     readFile('_site/artifacts/gonol-relationships/index.html', 'utf8'),
     readFile('_site/artifacts/edcm-mathematics/index.html', 'utf8'),
     readFile('_site/artifacts/recursive-hypertoroidal-interference/index.html', 'utf8'),
@@ -48,6 +48,6 @@ test('human reading surfaces keep provenance collapsed and Article labels litera
   assert.match(rhi, /<details class="rhi-provenance provenance-disclosure">[\s\S]*?<summary>Provenance<\/summary>/);
   assert.doesNotMatch(rhi, /<details class="rhi-provenance provenance-disclosure"[^>]*\bopen\b/);
 
-  assert.match(orientation, /<h1>Site orientation<\/h1>/);
+  assert.match(orientation, /<h1>About the site<\/h1>/);
   assert.doesNotMatch(orientation, /Start here|separate speakers/);
 });

@@ -1,0 +1,41 @@
+---
+layout: layouts/base.njk
+title: About the site
+description: How to read The Interdependent Way website, the web practices behind it, and what its checks establish.
+---
+{# Usage: this page owns site orientation and construction practice; /start/ redirects here. Source doctrine stays with its owning repository. #}
+<header class="page-head"><h1>About the site</h1><p class="lede">A place to read The Interdependent Way, examine its claims, and follow the work that grows around it.</p></header>
+<div class="prose">
+<section aria-labelledby="reading">
+  <h2 id="reading">How to read this site</h2>
+  <p>Begin with <a href="/way/">The Way</a>. Open a title to read its text. Article Labs offer interpretation, applications, and research where available; exact source remains accessible in its own disclosure. The <a href="/home/">directory</a> leads to the technical textbook, narratives, projects, and other work.</p>
+  <dl>
+    <dt><strong>Canon and textbook</strong></dt><dd>Source-owned writing, with its identity and origin available for inspection. Publication here leaves authorship, license, and claim status with the source.</dd>
+    <dt><strong>Interpretation and narrative</strong></dt><dd>Companion explanations, applications, and stories. A useful reading remains distinguishable from the material it interprets.</dd>
+    <dt><strong>Research and non-study context</strong></dt><dd>The research section separates studies and systematic evidence syntheses from legislation, standards, guidelines, and doctrine. See the <a href="/research/method/">review method</a>.</dd>
+    <dt><strong>Implementation and frontier</strong></dt><dd>Built work and unresolved claims have different standing. A functioning demonstration establishes only what was actually tested.</dd>
+    <dt><strong>hmmm</strong></dt><dd>An unresolved constraint, preserved with enough context for someone to continue honestly.</dd>
+  </dl>
+  <p><a href="/about-me/">About me</a> contains Erin’s personal narrative. <a href="/by-the-builder/">By the builder</a> contains dated, attributed observations from the AI builder; those entries express the builder’s judgment.</p>
+</section>
+<section aria-labelledby="practices">
+  <h2 id="practices">Practices behind the pages</h2>
+  <h3>Make the structure readable</h3>
+  <p>Use descriptive headings, semantic page regions, ordinary links, and a skip link. Keep repeated navigation in a predictable order, and give each destination a clear purpose. These choices follow <a href="https://www.w3.org/WAI/tutorials/page-structure/">W3C’s page-structure guidance</a> and <a href="https://www.w3.org/WAI/WCAG22/Understanding/consistent-navigation.html">consistent-navigation guidance</a>.</p>
+  <h3>Let the content arrive first</h3>
+  <p>The reading pages are generated as HTML. JavaScript adds conveniences such as copying, search, and map interaction. Essential reading and links remain available without it. This follows <a href="https://www.gov.uk/service-manual/technology/using-progressive-enhancement">GOV.UK’s progressive-enhancement guidance</a>. Static reading still requires the page to have loaded; this is not an installed offline application.</p>
+  <h3>Respect small screens and different ways of using a page</h3>
+  <p>Allow text to reflow, keep keyboard focus visible, honor reduced-motion preferences, and provide room around controls. The relevant W3C guidance covers <a href="https://www.w3.org/WAI/WCAG22/Understanding/reflow.html">reflow</a>, <a href="https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html">visible focus</a>, and <a href="https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html">target size and spacing</a>. Maps and tables may need their own scrolling area.</p>
+  <h3>Make every extra element earn its place</h3>
+  <p>Navigation helps people move; a reading guide explains the choices. Neither needs to repeat the other in every section. Export controls belong to reusable text. Map and status scripts load on the pages that use them. Source copies and recovery editions remain because they support verification and resilience.</p>
+  <h3>Measure the claim being made</h3>
+  <p>Release checks cover content contracts, internal links, browser behavior, automated accessibility findings, and static file-size budgets. Delivery speed and responsiveness need separate measurements: <a href="https://web.dev/articles/vitals">Core Web Vitals</a> track loading, interaction, and visual stability. Small files alone do not establish a good real-user experience.</p>
+  <h3>Keep evidence attached to its owner</h3>
+  <p><a href="https://github.com/The-Interdependency/skill-lib">skill-lib</a> guides audit and repair. <a href="https://github.com/The-Interdependency/metapat/blob/main/DOMAIN_RESTRAINT.md">METAPAT’s domain restraint</a> keeps structural comparison from becoming borrowed authority. Website behavior is evaluated through web standards and observed use; presentation does not validate the theories presented.</p>
+</section>
+<section aria-labelledby="limits">
+  <h2 id="limits">Checks, corrections, and limits</h2>
+  <p>The <a href="/build.json">published build record</a> identifies the site revision and source snapshots. Corrections to source writing belong in its source repository; corrections to navigation, rendering, or these pages belong in the <a href="https://github.com/The-Interdependency/The-Interdependency.github.io/issues">website issue tracker</a>. Include the page URL, what happened, and what you expected.</p>
+  <p><strong>hmmm:</strong> automated checks cover a bounded set of failures. Manual assistive-technology testing, user research, and real-user performance remain separate work. See <a href="/accessibility/">Accessibility</a> for the current scope and <a href="https://github.com/The-Interdependency/The-Interdependency.github.io/blob/main/docs/site-audit-2026-09-17.md">the dated site audit</a> for evidence.</p>
+</section>
+</div>

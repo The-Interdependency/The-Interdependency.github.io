@@ -12,7 +12,7 @@ const firstLabUnit = canon.units.find(unit => unit.id === articleLab[0].unit_id)
 if (!firstLabUnit) throw new Error(`missing Lab canon unit ${articleLab[0].unit_id}`);
 
 for (const route of [
-  '/', '/about-me/', '/home/', '/preamble/', '/chapters/', '/chapters/chapter-zero/', '/chapters/chapter-seven/',
+  '/', '/about-me/', '/about-the-site/', '/by-the-builder/', '/accessibility/', '/home/', '/preamble/', '/chapters/', '/chapters/chapter-zero/', '/chapters/chapter-seven/',
   '/articles/', '/articles/article-two/', '/narratives/', '/narratives/jack-and-diane/', '/way/', '/lab/', `/lab/${firstLabUnit.routeSlug}/`, '/projects/', '/sitrep/',
   '/artifacts/gonol-relationships/', '/artifacts/edcm-mathematics/', '/artifacts/four-cuts/', '/fallback/', '/research/method/'
 ]) {

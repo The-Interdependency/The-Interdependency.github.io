@@ -25,7 +25,7 @@ test('site-wide export controls preserve structure, root destinations, and disti
   assert.match(source, /new URL\(href, document\.baseURI\)\.href/);
   assert.match(source, /function textWithoutRepeatedTitle\(field\)/);
   assert.match(source, /heading\.remove\(\)/);
-  assert.match(source, /field\.style\.paddingTop = '4\.75rem'/);
+  assert.doesNotMatch(source, /field\.style\.paddingTop/);
   assert.match(source, /import\('\/assets\/js\/gonol-reconciliation\.js'\)/);
 });
 

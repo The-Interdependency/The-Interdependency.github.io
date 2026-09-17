@@ -1,5 +1,16 @@
 ---
 layout: layouts/base.njk
 title: Accessibility
+description: Accessibility practices, verification limits, and how to report a problem using this website.
 ---
-<h1>Accessibility</h1><p>The implementation targets WCAG 2.2 AA with semantic landmarks, keyboard access, visible focus, reduced motion compatibility, and no JavaScript cliff.</p>
+{# Usage: update this statement when verification scope changes; construction references live at /about-the-site/. #}
+<header class="page-head"><h1>Accessibility</h1></header>
+<div class="prose">
+<p>This site aims toward WCAG 2.2 AA. Its reading pages use semantic headings and landmarks, keyboard-operable links and disclosures, visible focus, reduced-motion styles, and HTML content that remains available without JavaScript.</p>
+<p>Search, copying, and graphical map controls use JavaScript. The source text and static relationship lists remain available independently. The mobile menu remains expanded when JavaScript is disabled.</p>
+<h2>What is checked</h2>
+<p>The release suite checks selected public routes with automated accessibility rules, along with browser interactions and internal links. The September 17 audit also checks narrow-screen reflow and keyboard navigation for the revised reading and information pages. These checks support improvement; they do not establish complete WCAG conformance.</p>
+<h2>Report a barrier</h2>
+<p>Open a <a href="https://github.com/The-Interdependency/The-Interdependency.github.io/issues">website issue</a> with the page URL, the task you were trying to complete, and the browser or assistive technology involved if you wish to share it. Technical diagnosis is optional.</p>
+<p><strong>hmmm:</strong> a comprehensive manual screen-reader review and testing with disabled users remain outstanding. Broader design practices and their sources are in <a href="/about-the-site/">About the site</a>.</p>
+</div>
