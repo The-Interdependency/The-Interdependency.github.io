@@ -2,7 +2,7 @@
  * id: public_threshold_presentation
  *   module_name: public-threshold-presentation
  *   module_kind: ui_panel
- *   summary: Presents the founder-authored public threshold as a long-form reading surface without hiding text behind animation or JavaScript.
+ *   summary: Presents the landing statement and founder narrative as readable surfaces without hiding text behind animation or JavaScript.
  *   owner: Erin Spencer
  *   public_surface: root public-threshold presentation
  *   internal_surface: awakening-body, awakening-splash, awakening-stage, awakening-orbit, awakening-copy, awakening-text, origin-stage, origin-copy, origin-text
@@ -12,7 +12,7 @@
  *   user_data_boundary: none
  *   admin_only: false
  *   tests: tests/generated-site.test.mjs, tests/site.spec.mjs, tests/accessibility.spec.mjs
- *   rollout: loaded only by layouts/splash.njk for the public threshold
+ *   rollout: loaded by layouts/splash.njk for the landing and About me pages
  *   rollback: restore the prior threshold stylesheet and root template
  * === END MODULE_BUILD ===
  * Usage: loaded by src/_includes/layouts/splash.njk; verify with npm run check and npm run test:browser.
@@ -162,3 +162,10 @@
   .awakening-provenance { color: black; }
   .awakening-actions { display: none; }
 }
+
+/* Landing statement: preserve the shared midnight palette without a reading-card toolbar. */
+.landing-stage { display: grid; align-items: center; min-height: calc(100svh - 8rem); }
+.landing-copy { max-width: 58rem; }
+.landing-copy h1 { font-size: clamp(2.6rem, 7vw, 6rem); line-height: 1.08; letter-spacing: -.035em; }
+.landing-statement { margin: 0; max-width: 44ch; font-size: clamp(1.25rem, 2.7vw, 2rem); line-height: 1.5; color: #dce6fa; }
+.landing-copy .awakening-actions { justify-content: flex-start; margin-left: 0; }

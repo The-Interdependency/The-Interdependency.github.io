@@ -34,8 +34,9 @@ export async function checkAiContextPublicDiscovery() {
 
 // Usage: run only after Eleventy has generated _site, normally through npm run test:generated or npm run check.
 test('generated deployment artifact contains the unified routes', async () => {
-  const [splash, home, preamble, chapters, artifacts, edcmMathematics, fourCuts, fallback, articles, narratives, jackAndDiane] = await Promise.all([
+  const [splash, about, home, preamble, chapters, artifacts, edcmMathematics, fourCuts, fallback, articles, narratives, jackAndDiane] = await Promise.all([
     readFile('_site/index.html', 'utf8'),
+    readFile('_site/about-me/index.html', 'utf8'),
     readFile('_site/home/index.html', 'utf8'),
     readFile('_site/preamble/index.html', 'utf8'),
     readFile('_site/chapters/index.html', 'utf8'),
@@ -49,14 +50,17 @@ test('generated deployment artifact contains the unified routes', async () => {
   ]);
 
   assert.match(splash, /class="awakening-splash"/);
-  assert.match(splash, /<h1>In Service to Love<\/h1>/);
-  assert.match(splash, /I am a Marine\./);
-  assert.match(splash, /this is interdependence\. this is the way\./);
-  assert.match(splash, /til shade is gone,[\s\S]*til water is dry,[\s\S]*in service to love,/);
+  assert.match(about, /<h1>In Service to Love<\/h1>/);
+  assert.match(about, /I am a Marine\./);
+  assert.match(about, /this is interdependence\. this is the way\./);
+  assert.match(about, /til shade is gone,[\s\S]*til water is dry,[\s\S]*in service to love,/);
   assert.match(splash, /href="\/way\/"[^>]*>Enter The Way/);
   assert.doesNotMatch(splash, /href="\/preamble\/"[^>]*>Read the Preamble/);
   assert.doesNotMatch(splash, /href="\/home\/"[^>]*>Enter the living system/);
   assert.doesNotMatch(splash, /primary-nav/);
+  assert.match(splash, /<h1>The interdependent way:<\/h1>/);
+  assert.match(splash, /href="\/about-me\/"/);
+  assert.doesNotMatch(splash, /I am a Marine/);
   assert.match(home, /Start with The Way/);
   assert.match(home, /href="\/way\/"/);
   assert.match(home, /href="\/chapters\/"/);

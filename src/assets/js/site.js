@@ -18,25 +18,17 @@ if (button && nav) {
   });
 }
 
+// Usage: opt a substantive field into export with data-copy-field. Navigation
+// cards, headings, status notices, and layout containers do not receive controls.
 const COPYABLE_FIELD_SELECTOR = [
   '[data-copy-field]',
-  '#content .hero',
-  '#content .page-head',
-  '#content .panel',
   '#content .provenance',
-  '#content .hmmm',
   '#content .reading',
   '#content .textbook-chapter',
   '#content .source-block',
   '#content .criterion',
   '#content .journal-entry',
-  '#content details',
-  '#content .card',
-  '#content .awakening-copy',
-  '#content .awakening-text',
-  '#content .awakening-provenance',
-  '.site-footer .footer-provenance',
-  '.site-footer .hmmm-boundary'
+  '#content details.canon-unit'
 ].join(', ');
 
 const TITLE_SELECTOR = 'h1, h2, h3, .m-title, .ref-title, summary, strong';

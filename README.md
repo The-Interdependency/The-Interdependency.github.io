@@ -23,7 +23,8 @@ This site displays exact, provenance-bearing chapter snapshots. It does not merg
 
 ## Architecture
 
-- `/` is the founder-authored **In Service to Love** public threshold: a lived beginning of the Way presented before the formal canon tree.
+- `/` presents the founder-supplied description of The interdependent way, with links into The Way and About me.
+- `/about-me/` preserves the founder-authored **In Service to Love** narrative.
 - `/home/` is the complete living knowledge-system entrance.
 - `/preamble/` remains available within the canonical reading system and primary navigation.
 - `/chapters/` is the unified index for the eight-repository textbook.
@@ -62,10 +63,13 @@ OFFLINE=1 npm run build
 
 An offline build uses the retained last-known-good textbook snapshot when one exists. If a clean checkout has no retained chapter content, it renders metadata-only `hmmm` records rather than inventing or silently copying text.
 
+Export controls remain on reading material, provenance, canon units, and fields explicitly marked `data-copy-field`; navigation cards and layout containers stay free of copy/export toolbars.
+
 Route checks after a build:
 
 ```text
-/                               In Service to Love threshold
+/                               The interdependent way landing statement
+/about-me/                      In Service to Love founder narrative
 /home/                          knowledge-system entrance
 /preamble/                      direct canonical Preamble
 /chapters/                      textbook index

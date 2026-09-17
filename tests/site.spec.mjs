@@ -71,9 +71,14 @@ test('WebMCP establishes repository context before agent-work selection', async 
   await expect(page).not.toHaveURL(/[?&]skill=/);
 });
 
-test('founder-authored origin text is the public threshold and has one human continuation into the Way', async ({ page }) => {
+test('landing links to About me with the preserved narrative and into the Way', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('.awakening-splash')).toBeVisible();
+  await expect(page.locator('h1')).toHaveText('The interdependent way:');
+  await expect(page.locator('.landing-statement')).toHaveText('a tensored approach to social constructs designed to elicit maximal wealth from sustainable technology implementated in globally interconnected markets');
+  await expect(page.locator('.copy-button')).toHaveCount(0);
+  await page.getByRole('link', { name: 'About me', exact: true }).click();
+  await expect(page).toHaveURL(/\/about-me\/$/);
   await expect(page.locator('h1')).toHaveText('In Service to Love');
   await expect(page.locator('.awakening-text')).toContainText('I am a Marine.');
   await expect(page.locator('.awakening-text')).toContainText('this is interdependence. this is the way.');
@@ -91,13 +96,17 @@ test('founder-authored origin text is the public threshold and has one human con
   await expect(page.locator('details.canon-unit').first()).toBeVisible();
 });
 
-test('every established text-field type receives one working copy control', async ({ page, context }) => {
+test('reading exports work while navigation cards and layout containers have no controls', async ({ page, context }) => {
   await context.grantPermissions(['clipboard-read', 'clipboard-write']);
 
   await page.goto('/articles/article-two/');
-  for (const selector of ['.page-head', '.panel', '.reading', '.card', '.hmmm']) {
+  for (const selector of ['.reading']) {
     const field = page.locator(selector).first();
     await expect(field.locator(':scope > .field-actions > .copy-button')).toHaveCount(3);
+  }
+
+  for (const selector of ['.page-head', '.panel', '.card', '.hmmm', '.site-footer']) {
+    await expect(page.locator(`${selector} > .field-actions`)).toHaveCount(0);
   }
 
   const reading = page.locator('.reading').first();
@@ -120,9 +129,12 @@ test('every established text-field type receives one working copy control', asyn
   await expect(unit.locator('.source-block > .field-actions > .copy-button')).toHaveCount(3);
 
   await page.goto('/chapters/');
-  const linkedCard = page.locator('.copy-field-link').first();
-  await expect(linkedCard.locator(':scope > .field-actions > .copy-button')).toHaveCount(3);
-  await expect(linkedCard.locator('a .copy-button')).toHaveCount(0);
+  const linkedCard = page.locator('a.card').first();
+  await expect(linkedCard).toBeVisible();
+  await expect(page.locator('.copy-field-link')).toHaveCount(0);
+  await expect(linkedCard.locator('.copy-button')).toHaveCount(0);
+  await linkedCard.click();
+  await expect(page).toHaveURL(/\/chapters\/chapter-zero\/$/);
 
   await page.goto('/artifacts/four-cuts/');
   await expect(page.locator('.bracket-ref > .field-actions > .copy-button')).toHaveCount(3);
