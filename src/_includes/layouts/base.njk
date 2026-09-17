@@ -12,13 +12,17 @@
   <link rel="alternate" type="text/markdown" href="/eai/aicontext.md" title="AI context">
   <link rel="stylesheet" href="/assets/css/site.css">
   <link rel="stylesheet" href="/assets/css/math.css">
+  {% if page.url == "/sitrep/" %}
   <link rel="stylesheet" href="/assets/css/sitrep.css">
   <link rel="stylesheet" href="/assets/css/sitrep-interactions.css">
-  <link rel="stylesheet" href="/assets/css/org-map.css">
-  <link rel="stylesheet" href="/assets/css/way-tree.css">
-  <script src="/assets/js/site.js" defer></script>
-  <script src="/assets/js/org-map.js" type="module"></script>
   <script src="/assets/js/sitrep.js" type="module"></script>
+  {% endif %}
+  {% if page.url == "/projects/map/" %}
+  <link rel="stylesheet" href="/assets/css/org-map.css">
+  <script src="/assets/js/org-map.js" type="module"></script>
+  {% endif %}
+  {% if page.url == "/way/" %}<link rel="stylesheet" href="/assets/css/way-tree.css">{% endif %}
+  <script src="/assets/js/site.js" defer></script>
   {% if webmcp %}<script src="/assets/js/webmcp.js" type="module"></script>{% endif %}
 </head>
 <body>
@@ -39,17 +43,10 @@
       <a href="/works/">Works</a>
       <a href="/research/method/">Research</a>
       <a href="/search/">Search</a>
-      <a href="/about-me/">About me</a>
     </nav>
   </header>
   <noscript><p class="noscript">The complete static reading experience remains available without JavaScript. Interactive navigation, dependency-map pan/zoom, and SITREP quick-open controls are disabled.</p></noscript>
   <main id="content" class="site-main">{{ content | safe }}</main>
-  <footer class="site-footer">
-    <div>
-      <strong>The Interdependent Way</strong>
-      <p>Canon, textbook, interpretation, research, implementation, and frontier claims remain distinct even when they are connected through the same site.</p>
-    </div>
-    <div class="hmmm-boundary"><strong>hmmm</strong><span>Honest incompletion remains visible so the next action has somewhere true to begin.</span></div>
-  </footer>
+  {% include "components/site-footer.njk" %}
 </body>
 </html>

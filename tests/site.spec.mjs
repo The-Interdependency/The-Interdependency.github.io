@@ -15,6 +15,8 @@ const labRoutes = articleLab.map(record => {
 const routes = [
   ['/', /a tensored approach to social constructs/i],
   ['/about-me/', /this is interdependence\. this is the way\./i],
+  ['/about-the-site/', /About the site/],
+  ['/by-the-builder/', /By the builder/],
   ['/home/', /Start with The Way/],
   ['/preamble/', /Humanity faces extinction/],
   ['/chapters/', /The Interdependency Textbook/],
@@ -78,7 +80,7 @@ test('landing links to About me with the preserved narrative and into the Way', 
   await expect(page.locator('h1')).toHaveText('The interdependent way:');
   await expect(page.locator('.landing-statement')).toHaveText('a tensored approach to social constructs designed to elicit maximal wealth from sustainable technology implementated in globally interconnected markets');
   await expect(page.locator('.copy-button')).toHaveCount(0);
-  await page.getByRole('link', { name: 'About me', exact: true }).click();
+  await page.locator('main').getByRole('link', { name: 'About me', exact: true }).click();
   await expect(page).toHaveURL(/\/about-me\/$/);
   await expect(page.locator('h1')).toHaveText('In Service to Love');
   await expect(page.locator('.awakening-text')).toContainText('I am a Marine.');
@@ -126,7 +128,7 @@ test('reading exports work while navigation cards and layout containers have no 
 
   await page.goto('/way/');
   const unit = page.locator('details.canon-unit').first();
-  await expect(unit.locator(':scope > .field-actions > .copy-button')).toHaveCount(3);
+  await expect(unit.locator(':scope > .field-actions > .copy-button')).toHaveCount(0);
   await expect(unit.locator('.source-block > .field-actions > .copy-button')).toHaveCount(3);
 
   await page.goto('/chapters/');
@@ -318,4 +320,45 @@ test('Research is study-only and exposes provisional citation gaps', async ({ pa
   await expect(page.locator('body')).toContainText('support no-qualifying-study-found');
   await expect(page.locator('body')).toContainText('dissent no-qualifying-study-found');
   await expect(page.locator('body')).not.toContainText('TeamSTEPPS');
+});
+
+// Usage: these audit regressions cover useful resource loading, history discovery,
+// compatibility links, small-screen reading, and keyboard/no-JavaScript navigation.
+test('site guide and builder journal remain readable and reachable on narrow screens', async ({ page, browser }) => {
+  await page.setViewportSize({ width: 320, height: 900 });
+  for (const route of ['/way/', '/about-the-site/', '/by-the-builder/']) {
+    await page.goto(route);
+    await expect(page.locator('.site-footer a[href="/about-the-site/"]')).toBeVisible();
+    await expect(page.locator('.site-footer a[href="/by-the-builder/"]')).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    await expect(page.locator('script[src="/assets/js/org-map.js"], script[src="/assets/js/sitrep.js"]')).toHaveCount(0);
+  }
+  await page.goto('/way/');
+  await page.locator('.canon-unit-summary').first().click();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await expect(page.locator('.canon-unit > .field-actions')).toHaveCount(0);
+  await page.goto('/about-the-site/');
+  await page.locator('.nav-toggle').focus();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('.primary-nav')).toBeVisible();
+  await expect(page.locator('.nav-toggle')).toHaveAttribute('aria-expanded', 'true');
+  await page.goto('/start/');
+  await expect(page).toHaveURL(/\/about-the-site\/#reading$/);
+  const nojs = await browser.newPage({ javaScriptEnabled: false, viewport: { width: 320, height: 900 } });
+  try {
+    await nojs.goto('/about-the-site/');
+    await expect(nojs.locator('.primary-nav')).toBeVisible();
+    await nojs.locator('.site-footer a[href="/by-the-builder/"]').click();
+    expect(await nojs.locator('.builder-entry').count()).toBeGreaterThan(0);
+    await expect(nojs.locator('.builder-entry').first()).toContainText('Codex · OpenAI');
+  } finally { await nojs.close(); }
+});
+
+test('specialist pages retain only the scripts that enhance their own content', async ({ page }) => {
+  await page.goto('/projects/map/');
+  await expect(page.locator('script[src="/assets/js/org-map.js"]')).toHaveCount(1);
+  await expect(page.locator('script[src="/assets/js/sitrep.js"]')).toHaveCount(0);
+  await page.goto('/sitrep/');
+  await expect(page.locator('script[src="/assets/js/sitrep.js"]')).toHaveCount(1);
+  await expect(page.locator('script[src="/assets/js/org-map.js"]')).toHaveCount(0);
 });

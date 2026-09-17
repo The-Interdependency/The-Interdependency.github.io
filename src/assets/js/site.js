@@ -27,8 +27,7 @@ const COPYABLE_FIELD_SELECTOR = [
   '#content .textbook-chapter',
   '#content .source-block',
   '#content .criterion',
-  '#content .journal-entry',
-  '#content details.canon-unit'
+  '#content .journal-entry'
 ].join(', ');
 
 const TITLE_SELECTOR = 'h1, h2, h3, .m-title, .ref-title, summary, strong';
@@ -194,21 +193,13 @@ function addCopyControl(field) {
   status.setAttribute('role', 'status');
   status.setAttribute('aria-live', 'polite');
 
-  let controlField = field;
-  if (field.matches('a')) {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'copy-field copy-field-link';
-    field.replaceWith(wrapper);
-    wrapper.append(actions, status, field);
-    controlField = wrapper;
-    if (field.matches('.card')) field.style.paddingTop = '4.75rem';
-  } else if (field.matches('details')) {
-    field.append(actions, status);
+  if (field.matches('details')) {
+    field.querySelector(':scope > summary').after(actions, status);
   } else {
     field.prepend(actions, status);
   }
 
-  controlField.classList.add('copy-field');
+  field.classList.add('copy-field');
   field.dataset.copyReady = 'true';
   copyControl.addEventListener('click', async () => {
     try {

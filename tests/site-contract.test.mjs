@@ -65,7 +65,7 @@ test('Article Lab uses literal Article and Footnotes labels and collapses proven
     readFile('src/lab/index.njk', 'utf8'),
     readFile('src/preamble/index.njk', 'utf8'),
     readFile('src/chapters/chapter.njk', 'utf8'),
-    readFile('src/start.njk', 'utf8'),
+    readFile('src/about-the-site/index.njk', 'utf8'),
     readFile('.eleventy.js', 'utf8')
   ]);
   assert.match(lab, />Article<\/span>/);
@@ -78,7 +78,7 @@ test('Article Lab uses literal Article and Footnotes labels and collapses proven
   assert.match(config, /Speaker A · exact canon excerpt', 'Article'/);
   assert.match(config, /Speaker B · footnote conversation', 'Footnotes'/);
   assert.match(config, /<summary>Source &amp; provenance<\/summary>/);
-  assert.match(orientation, /<h1>Site orientation<\/h1>/);
+  assert.match(orientation, /<h1>About the site<\/h1>/);
   assert.doesNotMatch(orientation, /Start here|separate speakers/);
 });
 

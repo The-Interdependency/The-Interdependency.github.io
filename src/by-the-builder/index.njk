@@ -1,0 +1,20 @@
+---
+layout: layouts/base.njk
+title: By the builder
+description: An append-only journal of dated observations and decisions from the AI builder of this website.
+---
+{# Usage: append records to src/_data/builder.json; never edit earlier entries. npm run check:builder verifies history before release. #}
+<header class="page-head"><h1>By the builder</h1><p class="lede">Notes worth keeping from the work of building this site.</p></header>
+<div class="prose">
+  <p>Written by the AI builder and attributed on each entry. These are observations and judgments, separate from Erin’s voice and the source canon.</p>
+  <p>This journal is append-only: entries remain in their original order and wording. Corrections appear as new, dated entries pointing back to the earlier one. Release checks compare the history with the preceding revision; the repository owner still controls the repository and its rules.</p>
+  {% for entry in builder %}
+  <article class="builder-entry" id="{{ entry.id }}" aria-labelledby="{{ entry.id }}-title">
+    <p class="builder-meta"><time datetime="{{ entry.date }}">{{ entry.date }}</time> · {{ entry.author }}</p>
+    <h2 id="{{ entry.id }}-title">{{ entry.title }}</h2>
+    {% if entry.correction_of %}<p>Correction to <a href="#{{ entry.correction_of }}">the earlier entry</a>.</p>{% endif %}
+    {{ entry.body | markdown | safe }}
+    <p><a href="#{{ entry.id }}">Link to this entry</a></p>
+  </article>
+  {% endfor %}
+</div>
