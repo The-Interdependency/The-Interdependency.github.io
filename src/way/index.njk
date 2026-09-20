@@ -22,6 +22,13 @@ description: A human-readable expandable map of The Interdependent Way with Arti
           {% else %}
             <div class="canon-unit-body">{% for line in unit.content | canonUnitBody %}<p>{{ line }}</p>{% endfor %}</div>
           {% endif %}
+          {# Usage: render the parser-owned notes beside their own unit, without another disclosure or an interpretive substitute. #}
+          {% if unit.notes.length %}
+            <div class="canon-footnotes" role="note">
+              <p class="eyebrow">Footnotes</p>
+              {% for note in unit.notes %}<p class="canon-footnote"><strong>{{ note.marker | escape }}</strong> {{ note.text | escape }}</p>{% endfor %}
+            </div>
+          {% endif %}
         </blockquote>
         {% if lab %}
           <details class="article-lab-box">
