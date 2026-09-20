@@ -51,3 +51,43 @@ test('human reading surfaces keep provenance collapsed and Article labels litera
   assert.match(orientation, /<h1>About the site<\/h1>/);
   assert.doesNotMatch(orientation, /Start here|separate speakers/);
 });
+
+// Usage: after `npm run build`, run `npm run test:generated`.
+// Check rendered primary reading, not raw-source duplicates or a single Lab.
+// The parser owns note extraction; this gate protects presentation only.
+test('The Way exposes every unit footnote with its canon body, outside nested disclosures', async () => {
+  const canon = JSON.parse(await readFile('src/_data/generated/canon.json', 'utf8'));
+  const html = await readFile('_site/way/index.html', 'utf8');
+  const escapeHtml = value => String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+  const units = html.split('<details class="canon-unit" id="').slice(1);
+  assert.ok(canon.units.length > 0, 'the gate must inspect actual canon units');
+  assert.equal(units.length, canon.units.length, 'every canon unit must have one reading surface');
+  assert.ok(canon.units.some(unit => unit.notes.length), 'the gate must exercise footnotes');
+
+  for (const [index, unit] of canon.units.entries()) {
+    const rendered = units[index];
+    assert.ok(rendered.startsWith(`${escapeHtml(unit.routeSlug)}">`), `${unit.id}: source order and unit identity`);
+    const readingMatch = /<blockquote\b[^>]*\bclass="[^"]*\bcanon-reading\b[^"]*"[^>]*>([\s\S]*?)<\/blockquote>/.exec(rendered);
+    assert.ok(readingMatch, `${unit.id}: primary canon reading exists`);
+    const reading = readingMatch[1];
+    assert.doesNotMatch(reading, /<details\b/i, `${unit.id}: notes must not require another disclosure`);
+    const noteBlocks = [...reading.matchAll(/<div class="canon-footnotes" role="note">([\s\S]*?)<\/div>/g)];
+    assert.equal(noteBlocks.length, unit.notes.length ? 1 : 0, `${unit.id}: one visible note group when needed`);
+    if (!unit.notes.length) continue;
+    const noteBlock = noteBlocks[0];
+    assert.ok(noteBlock.index > reading.indexOf('class="canon-unit-body"'), `${unit.id}: article precedes its notes`);
+    assert.match(noteBlock[1], /<p class="eyebrow">Footnotes<\/p>/, `${unit.id}: literal footnote label`);
+    assert.doesNotMatch(noteBlock[1], /status-interpretation/, `${unit.id}: source notes are canon, not editorial interpretation`);
+    const notes = [...noteBlock[1].matchAll(/<p class="canon-footnote"><strong>([\s\S]*?)<\/strong> ([\s\S]*?)<\/p>/g)]
+      .map(match => ({ marker: match[1], text: match[2] }));
+    assert.deepEqual(notes, unit.notes.map(note => ({
+      marker: escapeHtml(note.marker),
+      text: escapeHtml(note.text)
+    })), `${unit.id}: every marker and complete note remains separate, exact, ordered, and attached to its own article`);
+  }
+});
