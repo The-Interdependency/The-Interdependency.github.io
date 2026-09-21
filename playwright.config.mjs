@@ -13,7 +13,7 @@
 //   network_boundary: internal
 //   user_data_boundary: none
 //   admin_only: false
-//   tests: tests/site.spec.mjs, tests/math.spec.mjs, tests/accessibility.spec.mjs
+//   tests: tests/site.spec.mjs, tests/math.spec.mjs, tests/accessibility.spec.mjs, tests/sdk22.spec.mjs
 //   rollout: required by pull-request and Pages workflows
 //   rollback: remove browser scripts, workflow steps, and static test server together
 // === END MODULE_BUILD ===
