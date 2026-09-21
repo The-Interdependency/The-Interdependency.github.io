@@ -1,6 +1,6 @@
 /* SDK22_FALLBACK_START
    Minimum display floor: Android SDK 22-era browsers. Keep this block free of
-   CSS custom properties, Grid, clamp/min/max(), aspect-ratio, inset, and other
+   CSS custom properties, Grid, clamp/min/max functions, aspect-ratio, inset, and other
    modern-only features. Later rules progressively enhance capable browsers. */
 html, body { margin: 0; padding: 0; }
 body { background: #090d18; color: #eef3ff; font: 17px/1.65 Arial, Helvetica, sans-serif; }
