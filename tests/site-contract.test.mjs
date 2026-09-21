@@ -107,7 +107,7 @@ test('landing statement links to the preserved founder narrative and Way tree', 
   assert.match(layout, /class="awakening-body"/);
   assert.match(layout, /class="awakening-splash"/);
   assert.match(layout, /public landing statement and founder narrative/);
-  assert.match(layout, /<script src="\/assets\/js\/site\.js" defer><\/script>/);
+  assert.match(layout, /<script src="\/assets\/js\/site\.js" type="module" defer><\/script>/);
   assert.match(about, /<h1>In Service to Love<\/h1>/);
   assert.match(about, /this is interdependence\. this is the way\./);
   assert.match(about, /til shade is gone,[\s\S]*til water is dry,[\s\S]*in service to love,/);
