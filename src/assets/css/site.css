@@ -1,3 +1,23 @@
+/* SDK22_FALLBACK_START
+   Minimum display floor: Android SDK 22-era browsers. Keep this block free of
+   CSS custom properties, Grid, clamp/min/max(), aspect-ratio, inset, and other
+   modern-only features. Later rules progressively enhance capable browsers. */
+html, body { margin: 0; padding: 0; }
+body { background: #090d18; color: #eef3ff; font: 17px/1.65 Arial, Helvetica, sans-serif; }
+a { color: #aeb8ff; }
+.site-header { display: block; padding: .9rem 1rem; border-bottom: 1px solid #2a3857; background: #090d18; }
+.brand { display: inline-block; color: #eef3ff; text-decoration: none; }
+.primary-nav { display: block; margin-top: .75rem; }
+.primary-nav a { display: inline-block; margin: .2rem .35rem .2rem 0; padding: .45rem .65rem; }
+.site-main { display: block; width: auto; max-width: 72rem; margin: 0 auto; padding: 2rem 1rem 6rem; }
+.site-footer { display: block; padding: 2rem 1rem; border-top: 1px solid #2a3857; background: #070a12; color: #aebbd2; }
+.grid, .hero, .chapter-grid, .index-list, .criteria-list, .journal-list, .gonol-lab,
+.gonol-control-grid, .gonol-operand-grid, .gonol-pair-grid, .hmmm-boundary { display: block; }
+.card, .panel, .provenance, .hmmm, .reading, details, .textbook-chapter { display: block; margin: 1rem 0; padding: 1rem; border: 1px solid #2a3857; background: #10182a; color: #eef3ff; }
+img, svg, canvas, video, iframe { max-width: 100%; }
+pre, table { max-width: 100%; overflow: auto; }
+/* SDK22_FALLBACK_END */
+
 :root {
   color-scheme: dark;
   --night: #090d18;
