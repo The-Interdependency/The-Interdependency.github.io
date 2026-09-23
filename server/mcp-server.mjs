@@ -88,10 +88,14 @@ function createProjectMarkdownRenderer() {
 const projectMarkdown = createProjectMarkdownRenderer();
 
 function browserRepositoryProjection(projection) {
-  const render = document => document ? {
-    ...document,
-    html: projectMarkdown.render(String(document.content || ''), { sourceUrl: document.sourceUrl })
-  } : null;
+  const render = document => {
+    if (!document) return null;
+    const { content, ...publicDocument } = document;
+    return {
+      ...publicDocument,
+      html: projectMarkdown.render(String(content || ''), { sourceUrl: document.sourceUrl })
+    };
+  };
   return {
     ...projection,
     documentation: projection.documentation ? {
