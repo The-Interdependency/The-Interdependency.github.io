@@ -19,11 +19,16 @@ test('documentation selection keeps README first, root docs next, docs tree next
 });
 
 test('project page exposes static exact-head documents and a per-repository live MSDMD refresh', async () => {
-  const source = await readFile('src/projects/repo.njk', 'utf8');
+  const [source, sitrep] = await Promise.all([
+    readFile('src/projects/repo.njk', 'utf8'),
+    readFile('src/sitrep/index.njk', 'utf8')
+  ]);
   assert.match(source, /generated\.projectDocs\.byRepository\[repo\.name\]/);
   assert.match(source, /data-msdmd-refresh/);
   assert.match(source, /data-project-docs-content/);
   assert.match(source, /projectDocMarkdown/);
+  assert.match(sitrep, /data-repository-refresh-scope/);
+  assert.match(sitrep, /data-msdmd-refresh data-repository="{{ project\.name }}"/);
 });
 
 test('refresh data pipeline builds project documentation after repository heads are captured', async () => {
