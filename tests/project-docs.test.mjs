@@ -38,3 +38,10 @@ test('refresh data pipeline builds project documentation after repository heads 
   assert.match(pkg.scripts['refresh:data'], /refresh:github.*refresh:project-docs.*refresh:msdmd/);
   assert.equal(pkg.scripts['refresh:project-docs'], 'node scripts/fetch-project-docs.mjs');
 });
+
+
+test('project refresh targets the live Render auto-deploy service', async () => {
+  const source = await readFile('src/assets/js/project-refresh.js', 'utf8');
+  assert.match(source, /https:\/\/the-interdependency-mcp-live\.onrender\.com\/api\/repository-refresh/);
+  assert.doesNotMatch(source, /https:\/\/the-interdependency-mcp\.onrender\.com\/api\/repository-refresh/);
+});
