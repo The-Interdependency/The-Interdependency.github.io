@@ -64,8 +64,16 @@ const MAX_BODY_BYTES = 1_000_000;
 
 function resolveSourceReference(value, sourceUrl) {
   const reference = String(value || '');
-  if (!sourceUrl || !reference || reference.startsWith('#') || reference.startsWith('/') || reference.startsWith('//')) return reference;
+  if (!sourceUrl || !reference || reference.startsWith('//')) return reference;
   if (/^[a-z][a-z0-9+.-]*:/i.test(reference)) return reference;
+  if (reference.startsWith('#')) return sourceUrl + reference;
+  if (reference.startsWith('/')) {
+    try {
+      const source = new URL(sourceUrl);
+      const match = /^\\/([^/]+)\\/([^/]+)\\/blob\\/([^/]+)(?:\\/|$)/.exec(source.pathname);
+      if (match) return source.origin + '/' + match[1] + '/' + match[2] + '/blob/' + match[3] + reference;
+    } catch {}
+  }
   try { return new URL(reference, sourceUrl).href; }
   catch { return reference; }
 }
