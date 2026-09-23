@@ -23,8 +23,11 @@ function renderDocumentation(documentation) {
 for (const button of document.querySelectorAll('[data-msdmd-refresh]')) {
   button.addEventListener('click', async () => {
     const repository = button.dataset.repository;
-    const status = document.querySelector('[data-msdmd-refresh-status]');
-    const docs = document.querySelector('[data-project-docs-content]');
+    const scope = button.closest('[data-repository-refresh-scope]');
+    const status = scope?.querySelector('[data-msdmd-refresh-status]')
+      || document.querySelector('[data-msdmd-refresh-status]');
+    const docs = scope?.querySelector('[data-project-docs-content]')
+      || document.querySelector('[data-project-docs-content]');
     button.disabled = true;
     if (status) status.textContent = 'Refreshing current repository HEAD…';
     try {
