@@ -11,6 +11,7 @@ title: "Project: {{ repo.name }}"
 {% set msdmdRows = generated.orgMsdmd.repositories | where("name", repo.name) %}
 {% set repoMsdmd = msdmdRows[0] %}
 
+<div data-repository-refresh-scope>
 <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/projects/">Projects</a> / {{ repo.name }}</nav>
 <header class="page-head">
   <p class="eyebrow">{{ repo.category }}</p>
@@ -103,4 +104,5 @@ title: "Project: {{ repo.name }}"
 
 {% for item in repo.hmmm %}<section class="hmmm"><h2>hmmm</h2><p>{{ item }}</p></section>{% endfor %}
 <div class="actions"><a class="button" href="{{ repo.html_url }}" rel="noopener noreferrer">Open repository</a>{% if repo.homepage %}<a class="button secondary" href="{{ repo.homepage }}">Open homepage</a>{% endif %}</div>
+</div>
 <script src="/assets/js/project-refresh.js" type="module"></script>
