@@ -136,7 +136,7 @@ export default function configureEleventy(eleventyConfig) {
   eleventyConfig.addFilter('where', (items, key, value) => (items || []).filter(item => item?.[key] === value));
   eleventyConfig.addFilter('statusClass', value => `status-${String(value || 'hmmm').toLowerCase().replace(/[^a-z0-9]+/g, '-')}`);
   eleventyConfig.addFilter('markdown', value => md.render(String(value || '')));
-  eleventyConfig.addFilter('textbookMarkdown', chapter => md.render(String(chapter?.content || ''), { sourceUrl: chapter?.sourceUrl }));
+  eleventyConfig.addFilter('textbookMarkdown', chapter => md.render(String(chapter?.content || ''), { sourceUrl: chapter?.sourceUrl }));\n  eleventyConfig.addFilter('projectDocMarkdown', document => md.render(String(document?.content || ''), { sourceUrl: document?.sourceUrl }));
   eleventyConfig.addFilter('edcmMarkdown', value => md.render(String(value || ''))
     .replace(/<pre(?![^>]*\btabindex=)([^>]*)>/g, '<pre tabindex="0"$1>')
     .replace(/<math(?![^>]*\btabindex=)(?=[^>]*\bdisplay="block")/g, '<math tabindex="0"'));
