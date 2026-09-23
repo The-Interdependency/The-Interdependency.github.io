@@ -3,6 +3,7 @@ import markdownIt from 'markdown-it';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { readFallback } from '../scripts/fetch-skill-registry.mjs';
+import { fetchRepositoryPublicProjection } from '../scripts/repository-public-projection.mjs';
 import {
   createMcpProtocol,
   MODERN_PROTOCOL_VERSION,
