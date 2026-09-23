@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "npm run refresh:data && eleventy --serve",
-    "refresh:data": "npm run refresh:canon && npm run refresh:github && npm run refresh:skills && npm run refresh:msdmd && npm run refresh:sitrep && npm run refresh:textbook && npm run refresh:works",
+    "refresh:data": "npm run refresh:canon && npm run refresh:github && npm run refresh:project-docs && npm run refresh:skills && npm run refresh:msdmd && npm run refresh:sitrep && npm run refresh:textbook && npm run refresh:works",
     "refresh:canon": "node scripts/fetch-canon.mjs && node scripts/parse-canon.mjs",
     "refresh:github": "node scripts/fetch-github-org.mjs",
     "refresh:skills": "node scripts/fetch-skill-registry.mjs",
@@ -22,7 +22,7 @@
     "validate": "node scripts/validate-content.mjs && node scripts/verify-generated-routes.mjs && node scripts/verify-article-canon.mjs",
     "build": "npm run validate && eleventy && pagefind --site _site && node scripts/write-build-info.mjs",
     "pretest": "node scripts/prepare-tests.mjs",
-    "test": "node --test tests/aicontext.test.mjs tests/edcm-mathematics.test.mjs tests/gonol-relationships.test.mjs tests/org-msdmd.test.mjs tests/post-merge-reconciliation.test.mjs tests/llms-build.test.mjs tests/canon-parser.test.mjs tests/canon-integrity.test.mjs tests/textbook-integrity.test.mjs tests/math-rendering.test.mjs tests/narratives.test.mjs tests/offline-project-snapshot.test.mjs tests/repo-coverage.test.mjs tests/research-ledger.test.mjs tests/works-registry.test.mjs tests/site-contract.test.mjs tests/sdk22-contract.test.mjs tests/sitrep.test.mjs tests/webmcp.test.mjs tests/webmcp-repository-output.test.mjs tests/mcp-server.test.mjs tests/builder-history.test.mjs",
+    "test": "node --test tests/aicontext.test.mjs tests/edcm-mathematics.test.mjs tests/gonol-relationships.test.mjs tests/org-msdmd.test.mjs tests/post-merge-reconciliation.test.mjs tests/llms-build.test.mjs tests/canon-parser.test.mjs tests/canon-integrity.test.mjs tests/textbook-integrity.test.mjs tests/math-rendering.test.mjs tests/narratives.test.mjs tests/offline-project-snapshot.test.mjs tests/repo-coverage.test.mjs tests/project-docs.test.mjs tests/research-ledger.test.mjs tests/works-registry.test.mjs tests/site-contract.test.mjs tests/sdk22-contract.test.mjs tests/sitrep.test.mjs tests/webmcp.test.mjs tests/webmcp-repository-output.test.mjs tests/mcp-server.test.mjs tests/builder-history.test.mjs",
     "test:mcp": "node --test tests/mcp-server.test.mjs",
     "start:mcp": "node server/mcp-server.mjs",
     "test:generated": "node --test tests/generated-site.test.mjs tests/human-ui-generated.test.mjs tests/textbook-generated.test.mjs tests/math-generated.test.mjs && node tests/links.test.mjs",
@@ -33,7 +33,8 @@
     "test:performance": "node scripts/performance-budgets.mjs",
     "check": "npm run check:builder && npm run audit:workflows && npm run check:llms && npm run check:edcm-reference && npm run check:gonol-relationships && npm run build && npm test && npm run test:generated && npm run test:performance",
     "refresh:works": "node scripts/fetch-works.mjs",
-    "check:builder": "node scripts/check-builder-history.mjs"
+    "check:builder": "node scripts/check-builder-history.mjs",
+    "refresh:project-docs": "node scripts/fetch-project-docs.mjs"
   },
   "dependencies": {
     "@11ty/eleventy": "3.1.6",
