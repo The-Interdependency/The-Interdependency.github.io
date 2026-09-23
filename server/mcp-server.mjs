@@ -1,4 +1,4 @@
-import { createServer } from 'node:http';
+import { createServer } from 'node:http';\nimport markdownIt from 'markdown-it';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { readFallback } from '../scripts/fetch-skill-registry.mjs';
@@ -59,6 +59,48 @@ import {
 const PUBLIC_REGISTRY_PATH = 'src/assets/data/skill-registry.json';
 const DEFAULT_PORT = 3000;
 const MAX_BODY_BYTES = 1_000_000;
+
+function resolveSourceReference(value, sourceUrl) {
+  const reference = String(value || '');
+  if (!sourceUrl || !reference || reference.startsWith('#') || reference.startsWith('/') || reference.startsWith('//')) return reference;
+  if (/^[a-z][a-z0-9+.-]*:/i.test(reference)) return reference;
+  try { return new URL(reference, sourceUrl).href; }
+  catch { return reference; }
+}
+
+function createProjectMarkdownRenderer() {
+  const md = markdownIt({ html: false, linkify: true, typographer: true });
+  const linkOpen = md.renderer.rules.link_open || ((tokens, index, options, _env, self) => self.renderToken(tokens, index, options));
+  md.renderer.rules.link_open = (tokens, index, options, env, self) => {
+    const hrefIndex = tokens[index].attrIndex('href');
+    if (hrefIndex >= 0) tokens[index].attrs[hrefIndex][1] = resolveSourceReference(tokens[index].attrs[hrefIndex][1], env?.sourceUrl);
+    return linkOpen(tokens, index, options, env, self);
+  };
+  const image = md.renderer.rules.image || ((tokens, index, options, _env, self) => self.renderToken(tokens, index, options));
+  md.renderer.rules.image = (tokens, index, options, env, self) => {
+    const srcIndex = tokens[index].attrIndex('src');
+    if (srcIndex >= 0) tokens[index].attrs[srcIndex][1] = resolveSourceReference(tokens[index].attrs[srcIndex][1], env?.sourceUrl);
+    return image(tokens, index, options, env, self);
+  };
+  return md;
+}
+
+const projectMarkdown = createProjectMarkdownRenderer();
+
+function browserRepositoryProjection(projection) {
+  const render = document => document ? {
+    ...document,
+    html: projectMarkdown.render(String(document.content || ''), { sourceUrl: document.sourceUrl })
+  } : null;
+  return {
+    ...projection,
+    documentation: projection.documentation ? {
+      ...projection.documentation,
+      readme: render(projection.documentation.readme),
+      documents: (projection.documentation.documents || []).map(render)
+    } : null
+  };
+}
 
 const DEFAULT_ALLOWED_ORIGINS = new Set([
   'https://interdependentway.org',
@@ -173,7 +215,8 @@ export async function loadRegistryProjection() {
 }
 
 export function createInterdependencyMcpServer(registryData, {
-  allowedOrigins = allowedOriginsFromEnvironment()
+  allowedOrigins = allowedOriginsFromEnvironment(),
+  repositoryRefresher = fetchRepositoryPublicProjection
 } = {}) {
   const protocol = createMcpProtocol(registryData);
 
@@ -190,6 +233,38 @@ export function createInterdependencyMcpServer(registryData, {
         endpoint: '/mcp',
         skill_count: protocol.registry.getRegistryStatus().skill_count
       }, corsHeaders(request, allowedOrigins));
+    }
+
+    if (url.pathname === '/api/repository-refresh') {
+      if (!isOriginAllowed(request, allowedOrigins)) {
+        return sendJson(response, 403, { error: 'forbidden origin' });
+      }
+      if (request.method === 'OPTIONS') {
+        return sendEmpty(response, 204, {
+          ...corsHeaders(request, allowedOrigins),
+          'access-control-allow-methods': 'POST, OPTIONS',
+          'access-control-allow-headers': 'content-type, accept',
+          'access-control-max-age': '600'
+        });
+      }
+      if (request.method !== 'POST') return sendEmpty(response, 405, { allow: 'POST, OPTIONS' });
+
+      let body;
+      try {
+        body = await readJsonBody(request);
+      } catch (error) {
+        return sendJson(response, error.statusCode || 400, { error: error.message }, corsHeaders(request, allowedOrigins));
+      }
+
+      try {
+        const projection = await repositoryRefresher(body?.repository);
+        return sendJson(response, 200, browserRepositoryProjection(projection), corsHeaders(request, allowedOrigins));
+      } catch {
+        return sendJson(response, 502, {
+          error: 'repository refresh unavailable',
+          hmmm: ['Current public repository evidence could not be reconstructed; the static exact-head projection remains authoritative for this page load.']
+        }, corsHeaders(request, allowedOrigins));
+      }
     }
 
     if (url.pathname !== '/mcp') {
