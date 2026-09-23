@@ -27,7 +27,7 @@ test('project page exposes static exact-head documents and a per-repository live
   assert.match(source, /data-msdmd-refresh/);
   assert.match(source, /data-project-docs-content/);
   assert.match(source, /projectDocMarkdown/);
-  assert.doesNotMatch(source, /document \\| projectDocMarkdown/);
+  assert.doesNotMatch(source, /\{\{\s*document\s*\|\s*projectDocMarkdown/);
   assert.match(source, /The static page indexes exact-head documents/);
   assert.match(sitrep, /data-repository-refresh-scope/);
   assert.match(sitrep, /data-msdmd-refresh data-repository="{{ project\.name }}"/);
