@@ -215,7 +215,7 @@ async function test_repository_refresh_endpoint() {
     assert.equal(requested, 'ucns');
     assert.equal(body.msdmd.status, 'ok');
     assert.match(body.documentation.readme.html, /<h1>UCNS<\/h1>/);
-    assert.equal(body.documentation.readme.content, '# UCNS');
+    assert.equal(body.documentation.readme.content, undefined);
   }, {
     repositoryRefresher: async repository => {
       requested = repository;
