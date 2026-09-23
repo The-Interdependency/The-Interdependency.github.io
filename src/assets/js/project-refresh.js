@@ -1,4 +1,4 @@
-const ENDPOINT = 'https://the-interdependency-mcp.onrender.com/api/repository-refresh';
+const ENDPOINT = 'https://the-interdependency-mcp-live.onrender.com/api/repository-refresh';
 
 function escapeText(value) {
   const span = document.createElement('span');
