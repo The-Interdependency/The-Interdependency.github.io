@@ -91,10 +91,19 @@ function renderInterdefinables(content) {
   return `${pairHtml}<div class="interdefinables-structure">${bodyHtml}</div>`;
 }
 
-function resolveSourceReference(value, sourceUrl) {
+function resolveSourceReference(value, sourceUrl, repositorySource = false) {
   const reference = String(value || '');
-  if (!sourceUrl || !reference || reference.startsWith('#') || reference.startsWith('/') || reference.startsWith('//')) return reference;
+  if (!sourceUrl || !reference || reference.startsWith('//')) return reference;
   if (/^[a-z][a-z0-9+.-]*:/i.test(reference)) return reference;
+  if (repositorySource && reference.startsWith('#')) return sourceUrl + reference;
+  if (repositorySource && reference.startsWith('/')) {
+    try {
+      const source = new URL(sourceUrl);
+      const parts = source.pathname.split('/').filter(Boolean);
+      if (parts[2] === 'blob' && parts[3]) return source.origin + '/' + parts.slice(0, 4).join('/') + reference;
+    } catch {}
+  }
+  if (reference.startsWith('#') || reference.startsWith('/')) return reference;
   try {
     return new URL(reference, sourceUrl).href;
   } catch {
@@ -106,13 +115,13 @@ function installSourceReferenceRenderer(md) {
   const linkOpen = md.renderer.rules.link_open || ((tokens, index, options, _env, self) => self.renderToken(tokens, index, options));
   md.renderer.rules.link_open = (tokens, index, options, env, self) => {
     const hrefIndex = tokens[index].attrIndex('href');
-    if (hrefIndex >= 0) tokens[index].attrs[hrefIndex][1] = resolveSourceReference(tokens[index].attrs[hrefIndex][1], env?.sourceUrl);
+    if (hrefIndex >= 0) tokens[index].attrs[hrefIndex][1] = resolveSourceReference(tokens[index].attrs[hrefIndex][1], env?.sourceUrl, env?.repositorySource === true);
     return linkOpen(tokens, index, options, env, self);
   };
   const image = md.renderer.rules.image || ((tokens, index, options, _env, self) => self.renderToken(tokens, index, options));
   md.renderer.rules.image = (tokens, index, options, env, self) => {
     const srcIndex = tokens[index].attrIndex('src');
-    if (srcIndex >= 0) tokens[index].attrs[srcIndex][1] = resolveSourceReference(tokens[index].attrs[srcIndex][1], env?.sourceUrl);
+    if (srcIndex >= 0) tokens[index].attrs[srcIndex][1] = resolveSourceReference(tokens[index].attrs[srcIndex][1], env?.sourceUrl, env?.repositorySource === true);
     return image(tokens, index, options, env, self);
   };
   return md;
@@ -137,6 +146,7 @@ export default function configureEleventy(eleventyConfig) {
   eleventyConfig.addFilter('statusClass', value => `status-${String(value || 'hmmm').toLowerCase().replace(/[^a-z0-9]+/g, '-')}`);
   eleventyConfig.addFilter('markdown', value => md.render(String(value || '')));
   eleventyConfig.addFilter('textbookMarkdown', chapter => md.render(String(chapter?.content || ''), { sourceUrl: chapter?.sourceUrl }));
+  eleventyConfig.addFilter('projectDocMarkdown', document => md.render(String(document?.content || ''), { sourceUrl: document?.sourceUrl, repositorySource: true }));
   eleventyConfig.addFilter('edcmMarkdown', value => md.render(String(value || ''))
     .replace(/<pre(?![^>]*\btabindex=)([^>]*)>/g, '<pre tabindex="0"$1>')
     .replace(/<math(?![^>]*\btabindex=)(?=[^>]*\bdisplay="block")/g, '<math tabindex="0"'));

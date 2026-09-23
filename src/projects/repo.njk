@@ -7,10 +7,101 @@ pagination:
 permalink: "/projects/{{ repo.slug }}/"
 title: "Project: {{ repo.name }}"
 ---
+{% set repoDocs = generated.projectDocs.byRepository[repo.name] %}
+{% set msdmdRows = generated.orgMsdmd.repositories | where("name", repo.name) %}
+{% set repoMsdmd = msdmdRows[0] %}
+
+<div data-repository-refresh-scope>
 <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/projects/">Projects</a> / {{ repo.name }}</nav>
-<header class="page-head"><p class="eyebrow">{{ repo.category }}</p><h1>{{ repo.name }}</h1><div class="status-row"><span class="status {{ repo.status | statusClass }}">{{ repo.status }}</span>{% if repo.fork %}<span class="status">fork</span>{% endif %}</div><p class="lede">{{ repo.description or 'No public summary supplied.' }}</p></header>
-{% if repo.purpose %}<section class="panel"><h2>Purpose within the whole</h2><p>{{ repo.purpose }}</p></section>{% else %}<section class="hmmm"><h2>Purpose within the whole</h2><p>A reviewed project purpose has not yet been declared.</p></section>{% endif %}
-{% if repo.relationships.length %}<section><h2>Relationships</h2><ul>{% for relation in repo.relationships %}<li>{{ relation }}</li>{% endfor %}</ul></section>{% endif %}
-<section><h2>Public surfaces</h2><dl class="meta"><dt>Primary artifact</dt><dd>{% if repo.primary_artifact %}<a href="{{ repo.primary_artifact }}">{{ repo.primary_artifact }}</a>{% else %}hmmm{% endif %}</dd><dt>Documentation</dt><dd>{% if repo.docs %}<a href="{{ repo.docs }}">{{ repo.docs }}</a>{% else %}hmmm{% endif %}</dd><dt>Default branch</dt><dd>{{ repo.default_branch or 'hmmm' }}</dd><dt>Primary language</dt><dd>{{ repo.language or 'hmmm' }}</dd><dt>License</dt><dd>{{ repo.license or 'hmmm' }}</dd><dt>Last push</dt><dd>{{ repo.pushed_at or 'hmmm' }}</dd></dl></section>
+<header class="page-head">
+  <p class="eyebrow">{{ repo.category }}</p>
+  <h1>{{ repo.name }}</h1>
+  <div class="status-row"><span class="status {{ repo.status | statusClass }}">{{ repo.status }}</span>{% if repo.fork %}<span class="status">fork</span>{% endif %}</div>
+  <p class="lede">{{ repo.description or 'No public summary supplied.' }}</p>
+</header>
+
+{% if repo.purpose %}
+<section class="panel"><h2>Purpose within the whole</h2><p>{{ repo.purpose }}</p></section>
+{% else %}
+<section class="hmmm"><h2>Purpose within the whole</h2><p>A reviewed project purpose has not yet been declared.</p></section>
+{% endif %}
+
+{% if repo.relationships.length %}
+<section><h2>Relationships</h2><ul>{% for relation in repo.relationships %}<li>{{ relation }}</li>{% endfor %}</ul></section>
+{% endif %}
+
+<section class="panel" aria-labelledby="project-msdmd-title">
+  <p class="eyebrow">Repository self-description · exact-head projection</p>
+  <h2 id="project-msdmd-title">MSDMD</h2>
+  {% if repoMsdmd %}
+  <div class="status-row">
+    <span class="status {% if repoMsdmd.collection.status == 'ok' %}status-implemented{% else %}status-hmmm{% endif %}">{{ repoMsdmd.collection.status }}</span>
+    <span class="status">{{ repoMsdmd.counts.declarations }} declarations</span>
+    <span class="status">{{ repoMsdmd.counts.gaps }} gaps</span>
+    <span class="status">{{ repoMsdmd.counts.edges }} edges</span>
+  </div>
+  <p>Collection <code>{{ repoMsdmd.collection.path }}</code> at <code>{{ repoMsdmd.headSha | truncate(12, true, '') }}</code>. The repository remains source authority; this page only projects it.</p>
+  {% else %}
+  <p class="hmmm">No build-time MSDMD repository row was available.</p>
+  {% endif %}
+  <div class="actions">
+    <button class="button" type="button" data-msdmd-refresh data-repository="{{ repo.name }}">Refresh MSDMD + docs</button>
+  </div>
+  <p class="field-help" data-msdmd-refresh-status aria-live="polite">Refresh reads the repository's current public HEAD without mutating it. The build-time exact-head projection remains the fallback.</p>
+</section>
+
+<section aria-labelledby="project-documentation-title">
+  <p class="eyebrow">Repository-owned reading surface</p>
+  <h2 id="project-documentation-title">Documentation</h2>
+  <p class="section-intro">README and Markdown documentation are copied from the exact repository head recorded by this site build. A live refresh can replace this view with the repository's current public HEAD for this browser session.</p>
+
+  <div data-project-docs-content>
+    {% if repoDocs and repoDocs.documentation %}
+      {% if repoDocs.documentation.readme %}
+      <section class="project-readme prose">
+        <p class="eyebrow">README · {{ repoDocs.headSha | truncate(12, true, '') }}</p>
+        {{ repoDocs.documentation.readme | projectDocMarkdown | safe }}
+        <p><a href="{{ repoDocs.documentation.readme.sourceUrl }}" rel="noopener noreferrer">Open exact README source</a></p>
+      </section>
+      {% else %}
+      <section class="hmmm"><h3>README</h3><p>No root README.md was available at the consumed repository head.</p></section>
+      {% endif %}
+
+      {% if repoDocs.documentation.documents.length %}
+      <section aria-labelledby="project-documents-title">
+        <h3 id="project-documents-title">Repository documents</h3>
+        <p class="field-help">The static page indexes exact-head documents without duplicating their full bytes into the site artifact. Use <strong>Refresh MSDMD + docs</strong> above to render the current public copies here.</p>
+        <ul class="index-list">
+          {% for document in repoDocs.documentation.documents %}
+          <li><a href="{{ document.sourceUrl }}" rel="noopener noreferrer"><code>{{ document.path }}</code><span>Exact source</span><small>{{ document.bytes }} bytes</small></a></li>
+          {% endfor %}
+        </ul>
+      </section>
+      {% endif %}
+
+      {% if repoDocs.documentation.hmmm.length %}
+      <section class="hmmm"><h3>hmmm</h3><ul>{% for item in repoDocs.documentation.hmmm %}<li>{{ item }}</li>{% endfor %}</ul></section>
+      {% endif %}
+    {% else %}
+    <section class="hmmm"><h3>hmmm</h3><p>No project documentation projection was available for this build.</p></section>
+    {% endif %}
+  </div>
+
+  <details class="provenance provenance-disclosure">
+    <summary>Documentation provenance</summary>
+    <dl class="meta">
+      <dt>Repository</dt><dd>{{ repo.name }}</dd>
+      <dt>Consumed HEAD</dt><dd><code>{% if repoDocs %}{{ repoDocs.headSha }}{% else %}{{ repo.head_sha or 'hmmm' }}{% endif %}</code></dd>
+      <dt>Default branch</dt><dd>{{ repo.default_branch or 'hmmm' }}</dd>
+      <dt>Projected documents</dt><dd>{% if repoDocs and repoDocs.documentation %}{{ repoDocs.documentation.projectedDocumentCount }}{% else %}hmmm{% endif %}</dd>
+      <dt>Projection mode</dt><dd>{% if repoDocs and repoDocs.fallback %}same-head last-known-good fallback{% else %}exact-head build observation{% endif %}</dd>
+    </dl>
+  </details>
+</section>
+
+<section><h2>Public surfaces</h2><dl class="meta"><dt>Primary artifact</dt><dd>{% if repo.primary_artifact %}<a href="{{ repo.primary_artifact }}">{{ repo.primary_artifact }}</a>{% else %}hmmm{% endif %}</dd><dt>Documentation</dt><dd>{% if repo.docs %}<a href="{{ repo.docs }}">{{ repo.docs }}</a>{% else %}Rendered above from repository source{% endif %}</dd><dt>Default branch</dt><dd>{{ repo.default_branch or 'hmmm' }}</dd><dt>Primary language</dt><dd>{{ repo.language or 'hmmm' }}</dd><dt>License</dt><dd>{{ repo.license or 'hmmm' }}</dd><dt>Last push</dt><dd>{{ repo.pushed_at or 'hmmm' }}</dd></dl></section>
+
 {% for item in repo.hmmm %}<section class="hmmm"><h2>hmmm</h2><p>{{ item }}</p></section>{% endfor %}
 <div class="actions"><a class="button" href="{{ repo.html_url }}" rel="noopener noreferrer">Open repository</a>{% if repo.homepage %}<a class="button secondary" href="{{ repo.homepage }}">Open homepage</a>{% endif %}</div>
+</div>
+<script src="/assets/js/project-refresh.js" type="module"></script>

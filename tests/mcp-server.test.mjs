@@ -127,9 +127,10 @@ function test_protocol_read_only_call() {
 
 test('remote MCP calls are read-only and preserve dependency-first closure', test_protocol_read_only_call);
 
-async function withServer(fn) {
+async function withServer(fn, options = {}) {
   const server = createInterdependencyMcpServer(fixture, {
-    allowedOrigins: new Set(['https://interdependentway.org'])
+    allowedOrigins: new Set(['https://interdependentway.org']),
+    ...options
   });
   server.listen(0, '127.0.0.1');
   await once(server, 'listening');
@@ -196,3 +197,48 @@ async function test_health_exposes_fixture_registry_count() {
 }
 
 test('health route reports the loaded registry projection', test_health_exposes_fixture_registry_count);
+
+
+async function test_repository_refresh_endpoint() {
+  let requested = null;
+  await withServer(async base => {
+    const response = await fetch(`${base}/api/repository-refresh`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        origin: 'https://interdependentway.org'
+      },
+      body: JSON.stringify({ repository: 'ucns' })
+    });
+    assert.equal(response.status, 200);
+    const body = await response.json();
+    assert.equal(requested, 'ucns');
+    assert.equal(body.msdmd.status, 'ok');
+    assert.match(body.documentation.readme.html, /<h1>UCNS<\/h1>/);
+    assert.equal(body.documentation.readme.content, undefined);
+  }, {
+    repositoryRefresher: async repository => {
+      requested = repository;
+      return {
+        repository: 'The-Interdependency/ucns',
+        name: 'ucns',
+        headSha: '0123456789abcdef0123456789abcdef01234567',
+        documentation: {
+          readme: {
+            path: 'README.md',
+            content: '# UCNS',
+            sourceUrl: 'https://github.com/The-Interdependency/ucns/blob/0123456789abcdef0123456789abcdef01234567/README.md'
+          },
+          documents: [],
+          hmmm: []
+        },
+        msdmd: {
+          status: 'ok',
+          counts: { declarations: 2, gaps: 0, edges: 1 }
+        }
+      };
+    }
+  });
+}
+
+test('repository refresh route is read-only projection plumbing and renders safe Markdown', test_repository_refresh_endpoint);
