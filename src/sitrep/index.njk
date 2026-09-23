@@ -116,7 +116,7 @@ description: A live, provenance-preserving view of METAPAT, UCNS, EDCM, a0, and 
 
   <div class="sitrep-grid">
     {% for project in generated.sitrep.projects %}
-    <article class="sitrep-card" id="{{ project.slug }}" data-project="{{ project.slug }}">
+    <article class="sitrep-card" id="{{ project.slug }}" data-project="{{ project.slug }}" data-repository-refresh-scope>
       <header class="sitrep-card-header">
         <div class="sitrep-node" aria-hidden="true"><span>{{ loop.index }}</span></div>
         <div class="sitrep-card-heading">
@@ -132,6 +132,10 @@ description: A live, provenance-preserving view of METAPAT, UCNS, EDCM, a0, and 
             {% if project.report %}<span class="status status-interpretation">source {{ project.report.source.commit | truncate(9, true, '') }}</span>{% endif %}
             {% if project.telemetry and project.telemetry.latestWorkflow %}<span class="status {% if project.telemetry.latestWorkflow.conclusion == 'success' %}status-implemented{% elif project.telemetry.latestWorkflow.conclusion == 'failure' %}status-risk{% else %}status-hmmm{% endif %}">CI {{ project.telemetry.latestWorkflow.conclusion or project.telemetry.latestWorkflow.status }}</span>{% endif %}
           </div>
+          <div class="actions">
+            <button class="button secondary" type="button" data-msdmd-refresh data-repository="{{ project.name }}">Refresh MSDMD</button>
+          </div>
+          <p class="field-help" data-msdmd-refresh-status aria-live="polite">Read current public HEAD and rebuild this repository's MSDMD projection.</p>
         </div>
       </header>
 
