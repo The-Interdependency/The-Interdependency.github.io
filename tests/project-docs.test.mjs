@@ -45,3 +45,13 @@ test('project refresh targets the live Render auto-deploy service', async () => 
   assert.match(source, /https:\/\/the-interdependency-mcp-live\.onrender\.com\/api\/repository-refresh/);
   assert.doesNotMatch(source, /https:\/\/the-interdependency-mcp\.onrender\.com\/api\/repository-refresh/);
 });
+
+
+test('Render deploy hook is explicit, secret-backed, and limited to main pushes', async () => {
+  const workflow = await readFile('.github/workflows/pages.yml', 'utf8');
+  assert.match(workflow, /name: Trigger Render MCP deploy/);
+  assert.match(workflow, /github\.event_name == 'push'/);
+  assert.match(workflow, /github\.ref == 'refs\/heads\/main'/);
+  assert.match(workflow, /secrets\.RENDER_DEPLOY_HOOK_URL/);
+  assert.match(workflow, /RENDER_DEPLOY_HOOK_URL is unset; Render MCP deployment remains hmmm/);
+});
