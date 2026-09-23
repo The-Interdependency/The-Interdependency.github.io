@@ -99,8 +99,8 @@ function resolveSourceReference(value, sourceUrl, repositorySource = false) {
   if (repositorySource && reference.startsWith('/')) {
     try {
       const source = new URL(sourceUrl);
-      const match = /^\\/([^/]+)\\/([^/]+)\\/blob\\/([^/]+)(?:\\/|$)/.exec(source.pathname);
-      if (match) return source.origin + '/' + match[1] + '/' + match[2] + '/blob/' + match[3] + reference;
+      const parts = source.pathname.split('/').filter(Boolean);
+      if (parts[2] === 'blob' && parts[3]) return source.origin + '/' + parts.slice(0, 4).join('/') + reference;
     } catch {}
   }
   if (reference.startsWith('#') || reference.startsWith('/')) return reference;
