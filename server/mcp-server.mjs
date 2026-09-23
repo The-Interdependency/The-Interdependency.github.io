@@ -1,4 +1,5 @@
-import { createServer } from 'node:http';\nimport markdownIt from 'markdown-it';
+import { createServer } from 'node:http';
+import markdownIt from 'markdown-it';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { readFallback } from '../scripts/fetch-skill-registry.mjs';
