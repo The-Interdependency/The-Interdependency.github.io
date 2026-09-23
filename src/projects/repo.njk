@@ -70,13 +70,12 @@ title: "Project: {{ repo.name }}"
       {% if repoDocs.documentation.documents.length %}
       <section aria-labelledby="project-documents-title">
         <h3 id="project-documents-title">Repository documents</h3>
-        {% for document in repoDocs.documentation.documents %}
-        <details class="project-document">
-          <summary>{{ document.path }}</summary>
-          <div class="prose">{{ document | projectDocMarkdown | safe }}</div>
-          <p><a href="{{ document.sourceUrl }}" rel="noopener noreferrer">Open exact source</a></p>
-        </details>
-        {% endfor %}
+        <p class="field-help">The static page indexes exact-head documents without duplicating their full bytes into the site artifact. Use <strong>Refresh MSDMD + docs</strong> above to render the current public copies here.</p>
+        <ul class="index-list">
+          {% for document in repoDocs.documentation.documents %}
+          <li><a href="{{ document.sourceUrl }}" rel="noopener noreferrer"><code>{{ document.path }}</code><span>Exact source</span><small>{{ document.bytes }} bytes</small></a></li>
+          {% endfor %}
+        </ul>
       </section>
       {% endif %}
 
