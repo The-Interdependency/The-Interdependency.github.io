@@ -93,3 +93,14 @@ jobs:
 
       - name: Verify custom-domain deployment identity
         run: node scripts/verify-live-deployment.mjs "https://interdependentway.org" "${{ github.sha }}"
+
+      - name: Trigger Render MCP deploy
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$RENDER_DEPLOY_HOOK_URL" ]; then
+            echo "::warning::RENDER_DEPLOY_HOOK_URL is unset; Render MCP deployment remains hmmm."
+            exit 0
+          fi
+          curl --fail --show-error --silent --retry 3 --request POST "$RENDER_DEPLOY_HOOK_URL"
