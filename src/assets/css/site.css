@@ -252,9 +252,14 @@ summary { cursor: pointer; font-weight: 800; }
 .prose { max-width: 70ch; overflow-wrap: anywhere; }
 .prose h2 { scroll-margin-top: 7rem; }
 .prose p, .prose li { line-height: 1.7; }
-.builder-entry { padding-block: 2rem; border-top: 1px solid var(--line); scroll-margin-top: 7rem; }
-.builder-entry h2 { margin-top: .5rem; }
-.builder-meta { color: var(--silver); font-size: .9rem; }
+.builder-tree { margin-top: 1.5rem; }
+.builder-tree > summary { font-weight: 800; color: var(--starlight); cursor: pointer; }
+.builder-tree-branches { margin-top: 1rem; padding-left: 1rem; border-left: 1px solid var(--line); }
+.builder-entry { margin: .8rem 0; padding: .85rem 1rem; scroll-margin-top: 7rem; }
+.builder-entry > summary { cursor: pointer; color: var(--silver); font-weight: 700; }
+.builder-entry[open] > summary { color: var(--starlight); }
+.builder-entry-body { padding-top: .8rem; }
+@media (max-width: 42rem) { .builder-tree-branches { padding-left: .45rem; } }
 .index-list > li { min-width: 0; }
 .canon-unit-summary { overflow-wrap: anywhere; }
 .canon-reading { margin-inline: 0; }
