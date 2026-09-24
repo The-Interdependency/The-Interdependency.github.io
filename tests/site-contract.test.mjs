@@ -189,6 +189,6 @@ test('builder journal source is collapsible and loads the canonical website-buil
   assert.match(page, /entry\.time/);
   assert.match(page, /entry\.model/);
   assert.match(vendored, /name: website-builder-journal/);
-  assert.match(vendored, /every modification to The-Interdependency\/The-Interdependency\.github\.io/i);
+  assert.match(vendored, /Load this when any modification to The-Interdependency\/The-Interdependency\.github\.io is planned or underway/i);
   assert.match(sourceReadme, /0981aed7695ba2675d5de35ef43ba734e94adea0/);
 });
