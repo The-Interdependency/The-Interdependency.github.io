@@ -1,178 +1,144 @@
 ---
 layout: layouts/base.njk
-title: Erin Spencer — About + Spend → Results
+title: About The Interdependency
+description: The public identity record for The Interdependency LLC, its relationship to The Interdependent Way, its founder, operating method, key facts, and machine-readable organization data.
 ---
-<style>
-.about-erin { --about-gap: clamp(1rem, 2.5vw, 1.5rem); }
-.about-erin .about-hero { max-width: 62rem; margin-bottom: 2.4rem; }
-.about-erin .about-hero h1 { margin-bottom: .55rem; }
-.about-erin .about-kicker { color: var(--cyan); font: 800 .78rem/1.3 ui-monospace, monospace; letter-spacing: .12em; text-transform: uppercase; }
-.about-erin .about-lede { max-width: 66ch; color: var(--silver); font-size: clamp(1.08rem, 2.1vw, 1.34rem); }
-.about-erin .bio-grid,
-.about-erin .ledger-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); gap: var(--about-gap); margin: 1.35rem 0; }
-.about-erin .bio-card,
-.about-erin .ledger-card { padding: 1.25rem; border: 1px solid var(--line); border-radius: var(--radius); background: linear-gradient(145deg, rgba(22,33,58,.92), rgba(16,24,42,.86)); }
-.about-erin .bio-card h2,
-.about-erin .bio-card h3,
-.about-erin .ledger-card h3 { margin: .1rem 0 .65rem; }
-.about-erin .bio-card p,
-.about-erin .ledger-card p,
-.about-erin .ledger-card li { color: var(--silver); }
-.about-erin .share-card { position: relative; overflow: hidden; margin: 2rem 0; padding: clamp(1.35rem, 4vw, 2.4rem); border: 1px solid var(--violet); border-radius: 1.35rem; background: radial-gradient(circle at 86% 8%, rgba(123,201,216,.14), transparent 28%), radial-gradient(circle at 10% 92%, rgba(155,135,245,.17), transparent 34%), var(--night-raised); box-shadow: var(--shadow); }
-.about-erin .share-card::after { content: "SPEND → EVIDENCE → RESULTS"; position: absolute; right: -2rem; bottom: .35rem; color: rgba(238,243,255,.055); font: 900 clamp(1.8rem, 6vw, 5rem)/1 ui-monospace, monospace; white-space: nowrap; transform: rotate(-5deg); pointer-events: none; }
-.about-erin .share-card > * { position: relative; z-index: 1; }
-.about-erin .share-card h2 { max-width: 14ch; margin: .35rem 0 .8rem; font-size: clamp(2.15rem, 6vw, 4.75rem); letter-spacing: -.04em; }
-.about-erin .share-card .statement { max-width: 54ch; font-size: clamp(1rem, 2vw, 1.22rem); }
-.about-erin .fact-strip { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1.1rem 0; }
-.about-erin .fact-strip span { padding: .3rem .62rem; border: 1px solid var(--line); border-radius: 999px; color: var(--silver); font: 700 .78rem/1.3 ui-monospace, monospace; }
-.about-erin .money { color: var(--starlight); font: 800 1.22rem/1.2 ui-monospace, monospace; }
-.about-erin .timeline { position: relative; margin: 1.3rem 0 2.5rem; padding-left: 1.6rem; }
-.about-erin .timeline::before { content: ""; position: absolute; left: .33rem; top: .4rem; bottom: .4rem; width: 1px; background: var(--line); }
-.about-erin .timeline-item { position: relative; margin: 0 0 1.1rem; padding: 1rem 1.1rem; border: 1px solid var(--line); border-radius: .85rem; background: rgba(16,24,42,.76); }
-.about-erin .timeline-item::before { content: ""; position: absolute; left: -1.53rem; top: 1.3rem; width: .72rem; aspect-ratio: 1; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 0 4px var(--night); }
-.about-erin .timeline-item.hmmm-item::before { background: var(--amber); }
-.about-erin .timeline-date { color: var(--cyan); font: 800 .78rem/1.3 ui-monospace, monospace; letter-spacing: .07em; text-transform: uppercase; }
-.about-erin .hmmm-box { margin: 1.4rem 0; padding: 1rem 1.15rem; border: 1px solid var(--amber); border-left-width: .35rem; border-radius: .8rem; background: rgba(240,195,106,.07); }
-.about-erin .hmmm-box strong { color: var(--amber); }
-.about-erin .cta { display: inline-flex; align-items: center; justify-content: center; min-height: 3rem; padding: .75rem 1.05rem; border: 1px solid var(--violet); border-radius: .75rem; background: var(--violet); color: var(--night); text-decoration: none; font-weight: 900; }
-.about-erin .cta:hover { color: var(--night); filter: brightness(1.08); }
-.about-erin .plain-link { display: inline-block; margin-right: 1rem; }
-.about-erin .fine { color: var(--silver); font-size: .88rem; }
-.about-erin .source-list { padding-left: 1.1rem; }
-@media (max-width: 42rem) { .about-erin .share-card h2 { max-width: none; } }
-</style>
+{# Usage: this page owns the organization-level public identity. Keep /about-me/ for Erin Spencer, /about-the-site/ for website practice, and /by-the-builder/ for the attributed builder journal. Visible facts and JSON-LD both consume src/_data/organization.json. #}
+<script type="application/ld+json">{{ organization.json_ld | json | safe }}</script>
 
-<article class="about-erin">
-  <header class="about-hero">
-    <p class="about-kicker">Way Seer · The Hovel · The Interdependency</p>
-    <h1>Erin Spencer</h1>
-    <p class="about-lede">Freelance houseless social activist, disabled Marine Corps veteran, writer of the <em>Articles of Survival</em>, builder and maintainer of The Hovel in West Berkeley, and creator of The Interdependent Way: work organized around survival, harm reduction, community, evidence, and systems that do not pretend anyone thrives alone.</p>
-    <div class="actions">
-      <a class="cta" href="https://buy.stripe.com/00waEWa8A7EObSj8b45EY00">Purchase Spend → Results access</a>
-      <a class="button secondary" href="#ledger">See the ledger</a>
-    </div>
-  </header>
+<header class="page-head">
+  <p class="eyebrow">Organization identity · source-bounded</p>
+  <h1>About The Interdependency</h1>
+  <p class="lede">{{ organization.value_proposition }}</p>
+  <div class="actions">
+    <a class="button" href="/projects/">Explore projects</a>
+    <a class="button secondary" href="/about-me/">About Erin Spencer</a>
+  </div>
+</header>
 
-  <section class="share-card" aria-labelledby="share-title">
-    <p class="about-kicker">X / screenshot-friendly biography card</p>
-    <h2 id="share-title">Do no harm. Build what survival requires.</h2>
-    <p class="statement">Erin Spencer is a houseless social activist and Marine Corps veteran working from lived experience at Eighth &amp; Harrison in West Berkeley. The work spans The Hovel, the Articles of Survival, public advocacy, and The Interdependent Way.</p>
-    <div class="fact-strip" aria-label="Key facts">
-      <span>houseless social activist</span><span>Marine Corps veteran</span><span>West Berkeley</span><span>The Hovel</span><span>Articles of Survival</span><span>The Interdependent Way</span>
-    </div>
-    <p><strong>Spend → evidence → results.</strong> The operating experiment is now purchasable: choose what access is worth and use the Stripe receipt as the access credential while automated entitlement verification is completed.</p>
-    <p><a class="cta" href="https://buy.stripe.com/00waEWa8A7EObSj8b45EY00">Buy results access on Stripe</a></p>
-  </section>
+<section aria-labelledby="does-title">
+  <h2 id="does-title">What The Interdependency does</h2>
+  <div class="grid">
+    <article class="card">
+      <h3>Publishes The Interdependent Way</h3>
+      <p>The website provides a public entrance to The Interdependent Way while preserving the canonical source identity outside this repository. Companion readings, research, and implementations remain distinguishable from the source text rather than silently becoming canon.</p>
+    </article>
+    <article class="card">
+      <h3>Builds and tests technical systems</h3>
+      <p>The organization develops public software, mathematical and measurement work, agent tooling, metadata systems, and technical experiments across independently owned repositories. Project status stays local to the repository that owns the claim.</p>
+    </article>
+    <article class="card">
+      <h3>Connects work without collapsing ownership</h3>
+      <p>The public project map joins GitHub facts, repository manifests, documentation, and provenance into navigable views. The website can integrate and publish that material without inheriting its license, theorem, proof, empirical, or implementation authority.</p>
+    </article>
+  </div>
+</section>
 
-  <section aria-labelledby="bio-title">
-    <h2 id="bio-title">Biography</h2>
-    <div class="bio-grid">
-      <div class="bio-card">
-        <h3>Survival as practice</h3>
-        <p>Raised in East Texas and later serving in the U.S. Marine Corps, Erin became a long-time resident of the Eighth and Harrison encampment in Berkeley. The work there has included community cleanup, public comment, civil disobedience, legal challenges to encampment sweeps, and maintaining space for people arriving with nowhere else to settle.</p>
-      </div>
-      <div class="bio-card">
-        <h3>The Hovel</h3>
-        <p>The Hovel was built and maintained at the encampment as practical shelter and community infrastructure. Public reporting documents it as a place intended to make room for people who arrive needing somewhere to be, rather than treating survival as an individual failure.</p>
-      </div>
-      <div class="bio-card">
-        <h3>Articles of Survival</h3>
-        <p>The <em>Articles of Survival</em> begin with a compact operating constraint: “Do no harm.” They extend lived experience into a written framework for survival, relationship, responsibility, and mutual dependence.</p>
-      </div>
-      <div class="bio-card">
-        <h3>The Interdependent Way</h3>
-        <p>The Interdependency LLC turns the same premise into research and technical experiments: spend on compute and tools, preserve evidence, expose uncertainty, and publish what the work actually produces instead of substituting claims for results.</p>
-      </div>
-    </div>
-    <p class="fine">Public profile sources: <a href="https://thestreetspirit.org/2025/05/07/you-cant-say-we-didnt-clean-up/">Street Spirit on The Hovel</a> · <a href="https://thestreetspirit.org/2025/07/03/no-different-than-the-stars-in-the-sky-life-in-writing-with-erin-spencer/">Street Spirit interview and Articles of Survival</a>.</p>
-  </section>
+<section aria-labelledby="different-title">
+  <h2 id="different-title">What makes The Interdependency different</h2>
+  <div class="prose">
+    <h3>Source authority stays with the source</h3>
+    <p>Distributed work is displayed with its owning repository, path, and source identity. Publication does not transfer authority merely because related material appears on one website.</p>
 
-  <section id="ledger" aria-labelledby="ledger-title">
-    <h2 id="ledger-title">2026 operating ledger: income, compute, subscriptions</h2>
-    <p class="section-intro">Numbers below are deliberately separated into recurring personal inflow, LLC/business revenue, observed spend, and unresolved liabilities. A bank transaction is not silently reclassified as revenue, and a suspension notice is not silently converted into an amount owed.</p>
-    <div class="ledger-grid">
-      <div class="ledger-card">
-        <h3>Expected recurring income</h3>
-        <p class="money">$552.47 / month</p>
-        <p>Source: VA Benefits, observed as a recurring deposit. Conditional annualized baseline if unchanged: <strong>$6,629.64</strong>. This is personal inflow, not LLC revenue; the tax character of the specific benefit is not inferred from the bank label.</p>
-      </div>
-      <div class="ledger-card">
-        <h3>New LLC revenue path</h3>
-        <p class="money">Variable / customer-chosen</p>
-        <p>Source: Stripe “Spend → Results Access.” One-time customers choose the amount. A prior successful Stripe payment exists, but there is not yet enough evidence to forecast recurring sales honestly.</p>
-      </div>
-      <div class="ledger-card">
-        <h3>Verified 2026 compute/tool spend</h3>
-        <ul>
-          <li>Replit: <strong>$394.93</strong> observed in connected-bank transactions.</li>
-          <li>Google Cloud: <strong>$20.00</strong> observed.</li>
-          <li>xAI: <strong>$25.00</strong> observed bank charge, separate from SuperGrok.</li>
-          <li>Google Workspace July invoice: <strong>$56.23</strong>; invoice states automatic charging, settlement not independently matched here.</li>
-        </ul>
-      </div>
-      <div class="ledger-card">
-        <h3>Subscription status</h3>
-        <ul>
-          <li>Claude Max: payment declined / suspended June 23; renewed June 29 at <strong>$125/month</strong>. Current amount due: <strong>hmmm</strong>.</li>
-          <li>SuperGrok: last verified renewal June 14 at <strong>$29.99/month</strong>. Current amount due: <strong>hmmm</strong>.</li>
-          <li>Google Workspace AI Expanded Access: suspended June 23 for lack of an auto-charge payment method. Base Workspace continued billing; current AI add-on balance/status: <strong>hmmm</strong>.</li>
-        </ul>
-      </div>
-    </div>
-  </section>
+    <h3>Evidence stays attached to claims</h3>
+    <p>Where the publishing system can verify exact source identity, it records commits, blobs, digests, status, and fallback state. A generated page is therefore a view of evidence, not a substitute for it.</p>
 
-  <section aria-labelledby="tax-title">
-    <h2 id="tax-title">LLC tax + required-expense clock</h2>
-    <p class="section-intro">California calendar-year framing, as of August 16, 2026. Exact entity formation date and federal tax classification remain unresolved, so conditional duties stay conditional.</p>
-    <div class="timeline">
-      <div class="timeline-item hmmm-item">
-        <div class="timeline-date">Formation / registration date · hmmm</div>
-        <strong>California Statement of Information</strong>
-        <p>$20. Due within 90 days of initial registration and every two years thereafter. The exact next due window depends on the LLC’s California formation/registration date.</p>
-      </div>
-      <div class="timeline-item hmmm-item">
-        <div class="timeline-date">15th day of month 4 after taxable year begins</div>
-        <strong>California LLC annual tax — $800</strong>
-        <p>For a California LLC subject to the annual tax, FTB requires $800. For a calendar-year LLC already in existence at January 1, that date is April 15. Whether this specific payment is already satisfied is <strong>hmmm</strong>.</p>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-date">June 15, 2026 · conditional</div>
-        <strong>California estimated LLC fee</strong>
-        <p>Only if California-source total income reaches at least $250,000. Fee tiers begin at $900 and rise with total income. The currently observed revenue/inflow evidence does not establish that threshold.</p>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-date">September 15, 2026 · next federal estimate</div>
-        <strong>Federal individual estimated tax — if required</strong>
-        <p>If taxable business/self-employment income creates an estimated-tax obligation, the next 2026 installment date is September 15. Amount depends on taxable profit, other income, deductions, credits, withholding, and the LLC’s tax classification.</p>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-date">January 15, 2027 · conditional</div>
-        <strong>Federal Q4 estimated tax</strong>
-        <p>Fourth estimated-tax installment if required.</p>
-      </div>
-      <div class="timeline-item hmmm-item">
-        <div class="timeline-date">2027 return season · classification-dependent</div>
-        <strong>2026 federal + California returns</strong>
-        <p>California Form 568 is generally part of the LLC filing path. Federal forms depend on whether the LLC is a disregarded single-member LLC, partnership, S corporation, C corporation, or has another valid election. Exact forms and income-tax amount: <strong>hmmm</strong> until classification and net taxable business income are verified.</p>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-date">No current domestic filing</div>
-        <strong>FinCEN BOI</strong>
-        <p>U.S.-created entities are currently exempt from federal Beneficial Ownership Information reporting. Do not spend money on a filing service that claims a domestic BOI filing is presently required.</p>
-      </div>
-    </div>
-  </section>
+    <h3>Unknown stays visible</h3>
+    <p><strong>hmmm</strong> marks unresolved constraints rather than converting missing evidence into a confident answer. That boundary applies here to facts such as the LLC founding date and headquarters until an owning source verifies them.</p>
 
-  <section aria-labelledby="links-title">
-    <h2 id="links-title">Public links</h2>
-    <p><a class="plain-link" href="https://www.linkedin.com/">LinkedIn — Erin Spencer</a> <a class="plain-link" href="https://www.google.com/maps/search/?api=1&amp;query=The%20Hovel%20Berkeley%20California">Google Business / Maps — The Hovel</a></p>
-    <div class="hmmm-box"><strong>hmmm — canonical-link boundary:</strong> Gmail verifies an active LinkedIn account for Erin Spencer (“Wayseer at The Hovel”) and a verified Google Business Profile for The Hovel, but neither source exposed a stable canonical public profile URL. These buttons therefore route to LinkedIn and a precise Google Maps search rather than inventing profile identifiers.</div>
-  </section>
+    <h3>Human and machine readers get explicit entry points</h3>
+    <p>Human pages prioritize readable navigation; machine readers can use the published AI context, JSON-LD, sitemap, and <code>llms.txt</code>. These surfaces improve retrieval and grounding without claiming that the website directly trains external models.</p>
 
-  <section aria-labelledby="access-title">
-    <h2 id="access-title">Purchase access to the results</h2>
-    <p class="section-intro">Stripe-hosted checkout is live. The site does not collect card data. Choose the amount, complete payment with Stripe, and keep the receipt as the access credential.</p>
-    <p><a class="cta" href="https://buy.stripe.com/00waEWa8A7EObSj8b45EY00">Purchase Spend → Results access</a></p>
-    <div class="hmmm-box"><strong>hmmm — entitlement boundary:</strong> this is a static GitHub Pages site. A payment link can collect payment securely, but a genuinely private automatic unlock requires a server-side Stripe webhook plus an entitlement/authentication layer. Until that exists, the Stripe receipt is the evidence-bearing access credential; no fake “secret URL” is presented as security.</div>
-  </section>
-</article>
+    <h3>The public reading path is static-first</h3>
+    <p>Core content remains readable without JavaScript, while search, maps, and other interaction progressively enhance it. Release checks test generated routes, links, accessibility, and publication identity before deployment.</p>
+  </div>
+</section>
+
+<section aria-labelledby="users-title">
+  <h2 id="users-title">Who uses The Interdependency</h2>
+  <ul>
+    <li>Readers examining The Interdependent Way and its source-bound companion material.</li>
+    <li>Researchers and developers inspecting the organization’s public technical work.</li>
+    <li>Collaborators and reviewers who need exact project provenance rather than a flattened portfolio summary.</li>
+    <li>Search and AI systems that need a machine-readable public identity and explicit boundaries between organization, person, doctrine, and implementation.</li>
+  </ul>
+</section>
+
+<section aria-labelledby="team-title">
+  <h2 id="team-title">The team behind The Interdependency</h2>
+  <div class="prose">
+    <h3>Erin Spencer</h3>
+    <p>Erin Spencer is the founder of The Interdependency LLC and the architect of The Interdependent Way. The separate <a href="/about-me/">About me</a> page preserves Erin’s founder-authored narrative; the machine-readable biography keeps the person identity distinct from the organization.</p>
+
+    <h3>AI-assisted construction and review</h3>
+    <p>The work uses AI systems as implementation, research, and review tools with attribution and provenance where their output becomes public. The <a href="/by-the-builder/">By the builder</a> journal keeps AI-authored observations separate from Erin’s voice and from source canon.</p>
+
+    <h3>Origin</h3>
+    <p>The public work grew from Erin’s writing of The Interdependent Way into a constellation of repository-owned technical experiments and publications. The exact LLC formation date is not currently backed by a verified public repository source, so the structured organization record omits a founding date rather than guessing one.</p>
+  </div>
+</section>
+
+<section aria-labelledby="works-title">
+  <h2 id="works-title">How The Interdependency works</h2>
+  <div class="prose">
+    <h3>Public work starts at its owning source</h3>
+    <p>Repositories own their code, claims, status, documentation, and correction path. This site retrieves and presents that work, with provenance, through <a href="/projects/">Projects</a>, the distributed textbook, research pages, and public artifacts.</p>
+
+    <h3>Communication is project-specific</h3>
+    <p>GitHub repositories and issues are the primary public engineering channel. The organization publishes no general response-time or turnaround SLA; a project-specific commitment applies only where that project explicitly states one.</p>
+
+    <h3>Commercial terms are explicit or absent</h3>
+    <p>There is no universal service catalog, organization-wide price list, or standard contract represented by this page. Any paid surface must state its own current scope, price, and terms rather than inheriting stale commercial language from an About page.</p>
+  </div>
+</section>
+
+<section aria-labelledby="facts-title">
+  <h2 id="facts-title">Key facts</h2>
+  <dl class="meta">
+    <dt>Company Name</dt><dd>{{ organization.name }}</dd>
+    <dt>Type</dt><dd>{{ organization.type }}</dd>
+    <dt>Founded</dt><dd>{{ organization.facts.founded }}</dd>
+    <dt>Founder</dt><dd><a href="/about-me/">{{ organization.founder.name }}</a></dd>
+    <dt>Headquarters</dt><dd>{{ organization.facts.headquarters }}</dd>
+    <dt>Website</dt><dd><a href="{{ organization.website }}">{{ organization.website }}</a></dd>
+    <dt>Core Offering</dt><dd>{{ organization.facts.core_offering }}</dd>
+    <dt>Pricing</dt><dd>{{ organization.facts.pricing }}</dd>
+    <dt>Contract Terms</dt><dd>{{ organization.facts.contract_terms }}</dd>
+    <dt>Services</dt><dd>{{ organization.facts.services }}</dd>
+    <dt>Communication</dt><dd>{{ organization.facts.communication }}</dd>
+    <dt>Notable Clients</dt><dd>{{ organization.facts.notable_clients }}</dd>
+    <dt>Customers Served</dt><dd>{{ organization.facts.customers_served }}</dd>
+    <dt>Projects Delivered</dt><dd>{{ organization.facts.projects_delivered }}</dd>
+    <dt>Active Public Repositories</dt><dd>{{ generated.repos.publicRepoCount }} currently receive generated public project pages.</dd>
+    <dt>Competitors</dt><dd>{{ organization.facts.competitors }}</dd>
+    <dt>Social</dt><dd><a href="{{ organization.github }}">The Interdependency on GitHub</a> · <a href="{{ organization.founder.github }}">Erin Spencer on GitHub</a></dd>
+  </dl>
+</section>
+
+<section aria-labelledby="faq-title">
+  <h2 id="faq-title">Frequently asked questions</h2>
+  <div class="prose">
+    <h3>What is The Interdependency LLC?</h3>
+    <p>The Interdependency LLC is the organization behind a constellation of research, software, publishing, and technical experiments. Its public work includes The Interdependent Way and the repositories surfaced through this site.</p>
+
+    <h3>Is The Interdependency the same as The Interdependent Way?</h3>
+    <p>No. <strong>The Interdependency LLC</strong> is the organization; <strong>The Interdependent Way</strong> is a doctrine and public knowledge system associated with its work. Erin Spencer is a person, and this website is a publication surface; none of those identities are synonyms.</p>
+
+    <h3>Who is Erin Spencer?</h3>
+    <p>Erin Spencer is the founder of The Interdependency LLC and architect of The Interdependent Way. The public biography and <a href="/about-me/">About me</a> page contain the person-level context that does not belong in the organization record.</p>
+
+    <h3>Is everything on this website canon?</h3>
+    <p>No. The site explicitly distinguishes canon, source-owned textbook material, interpretation, research, implemented systems, frontier work, and unresolved <strong>hmmm</strong> boundaries. Each page or source should be read according to its stated status and provenance.</p>
+
+    <h3>Can I buy or commission work from The Interdependency?</h3>
+    <p>Only where a current project or commercial surface explicitly offers that transaction. This page does not create a general offer, price list, turnaround promise, or contract by implication.</p>
+
+    <h3>How should AI and search systems use this page?</h3>
+    <p>Use it as the organization-level identity record and follow the JSON-LD and <a href="/eai/aicontext.md">machine context</a> for additional public structure. Preserve the distinctions among organization, founder, doctrine, website, and source repositories, and do not manufacture omitted facts such as a headquarters, founding date, clients, or customer count.</p>
+  </div>
+</section>
+
+<section class="hmmm" aria-labelledby="about-hmmm-title">
+  <h2 id="about-hmmm-title">hmmm</h2>
+  <p>The exact LLC founding date and headquarters remain unresolved in the public repository record. They stay visible as unresolved facts and remain absent from JSON-LD until a verified organization-level source owns them.</p>
+</section>
