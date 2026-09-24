@@ -24,6 +24,7 @@ This site displays exact, provenance-bearing chapter snapshots. It does not merg
 ## Architecture
 
 - `/` presents the founder-supplied description of The interdependent way, with links into The Way and About me.
+- `/about/` is the organization-level identity record for The Interdependency LLC, keeping the organization, The Interdependent Way, the website, and Erin Spencer distinct while emitting Organization JSON-LD.
 - `/about-me/` preserves the founder-authored **In Service to Love** narrative.
 - `/home/` is the directory of reading and working paths.
 - `/about-the-site/` owns orientation, construction practices, and verification limits; `/start/` preserves its former address.

@@ -29,6 +29,32 @@ test('machine discovery remains wired without occupying the human homepage', asy
   assert.match(sitemap, /permalink: 'sitemap\.xml'/);
 });
 
+test('organization about page keeps company, doctrine, founder, and site identities separate', async () => {
+  const [about, biographyRaw] = await Promise.all([
+    readFile('src/about/index.njk', 'utf8'),
+    readFile('src/_data/erin.public-biography.json', 'utf8')
+  ]);
+  const organization = JSON.parse(await readFile('src/_data/organization.json', 'utf8'));
+  const biography = JSON.parse(biographyRaw);
+
+  assert.equal(organization.name, 'The Interdependency LLC');
+  assert.equal(organization.project.name, 'The Interdependent Way');
+  assert.notEqual(organization.name, organization.project.name);
+  assert.equal(organization.founder.name, 'Erin Spencer');
+  assert.equal(organization.json_ld['@type'], 'Organization');
+  assert.equal(organization.json_ld['@id'], 'https://interdependentway.org/about/#the-interdependency');
+  assert.equal(organization.json_ld.founder['@id'], biography['@id']);
+  assert.equal(biography.affiliation['@id'], organization.json_ld['@id']);
+  assert.equal('foundingDate' in organization.json_ld, false);
+  assert.equal('address' in organization.json_ld, false);
+
+  assert.match(about, /<h1>About The Interdependency<\/h1>/);
+  assert.match(about, /<h2 id="facts-title">Key facts<\/h2>/);
+  assert.match(about, /organization\.json_ld \| json \| safe/);
+  assert.match(about, /Frequently asked questions/);
+  assert.doesNotMatch(about, /operating ledger|required-expense clock|Stripe|Eighth &amp; Harrison/i);
+});
+
 test('base layout remains readable without javascript and presents a human-first navigation', async () => {
   const layout = await readFile('src/_includes/layouts/base.njk', 'utf8');
   assert.match(layout, /<noscript>/);
