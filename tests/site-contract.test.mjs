@@ -178,3 +178,17 @@ test('emergency static edition has no script or external dependency', async () =
   assert.doesNotMatch(html, /https:\/\/[^"']+\.(css|js)/i);
   assert.match(html, /Emergency static edition/);
 });
+test('builder journal source is collapsible and loads the canonical website-builder-journal contract', async () => {
+  const [page, vendored, sourceReadme] = await Promise.all([
+    readFile('src/by-the-builder/index.njk', 'utf8'),
+    readFile('.agents/skills/website-builder-journal/SKILL.md', 'utf8'),
+    readFile('.agents/skills/README.md', 'utf8')
+  ]);
+  assert.match(page, /<details class="builder-tree">/);
+  assert.match(page, /<details class="builder-entry"/);
+  assert.match(page, /entry\.time/);
+  assert.match(page, /entry\.model/);
+  assert.match(vendored, /name: website-builder-journal/);
+  assert.match(vendored, /every modification to The-Interdependency\/The-Interdependency\.github\.io/i);
+  assert.match(sourceReadme, /0981aed7695ba2675d5de35ef43ba734e94adea0/);
+});
