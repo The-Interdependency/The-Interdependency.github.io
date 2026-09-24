@@ -34,9 +34,10 @@ export async function checkAiContextPublicDiscovery() {
 
 // Usage: run only after Eleventy has generated _site, normally through npm run test:generated or npm run check.
 test('generated deployment artifact contains the unified routes', async () => {
-  const [splash, about, home, preamble, chapters, artifacts, edcmMathematics, fourCuts, fallback, articles, narratives, jackAndDiane] = await Promise.all([
+  const [splash, about, organizationAbout, home, preamble, chapters, artifacts, edcmMathematics, fourCuts, fallback, articles, narratives, jackAndDiane] = await Promise.all([
     readFile('_site/index.html', 'utf8'),
     readFile('_site/about-me/index.html', 'utf8'),
+    readFile('_site/about/index.html', 'utf8'),
     readFile('_site/home/index.html', 'utf8'),
     readFile('_site/preamble/index.html', 'utf8'),
     readFile('_site/chapters/index.html', 'utf8'),
@@ -54,6 +55,13 @@ test('generated deployment artifact contains the unified routes', async () => {
   assert.match(about, /I am a Marine\./);
   assert.match(about, /this is interdependence\. this is the way\./);
   assert.match(about, /til shade is gone,[\s\S]*til water is dry,[\s\S]*in service to love,/);
+  assert.match(organizationAbout, /<h1>About The Interdependency<\/h1>/);
+  assert.match(organizationAbout, /<h2 id="facts-title">Key facts<\/h2>/);
+  assert.match(organizationAbout, /<script type="application\/ld\+json">/);
+  assert.match(organizationAbout, /"@type":"Organization"/);
+  assert.match(organizationAbout, /The Interdependency LLC/);
+  assert.match(organizationAbout, /The Interdependent Way/);
+  assert.doesNotMatch(organizationAbout, /operating ledger|required-expense clock|Stripe/i);
   assert.match(splash, /href="\/way\/"[^>]*>Enter The Way/);
   assert.doesNotMatch(splash, /href="\/preamble\/"[^>]*>Read the Preamble/);
   assert.doesNotMatch(splash, /href="\/home\/"[^>]*>Enter the living system/);
