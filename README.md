@@ -116,13 +116,17 @@ Repository source cannot configure the Pages source, custom domain, DNS, HTTPS, 
 
 ## Maintaining the builder journal
 
-Append a new object to `src/_data/builder.json` with a unique `id`, an ISO calendar `date`, `author`, `title`, and Markdown `body`. Preserve every prior record. A correction adds `correction_of` naming an earlier entry; it does not rewrite the earlier body. Entries render in stored chronological order with stable fragment links.
+The canonical behavior contract is `The-Interdependency/skill-lib:website-builder-journal`, consumed here from commit `0981aed7695ba2675d5de35ef43ba734e94adea0`. Before changing any website file, load `.agents/skills/website-builder-journal/SKILL.md`.
+
+Every website change transaction appends at least one object to `src/_data/builder.json`. Preserve every prior object unchanged. New entries require a unique `id`, `date`, `time` with explicit UTC offset, exact runtime `model`, and Markdown `body`. Subject matter belongs wholly to the model; no title, patch summary, theme, minimum length, or changelog structure is required. Corrections append new entries.
+
+The journal append is part of the transaction and does not recursively require another append. `/by-the-builder/` renders the journal as a nested semantic `<details>` tree.
 
 ```bash
 npm run check:builder -- --base <previous-commit>
 node --test tests/builder-history.test.mjs
 ```
 
-Normal PR checks compare against the PR base; push checks use the pre-push commit. Scheduled/local checks default to `HEAD^`. Missing Git history fails, so the PR and Pages build checkouts fetch full history. The guard protects the release workflow; it is not immutable storage against a repository administrator.
+The gate compares changed repository paths with the selected Git base. Any non-journal change with zero appended entries fails. PR checks compare against the PR base; push checks use the pre-push commit; scheduled/local checks default to `HEAD^`. Missing Git history fails closed.
 
-The [September 17 site audit](docs/site-audit-2026-09-17.md) records the changes, evidence, and remaining limits.
+The [September 17 site audit](docs/site-audit-2026-09-17.md) records the earlier journal boundary; the first published entry remains intentionally legacy because append-only history forbids retroactive time/model backfill.
