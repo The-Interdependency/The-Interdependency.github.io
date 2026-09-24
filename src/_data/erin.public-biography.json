@@ -25,8 +25,11 @@
   ],
   "affiliation": {
     "@type": "Organization",
-    "name": "The Interdependency",
-    "url": "https://github.com/The-Interdependency"
+    "@id": "https://interdependentway.org/about/#the-interdependency",
+    "name": "The Interdependency LLC",
+    "alternateName": "The Interdependency",
+    "url": "https://interdependentway.org/about/",
+    "sameAs": "https://github.com/The-Interdependency"
   },
   "background": [
     {
