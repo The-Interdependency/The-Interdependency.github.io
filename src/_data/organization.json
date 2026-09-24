@@ -1,0 +1,72 @@
+{
+  "schema": "interdependentway.public-organization/1.0.0",
+  "usage": "Render visible organization facts and machine-readable JSON-LD from this record. Keep The Interdependency LLC, The Interdependent Way, the website, and Erin Spencer as distinct identities. Do not infer omitted founding, headquarters, client, pricing, or contract facts.",
+  "name": "The Interdependency LLC",
+  "alternate_name": "The Interdependency",
+  "type": "Limited liability company; research, software, and publishing organization",
+  "value_proposition": "The Interdependency LLC is a research, software, and publishing organization that develops The Interdependent Way and related technical systems for readers, researchers, developers, and collaborators working with interdependent social and computational structures.",
+  "founder": {
+    "name": "Erin Spencer",
+    "public_id": "https://interdependentway.org/eai/aicontext.md#erin-spencer",
+    "about_url": "https://interdependentway.org/about-me/",
+    "github": "https://github.com/erinepshovel-code"
+  },
+  "project": {
+    "name": "The Interdependent Way",
+    "kind": "doctrine and public knowledge system",
+    "public_surface": "https://interdependentway.org/",
+    "canonical_source": "https://github.com/wayseer00/main/blob/main/canon/INTERDEPENDENT_WAY.txt"
+  },
+  "website": "https://interdependentway.org",
+  "github": "https://github.com/The-Interdependency",
+  "facts": {
+    "founded": "hmmm — no publicly verified founding date is encoded here.",
+    "headquarters": "hmmm — no publicly verified headquarters is encoded here.",
+    "core_offering": "The Interdependent Way; provenance-bearing public research and publication; software and technical experiments across independently owned project repositories.",
+    "pricing": "No organization-wide price list is published. Any commercial surface must state its own current price and scope.",
+    "contract_terms": "No organization-wide standard contract terms are published. Project-specific terms govern only where they are explicitly stated.",
+    "services": "No universal service catalog is claimed. Public work includes doctrine, research, software, publication, and project-specific technical experiments.",
+    "communication": "Public engineering communication uses GitHub repositories and issues. No organization-wide response-time or turnaround SLA is published.",
+    "notable_clients": "None claimed in this public identity record.",
+    "customers_served": "No organization-wide customer count is claimed.",
+    "projects_delivered": "No organization-wide delivery count is claimed; the Projects surface reports current public repository work instead.",
+    "competitors": "No canonical competitor set is maintained."
+  },
+  "provenance": {
+    "status": "operator-supplied identity joined to repository-backed public project facts",
+    "repository_sources": [
+      ".interdependency/project.yml",
+      "README.md",
+      "src/_data/erin.public-biography.json"
+    ]
+  },
+  "json_ld": {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://interdependentway.org/about/#the-interdependency",
+    "name": "The Interdependency LLC",
+    "alternateName": "The Interdependency",
+    "url": "https://interdependentway.org/",
+    "description": "The Interdependency LLC is a research, software, and publishing organization that develops The Interdependent Way and related technical systems for readers, researchers, developers, and collaborators working with interdependent social and computational structures.",
+    "founder": {
+      "@type": "Person",
+      "@id": "https://interdependentway.org/eai/aicontext.md#erin-spencer",
+      "name": "Erin Spencer",
+      "url": "https://interdependentway.org/about-me/"
+    },
+    "sameAs": [
+      "https://github.com/The-Interdependency"
+    ],
+    "knowsAbout": [
+      "The Interdependent Way",
+      "UCNS",
+      "EDCM",
+      "MSDMD",
+      "A0"
+    ]
+  },
+  "hmmm": [
+    "Exact LLC founding date remains unresolved in the public repository record.",
+    "A headquarters claim is intentionally absent until a verified organization-level source owns it."
+  ]
+}
