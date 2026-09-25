@@ -192,3 +192,41 @@ test('builder journal source is collapsible and loads the canonical website-buil
   assert.match(vendored, /Load this when any modification to The-Interdependency\/The-Interdependency\.github\.io is planned or underway/i);
   assert.match(sourceReadme, /0981aed7695ba2675d5de35ef43ba734e94adea0/);
 });
+
+test('global navigation is organized by durable visitor goals with subordinate section navigation', async () => {
+  const layout = await readFile('src/_includes/layouts/base.njk', 'utf8');
+  const primary = /<nav id="primary-nav"[\s\S]*?<\/nav>/.exec(layout)?.[0] || '';
+  for (const [href, label] of [
+    ['/home/', 'Start Here'],
+    ['/way/', 'The Way'],
+    ['/chapters/', 'Textbook'],
+    ['/research/', 'Research'],
+    ['/projects/', 'Projects'],
+    ['/about/', 'About'],
+    ['/search/', 'Search']
+  ]) {
+    assert.match(primary, new RegExp(`href="${href.replace(/\//g, '\\/')}"[\\s\\S]*?>[\\s\\S]*?${label}`));
+  }
+  for (const retiredTopLevel of ['/narratives/', '/sitrep/', '/artifacts/', '/works/', '/research/method/']) {
+    assert.doesNotMatch(primary, new RegExp(`href="${retiredTopLevel.replace(/\//g, '\\/')}"`));
+  }
+  assert.match(primary, /Studies, findings, and gaps/);
+  assert.match(primary, /Who built this and why/);
+  assert.match(layout, /aria-current="location"/);
+  assert.match(layout, /aria-label="The Way section"/);
+  assert.match(layout, /aria-label="Research section"/);
+  assert.match(layout, /aria-label="Projects section"/);
+  assert.match(layout, /aria-label="About section"/);
+  assert.match(layout, /href="\/narratives\/"/);
+  assert.match(layout, /href="\/sitrep\/"/);
+  assert.match(layout, /href="\/research\/method\/"/);
+});
+
+test('Research owns an evidence index while method remains subordinate', async () => {
+  const page = await readFile('src/research/index.njk', 'utf8');
+  assert.match(page, /research_data\.claims/);
+  assert.match(page, /research_data\.sources/);
+  assert.match(page, /research_data\.gaps/);
+  assert.match(page, /href="\/research\/method\/"/);
+  assert.match(page, /Method remains visible, but it is no longer the Research destination/);
+});
