@@ -4,6 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { readFallback } from '../scripts/fetch-skill-registry.mjs';
 import { fetchRepositoryPublicProjection } from '../scripts/repository-public-projection.mjs';
+import { resolveRepositoryImageReference } from '../scripts/repository-markdown-links.mjs';
 import {
   createMcpProtocol,
   MODERN_PROTOCOL_VERSION,
@@ -89,7 +90,7 @@ function createProjectMarkdownRenderer() {
   const image = md.renderer.rules.image || ((tokens, index, options, _env, self) => self.renderToken(tokens, index, options));
   md.renderer.rules.image = (tokens, index, options, env, self) => {
     const srcIndex = tokens[index].attrIndex('src');
-    if (srcIndex >= 0) tokens[index].attrs[srcIndex][1] = resolveSourceReference(tokens[index].attrs[srcIndex][1], env?.sourceUrl);
+    if (srcIndex >= 0) tokens[index].attrs[srcIndex][1] = resolveRepositoryImageReference(tokens[index].attrs[srcIndex][1], env?.sourceUrl);
     return image(tokens, index, options, env, self);
   };
   return md;
