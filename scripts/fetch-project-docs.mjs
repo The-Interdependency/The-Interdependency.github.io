@@ -1,5 +1,8 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
-import { fetchRepositoryPublicProjection } from './repository-public-projection.mjs';
+import {
+  fetchRepositoryPublicProjection,
+  isRepositoryNotPublicError
+} from './repository-public-projection.mjs';
 
 // === MODULE_BUILD ===
 // id: project_documentation_projection
@@ -12,7 +15,7 @@ import { fetchRepositoryPublicProjection } from './repository-public-projection.
 //   network: delegates exact-head reads to repository_public_projection
 //   storage: generated projectDocs JSON plus last-known-good snapshot
 //   authority: source repositories own document content; this website owns presentation only
-//   failure: same-head last-known-good data may be retained with fallback=true; unknown current content remains hmmm
+//   failure: same-head last-known-good data may be retained with fallback=true; non-public repositories never reuse cached document content
 // === END BOUNDARIES ===
 
 const GENERATED_REPOS = 'src/_data/generated/repos.json';
@@ -22,6 +25,29 @@ const SNAPSHOT_OUT = 'src/_data/snapshots/project-docs.last-known-good.json';
 async function readSnapshot() {
   try { return JSON.parse(await readFile(SNAPSHOT_OUT, 'utf8')); }
   catch { return null; }
+}
+
+function unavailableProjection(repo, message) {
+  return {
+    schema: 'interdependency.repository-public-projection/0.1.0',
+    repository: 'The-Interdependency/' + repo.name,
+    name: repo.name,
+    defaultBranch: repo.default_branch || null,
+    headSha: null,
+    headCommittedAt: null,
+    refreshedAt: null,
+    documentation: {
+      readme: null,
+      documents: [],
+      projectedDocumentCount: 0,
+      projectedBytes: 0,
+      hmmm: [message]
+    },
+    msdmd: null,
+    fallback: false,
+    unavailable: true,
+    hmmm: [message]
+  };
 }
 
 async function main() {
@@ -52,6 +78,13 @@ async function main() {
         includeMsdmd: false
       });
     } catch (error) {
+      if (isRepositoryNotPublicError(error)) {
+        byRepository[repo.name] = unavailableProjection(
+          repo,
+          'Repository is not currently public; cached documentation was discarded instead of republished.'
+        );
+        continue;
+      }
       const prior = previousByRepo[repo.name];
       if (prior?.headSha === repo.head_sha) {
         fallbackCount += 1;
@@ -61,19 +94,10 @@ async function main() {
           hmmm: [...new Set([...(prior.hmmm || []), 'Documentation refresh failed at an unchanged head; retained the last-known-good projection.'])]
         };
       } else {
-        byRepository[repo.name] = {
-          schema: 'interdependency.repository-public-projection/0.1.0',
-          repository: 'The-Interdependency/' + repo.name,
-          name: repo.name,
-          defaultBranch: repo.default_branch || null,
-          headSha: repo.head_sha || null,
-          headCommittedAt: repo.head_committed_at || null,
-          refreshedAt: new Date().toISOString(),
-          documentation: { readme: null, documents: [], projectedDocumentCount: 0, projectedBytes: 0, hmmm: ['Current documentation could not be projected at this head.'] },
-          msdmd: null,
-          fallback: false,
-          hmmm: ['Documentation refresh failed and no same-head fallback was eligible.']
-        };
+        byRepository[repo.name] = unavailableProjection(
+          repo,
+          'Documentation refresh failed and no same-head fallback was eligible.'
+        );
       }
     }
   }
