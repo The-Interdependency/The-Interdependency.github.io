@@ -69,7 +69,7 @@ test('generated deployment artifact contains the unified routes', async () => {
   assert.match(splash, /<h1>The interdependent way:<\/h1>/);
   assert.match(splash, /href="\/about-me\/"/);
   assert.doesNotMatch(splash, /I am a Marine/);
-  assert.match(home, /Start with The Way/);
+  assert.match(home, /You do not need to know the project structure/);
   assert.match(home, /href="\/way\/"/);
   assert.match(home, /href="\/chapters\/"/);
   assert.match(home, /Chapters Zero through Seven/);
@@ -333,7 +333,7 @@ test('Research index exposes admitted evidence instead of only its method', asyn
   assert.match(html, /Studies/);
   assert.match(html, /Evidence gaps/);
   assert.match(html, /Self-Determination Theory Applied to Health Contexts: A Meta-Analysis/);
-  assert.match(html, /Food insecurity is associated with adverse health outcomes/);
+  assert.match(html, /Poverty and scarcity can consume cognitive resources/);
   assert.match(html, /href="\/research\/method\/"[^>]*>Read the review method/);
 });
 
