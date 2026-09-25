@@ -17,7 +17,7 @@ const routes = [
   ['/about-me/', /this is interdependence\. this is the way\./i],
   ['/about-the-site/', /About the site/],
   ['/by-the-builder/', /By the builder/],
-  ['/home/', /Start with The Way/],
+  ['/home/', /You do not need to know the project structure/],
   ['/preamble/', /Humanity faces extinction/],
   ['/chapters/', /The Interdependency Textbook/],
   ['/chapters/chapter-zero/', /Zero is not nothing/],
@@ -34,6 +34,7 @@ const routes = [
   ['/artifacts/', /Artifacts/],
   ['/artifacts/gonol-relationships/', /Public Gonol relationship lab/],
   ['/artifacts/edcm-mathematics/', /EDCM mathematical reference/],
+  ['/research/', /Studies · findings · limits · gaps/],
   ['/research/method/', /Legislation is not science/],
   ['/fallback/', /Emergency static edition/]
 ];

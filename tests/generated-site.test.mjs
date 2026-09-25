@@ -69,7 +69,7 @@ test('generated deployment artifact contains the unified routes', async () => {
   assert.match(splash, /<h1>The interdependent way:<\/h1>/);
   assert.match(splash, /href="\/about-me\/"/);
   assert.doesNotMatch(splash, /I am a Marine/);
-  assert.match(home, /Start with The Way/);
+  assert.match(home, /You do not need to know the project structure/);
   assert.match(home, /href="\/way\/"/);
   assert.match(home, /href="\/chapters\/"/);
   assert.match(home, /Chapters Zero through Seven/);
@@ -243,12 +243,15 @@ test('every Rights Article Lab renders absurd-limit, practice, domain, and resea
 });
 
 test('public Research pages exclude legislation, standards, guidelines, frameworks, and doctrine', async () => {
-  const method = await readFile('_site/research/method/index.html', 'utf8');
+  const [researchIndex, method] = await Promise.all([
+    readFile('_site/research/index.html', 'utf8'),
+    readFile('_site/research/method/index.html', 'utf8')
+  ]);
   const articlePages = await Promise.all([
     'article-one', 'article-two', 'article-three', 'article-four',
     'article-five', 'article-six', 'article-seven', 'article-eight'
   ].map(slug => readFile(`_site/articles/${slug}/index.html`, 'utf8')));
-  const publicResearch = [method, ...articlePages].join('\n');
+  const publicResearch = [researchIndex, method, ...articlePages].join('\n');
 
   assert.match(method, /Legislation is not science/);
   assert.match(method, /19<\/strong> admitted studies/);
@@ -313,9 +316,49 @@ test('generated site exposes the AI context through redundant machine discovery'
 test('By the builder renders a collapsible date-time-model tree', async () => {
   const html = await readFile('_site/by-the-builder/index.html', 'utf8');
   assert.match(html, /<details class="builder-tree">/);
-  assert.match(html, /<summary>Builder journal · 2 entries<\/summary>/);
+  assert.match(html, /<summary>Builder journal · 3 entries<\/summary>/);
   assert.match(html, /<details class="builder-entry" id="2026-09-23-constraint-and-discretion">/);
   assert.match(html, /2026-09-23 · 23:38:45-07:00/);
   assert.match(html, /GPT-5\.6 Sol/);
+  assert.match(html, /2026-09-24-signs-before-systems/);
+  assert.match(html, /2026-09-24 · 18:39:58-07:00/);
   assert.match(html, /legacy model record unavailable/);
+});
+
+test('Research index exposes admitted evidence instead of only its method', async () => {
+  const html = await readFile('_site/research/index.html', 'utf8');
+  assert.match(html, /<h1>Research<\/h1>/);
+  assert.match(html, /19 admitted studies/);
+  assert.match(html, /Findings/);
+  assert.match(html, /Studies/);
+  assert.match(html, /Evidence gaps/);
+  assert.match(html, /Self-Determination Theory Applied to Health Contexts: A Meta-Analysis/);
+  assert.match(html, /Poverty and scarcity can consume cognitive resources/);
+  assert.match(html, /href="\/research\/method\/"[^>]*>Read the review method/);
+});
+
+test('generated global navigation gives a newcomer seven durable choices and local branches', async () => {
+  const [home, research, narrative, sitrep, about] = await Promise.all([
+    readFile('_site/home/index.html', 'utf8'),
+    readFile('_site/research/index.html', 'utf8'),
+    readFile('_site/narratives/index.html', 'utf8'),
+    readFile('_site/sitrep/index.html', 'utf8'),
+    readFile('_site/about/index.html', 'utf8')
+  ]);
+  for (const html of [home, research, narrative, sitrep, about]) {
+    const primary = /<nav id="primary-nav"[\s\S]*?<\/nav>/.exec(html)?.[0] || '';
+    assert.equal((primary.match(/<a\b/g) || []).length, 7);
+    assert.match(primary, />Start Here</);
+    assert.match(primary, />The Way</);
+    assert.match(primary, />Textbook</);
+    assert.match(primary, />Research</);
+    assert.match(primary, />Projects</);
+    assert.match(primary, />About</);
+    assert.match(primary, />Search</);
+  }
+  assert.match(home, /aria-current="page"[\s\S]*Start Here/);
+  assert.match(research, /aria-label="Research section"/);
+  assert.match(narrative, /aria-label="The Way section"/);
+  assert.match(sitrep, /aria-label="Projects section"/);
+  assert.match(about, /aria-label="About section"/);
 });
