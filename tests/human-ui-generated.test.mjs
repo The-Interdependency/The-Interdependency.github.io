@@ -22,8 +22,8 @@ test('human reading surfaces keep provenance collapsed and Article labels litera
     readFile('_site/projects/map/index.html', 'utf8')
   ]);
 
-  assert.match(base, /<a href="\/way\/">The Way<\/a>/);
-  assert.doesNotMatch(base, /<a[^>]*>Start<\/a>/);
+  assert.match(base, /<a href="\/way\/"[^>]*><span>The Way<\/span><small>Core text and Article Labs<\/small><\/a>/);
+  assert.match(base, /<a href="\/home\/" aria-current="page"><span>Start Here<\/span>/);
 
   assert.match(preamble, /<details class="provenance chapter-provenance">[\s\S]*<summary>Source &amp; provenance<\/summary>/);
   assert.ok(preamble.indexOf('Humanity faces extinction') < preamble.indexOf('Source &amp; provenance'));
