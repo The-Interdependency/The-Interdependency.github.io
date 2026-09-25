@@ -267,13 +267,14 @@ test('transient exact-head document read failure propagates so build fallback ca
   const originalFetch = globalThis.fetch;
   globalThis.fetch = async target => {
     const url = String(target);
-    if (/api\.github\.com\/repos\/The-Interdependency\/ucns$/.test(url)) {
+    const parsed = new URL(url);
+    if (parsed.origin === 'https://api.github.com' && parsed.pathname === '/repos/The-Interdependency/ucns') {
       return { ok: true, json: async () => ({ default_branch: 'main', private: false, visibility: 'public' }) };
     }
-    if (/\/git\/trees\//.test(url)) {
+    if (parsed.origin === 'https://api.github.com' && parsed.pathname.includes('/git/trees/')) {
       return { ok: true, json: async () => ({ truncated: false, tree: [{ type: 'blob', path: 'README.md' }] }) };
     }
-    if (/raw\.githubusercontent\.com/.test(url)) return { ok: false, status: 503 };
+    if (parsed.origin === 'https://raw.githubusercontent.com') return { ok: false, status: 503 };
     throw new Error('unexpected request: ' + url);
   };
   try {
@@ -295,13 +296,14 @@ test('oversize document bytes are omitted at the reader boundary instead of mate
   const originalFetch = globalThis.fetch;
   globalThis.fetch = async target => {
     const url = String(target);
-    if (/api\.github\.com\/repos\/The-Interdependency\/ucns$/.test(url)) {
+    const parsed = new URL(url);
+    if (parsed.origin === 'https://api.github.com' && parsed.pathname === '/repos/The-Interdependency/ucns') {
       return { ok: true, json: async () => ({ default_branch: 'main', private: false, visibility: 'public' }) };
     }
-    if (/\/git\/trees\//.test(url)) {
+    if (parsed.origin === 'https://api.github.com' && parsed.pathname.includes('/git/trees/')) {
       return { ok: true, json: async () => ({ truncated: false, tree: [{ type: 'blob', path: 'README.md' }] }) };
     }
-    if (/raw\.githubusercontent\.com/.test(url)) {
+    if (parsed.origin === 'https://raw.githubusercontent.com') {
       return { ok: true, text: async () => 'x'.repeat(128 * 1024 + 1) };
     }
     throw new Error('unexpected request: ' + url);
