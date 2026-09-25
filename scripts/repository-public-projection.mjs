@@ -69,6 +69,9 @@ async function getJson(url) {
     error.status = response.status;
     throw error;
   }
+  if (!response.body?.getReader && typeof response.text !== 'function' && typeof response.json === 'function') {
+    return response.json();
+  }
   return JSON.parse(await readBoundedText(response, MAX_API_BYTES));
 }
 
