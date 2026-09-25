@@ -1,5 +1,6 @@
 import markdownIt from 'markdown-it';
 import { installMathRenderer } from './scripts/markdown-math.mjs';
+import { resolveRepositoryImageReference } from './scripts/repository-markdown-links.mjs';
 
 // === MODULE_BUILD ===
 // id: eleventy_site_configuration
@@ -121,7 +122,12 @@ function installSourceReferenceRenderer(md) {
   const image = md.renderer.rules.image || ((tokens, index, options, _env, self) => self.renderToken(tokens, index, options));
   md.renderer.rules.image = (tokens, index, options, env, self) => {
     const srcIndex = tokens[index].attrIndex('src');
-    if (srcIndex >= 0) tokens[index].attrs[srcIndex][1] = resolveSourceReference(tokens[index].attrs[srcIndex][1], env?.sourceUrl, env?.repositorySource === true);
+    if (srcIndex >= 0) {
+      const source = tokens[index].attrs[srcIndex][1];
+      tokens[index].attrs[srcIndex][1] = env?.repositorySource === true
+        ? resolveRepositoryImageReference(source, env?.sourceUrl)
+        : resolveSourceReference(source, env?.sourceUrl, false);
+    }
     return image(tokens, index, options, env, self);
   };
   return md;
