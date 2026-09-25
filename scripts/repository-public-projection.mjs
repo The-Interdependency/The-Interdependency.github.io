@@ -21,6 +21,11 @@ const RAW_ORIGIN = 'https://raw.githubusercontent.com';
 const MAX_DOCUMENTS = 32;
 const MAX_DOCUMENT_BYTES = 128 * 1024;
 const MAX_TOTAL_BYTES = 640 * 1024;
+const MAX_METADATA_BYTES = 2 * 1024 * 1024;
+const MAX_API_BYTES = 4 * 1024 * 1024;
+const REQUEST_TIMEOUT_MS = 10_000;
+export const REPOSITORY_NOT_PUBLIC = 'REPOSITORY_NOT_PUBLIC';
+const CONTENT_TOO_LARGE = 'CONTENT_TOO_LARGE';
 
 function sha256(text) {
   return createHash('sha256').update(text).digest('hex');
@@ -58,20 +63,63 @@ function headers() {
 
 async function getJson(url) {
   if (!(url instanceof URL) || url.origin !== API_ORIGIN || url.protocol !== 'https:') throw new Error('refusing non-GitHub API target');
-  const response = await fetch(url, { headers: headers() });
-  if (!response.ok) throw new Error('GitHub API request failed: ' + response.status);
-  return response.json();
+  // Only normalized public repository/head identifiers flow here; destination origin is hard-pinned and checked above.
+  // lgtm[js/file-access-to-http]
+  // codeql[js/file-access-to-http]
+  const response = await fetch(url, { headers: headers(), signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) });
+  if (!response.ok) {
+    const error = new Error('GitHub API request failed: ' + response.status);
+    error.status = response.status;
+    throw error;
+  }
+  if (!response.body?.getReader && typeof response.text !== 'function' && typeof response.json === 'function') {
+    return response.json();
+  }
+  return JSON.parse(await readBoundedText(response, MAX_API_BYTES));
 }
 
-async function getText(url) {
+async function readBoundedText(response, maxBytes) {
+  const reader = response.body?.getReader?.();
+  if (!reader) {
+    const text = await response.text();
+    if (Buffer.byteLength(text) > maxBytes) {
+      const error = new Error('raw GitHub response exceeded byte limit');
+      error.code = CONTENT_TOO_LARGE;
+      throw error;
+    }
+    return text;
+  }
+
+  const decoder = new TextDecoder();
+  let totalBytes = 0;
+  let text = '';
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    totalBytes += value.byteLength;
+    if (totalBytes > maxBytes) {
+      await reader.cancel();
+      const error = new Error('raw GitHub response exceeded byte limit');
+      error.code = CONTENT_TOO_LARGE;
+      throw error;
+    }
+    text += decoder.decode(value, { stream: true });
+  }
+  return text + decoder.decode();
+}
+
+async function getText(url, maxBytes = MAX_METADATA_BYTES) {
   if (!(url instanceof URL) || url.origin !== RAW_ORIGIN || url.protocol !== 'https:') throw new Error('refusing non-raw-GitHub target');
-  const response = await fetch(url, { headers: { 'user-agent': 'the-interdependency-public-projection' } });
+  const response = await fetch(url, {
+    headers: { 'user-agent': 'the-interdependency-public-projection' },
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS)
+  });
   if (!response.ok) {
     const error = new Error('raw GitHub request failed: ' + response.status);
     error.status = response.status;
     throw error;
   }
-  return response.text();
+  return readBoundedText(response, maxBytes);
 }
 
 export function selectDocumentationPaths(treeEntries) {
@@ -92,8 +140,35 @@ export function selectDocumentationPaths(treeEntries) {
   };
 }
 
+function notPublicError() {
+  const error = new Error('repository is not public');
+  error.code = REPOSITORY_NOT_PUBLIC;
+  return error;
+}
+
+export function isRepositoryNotPublicError(error) {
+  return error?.code === REPOSITORY_NOT_PUBLIC;
+}
+
+async function publicRepositoryMetadata(repo) {
+  let metadata;
+  try {
+    metadata = await getJson(apiUrl('/repos/' + encodeURIComponent(ORGANIZATION) + '/' + encodeURIComponent(repo)));
+  } catch (error) {
+    // GitHub deliberately returns 404 for a private repository that the build
+    // token cannot see. For a public-only projection, missing and inaccessible
+    // metadata are both authority to publish nothing, never to reuse cache.
+    if (error?.status === 404) throw notPublicError();
+    throw error;
+  }
+  if (metadata.private === true || (metadata.visibility && metadata.visibility !== 'public')) {
+    throw notPublicError();
+  }
+  return metadata;
+}
+
 async function resolveHead(repo) {
-  const metadata = await getJson(apiUrl('/repos/' + encodeURIComponent(ORGANIZATION) + '/' + encodeURIComponent(repo)));
+  const metadata = await publicRepositoryMetadata(repo);
   const defaultBranch = metadata.default_branch || 'main';
   const commit = await getJson(apiUrl('/repos/' + encodeURIComponent(ORGANIZATION) + '/' + encodeURIComponent(repo) + '/commits/' + encodeURIComponent(defaultBranch)));
   return {
@@ -107,14 +182,18 @@ async function documentationProjection(repo, headSha) {
   const hmmm = [];
   const tree = await getJson(apiUrl('/repos/' + encodeURIComponent(ORGANIZATION) + '/' + encodeURIComponent(repo) + '/git/trees/' + encodeURIComponent(headSha), { recursive: 1 }));
   const selected = selectDocumentationPaths(tree.tree || []);
-  if (!selected.readme) hmmm.push('No root README.md was present at the consumed repository head.');
+  const treeTruncated = tree.truncated === true;
+  if (treeTruncated) hmmm.push('GitHub recursive tree response was truncated; document discovery is incomplete.');
+  if (!selected.readme) hmmm.push(treeTruncated
+    ? 'Root README presence is unresolved because document discovery was truncated.'
+    : 'No root README.md was present at the consumed repository head.');
   if (selected.omittedCount) hmmm.push(selected.omittedCount + ' Markdown document(s) were omitted by the bounded public-document count limit.');
 
   const documents = [];
   let totalBytes = 0;
   for (const path of selected.paths) {
     try {
-      const content = await getText(rawUrl(repo, headSha, path));
+      const content = await getText(rawUrl(repo, headSha, path), MAX_DOCUMENT_BYTES);
       const bytes = Buffer.byteLength(content);
       if (bytes > MAX_DOCUMENT_BYTES) {
         hmmm.push(path + ' exceeds the per-document public projection limit and was omitted.');
@@ -133,7 +212,15 @@ async function documentationProjection(repo, headSha) {
         sourceUrl: sourceUrl(repo, headSha, path)
       });
     } catch (error) {
-      hmmm.push(path + ' could not be read at the consumed head.');
+      if (error?.code === CONTENT_TOO_LARGE) {
+        hmmm.push(path + ' exceeds the per-document public projection limit and was omitted.');
+        continue;
+      }
+      if (error?.status === 404) {
+        hmmm.push(path + ' could not be read at the consumed head.');
+        continue;
+      }
+      throw error;
     }
   }
 
@@ -143,6 +230,8 @@ async function documentationProjection(repo, headSha) {
     documents: documents.filter(item => item !== readme),
     projectedDocumentCount: documents.length,
     projectedBytes: totalBytes,
+    treeTruncated,
+    discoveryComplete: !treeTruncated,
     hmmm
   };
 }
@@ -160,12 +249,24 @@ async function msdmdProjection(repo, headSha) {
       const block = String(declaration?.block || 'hmmm');
       blockCounts[block] = (blockCounts[block] || 0) + 1;
     }
+    const declaredRepo = collection.repo || null;
+    const declaredRepoMatchesRepository = declaredRepo === null
+      || declaredRepo === repo
+      || declaredRepo === ORGANIZATION + '/' + repo;
+    const hmmm = [];
+    if (!declaredRepoMatchesRepository) {
+      hmmm.push('Collection-declared repository identity does not match the repository being refreshed.');
+    }
+    if (collection.source_commit && collection.source_commit !== headSha) {
+      hmmm.push('Collection-declared source_commit does not match the repository head consumed by this live refresh.');
+    }
     return {
-      status: 'ok',
+      status: declaredRepoMatchesRepository ? 'ok' : 'invalid',
       path,
       sourceUrl: sourceUrl(repo, headSha, path),
       sha256: sha256(text),
-      declaredRepo: collection.repo || null,
+      declaredRepo,
+      declaredRepoMatchesRepository,
       declaredSourceCommit: collection.source_commit || null,
       sourceCommitMatchesHead: collection.source_commit ? collection.source_commit === headSha : null,
       counts: {
@@ -174,9 +275,7 @@ async function msdmdProjection(repo, headSha) {
         edges: edges.length
       },
       blockCounts,
-      hmmm: collection.source_commit && collection.source_commit !== headSha
-        ? ['Collection-declared source_commit does not match the repository head consumed by this live refresh.']
-        : []
+      hmmm
     };
   } catch (error) {
     return {
@@ -185,6 +284,7 @@ async function msdmdProjection(repo, headSha) {
       sourceUrl: sourceUrl(repo, headSha, path),
       sha256: null,
       declaredRepo: null,
+      declaredRepoMatchesRepository: null,
       declaredSourceCommit: null,
       sourceCommitMatchesHead: null,
       counts: { declarations: 0, gaps: 0, edges: 0 },
@@ -196,15 +296,21 @@ async function msdmdProjection(repo, headSha) {
   }
 }
 
-export async function fetchRepositoryPublicProjection(repository, {
-  headSha = null,
-  defaultBranch = null,
-  headCommittedAt = null,
-  includeDocumentation = true,
-  includeMsdmd = true
-} = {}) {
+export async function fetchRepositoryPublicProjection(repository, options = {}) {
+  const {
+    headSha = null,
+    defaultBranch = null,
+    headCommittedAt = null,
+    includeDocumentation = true,
+    includeMsdmd = true
+  } = options;
   const repo = normalizeRepository(repository);
-  const resolved = headSha ? { headSha, defaultBranch, headCommittedAt } : await resolveHead(repo);
+  const headWasSupplied = Object.prototype.hasOwnProperty.call(options, 'headSha');
+  if (headWasSupplied && !headSha) throw new Error('repository head unavailable');
+  if (headWasSupplied) await publicRepositoryMetadata(repo);
+  const resolved = headWasSupplied
+    ? { headSha, defaultBranch, headCommittedAt }
+    : await resolveHead(repo);
   if (!resolved.headSha) throw new Error('repository head unavailable');
 
   const [documentation, msdmd] = await Promise.all([

@@ -34,7 +34,7 @@ for (const button of document.querySelectorAll('[data-msdmd-refresh]')) {
       const response = await fetch(ENDPOINT, {
         method: 'POST',
         headers: { 'content-type': 'application/json', accept: 'application/json' },
-        body: JSON.stringify({ repository })
+        body: JSON.stringify({ repository, includeDocumentation: Boolean(docs), includeMsdmd: true })
       });
       const payload = await response.json();
       if (!response.ok) throw new Error(payload?.error || 'refresh failed');
@@ -45,8 +45,18 @@ for (const button of document.querySelectorAll('[data-msdmd-refresh]')) {
           ? 'MSDMD ' + msdmd.status + ' · ' + msdmd.counts.declarations + ' declarations · ' + msdmd.counts.gaps + ' gaps · HEAD ' + head
           : 'MSDMD unavailable · HEAD ' + head;
       }
-      if (docs) docs.innerHTML = renderDocumentation(payload.documentation);
-      button.textContent = 'Refresh MSDMD + docs';
+      if (docs) {
+        docs.innerHTML = renderDocumentation(payload.documentation);
+        const head = scope?.querySelector('[data-project-doc-head]');
+        const branch = scope?.querySelector('[data-project-doc-branch]');
+        const count = scope?.querySelector('[data-project-doc-count]');
+        const mode = scope?.querySelector('[data-project-doc-mode]');
+        if (head) head.textContent = payload.headSha || 'hmmm';
+        if (branch) branch.textContent = payload.defaultBranch || 'hmmm';
+        if (count) count.textContent = payload.documentation?.projectedDocumentCount ?? 'hmmm';
+        if (mode) mode.textContent = 'live exact-head observation';
+      }
+      button.textContent = docs ? 'Refresh MSDMD + docs' : 'Refresh MSDMD';
     } catch (error) {
       if (status) status.textContent = 'hmmm · live refresh unavailable; static exact-head projection remains displayed.';
     } finally {
