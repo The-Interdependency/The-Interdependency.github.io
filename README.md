@@ -26,15 +26,17 @@ This site displays exact, provenance-bearing chapter snapshots. It does not merg
 - `/` presents the founder-supplied description of The interdependent way, with links into The Way and About me.
 - `/about/` is the organization-level identity record for The Interdependency LLC, keeping the organization, The Interdependent Way, the website, and Erin Spencer distinct while emitting Organization JSON-LD.
 - `/about-me/` preserves the founder-authored **In Service to Love** narrative.
-- `/home/` is the directory of reading and working paths.
+- `/home/` is the newcomer-oriented Start Here route, organized by visitor intent rather than repository or content type.
 - `/about-the-site/` owns orientation, construction practices, and verification limits; `/start/` preserves its former address.
 - `/by-the-builder/` renders the append-only, attributed builder journal.
+- `/research/` is the evidence index over admitted studies, bounded findings, and visible gaps; `/research/method/` is its subordinate admission/review method.
 - `/preamble/` remains available within the canonical reading system and primary navigation.
 - `/chapters/` is the unified index for the eight-repository textbook.
 - `/chapters/chapter-zero/` through `/chapters/chapter-seven/` render exact source Markdown with commit, blob, digest, and repository links.
 - `/eai/aicontext.md` begins with Erin's exact connection contract and then publishes the exact canon copy, all eight textbook chapters, a public-scope JSON-LD biography, and machine-readable work-graph and publication identities.
 - Eleventy generates complete HTML into `_site`.
 - Pagefind supplies static search.
+- Global navigation exposes seven durable visitor domains: Start Here, The Way, Textbook, Research, Projects, About, and Search. Narratives, Related Works, SITREP, Artifacts, research method, and other specialist views remain reachable through section navigation rather than appearing as equal global peers.
 - The release gate verifies every generated internal link and fragment, and enforces documented static transfer-size budgets.
 - GitHub organization, canon, and textbook source data are retrieved at build time, never in a visitor’s browser.
 - Every public organization repository receives a generated project page.
