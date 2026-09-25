@@ -1,0 +1,98 @@
+---
+layout: layouts/base.njk
+title: Research
+description: The admitted studies, bounded findings, inference limits, and evidence gaps currently attached to The Interdependent Way.
+permalink: /research/
+---
+<header class="page-head">
+  <p class="eyebrow">Studies · findings · limits · gaps</p>
+  <h1>Research</h1>
+  <p class="lede">This is the evidence surface. It publishes the studies already admitted by the site's research ledger, the bounded claims drawn from them, and the gaps that remain unresolved. The <a href="/research/method/">review method</a> explains how records enter this page.</p>
+  <div class="status-row">
+    <span class="status status-research">{{ research_data.stats.admittedStudyCount }} admitted studies</span>
+    <span class="status status-interpretation">{{ research_data.stats.publishedStudyClaimCount }} bounded findings</span>
+    <span class="status status-hmmm">{{ research_data.gaps | length }} Article-level gap records</span>
+  </div>
+</header>
+
+<nav class="research-index" aria-label="Research page contents">
+  <a href="#findings">Findings</a>
+  <a href="#studies">Studies</a>
+  <a href="#gaps">Evidence gaps</a>
+  <a href="/research/method/">Review method</a>
+</nav>
+
+<section id="findings">
+  <p class="eyebrow">Current bounded contacts</p>
+  <h2>Findings</h2>
+  <p class="section-intro">Each card separates what a study found from how that result bears on a specific Article. These are research contacts, not replacements for the canonical text.</p>
+  <div class="grid">
+    {% for claim in research_data.claims %}
+    <article class="card research-finding">
+      <span class="status {% if claim.stance == 'dissent' %}status-risk{% elif claim.stance == 'limit' or claim.stance == 'mixed' %}status-frontier{% else %}status-research{% endif %}">{{ claim.stance }} · {{ claim.verification_status }}</span>
+      <h3>
+        {% for unit in generated.canon.units %}{% if unit.id == claim.article %}<a href="/lab/{{ unit.routeSlug }}/">{{ unit.title }}</a>{% endif %}{% endfor %}
+      </h3>
+      <p><strong>Bounded claim:</strong> {{ claim.claim }}</p>
+      <p><strong>Study result:</strong> {{ claim.study_result }}</p>
+      <p><strong>Inference boundary:</strong> {{ claim.inference_gap }}</p>
+      <p><strong>Locator:</strong> {{ claim.locator }}</p>
+      <ul class="source-list">
+        {% for sourceId in claim.source_ids %}
+          {% for source in research_data.sources %}
+            {% if source.id == sourceId %}<li><a href="{{ source.url }}">{{ source.title }}</a> <small>· {{ source.year }} · {{ source.study_design }}</small></li>{% endif %}
+          {% endfor %}
+        {% endfor %}
+      </ul>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section id="studies">
+  <p class="eyebrow">Admitted source set</p>
+  <h2>Studies</h2>
+  <p class="section-intro">These are the records currently classified as research studies by the source-admission ledger. Admission establishes record class, not truth.</p>
+  <details class="research-catalog">
+    <summary>Browse {{ research_data.sources | length }} admitted studies</summary>
+    <div class="grid">
+      {% for source in research_data.sources %}
+      <article class="card">
+        <span class="status status-research">{{ source.study_design }}</span>
+        <h3><a href="{{ source.url }}">{{ source.title }}</a></h3>
+        <p>{{ source.authors }} · {{ source.year }}</p>
+        <p><strong>Evidence mode:</strong> {{ source.evidence_mode }}</p>
+        <p><strong>Boundary:</strong> {{ source.boundary }}</p>
+        <small>Risk of bias: {{ source.risk_of_bias_status }} · funding/conflicts: {{ source.funding_conflicts_status }} · corrections/retractions: {{ source.correction_retraction_status }}</small>
+      </article>
+      {% endfor %}
+    </div>
+  </details>
+</section>
+
+<section id="gaps">
+  <p class="eyebrow">Visible incompletion</p>
+  <h2>Evidence gaps</h2>
+  <div class="grid">
+    {% for gap in research_data.gaps %}
+    <article class="card">
+      <span class="status status-hmmm">{{ gap.search_status }}</span>
+      <h3>
+        {% for unit in generated.canon.units %}{% if unit.id == gap.article %}<a href="/lab/{{ unit.routeSlug }}/">{{ unit.title }}</a>{% endif %}{% endfor %}
+      </h3>
+      <p>Support: {{ gap.support_status }}<br>Dissent: {{ gap.dissent_status }}<br>Mixed or limit: {{ gap.mixed_or_limit_status }}</p>
+      <p>{{ gap.hmmm }}</p>
+      <small>Screened {{ gap.reviewed_on }}</small>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="panel">
+  <p class="eyebrow">How this page is governed</p>
+  <h2>Method remains visible, but it is no longer the Research destination.</h2>
+  <p>The research method defines study admission, claim review, citation locators, appraisal, and visible-gap rules. It governs this evidence surface without standing in for it.</p>
+  <div class="actions"><a class="button" href="/research/method/">Read the review method</a></div>
+</section>
+
+<section class="hmmm"><h2>hmmm</h2><p>The current corpus is a screened legacy candidate set, not a comprehensive systematic review. Provisional locators and appraisal gaps remain visible on the findings that still require them.</p></section>
