@@ -22,6 +22,7 @@ const MAX_DOCUMENTS = 32;
 const MAX_DOCUMENT_BYTES = 128 * 1024;
 const MAX_TOTAL_BYTES = 640 * 1024;
 const MAX_METADATA_BYTES = 2 * 1024 * 1024;
+const MAX_API_BYTES = 4 * 1024 * 1024;
 const REQUEST_TIMEOUT_MS = 10_000;
 export const REPOSITORY_NOT_PUBLIC = 'REPOSITORY_NOT_PUBLIC';
 const CONTENT_TOO_LARGE = 'CONTENT_TOO_LARGE';
@@ -68,7 +69,7 @@ async function getJson(url) {
     error.status = response.status;
     throw error;
   }
-  return response.json();
+  return JSON.parse(await readBoundedText(response, MAX_API_BYTES));
 }
 
 async function readBoundedText(response, maxBytes) {
