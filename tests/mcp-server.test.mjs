@@ -201,6 +201,7 @@ test('health route reports the loaded registry projection', test_health_exposes_
 
 async function test_repository_refresh_endpoint() {
   let requested = null;
+  let requestedOptions = null;
   await withServer(async base => {
     const response = await fetch(`${base}/api/repository-refresh`, {
       method: 'POST',
@@ -208,17 +209,20 @@ async function test_repository_refresh_endpoint() {
         'content-type': 'application/json',
         origin: 'https://interdependentway.org'
       },
-      body: JSON.stringify({ repository: 'ucns' })
+      body: JSON.stringify({ repository: 'ucns', includeDocumentation: true, includeMsdmd: true })
     });
     assert.equal(response.status, 200);
     const body = await response.json();
     assert.equal(requested, 'ucns');
+    assert.deepEqual(requestedOptions, { includeDocumentation: true, includeMsdmd: true });
     assert.equal(body.msdmd.status, 'ok');
     assert.match(body.documentation.readme.html, /<h1>UCNS<\/h1>/);
+    assert.match(body.documentation.readme.html, /raw\.githubusercontent\.com\/The-Interdependency\/ucns\/0123456789abcdef0123456789abcdef01234567\/images\/diagram\.png/);
     assert.equal(body.documentation.readme.content, undefined);
   }, {
-    repositoryRefresher: async repository => {
+    repositoryRefresher: async (repository, options) => {
       requested = repository;
+      requestedOptions = options;
       return {
         repository: 'The-Interdependency/ucns',
         name: 'ucns',
@@ -226,7 +230,7 @@ async function test_repository_refresh_endpoint() {
         documentation: {
           readme: {
             path: 'README.md',
-            content: '# UCNS',
+            content: '# UCNS\n\n![diagram](images/diagram.png)',
             sourceUrl: 'https://github.com/The-Interdependency/ucns/blob/0123456789abcdef0123456789abcdef01234567/README.md'
           },
           documents: [],
@@ -242,3 +246,34 @@ async function test_repository_refresh_endpoint() {
 }
 
 test('repository refresh route is read-only projection plumbing and renders safe Markdown', test_repository_refresh_endpoint);
+
+
+test('repository refresh can request MSDMD without document projection', async () => {
+  let requestedOptions = null;
+  await withServer(async base => {
+    const response = await fetch(`${base}/api/repository-refresh`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        origin: 'https://interdependentway.org'
+      },
+      body: JSON.stringify({ repository: 'ucns', includeDocumentation: false, includeMsdmd: true })
+    });
+    assert.equal(response.status, 200);
+    const body = await response.json();
+    assert.equal(body.documentation, null);
+    assert.equal(body.msdmd.status, 'ok');
+    assert.deepEqual(requestedOptions, { includeDocumentation: false, includeMsdmd: true });
+  }, {
+    repositoryRefresher: async (_repository, options) => {
+      requestedOptions = options;
+      return {
+        repository: 'The-Interdependency/ucns',
+        name: 'ucns',
+        headSha: '0123456789abcdef0123456789abcdef01234567',
+        documentation: null,
+        msdmd: { status: 'ok', counts: { declarations: 2, gaps: 0, edges: 1 } }
+      };
+    }
+  });
+});
