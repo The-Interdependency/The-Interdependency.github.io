@@ -271,8 +271,19 @@ export function createInterdependencyMcpServer(registryData, {
         return sendJson(response, error.statusCode || 400, { error: error.message }, corsHeaders(request, allowedOrigins));
       }
 
+      if (body?.includeDocumentation !== undefined && typeof body.includeDocumentation !== 'boolean') {
+        return sendJson(response, 400, { error: 'includeDocumentation must be boolean' }, corsHeaders(request, allowedOrigins));
+      }
+      if (body?.includeMsdmd !== undefined && typeof body.includeMsdmd !== 'boolean') {
+        return sendJson(response, 400, { error: 'includeMsdmd must be boolean' }, corsHeaders(request, allowedOrigins));
+      }
+
+      const projectionOptions = {
+        includeDocumentation: body?.includeDocumentation !== false,
+        includeMsdmd: body?.includeMsdmd !== false
+      };
       try {
-        const projection = await repositoryRefresher(body?.repository);
+        const projection = await repositoryRefresher(body?.repository, projectionOptions);
         return sendJson(response, 200, browserRepositoryProjection(projection), corsHeaders(request, allowedOrigins));
       } catch {
         return sendJson(response, 502, {
