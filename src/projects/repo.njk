@@ -91,10 +91,10 @@ title: "Project: {{ repo.name }}"
     <summary>Documentation provenance</summary>
     <dl class="meta">
       <dt>Repository</dt><dd>{{ repo.name }}</dd>
-      <dt>Consumed HEAD</dt><dd><code>{% if repoDocs %}{{ repoDocs.headSha }}{% else %}{{ repo.head_sha or 'hmmm' }}{% endif %}</code></dd>
+      <dt>Consumed HEAD</dt><dd><code>{% if repoDocs and repoDocs.headSha %}{{ repoDocs.headSha }}{% else %}hmmm{% endif %}</code></dd>
       <dt>Default branch</dt><dd>{{ repo.default_branch or 'hmmm' }}</dd>
       <dt>Projected documents</dt><dd>{% if repoDocs and repoDocs.documentation %}{{ repoDocs.documentation.projectedDocumentCount }}{% else %}hmmm{% endif %}</dd>
-      <dt>Projection mode</dt><dd>{% if repoDocs and repoDocs.fallback %}same-head last-known-good fallback{% else %}exact-head build observation{% endif %}</dd>
+      <dt>Projection mode</dt><dd>{% if repoDocs and repoDocs.unavailable %}unavailable{% elif repoDocs and repoDocs.fallback %}same-head last-known-good fallback{% else %}exact-head build observation{% endif %}</dd>
     </dl>
   </details>
 </section>
