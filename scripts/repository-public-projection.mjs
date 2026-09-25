@@ -21,7 +21,10 @@ const RAW_ORIGIN = 'https://raw.githubusercontent.com';
 const MAX_DOCUMENTS = 32;
 const MAX_DOCUMENT_BYTES = 128 * 1024;
 const MAX_TOTAL_BYTES = 640 * 1024;
+const MAX_METADATA_BYTES = 2 * 1024 * 1024;
+const REQUEST_TIMEOUT_MS = 10_000;
 export const REPOSITORY_NOT_PUBLIC = 'REPOSITORY_NOT_PUBLIC';
+const CONTENT_TOO_LARGE = 'CONTENT_TOO_LARGE';
 
 function sha256(text) {
   return createHash('sha256').update(text).digest('hex');
@@ -59,7 +62,7 @@ function headers() {
 
 async function getJson(url) {
   if (!(url instanceof URL) || url.origin !== API_ORIGIN || url.protocol !== 'https:') throw new Error('refusing non-GitHub API target');
-  const response = await fetch(url, { headers: headers() });
+  const response = await fetch(url, { headers: headers(), signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) });
   if (!response.ok) {
     const error = new Error('GitHub API request failed: ' + response.status);
     error.status = response.status;
@@ -68,15 +71,48 @@ async function getJson(url) {
   return response.json();
 }
 
-async function getText(url) {
+async function readBoundedText(response, maxBytes) {
+  const reader = response.body?.getReader?.();
+  if (!reader) {
+    const text = await response.text();
+    if (Buffer.byteLength(text) > maxBytes) {
+      const error = new Error('raw GitHub response exceeded byte limit');
+      error.code = CONTENT_TOO_LARGE;
+      throw error;
+    }
+    return text;
+  }
+
+  const decoder = new TextDecoder();
+  let totalBytes = 0;
+  let text = '';
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    totalBytes += value.byteLength;
+    if (totalBytes > maxBytes) {
+      await reader.cancel();
+      const error = new Error('raw GitHub response exceeded byte limit');
+      error.code = CONTENT_TOO_LARGE;
+      throw error;
+    }
+    text += decoder.decode(value, { stream: true });
+  }
+  return text + decoder.decode();
+}
+
+async function getText(url, maxBytes = MAX_METADATA_BYTES) {
   if (!(url instanceof URL) || url.origin !== RAW_ORIGIN || url.protocol !== 'https:') throw new Error('refusing non-raw-GitHub target');
-  const response = await fetch(url, { headers: { 'user-agent': 'the-interdependency-public-projection' } });
+  const response = await fetch(url, {
+    headers: { 'user-agent': 'the-interdependency-public-projection' },
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS)
+  });
   if (!response.ok) {
     const error = new Error('raw GitHub request failed: ' + response.status);
     error.status = response.status;
     throw error;
   }
-  return response.text();
+  return readBoundedText(response, maxBytes);
 }
 
 export function selectDocumentationPaths(treeEntries) {
@@ -139,14 +175,18 @@ async function documentationProjection(repo, headSha) {
   const hmmm = [];
   const tree = await getJson(apiUrl('/repos/' + encodeURIComponent(ORGANIZATION) + '/' + encodeURIComponent(repo) + '/git/trees/' + encodeURIComponent(headSha), { recursive: 1 }));
   const selected = selectDocumentationPaths(tree.tree || []);
-  if (!selected.readme) hmmm.push('No root README.md was present at the consumed repository head.');
+  const treeTruncated = tree.truncated === true;
+  if (treeTruncated) hmmm.push('GitHub recursive tree response was truncated; document discovery is incomplete.');
+  if (!selected.readme) hmmm.push(treeTruncated
+    ? 'Root README presence is unresolved because document discovery was truncated.'
+    : 'No root README.md was present at the consumed repository head.');
   if (selected.omittedCount) hmmm.push(selected.omittedCount + ' Markdown document(s) were omitted by the bounded public-document count limit.');
 
   const documents = [];
   let totalBytes = 0;
   for (const path of selected.paths) {
     try {
-      const content = await getText(rawUrl(repo, headSha, path));
+      const content = await getText(rawUrl(repo, headSha, path), MAX_DOCUMENT_BYTES);
       const bytes = Buffer.byteLength(content);
       if (bytes > MAX_DOCUMENT_BYTES) {
         hmmm.push(path + ' exceeds the per-document public projection limit and was omitted.');
@@ -165,7 +205,15 @@ async function documentationProjection(repo, headSha) {
         sourceUrl: sourceUrl(repo, headSha, path)
       });
     } catch (error) {
-      hmmm.push(path + ' could not be read at the consumed head.');
+      if (error?.code === CONTENT_TOO_LARGE) {
+        hmmm.push(path + ' exceeds the per-document public projection limit and was omitted.');
+        continue;
+      }
+      if (error?.status === 404) {
+        hmmm.push(path + ' could not be read at the consumed head.');
+        continue;
+      }
+      throw error;
     }
   }
 
@@ -175,6 +223,8 @@ async function documentationProjection(repo, headSha) {
     documents: documents.filter(item => item !== readme),
     projectedDocumentCount: documents.length,
     projectedBytes: totalBytes,
+    treeTruncated,
+    discoveryComplete: !treeTruncated,
     hmmm
   };
 }
