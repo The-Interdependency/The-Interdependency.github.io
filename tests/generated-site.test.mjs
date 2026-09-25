@@ -243,12 +243,15 @@ test('every Rights Article Lab renders absurd-limit, practice, domain, and resea
 });
 
 test('public Research pages exclude legislation, standards, guidelines, frameworks, and doctrine', async () => {
-  const method = await readFile('_site/research/method/index.html', 'utf8');
+  const [researchIndex, method] = await Promise.all([
+    readFile('_site/research/index.html', 'utf8'),
+    readFile('_site/research/method/index.html', 'utf8')
+  ]);
   const articlePages = await Promise.all([
     'article-one', 'article-two', 'article-three', 'article-four',
     'article-five', 'article-six', 'article-seven', 'article-eight'
   ].map(slug => readFile(`_site/articles/${slug}/index.html`, 'utf8')));
-  const publicResearch = [method, ...articlePages].join('\n');
+  const publicResearch = [researchIndex, method, ...articlePages].join('\n');
 
   assert.match(method, /Legislation is not science/);
   assert.match(method, /19<\/strong> admitted studies/);
@@ -318,4 +321,42 @@ test('By the builder renders a collapsible date-time-model tree', async () => {
   assert.match(html, /2026-09-23 · 23:38:45-07:00/);
   assert.match(html, /GPT-5\.6 Sol/);
   assert.match(html, /legacy model record unavailable/);
+});
+
+test('Research index exposes admitted evidence instead of only its method', async () => {
+  const html = await readFile('_site/research/index.html', 'utf8');
+  assert.match(html, /<h1>Research<\/h1>/);
+  assert.match(html, /19 admitted studies/);
+  assert.match(html, /Findings/);
+  assert.match(html, /Studies/);
+  assert.match(html, /Evidence gaps/);
+  assert.match(html, /Self-Determination Theory Applied to Health Contexts: A Meta-Analysis/);
+  assert.match(html, /Food insecurity is associated with adverse health outcomes/);
+  assert.match(html, /href="\/research\/method\/"[^>]*>Read the review method/);
+});
+
+test('generated global navigation gives a newcomer seven durable choices and local branches', async () => {
+  const [home, research, narrative, sitrep, about] = await Promise.all([
+    readFile('_site/home/index.html', 'utf8'),
+    readFile('_site/research/index.html', 'utf8'),
+    readFile('_site/narratives/index.html', 'utf8'),
+    readFile('_site/sitrep/index.html', 'utf8'),
+    readFile('_site/about/index.html', 'utf8')
+  ]);
+  for (const html of [home, research, narrative, sitrep, about]) {
+    const primary = /<nav id="primary-nav"[\s\S]*?<\/nav>/.exec(html)?.[0] || '';
+    assert.equal((primary.match(/<a\b/g) || []).length, 7);
+    assert.match(primary, />Start Here</);
+    assert.match(primary, />The Way</);
+    assert.match(primary, />Textbook</);
+    assert.match(primary, />Research</);
+    assert.match(primary, />Projects</);
+    assert.match(primary, />About</);
+    assert.match(primary, />Search</);
+  }
+  assert.match(home, /aria-current="page"[\s\S]*Start Here/);
+  assert.match(research, /aria-label="Research section"/);
+  assert.match(narrative, /aria-label="The Way section"/);
+  assert.match(sitrep, /aria-label="Projects section"/);
+  assert.match(about, /aria-label="About section"/);
 });
