@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Usage: every ordinary site page inherits a human-facing navigation. Machine-readable context remains discoverable through head metadata and dedicated routes without occupying the visible reading path. Routes with `webmcp: true` additionally load the browser-native WebMCP provider module. -->
+<!-- Usage: every ordinary site page inherits a human-facing global navigation organized by durable visitor goals. Section navigation exposes subordinate routes without flattening them into global peers. Machine-readable context remains discoverable through head metadata and dedicated routes without occupying the visible reading path. Routes with `webmcp: true` additionally load the browser-native WebMCP provider module. -->
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -26,6 +26,11 @@
   <script src="/assets/js/site.js" type="module" defer></script>
   {% if webmcp %}<script src="/assets/js/webmcp.js" type="module"></script>{% endif %}
 </head>
+{% set inWay = page.url == "/way/" or "/way/" in page.url or "/lab/" in page.url or "/articles/" in page.url or "/narratives/" in page.url or "/works/" in page.url %}
+{% set inTextbook = "/chapters/" in page.url %}
+{% set inResearch = "/research/" in page.url %}
+{% set inProjects = "/projects/" in page.url or page.url == "/sitrep/" or "/artifacts/" in page.url %}
+{% set inAbout = page.url == "/about/" or page.url == "/about-me/" or page.url == "/about-the-site/" or page.url == "/by-the-builder/" or page.url == "/accessibility/" %}
 <body>
   <a class="skip-link" href="#content">Skip to content</a>
   <header class="site-header" data-site-header>
@@ -35,17 +40,49 @@
     </a>
     <button class="nav-toggle" type="button" hidden aria-expanded="false" aria-controls="primary-nav">Menu</button>
     <nav id="primary-nav" class="primary-nav" aria-label="Primary navigation">
-      <a href="/way/">The Way</a>
-      <a href="/chapters/">Textbook</a>
-      <a href="/narratives/">Narratives</a>
-      <a href="/projects/">Projects</a>
-      <a href="/sitrep/">SITREP</a>
-      <a href="/artifacts/">Artifacts</a>
-      <a href="/works/">Works</a>
-      <a href="/research/method/">Research</a>
-      <a href="/search/">Search</a>
+      <a href="/home/"{% if page.url == "/home/" %} aria-current="page"{% endif %}><span>Start Here</span><small>What this place is</small></a>
+      <a href="/way/"{% if page.url == "/way/" %} aria-current="page"{% elif inWay %} aria-current="location"{% endif %}><span>The Way</span><small>Core text and Article Labs</small></a>
+      <a href="/chapters/"{% if page.url == "/chapters/" %} aria-current="page"{% elif inTextbook %} aria-current="location"{% endif %}><span>Textbook</span><small>Technical foundations</small></a>
+      <a href="/research/"{% if page.url == "/research/" %} aria-current="page"{% elif inResearch %} aria-current="location"{% endif %}><span>Research</span><small>Studies, findings, and gaps</small></a>
+      <a href="/projects/"{% if page.url == "/projects/" %} aria-current="page"{% elif inProjects %} aria-current="location"{% endif %}><span>Projects</span><small>Software, status, and artifacts</small></a>
+      <a href="/about/"{% if page.url == "/about/" %} aria-current="page"{% elif inAbout %} aria-current="location"{% endif %}><span>About</span><small>Who built this and why</small></a>
+      <a href="/search/"{% if page.url == "/search/" %} aria-current="page"{% endif %}><span>Search</span><small>Find a known thing</small></a>
     </nav>
   </header>
+
+  {% if inWay %}
+  <nav class="section-nav" aria-label="The Way section">
+    <span class="section-nav-label">The Way</span>
+    <a href="/way/"{% if page.url == "/way/" %} aria-current="page"{% endif %}>Read The Way</a>
+    <a href="/articles/"{% if "/articles/" in page.url %} aria-current="page"{% endif %}>Articles</a>
+    <a href="/narratives/"{% if "/narratives/" in page.url %} aria-current="page"{% endif %}>Living Narratives</a>
+    <a href="/works/"{% if "/works/" in page.url %} aria-current="page"{% endif %}>Related Works</a>
+  </nav>
+  {% elif inResearch %}
+  <nav class="section-nav" aria-label="Research section">
+    <span class="section-nav-label">Research</span>
+    <a href="/research/"{% if page.url == "/research/" %} aria-current="page"{% endif %}>Findings &amp; studies</a>
+    <a href="/research/method/"{% if page.url == "/research/method/" %} aria-current="page"{% endif %}>Review method</a>
+  </nav>
+  {% elif inProjects %}
+  <nav class="section-nav" aria-label="Projects section">
+    <span class="section-nav-label">Projects</span>
+    <a href="/projects/"{% if page.url == "/projects/" %} aria-current="page"{% endif %}>Projects</a>
+    <a href="/sitrep/"{% if page.url == "/sitrep/" %} aria-current="page"{% endif %}>Repository SITREP</a>
+    <a href="/artifacts/"{% if "/artifacts/" in page.url %} aria-current="page"{% endif %}>Artifacts</a>
+    <a href="/projects/map/"{% if page.url == "/projects/map/" %} aria-current="page"{% endif %}>Organization map</a>
+  </nav>
+  {% elif inAbout %}
+  <nav class="section-nav" aria-label="About section">
+    <span class="section-nav-label">About</span>
+    <a href="/about/"{% if page.url == "/about/" %} aria-current="page"{% endif %}>The Interdependency</a>
+    <a href="/about-me/"{% if page.url == "/about-me/" %} aria-current="page"{% endif %}>Erin Spencer</a>
+    <a href="/about-the-site/"{% if page.url == "/about-the-site/" %} aria-current="page"{% endif %}>The site</a>
+    <a href="/by-the-builder/"{% if page.url == "/by-the-builder/" %} aria-current="page"{% endif %}>By the builder</a>
+    <a href="/accessibility/"{% if page.url == "/accessibility/" %} aria-current="page"{% endif %}>Accessibility</a>
+  </nav>
+  {% endif %}
+
   <noscript><p class="noscript">The complete static reading experience remains available without JavaScript. Interactive navigation, dependency-map pan/zoom, and SITREP quick-open controls are disabled.</p></noscript>
   <main id="content" class="site-main">{{ content | safe }}</main>
   {% include "components/site-footer.njk" %}
