@@ -7,6 +7,7 @@ import {
   REPOSITORY_NOT_PUBLIC,
   selectDocumentationPaths
 } from '../scripts/repository-public-projection.mjs';
+import { resolveRepositoryImageReference } from '../scripts/repository-markdown-links.mjs';
 
 test('documentation selection keeps README first, root docs next, docs tree next, and excludes control metadata', () => {
   const selected = selectDocumentationPaths([
@@ -216,4 +217,122 @@ test('Render deploy hook is explicit, secret-backed, and limited to main pushes'
   assert.match(workflow, /github\.ref == 'refs\/heads\/main'/);
   assert.match(workflow, /secrets\.RENDER_DEPLOY_HOOK_URL/);
   assert.match(workflow, /RENDER_DEPLOY_HOOK_URL is unset; Render MCP deployment remains hmmm/);
+});
+
+
+test('repository image references resolve to exact-head raw bytes', () => {
+  const source = 'https://github.com/The-Interdependency/ucns/blob/0123456789abcdef0123456789abcdef01234567/docs/README.md';
+  assert.equal(
+    resolveRepositoryImageReference('../images/diagram.png', source),
+    'https://raw.githubusercontent.com/The-Interdependency/ucns/0123456789abcdef0123456789abcdef01234567/images/diagram.png'
+  );
+  assert.equal(
+    resolveRepositoryImageReference('/logo.svg', source),
+    'https://raw.githubusercontent.com/The-Interdependency/ucns/0123456789abcdef0123456789abcdef01234567/logo.svg'
+  );
+});
+
+test('truncated GitHub trees remain explicit incomplete evidence and API reads carry timeouts', async () => {
+  const originalFetch = globalThis.fetch;
+  const signals = [];
+  globalThis.fetch = async (target, options = {}) => {
+    signals.push(options.signal);
+    const url = String(target);
+    if (/api\.github\.com\/repos\/The-Interdependency\/ucns$/.test(url)) {
+      return { ok: true, json: async () => ({ default_branch: 'main', private: false, visibility: 'public' }) };
+    }
+    if (/\/git\/trees\//.test(url)) {
+      return { ok: true, json: async () => ({ truncated: true, tree: [] }) };
+    }
+    throw new Error('unexpected request: ' + url);
+  };
+  try {
+    const projection = await fetchRepositoryPublicProjection('ucns', {
+      headSha: '0123456789abcdef0123456789abcdef01234567',
+      defaultBranch: 'main',
+      includeDocumentation: true,
+      includeMsdmd: false
+    });
+    assert.equal(projection.documentation.treeTruncated, true);
+    assert.equal(projection.documentation.discoveryComplete, false);
+    assert.match(projection.documentation.hmmm.join(' '), /tree response was truncated/);
+    assert.match(projection.documentation.hmmm.join(' '), /README presence is unresolved/);
+    assert.ok(signals.every(Boolean));
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test('transient exact-head document read failure propagates so build fallback can preserve same-head evidence', async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async target => {
+    const url = String(target);
+    if (/api\.github\.com\/repos\/The-Interdependency\/ucns$/.test(url)) {
+      return { ok: true, json: async () => ({ default_branch: 'main', private: false, visibility: 'public' }) };
+    }
+    if (/\/git\/trees\//.test(url)) {
+      return { ok: true, json: async () => ({ truncated: false, tree: [{ type: 'blob', path: 'README.md' }] }) };
+    }
+    if (/raw\.githubusercontent\.com/.test(url)) return { ok: false, status: 503 };
+    throw new Error('unexpected request: ' + url);
+  };
+  try {
+    await assert.rejects(
+      fetchRepositoryPublicProjection('ucns', {
+        headSha: '0123456789abcdef0123456789abcdef01234567',
+        defaultBranch: 'main',
+        includeDocumentation: true,
+        includeMsdmd: false
+      }),
+      /raw GitHub request failed: 503/
+    );
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test('oversize document bytes are omitted at the reader boundary instead of materialized into the projection', async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async target => {
+    const url = String(target);
+    if (/api\.github\.com\/repos\/The-Interdependency\/ucns$/.test(url)) {
+      return { ok: true, json: async () => ({ default_branch: 'main', private: false, visibility: 'public' }) };
+    }
+    if (/\/git\/trees\//.test(url)) {
+      return { ok: true, json: async () => ({ truncated: false, tree: [{ type: 'blob', path: 'README.md' }] }) };
+    }
+    if (/raw\.githubusercontent\.com/.test(url)) {
+      return { ok: true, text: async () => 'x'.repeat(128 * 1024 + 1) };
+    }
+    throw new Error('unexpected request: ' + url);
+  };
+  try {
+    const projection = await fetchRepositoryPublicProjection('ucns', {
+      headSha: '0123456789abcdef0123456789abcdef01234567',
+      defaultBranch: 'main',
+      includeDocumentation: true,
+      includeMsdmd: false
+    });
+    assert.equal(projection.documentation.projectedDocumentCount, 0);
+    assert.match(projection.documentation.hmmm.join(' '), /exceeds the per-document public projection limit/);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test('live refresh scopes SITREP to MSDMD and updates project provenance when documents are requested', async () => {
+  const [client, template, eleventy, server] = await Promise.all([
+    readFile('src/assets/js/project-refresh.js', 'utf8'),
+    readFile('src/projects/repo.njk', 'utf8'),
+    readFile('.eleventy.js', 'utf8'),
+    readFile('server/mcp-server.mjs', 'utf8')
+  ]);
+  assert.match(client, /includeDocumentation: Boolean\(docs\), includeMsdmd: true/);
+  assert.match(client, /data-project-doc-head/);
+  assert.match(client, /live exact-head observation/);
+  assert.match(template, /data-project-doc-head/);
+  assert.match(template, /data-project-doc-count/);
+  assert.match(template, /data-project-doc-mode/);
+  assert.match(eleventy, /resolveRepositoryImageReference\(source, env\?\.sourceUrl\)/);
+  assert.match(server, /repositoryRefresher\(body\?\.repository, projectionOptions\)/);
 });
