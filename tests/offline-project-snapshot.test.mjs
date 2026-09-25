@@ -122,12 +122,11 @@ test('clean offline project documentation refresh emits unavailable observations
     const projectTemplate = await readFile(join(repositoryRoot, 'src', 'projects', 'repo.njk'), 'utf8');
     assert.match(projectTemplate, /Repository documentation was not observed for this build/);
     assert.match(projectTemplate, /no document-content observation is claimed/);
-    assert.match(projectTemplate, /repoDocs and repoDocs\.unavailable %\}hmmm/);
-    assert.match(projectTemplate, /repoDocs and repoDocs\.unavailable %\}unavailable/);
-    assert.doesNotMatch(
+    assert.match(
       projectTemplate,
-      /repoDocs and repoDocs\.unavailable %\}[\s\S]{0,100}projectedDocumentCount/
+      /Projected documents<\/dt><dd data-project-doc-count>\{% if repoDocs and repoDocs\.unavailable %\}hmmm\{% elif repoDocs and repoDocs\.documentation %\}\{\{ repoDocs\.documentation\.projectedDocumentCount \}\}/
     );
+    assert.match(projectTemplate, /repoDocs and repoDocs\.unavailable %\}unavailable/);
   } finally {
     await rm(root, { recursive: true, force: true });
   }
