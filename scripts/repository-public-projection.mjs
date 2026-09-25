@@ -21,6 +21,7 @@ const RAW_ORIGIN = 'https://raw.githubusercontent.com';
 const MAX_DOCUMENTS = 32;
 const MAX_DOCUMENT_BYTES = 128 * 1024;
 const MAX_TOTAL_BYTES = 640 * 1024;
+export const REPOSITORY_NOT_PUBLIC = 'REPOSITORY_NOT_PUBLIC';
 
 function sha256(text) {
   return createHash('sha256').update(text).digest('hex');
@@ -59,7 +60,11 @@ function headers() {
 async function getJson(url) {
   if (!(url instanceof URL) || url.origin !== API_ORIGIN || url.protocol !== 'https:') throw new Error('refusing non-GitHub API target');
   const response = await fetch(url, { headers: headers() });
-  if (!response.ok) throw new Error('GitHub API request failed: ' + response.status);
+  if (!response.ok) {
+    const error = new Error('GitHub API request failed: ' + response.status);
+    error.status = response.status;
+    throw error;
+  }
   return response.json();
 }
 
@@ -92,8 +97,35 @@ export function selectDocumentationPaths(treeEntries) {
   };
 }
 
+function notPublicError() {
+  const error = new Error('repository is not public');
+  error.code = REPOSITORY_NOT_PUBLIC;
+  return error;
+}
+
+export function isRepositoryNotPublicError(error) {
+  return error?.code === REPOSITORY_NOT_PUBLIC;
+}
+
+async function publicRepositoryMetadata(repo) {
+  let metadata;
+  try {
+    metadata = await getJson(apiUrl('/repos/' + encodeURIComponent(ORGANIZATION) + '/' + encodeURIComponent(repo)));
+  } catch (error) {
+    // GitHub deliberately returns 404 for a private repository that the build
+    // token cannot see. For a public-only projection, missing and inaccessible
+    // metadata are both authority to publish nothing, never to reuse cache.
+    if (error?.status === 404) throw notPublicError();
+    throw error;
+  }
+  if (metadata.private === true || (metadata.visibility && metadata.visibility !== 'public')) {
+    throw notPublicError();
+  }
+  return metadata;
+}
+
 async function resolveHead(repo) {
-  const metadata = await getJson(apiUrl('/repos/' + encodeURIComponent(ORGANIZATION) + '/' + encodeURIComponent(repo)));
+  const metadata = await publicRepositoryMetadata(repo);
   const defaultBranch = metadata.default_branch || 'main';
   const commit = await getJson(apiUrl('/repos/' + encodeURIComponent(ORGANIZATION) + '/' + encodeURIComponent(repo) + '/commits/' + encodeURIComponent(defaultBranch)));
   return {
@@ -160,12 +192,24 @@ async function msdmdProjection(repo, headSha) {
       const block = String(declaration?.block || 'hmmm');
       blockCounts[block] = (blockCounts[block] || 0) + 1;
     }
+    const declaredRepo = collection.repo || null;
+    const declaredRepoMatchesRepository = declaredRepo === null
+      || declaredRepo === repo
+      || declaredRepo === ORGANIZATION + '/' + repo;
+    const hmmm = [];
+    if (!declaredRepoMatchesRepository) {
+      hmmm.push('Collection-declared repository identity does not match the repository being refreshed.');
+    }
+    if (collection.source_commit && collection.source_commit !== headSha) {
+      hmmm.push('Collection-declared source_commit does not match the repository head consumed by this live refresh.');
+    }
     return {
-      status: 'ok',
+      status: declaredRepoMatchesRepository ? 'ok' : 'invalid',
       path,
       sourceUrl: sourceUrl(repo, headSha, path),
       sha256: sha256(text),
-      declaredRepo: collection.repo || null,
+      declaredRepo,
+      declaredRepoMatchesRepository,
       declaredSourceCommit: collection.source_commit || null,
       sourceCommitMatchesHead: collection.source_commit ? collection.source_commit === headSha : null,
       counts: {
@@ -174,9 +218,7 @@ async function msdmdProjection(repo, headSha) {
         edges: edges.length
       },
       blockCounts,
-      hmmm: collection.source_commit && collection.source_commit !== headSha
-        ? ['Collection-declared source_commit does not match the repository head consumed by this live refresh.']
-        : []
+      hmmm
     };
   } catch (error) {
     return {
@@ -185,6 +227,7 @@ async function msdmdProjection(repo, headSha) {
       sourceUrl: sourceUrl(repo, headSha, path),
       sha256: null,
       declaredRepo: null,
+      declaredRepoMatchesRepository: null,
       declaredSourceCommit: null,
       sourceCommitMatchesHead: null,
       counts: { declarations: 0, gaps: 0, edges: 0 },
@@ -196,15 +239,21 @@ async function msdmdProjection(repo, headSha) {
   }
 }
 
-export async function fetchRepositoryPublicProjection(repository, {
-  headSha = null,
-  defaultBranch = null,
-  headCommittedAt = null,
-  includeDocumentation = true,
-  includeMsdmd = true
-} = {}) {
+export async function fetchRepositoryPublicProjection(repository, options = {}) {
+  const {
+    headSha = null,
+    defaultBranch = null,
+    headCommittedAt = null,
+    includeDocumentation = true,
+    includeMsdmd = true
+  } = options;
   const repo = normalizeRepository(repository);
-  const resolved = headSha ? { headSha, defaultBranch, headCommittedAt } : await resolveHead(repo);
+  const headWasSupplied = Object.prototype.hasOwnProperty.call(options, 'headSha');
+  if (headWasSupplied && !headSha) throw new Error('repository head unavailable');
+  if (headWasSupplied) await publicRepositoryMetadata(repo);
+  const resolved = headWasSupplied
+    ? { headSha, defaultBranch, headCommittedAt }
+    : await resolveHead(repo);
   if (!resolved.headSha) throw new Error('repository head unavailable');
 
   const [documentation, msdmd] = await Promise.all([
