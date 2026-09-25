@@ -64,6 +64,7 @@ function headers() {
 async function getJson(url) {
   if (!(url instanceof URL) || url.origin !== API_ORIGIN || url.protocol !== 'https:') throw new Error('refusing non-GitHub API target');
   // Only normalized public repository/head identifiers flow here; destination origin is hard-pinned and checked above.
+  // lgtm[js/file-access-to-http]
   // codeql[js/file-access-to-http]
   const response = await fetch(url, { headers: headers(), signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) });
   if (!response.ok) {
