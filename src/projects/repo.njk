@@ -53,10 +53,16 @@ title: "Project: {{ repo.name }}"
 <section aria-labelledby="project-documentation-title">
   <p class="eyebrow">Repository-owned reading surface</p>
   <h2 id="project-documentation-title">Documentation</h2>
+  {% if repoDocs and repoDocs.unavailable %}
+  <p class="section-intro">Repository documentation was not observed for this build. No README or document absence is inferred from this unavailable projection.</p>
+  {% else %}
   <p class="section-intro">README and Markdown documentation are copied from the exact repository head recorded by this site build. A live refresh can replace this view with the repository's current public HEAD for this browser session.</p>
+  {% endif %}
 
   <div data-project-docs-content>
-    {% if repoDocs and repoDocs.documentation %}
+    {% if repoDocs and repoDocs.unavailable %}
+    <section class="hmmm"><h3>hmmm</h3><p>Repository documentation is unavailable for this build; no document-content observation is claimed.</p>{% if repoDocs.documentation and repoDocs.documentation.hmmm.length %}<ul>{% for item in repoDocs.documentation.hmmm %}<li>{{ item }}</li>{% endfor %}</ul>{% endif %}</section>
+    {% elif repoDocs and repoDocs.documentation %}
       {% if repoDocs.documentation.readme %}
       <section class="project-readme prose">
         <p class="eyebrow">README · {{ repoDocs.headSha | truncate(12, true, '') }}</p>
@@ -93,7 +99,7 @@ title: "Project: {{ repo.name }}"
       <dt>Repository</dt><dd>{{ repo.name }}</dd>
       <dt>Consumed HEAD</dt><dd><code data-project-doc-head>{% if repoDocs and repoDocs.headSha %}{{ repoDocs.headSha }}{% else %}hmmm{% endif %}</code></dd>
       <dt>Default branch</dt><dd data-project-doc-branch>{{ repo.default_branch or 'hmmm' }}</dd>
-      <dt>Projected documents</dt><dd data-project-doc-count>{% if repoDocs and repoDocs.documentation %}{{ repoDocs.documentation.projectedDocumentCount }}{% else %}hmmm{% endif %}</dd>
+      <dt>Projected documents</dt><dd data-project-doc-count>{% if repoDocs and repoDocs.unavailable %}hmmm{% elif repoDocs and repoDocs.documentation %}{{ repoDocs.documentation.projectedDocumentCount }}{% else %}hmmm{% endif %}</dd>
       <dt>Projection mode</dt><dd data-project-doc-mode>{% if repoDocs and repoDocs.unavailable %}unavailable{% elif repoDocs and repoDocs.fallback %}same-head last-known-good fallback{% else %}exact-head build observation{% endif %}</dd>
     </dl>
   </details>

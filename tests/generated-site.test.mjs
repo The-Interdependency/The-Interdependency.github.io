@@ -316,12 +316,14 @@ test('generated site exposes the AI context through redundant machine discovery'
 test('By the builder renders a collapsible date-time-model tree', async () => {
   const html = await readFile('_site/by-the-builder/index.html', 'utf8');
   assert.match(html, /<details class="builder-tree">/);
-  assert.match(html, /<summary>Builder journal · 4 entries<\/summary>/);
+  assert.match(html, /<summary>Builder journal · 5 entries<\/summary>/);
   assert.match(html, /<details class="builder-entry" id="2026-09-23-constraint-and-discretion">/);
   assert.match(html, /2026-09-23 · 23:38:45-07:00/);
   assert.match(html, /GPT-5\.6 Sol/);
   assert.match(html, /2026-09-24-signs-before-systems/);
   assert.match(html, /2026-09-24 · 18:39:58-07:00/);
+  assert.match(html, /2026-09-25-unavailable-is-not-zero/);
+  assert.match(html, /2026-09-25 · 10:33:29-07:00/);
   assert.match(html, /legacy model record unavailable/);
 });
 

@@ -10,6 +10,7 @@ import { promisify } from 'node:util';
 const execFileAsync = promisify(execFile);
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const scriptPath = join(repositoryRoot, 'scripts', 'fetch-github-org.mjs');
+const projectDocsScriptPath = join(repositoryRoot, 'scripts', 'fetch-project-docs.mjs');
 
 // Usage: this runs the real refresh script in an isolated temporary working tree with OFFLINE=1.
 test('offline refresh preserves reviewed active fields and excludes archived repositories', async () => {
@@ -75,6 +76,57 @@ test('offline refresh preserves reviewed active fields and excludes archived rep
     assert.equal(repo.primary_artifact, 'https://example.org/artifact');
     assert.equal(repo.docs, 'https://example.org/docs');
     assert.deepEqual(repo.hmmm, ['A reviewed unresolved remains visible.']);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+
+test('clean offline project documentation refresh emits unavailable observations without inventing absence', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'interdependency-project-docs-offline-'));
+  try {
+    await mkdir(join(root, 'src', '_data', 'generated'), { recursive: true });
+    await writeFile(
+      join(root, 'src', '_data', 'generated', 'repos.json'),
+      JSON.stringify({
+        repositories: [{
+          name: 'ucns',
+          default_branch: 'main',
+          head_sha: '0123456789abcdef0123456789abcdef01234567',
+          head_committed_at: '2026-09-25T00:00:00Z'
+        }]
+      }, null, 2)
+    );
+
+    const result = await execFileAsync(process.execPath, [projectDocsScriptPath], {
+      cwd: root,
+      env: { ...process.env, OFFLINE: '1', GITHUB_TOKEN: '' }
+    });
+    assert.match(result.stdout, /metadata-only offline/);
+
+    const generated = JSON.parse(await readFile(join(root, 'src', '_data', 'generated', 'projectDocs.json'), 'utf8'));
+    assert.equal(generated.fallback, false);
+    assert.equal(generated.fallbackCount, 0);
+    assert.equal(generated.snapshotAt, null);
+    assert.match(generated.hmmm.join(' '), /no last-known-good project documentation snapshot exists/);
+
+    const projection = generated.byRepository.ucns;
+    assert.equal(projection.unavailable, true);
+    assert.equal(projection.headSha, null);
+    assert.equal(projection.headCommittedAt, null);
+    assert.equal(projection.documentation.readme, null);
+    assert.deepEqual(projection.documentation.documents, []);
+    assert.equal(projection.documentation.projectedDocumentCount, 0);
+    assert.match(projection.documentation.hmmm.join(' '), /document content remains unavailable/);
+
+    const projectTemplate = await readFile(join(repositoryRoot, 'src', 'projects', 'repo.njk'), 'utf8');
+    assert.match(projectTemplate, /Repository documentation was not observed for this build/);
+    assert.match(projectTemplate, /no document-content observation is claimed/);
+    assert.match(
+      projectTemplate,
+      /Projected documents<\/dt><dd data-project-doc-count>\{% if repoDocs and repoDocs\.unavailable %\}hmmm\{% elif repoDocs and repoDocs\.documentation %\}\{\{ repoDocs\.documentation\.projectedDocumentCount \}\}/
+    );
+    assert.match(projectTemplate, /repoDocs and repoDocs\.unavailable %\}unavailable/);
   } finally {
     await rm(root, { recursive: true, force: true });
   }
