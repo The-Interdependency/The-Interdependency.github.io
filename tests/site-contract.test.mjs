@@ -61,7 +61,7 @@ test('base layout remains readable without javascript and presents a human-first
   assert.match(layout, /<main id="content"/);
   assert.match(layout, /href="\/chapters\/"/);
   assert.match(layout, /href="\/narratives\/"/);
-  assert.match(layout, /<a href="\/way\/">The Way<\/a>/);
+  assert.match(layout, /<a href="\/way\/"[^>]*><span>The Way<\/span><small>Core text and Article Labs<\/small><\/a>/);
   assert.doesNotMatch(layout, />Start<\/a>/);
   assert.doesNotMatch(layout, />Awakening<\/a>/);
   assert.doesNotMatch(layout, />Preamble<\/a>/);
