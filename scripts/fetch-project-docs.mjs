@@ -8,7 +8,7 @@ import {
 // id: project_documentation_projection
 //   purpose: Build bounded exact-head README and Markdown-document projections for public project pages.
 //   entrypoint: npm run refresh:project-docs
-//   tests: tests/project-docs.test.mjs
+//   tests: tests/project-docs.test.mjs, tests/offline-project-snapshot.test.mjs
 // === END MODULE_BUILD ===
 // === BOUNDARIES ===
 // id: project_documentation_projection_boundary
@@ -50,16 +50,41 @@ function unavailableProjection(repo, message) {
   };
 }
 
+async function offlineWithoutSnapshot() {
+  const repoData = JSON.parse(await readFile(GENERATED_REPOS, 'utf8'));
+  const byRepository = {};
+  for (const repo of repoData.repositories || []) {
+    byRepository[repo.name] = unavailableProjection(
+      repo,
+      'OFFLINE=1 and no last-known-good project documentation snapshot exists; repository document content remains unavailable.'
+    );
+  }
+  return {
+    schema: 'interdependency.project-documentation-map/0.1.0',
+    organization: 'The-Interdependency',
+    snapshotAt: null,
+    fallback: false,
+    fallbackCount: 0,
+    byRepository,
+    hmmm: ['OFFLINE=1: no last-known-good project documentation snapshot exists; emitted metadata-only unavailable projections without inventing document content.']
+  };
+}
+
 async function main() {
   await mkdir('src/_data/generated', { recursive: true });
   await mkdir('src/_data/snapshots', { recursive: true });
 
   const previous = await readSnapshot();
   if (process.env.OFFLINE === '1') {
-    if (!previous) throw new Error('OFFLINE=1 and no project documentation snapshot exists');
-    const fallback = { ...previous, fallback: true, hmmm: [...new Set([...(previous.hmmm || []), 'OFFLINE=1: displaying the last-known-good project documentation snapshot.'])] };
+    const fallback = previous
+      ? {
+          ...previous,
+          fallback: true,
+          hmmm: [...new Set([...(previous.hmmm || []), 'OFFLINE=1: displaying the last-known-good project documentation snapshot.'])]
+        }
+      : await offlineWithoutSnapshot();
     await writeFile(GENERATED_OUT, JSON.stringify(fallback, null, 2) + '\n');
-    console.log('project-docs fallback');
+    console.log(previous ? 'project-docs fallback' : 'project-docs metadata-only offline');
     return;
   }
 
