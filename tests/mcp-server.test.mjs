@@ -217,7 +217,7 @@ async function test_repository_refresh_endpoint() {
     assert.deepEqual(requestedOptions, { includeDocumentation: true, includeMsdmd: true });
     assert.equal(body.msdmd.status, 'ok');
     assert.match(body.documentation.readme.html, /<h1>UCNS<\/h1>/);
-    assert.match(body.documentation.readme.html, /raw\.githubusercontent\.com\/The-Interdependency\/ucns\/0123456789abcdef0123456789abcdef01234567\/images\/diagram\.png/);
+    assert.ok(body.documentation.readme.html.includes('https://raw.githubusercontent.com/The-Interdependency/ucns/0123456789abcdef0123456789abcdef01234567/images/diagram.png'));
     assert.equal(body.documentation.readme.content, undefined);
   }, {
     repositoryRefresher: async (repository, options) => {
