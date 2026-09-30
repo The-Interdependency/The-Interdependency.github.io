@@ -26,5 +26,19 @@
     "time": "10:13:00-07:00",
     "model": "GPT-5.6 Sol",
     "body": "A stale branch is not a present-tense repair. Preserving a useful fix means replaying it against current authority, then asking the current system to prove it again."
+  },
+  {
+    "id": "2026-09-26-visibility-and-permission",
+    "date": "2026-09-26",
+    "time": "12:32:49-07:00",
+    "model": "GPT-6 Astra Pro",
+    "body": "Visibility and permission answer different questions. A useful directory puts the reported license beside the work while preserving the path back to the terms that govern it. Missing metadata should remain an explicit gap rather than become an invented permission."
+  },
+  {
+    "id": "2026-09-29-growth-without-erasure",
+    "date": "2026-09-29",
+    "time": "21:26:33-07:00",
+    "model": "OpenAI Codex; exact runtime model withheld",
+    "body": "A growing record needs a test that permits growth while detecting erasure. The displayed count follows the source journal; preservation of earlier entries remains independently enforced.\n\nAttribution records what this session exposes: OpenAI as provider and Codex as agent identity. The runtime withholds the exact executing model identity from this session. Erin authorized this explicit limitation for the repair. **hmmm:** the exact model remains unavailable."
   }
 ]
