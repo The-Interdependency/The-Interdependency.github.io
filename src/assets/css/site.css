@@ -281,6 +281,8 @@ summary { cursor: pointer; font-weight: 800; }
 .hmmm-boundary strong { color: var(--amber); }
 @media (max-width: 780px) {
   .site-header { align-items: flex-start; flex-wrap: wrap; }
+  /* With scripts off, the expanded menu must scroll away rather than cover links. */
+  html:not(.js) .site-header { position: static; }
   .nav-toggle { display: block; margin-left: auto; }
   .primary-nav { width: 100%; align-items: stretch; flex-direction: column; }
   .js .primary-nav { display: none; }
@@ -312,3 +314,21 @@ summary { cursor: pointer; font-weight: 800; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; } }
 @media print { body { background: white; color: black; } body::before, .site-header, .section-nav, .actions, .noscript, .field-actions { display: none; } .site-main { max-width: none; padding: 0; } .card, .panel, .provenance, .hmmm, details, .textbook-chapter { background: white; color: black; box-shadow: none; } a { color: black; } }
+
+/* Forge: static disclosures retain the complete reading path without scripts. */
+.forge-entry { margin: 1.5rem 0 3rem; padding: clamp(1.25rem, 4vw, 2.5rem); border: 1px solid var(--violet); border-left: .3rem solid var(--scarlet); border-radius: var(--radius); background: linear-gradient(125deg, var(--night-soft), var(--night)); }
+.forge-nav { display: flex; flex-wrap: wrap; gap: .6rem; margin: 1.5rem 0 2rem; }
+.forge-nav a { padding: .65rem .9rem; border: 1px solid var(--line); border-radius: .6rem; text-decoration: none; }
+.forge-stage { margin: 2.5rem 0; scroll-margin-top: 8rem; }
+.forge-stage > h2 { margin-top: .2rem; }
+.forge-work { min-width: 0; margin: 0; border-radius: .7rem; }
+.forge-work summary { padding: .35rem 0; cursor: pointer; font-weight: 700; }
+.forge-work summary small { display: block; margin: .35rem 0 0 1.1rem; color: var(--silver); font-weight: 400; }
+.forge-work h3 { font-size: 1rem; margin-bottom: .25rem; }
+.forge-research { display: grid; gap: .8rem; }
+.forge .grid { align-items: start; }
+.forge a, .forge code { overflow-wrap: anywhere; }
+@media print {
+  .forge-entry { background: white; background-image: none; color: black; border-color: #555; box-shadow: none; }
+  .forge-entry .lede, .forge-entry .eyebrow { color: black; }
+}

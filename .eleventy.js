@@ -39,6 +39,21 @@ function escapeHtml(value) {
     .replaceAll("'", '&#39;');
 }
 
+// Usage: forge.source | forgeSourceUrl(path). Fail closed on malformed source
+// identity or paths; templates still escape the complete resulting attribute.
+export function forgeSourceUrl(source, path) {
+  if (source?.repository !== 'The-Interdependency/stack' || !/^[a-f0-9]{40}$/.test(source?.commit || '')) {
+    throw new Error('invalid Forge source identity');
+  }
+  const base = `https://github.com/${source.repository}/blob/${source.commit}/`;
+  if (source.url !== base || typeof path !== 'string' ||
+      !/^(?:[A-Za-z0-9_-]+\/)*[A-Za-z0-9_.-]+(?:#[a-z0-9-]+)?$/.test(path) ||
+      path.split(/[\/#]/).some(part => part === '.' || part === '..')) {
+    throw new Error('invalid Forge source URL or path');
+  }
+  return base + path;
+}
+
 function renderInterdefinables(content) {
   const lines = String(content || '').split(/\r?\n/).slice(1);
   const pairs = [];
@@ -147,12 +162,14 @@ export default function configureEleventy(eleventyConfig) {
     'fallback': 'fallback'
   });
   eleventyConfig.addFilter('json', value => JSON.stringify(value));
+  eleventyConfig.addFilter('forgeSourceUrl', forgeSourceUrl);
   eleventyConfig.addFilter('dateOnly', value => value ? String(value).slice(0, 10) : 'hmmm');
   eleventyConfig.addFilter('where', (items, key, value) => (items || []).filter(item => item?.[key] === value));
   eleventyConfig.addFilter('statusClass', value => `status-${String(value || 'hmmm').toLowerCase().replace(/[^a-z0-9]+/g, '-')}`);
   eleventyConfig.addFilter('markdown', value => md.render(String(value || '')));
   eleventyConfig.addFilter('textbookMarkdown', chapter => md.render(String(chapter?.content || ''), { sourceUrl: chapter?.sourceUrl }));
-  eleventyConfig.addFilter('projectDocMarkdown', document => md.render(String(document?.content || ''), { sourceUrl: document?.sourceUrl, repositorySource: true }));
+  eleventyConfig.addFilter('projectDocMarkdown', document => md.render(String(document?.content || ''), { sourceUrl: document?.sourceUrl, repositorySource: true })
+    .replace(/<pre(?![^>]*\btabindex=)([^>]*)>/g, '<pre tabindex="0"$1>'));
   eleventyConfig.addFilter('edcmMarkdown', value => md.render(String(value || ''))
     .replace(/<pre(?![^>]*\btabindex=)([^>]*)>/g, '<pre tabindex="0"$1>')
     .replace(/<math(?![^>]*\btabindex=)(?=[^>]*\bdisplay="block")/g, '<math tabindex="0"'));
