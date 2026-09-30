@@ -20,3 +20,13 @@ test('a phone visitor can enter the Forge and open independent research without 
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await context.close();
 });
+
+test('the Projects Forge feature remains legible with print backgrounds enabled', async ({ page }) => {
+  await page.goto('/projects/');
+  await page.emulateMedia({ media: 'print' });
+  const style = await page.locator('.forge-entry').evaluate(element => {
+    const computed = getComputedStyle(element);
+    return { background: computed.backgroundColor, image: computed.backgroundImage, color: computed.color };
+  });
+  expect(style).toEqual({ background: 'rgb(255, 255, 255)', image: 'none', color: 'rgb(0, 0, 0)' });
+});

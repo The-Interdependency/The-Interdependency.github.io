@@ -328,3 +328,7 @@ summary { cursor: pointer; font-weight: 800; }
 .forge-research { display: grid; gap: .8rem; }
 .forge .grid { align-items: start; }
 .forge a, .forge code { overflow-wrap: anywhere; }
+@media print {
+  .forge-entry { background: white; background-image: none; color: black; border-color: #555; box-shadow: none; }
+  .forge-entry .lede, .forge-entry .eyebrow { color: black; }
+}

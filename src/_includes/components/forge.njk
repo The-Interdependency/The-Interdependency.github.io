@@ -4,7 +4,7 @@
   <p>Explore what Stack brings together, what is taking shape, and what has earned an independent release. Open any research area for its purpose, relationships and remaining questions.</p>
   <p class="field-help">Reviewed source snapshot · {{ forge.reviewedOn }}. These descriptions are a website companion to Stack’s records. Each project retains its own authority and evidence.</p>
   {% if repo.head_sha and repo.head_sha != forge.source.commit %}
-  <p class="hmmm">The repository listing and this reviewed Forge snapshot have different source commits. Read the pinned sources below for these descriptions; use the repository documentation for newer work.</p>
+  <p class="hmmm">The repository listing and this reviewed Forge snapshot have different source commits. Read the pinned sources below for these descriptions. The documentation below records its own source identity; neither snapshot is assumed to be newer.</p>
   {% endif %}
   <nav class="forge-nav" aria-label="Inside the forge">
     <a href="#brought-together">Brought together</a>
@@ -42,11 +42,11 @@
         <p>{{ work.purpose | escape }}</p>
         <h3>What it draws upon</h3><p>{{ work.relations | escape }}</p>
         <h3>hmmm</h3><p>{{ work.hmmm | escape }}</p>
-        <a href="{{ forge.source.url }}{{ work.path }}">Read workspace and evidence</a>
+        <a href="{{ forge.source | forgeSourceUrl(work.path) | escape }}">Read workspace and evidence</a>
       </details>
     {% endfor %}
     </div>
-    <p><a href="{{ forge.source.url }}README.md">Explore the full Stack layout, including research against existing projects</a></p>
+    <p><a href="{{ forge.source | forgeSourceUrl('README.md') | escape }}">Explore the full Stack layout, including research against existing projects</a></p>
   </section>
 
   <section id="graduated" class="forge-stage">
@@ -61,7 +61,7 @@
       <p>{{ participant.relation | escape }}.</p>
       <div class="actions">
         <a class="button" href="{{ participant.release.url | escape }}">Explore independent release {{ participant.release.tag | escape }}</a>
-        <a href="{{ forge.source.url }}{{ participant.transition_receipt }}">Read graduation and forge-history evidence</a>
+        <a href="{{ forge.source | forgeSourceUrl(participant.transition_receipt) | escape }}">Read graduation and forge-history evidence</a>
       </div>
       <p class="field-help">Release standing does not establish scientific validity; the transition receipt preserves the bounded findings and open questions.</p>
     </article>
@@ -73,14 +73,14 @@
     <p class="eyebrow">Contribution · return to the owner</p>
     <h2>Returned upstream</h2>
     <p>When research improves an existing project, the accepted change belongs in that project’s repository. Stack then refreshes its pinned view and research base to the accepted version.</p>
-    <p><a href="{{ forge.source.url }}README.md#usage-guidance">Follow the upstream contribution route</a></p>
+    <p><a href="{{ forge.source | forgeSourceUrl('README.md#usage-guidance') | escape }}">Follow the upstream contribution route</a></p>
     <p class="hmmm">hmmm: {{ forge.upstreamHmmm | escape }}</p>
   </section>
 
   <details class="provenance-disclosure">
     <summary>Forge sources and boundaries</summary>
     <p>Interpretation reviewed {{ forge.reviewedOn }}, pinned to Stack <code>{{ forge.source.commit }}</code>. This view is a retained editorial snapshot, not a live status feed. The documentation refresh below does not update these descriptions.</p>
-    <p><a href="{{ forge.source.url }}stack-manifest.json">Exact Stack manifest</a> · <a href="{{ forge.source.url }}README.md">Exact Stack README</a></p>
+    <p><a href="{{ forge.source | forgeSourceUrl('stack-manifest.json') | escape }}">Exact Stack manifest</a> · <a href="{{ forge.source | forgeSourceUrl('README.md') | escape }}">Exact Stack README</a></p>
     <p>Source-local ownership, licenses and evidence remain with their owners. Stack’s root license does not automatically license every research area. Read the source licensing map before reuse.</p>
     <ul>{% for item in forge.manifest.boundaries.hmmm %}<li>{{ item | escape }}</li>{% endfor %}</ul>
   </details>

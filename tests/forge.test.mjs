@@ -5,10 +5,12 @@ import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { createRequire } from 'node:module';
+import { forgeSourceUrl } from '../.eleventy.js';
 const forge = JSON.parse(readFileSync('src/_data/forge.json', 'utf8'));
 const require = createRequire(import.meta.url);
 const nunjucks = createRequire(require.resolve('@11ty/eleventy'))('nunjucks');
 const env = new nunjucks.Environment(new nunjucks.FileSystemLoader('src/_includes'), { autoescape: false });
+env.addFilter('forgeSourceUrl', forgeSourceUrl);
 const render = (data = forge, head = forge.source.commit) => env.render('components/forge.njk', { forge: data, repo: { head_sha: head } });
 
 test('Forge retains exact source identities and independent authority boundaries', () => {
@@ -64,4 +66,15 @@ test('pinned source replay matches every referenced byte', { skip: !process.env.
     assert.equal(createHash('sha1').update(`blob ${bytes.length}\0`).update(bytes).digest('hex'), source.blob, source.path);
   }
   assert.deepEqual(JSON.parse(readFileSync(`${root}/stack-manifest.json`, 'utf8')), forge.manifest);
+});
+
+test('source links reject attribute injection, foreign origins and traversal at render time', () => {
+  for (const path of ['README.md" onclick="alert(1)', '../README.md', 'https://example.org', 'README.md?x=1']) {
+    assert.throws(() => forgeSourceUrl(forge.source, path), /invalid Forge/);
+    const unsafe = structuredClone(forge);
+    unsafe.research[0].path = path;
+    assert.throws(() => render(unsafe), /invalid Forge/);
+  }
+  assert.throws(() => forgeSourceUrl({ ...forge.source, url: 'javascript:alert(1)' }, 'README.md'), /invalid Forge/);
+  assert.equal(forgeSourceUrl(forge.source, 'README.md#usage-guidance'), forge.source.url + 'README.md#usage-guidance');
 });
