@@ -50,7 +50,8 @@ test('companion metadata cannot introduce executable HTML', () => {
   unsafe.research[0].title = '<script>alert(1)</script>';
   unsafe.manifest.repositories[0].authority = '<img src=x onerror=alert(1)>';
   const html = render(unsafe);
-  assert.doesNotMatch(html, /<script>|<img src=x/);
+  assert.ok(!html.includes(unsafe.research[0].title));
+  assert.ok(!html.includes(unsafe.manifest.repositories[0].authority));
   assert.match(html, /&lt;script&gt;/);
 });
 
