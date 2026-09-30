@@ -314,9 +314,15 @@ test('generated deployment artifact publishes the complete machine-oriented AI c
 
 test('generated site exposes the AI context through redundant machine discovery', checkAiContextPublicDiscovery);
 test('By the builder renders a collapsible date-time-model tree', async () => {
-  const html = await readFile('_site/by-the-builder/index.html', 'utf8');
+  const [html, journalRaw] = await Promise.all([
+    readFile('_site/by-the-builder/index.html', 'utf8'),
+    readFile('src/_data/builder.json', 'utf8')
+  ]);
+  const journal = JSON.parse(journalRaw);
   assert.match(html, /<details class="builder-tree">/);
-  assert.match(html, /<summary>Builder journal · 4 entries<\/summary>/);
+  assert.ok(html.includes(`<summary>Builder journal · ${journal.length} entries</summary>`));
+  const renderedIds = [...html.matchAll(/<details class="builder-entry" id="([^"]+)">/g)].map(match => match[1]);
+  assert.deepEqual(renderedIds, journal.map(entry => entry.id), 'every journal entry renders once in source order');
   assert.match(html, /<details class="builder-entry" id="2026-09-23-constraint-and-discretion">/);
   assert.match(html, /2026-09-23 · 23:38:45-07:00/);
   assert.match(html, /GPT-5\.6 Sol/);
