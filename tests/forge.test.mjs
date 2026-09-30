@@ -5,7 +5,7 @@ import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { createRequire } from 'node:module';
-import { forgeSourceUrl } from '../.eleventy.js';
+import configureEleventy, { forgeSourceUrl } from '../.eleventy.js';
 const forge = JSON.parse(readFileSync('src/_data/forge.json', 'utf8'));
 const require = createRequire(import.meta.url);
 const nunjucks = createRequire(require.resolve('@11ty/eleventy'))('nunjucks');
@@ -77,4 +77,11 @@ test('source links reject attribute injection, foreign origins and traversal at 
   }
   assert.throws(() => forgeSourceUrl({ ...forge.source, url: 'javascript:alert(1)' }, 'README.md'), /invalid Forge/);
   assert.equal(forgeSourceUrl(forge.source, 'README.md#usage-guidance'), forge.source.url + 'README.md#usage-guidance');
+});
+
+test('imported documentation preserves code and makes it keyboard-scrollable', () => {
+  const filters = new Map();
+  configureEleventy({ setLibrary() {}, addPassthroughCopy() {}, addTransform() {}, addFilter(name, fn) { filters.set(name, fn); } });
+  const html = filters.get('projectDocMarkdown')({ content: '```bash\npython3 integration/epac/reconsume.py\n```', sourceUrl: forge.source.url + 'README.md' });
+  assert.match(html, /<pre tabindex="0"><code class="language-bash">python3 integration\/epac\/reconsume\.py\n<\/code><\/pre>/);
 });

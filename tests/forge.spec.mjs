@@ -30,3 +30,16 @@ test('the Projects Forge feature remains legible with print backgrounds enabled'
   });
   expect(style).toEqual({ background: 'rgb(255, 255, 255)', image: 'none', color: 'rgb(0, 0, 0)' });
 });
+
+test('live documentation refresh preserves keyboard access to code blocks', async ({ page }) => {
+  await page.route('https://the-interdependency-mcp-live.onrender.com/api/repository-refresh', route => route.fulfill({
+    json: { headSha: 'a'.repeat(40), defaultBranch: 'main', documentation: {
+      readme: { html: '<pre><code>example command</code></pre>', sourceUrl: 'https://github.com/The-Interdependency/stack' },
+      documents: [], hmmm: [], projectedDocumentCount: 1
+    } }
+  }));
+  await page.goto('/projects/stack/');
+  await page.getByRole('button', { name: 'Refresh MSDMD + docs' }).click();
+  await expect(page.locator('[data-project-docs-content] pre')).toHaveAttribute('tabindex', '0');
+  await expect(page.locator('[data-project-doc-mode]')).toHaveText('live exact-head observation');
+});

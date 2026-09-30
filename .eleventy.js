@@ -168,7 +168,8 @@ export default function configureEleventy(eleventyConfig) {
   eleventyConfig.addFilter('statusClass', value => `status-${String(value || 'hmmm').toLowerCase().replace(/[^a-z0-9]+/g, '-')}`);
   eleventyConfig.addFilter('markdown', value => md.render(String(value || '')));
   eleventyConfig.addFilter('textbookMarkdown', chapter => md.render(String(chapter?.content || ''), { sourceUrl: chapter?.sourceUrl }));
-  eleventyConfig.addFilter('projectDocMarkdown', document => md.render(String(document?.content || ''), { sourceUrl: document?.sourceUrl, repositorySource: true }));
+  eleventyConfig.addFilter('projectDocMarkdown', document => md.render(String(document?.content || ''), { sourceUrl: document?.sourceUrl, repositorySource: true })
+    .replace(/<pre(?![^>]*\btabindex=)([^>]*)>/g, '<pre tabindex="0"$1>'));
   eleventyConfig.addFilter('edcmMarkdown', value => md.render(String(value || ''))
     .replace(/<pre(?![^>]*\btabindex=)([^>]*)>/g, '<pre tabindex="0"$1>')
     .replace(/<math(?![^>]*\btabindex=)(?=[^>]*\bdisplay="block")/g, '<math tabindex="0"'));
