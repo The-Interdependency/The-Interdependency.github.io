@@ -2,7 +2,7 @@
 import { test, expect } from '@playwright/test';
 
 test('a phone visitor can enter the Forge and open independent research without JavaScript', async ({ browser }) => {
-  const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 844 } });
+  const context = await browser.newContext({ javaScriptEnabled: false, reducedMotion: 'reduce', viewport: { width: 390, height: 844 } });
   const page = await context.newPage();
   await page.goto('http://127.0.0.1:4173/projects/');
   await page.getByRole('link', { name: 'Enter the forge', exact: true }).click();
