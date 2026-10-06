@@ -1,9 +1,15 @@
-# Website skill source
+# Local agent skills
 
-The repo-local skill below is copied verbatim from:
+This directory contains repo-local copies of canonical skills from
+`The-Interdependency/skill-lib`.
 
-- repository: `The-Interdependency/skill-lib`
-- commit: `0981aed7695ba2675d5de35ef43ba734e94adea0`
-- path: `website-builder-journal/SKILL.md`
+Source commit: `38c64332b840b2bbe1c07e53aeee8996644548e9`
+
+Repo-local copies are not the source of truth. Edit `skill-lib` first,
+then propagate from the canonical source.
+
+Skills refreshed from the source commit above:
+
+- `website-builder-journal/`
 
 Usage: load `.agents/skills/website-builder-journal/SKILL.md` before any website write. The canonical source remains skill-lib.
