@@ -1,12 +1,14 @@
 import test from 'node:test';
+import { createHash } from 'node:crypto';
 import assert from 'node:assert/strict';
 import { execFile } from 'node:child_process';
 import { copyFile, mkdtemp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { promisify } from 'node:util';
 import Eleventy from '@11ty/eleventy';
+import { MAX_DOCUMENT_BYTES, MAX_TOTAL_BYTES } from '../scripts/repository-public-projection.mjs';
 
 const execFileAsync = promisify(execFile);
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -117,9 +119,10 @@ function observedProjection(name, headSha) {
         path: 'README.md',
         content: readmeContent,
         bytes: Buffer.byteLength(readmeContent),
+        sha256: createHash('sha256').update(readmeContent).digest('hex'),
         sourceUrl: 'https://github.com/The-Interdependency/' + name + '/blob/' + headSha + '/README.md'
       },
-      documents: [{ path: 'docs/guide.md', content: guideContent, bytes: Buffer.byteLength(guideContent), sourceUrl: 'https://github.com/The-Interdependency/' + name + '/blob/' + headSha + '/docs/guide.md' }],
+      documents: [{ path: 'docs/guide.md', content: guideContent, bytes: Buffer.byteLength(guideContent), sha256: createHash('sha256').update(guideContent).digest('hex'), sourceUrl: 'https://github.com/The-Interdependency/' + name + '/blob/' + headSha + '/docs/guide.md' }],
       projectedDocumentCount: 2,
       projectedBytes: Buffer.byteLength(readmeContent) + Buffer.byteLength(guideContent),
       hmmm: []
@@ -150,6 +153,7 @@ async function runOfflineProjectDocs(repositories, snapshot, { onlineFailure = f
     executable = join(root, 'scripts', 'fetch-project-docs.mjs');
     await copyFile(projectDocsScriptPath, executable);
     await writeFile(join(root, 'scripts', 'repository-public-projection.mjs'),
+      'export { selectDocumentationPaths, MAX_DOCUMENT_BYTES, MAX_TOTAL_BYTES } from ' + JSON.stringify(pathToFileURL(join(repositoryRoot, 'scripts', 'repository-public-projection.mjs')).href) + ';\n' +
       'export async function fetchRepositoryPublicProjection() { throw new Error("fixture network failure"); }\n' +
       'export function isRepositoryNotPublicError() { return false; }\n');
   }
@@ -352,6 +356,22 @@ for (const onlineFailure of [false, true]) {
       ['wrong-document-bytes', value => { value.documentation.documents[0].bytes += 1; }],
       ['missing-readme-bytes', value => { delete value.documentation.readme.bytes; }],
       ['wrong-aggregate-bytes', value => { value.documentation.projectedBytes += 1; }],
+      ['missing-document-digest', value => { delete value.documentation.documents[0].sha256; }],
+      ['malformed-document-digest', value => { value.documentation.documents[0].sha256 = 'not-a-digest'; }],
+      ['missing-readme-digest', value => { delete value.documentation.readme.sha256; }],
+      ['mismatched-document-digest', value => { value.documentation.documents[0].sha256 = '0'.repeat(64); }],
+      ['same-size-corrupt-document', value => { value.documentation.documents[0].content = 'Other body.'; }],
+      ['same-size-corrupt-readme', value => { value.documentation.readme.content = value.documentation.readme.content.replace('Snapshot', 'Tampered'); }],
+      ['wrong-document-source', value => { value.documentation.documents[0].sourceUrl = 'https://github.com/The-Interdependency/other/blob/' + headA + '/docs/guide.md'; }],
+      ['wrong-readme-source-head', value => { value.documentation.readme.sourceUrl = value.documentation.readme.sourceUrl.replace(headA, headB); }],
+      ['duplicate-document-path', value => { value.documentation.documents.push({ ...value.documentation.documents[0] }); value.documentation.projectedDocumentCount += 1; value.documentation.projectedBytes += value.documentation.documents[0].bytes; }],
+      ['duplicate-readme-path', value => { value.documentation.documents.push({ ...value.documentation.readme }); value.documentation.projectedDocumentCount += 1; value.documentation.projectedBytes += value.documentation.readme.bytes; }],
+      ['wrong-readme-path', value => { value.documentation.readme.path = 'docs/guide.md'; value.documentation.readme.sourceUrl = value.documentation.documents[0].sourceUrl; }],
+      ['outside-document-selection', value => { const doc = value.documentation.documents[0]; doc.path = 'src/guide.md'; doc.sourceUrl = 'https://github.com/' + value.repository + '/blob/' + headA + '/src/guide.md'; }],
+      ['traversing-document-path', value => { const doc = value.documentation.documents[0]; doc.path = 'docs/../guide.md'; doc.sourceUrl = 'https://github.com/' + value.repository + '/blob/' + headA + '/docs/../guide.md'; }],
+      ['oversized-document', value => { const doc = value.documentation.documents[0]; doc.content = 'x'.repeat(MAX_DOCUMENT_BYTES + 1); doc.bytes = Buffer.byteLength(doc.content); doc.sha256 = createHash('sha256').update(doc.content).digest('hex'); value.documentation.projectedBytes = value.documentation.readme.bytes + doc.bytes; }],
+      ['excess-document-count', value => { const doc = value.documentation.documents[0]; value.documentation.documents = Array.from({ length: 33 }, (_, i) => ({ ...doc, path: 'docs/guide-' + i + '.md', sourceUrl: 'https://github.com/' + value.repository + '/blob/' + headA + '/docs/guide-' + i + '.md' })); value.documentation.projectedDocumentCount = 34; value.documentation.projectedBytes = value.documentation.readme.bytes + 33 * doc.bytes; }],
+      ['excess-aggregate-bytes', value => { const content = 'x'.repeat(MAX_DOCUMENT_BYTES); const bytes = Buffer.byteLength(content); const sha256 = createHash('sha256').update(content).digest('hex'); const count = Math.floor(MAX_TOTAL_BYTES / bytes) + 1; value.documentation.documents = Array.from({ length: count }, (_, i) => ({ path: 'docs/large-' + i + '.md', sourceUrl: 'https://github.com/' + value.repository + '/blob/' + headA + '/docs/large-' + i + '.md', content, bytes, sha256 })); value.documentation.projectedDocumentCount = count + 1; value.documentation.projectedBytes = value.documentation.readme.bytes + count * bytes; }],
       ['wrong-repository', value => { value.repository = 'The-Interdependency/other'; }]
     ];
     const repos = [repoRow('good-project', headA), ...malformed.map(([name]) => repoRow(name, headA))];
@@ -397,3 +417,39 @@ for (const onlineFailure of [false, true]) {
     }
   });
 }
+
+// Usage: valid UTF-8 bytes and percent-encoded exact-source links must remain eligible.
+for (const onlineFailure of [false, true]) {
+  test(`${onlineFailure ? 'online failed refresh' : 'offline refresh'} retains valid Unicode documents`, async () => {
+    const repos = [repoRow('unicode-project', headA)];
+    const projection = observedProjection('unicode-project', headA);
+    const document = projection.documentation.documents[0];
+    document.path = 'docs/é guide.md';
+    document.content = 'Unicode witness: Ω 🧭';
+    document.bytes = Buffer.byteLength(document.content);
+    document.sha256 = createHash('sha256').update(document.content).digest('hex');
+    document.sourceUrl = 'https://github.com/The-Interdependency/unicode-project/blob/' + headA + '/docs/%C3%A9%20guide.md';
+    projection.documentation.projectedBytes = projection.documentation.readme.bytes + document.bytes;
+    const { root, generated } = await runOfflineProjectDocs(repos, { byRepository: { 'unicode-project': projection } }, { onlineFailure });
+    try {
+      assert.equal(generated.fallbackCount, 1);
+      assert.deepEqual(generated.byRepository['unicode-project'].documentation, projection.documentation);
+    } finally {
+      await rm(root, { recursive: true, force: true });
+    }
+  });
+}
+
+test('matching invalid head identifiers never qualify as observed fallback', async () => {
+  const repos = [repoRow('invalid-head', 'not-a-git-sha')];
+  const snapshot = { byRepository: { 'invalid-head': observedProjection('invalid-head', 'not-a-git-sha') } };
+  for (const onlineFailure of [false, true]) {
+    const { root, generated } = await runOfflineProjectDocs(repos, snapshot, { onlineFailure });
+    try {
+      assert.equal(generated.fallbackCount, 0);
+      assert.equal(generated.byRepository['invalid-head'].unavailable, true);
+    } finally {
+      await rm(root, { recursive: true, force: true });
+    }
+  }
+});

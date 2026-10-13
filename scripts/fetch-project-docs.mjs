@@ -1,7 +1,11 @@
+import { createHash } from 'node:crypto';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import {
   fetchRepositoryPublicProjection,
-  isRepositoryNotPublicError
+  isRepositoryNotPublicError,
+  selectDocumentationPaths,
+  MAX_DOCUMENT_BYTES,
+  MAX_TOTAL_BYTES
 } from './repository-public-projection.mjs';
 
 // === MODULE_BUILD ===
@@ -74,6 +78,8 @@ function unavailableProjection(repo, message) {
 
 // Usage: both refresh modes apply the same retained-observation contract. A matching
 // head alone is not evidence that cached documentation is structurally usable.
+// Byte counts, digests, and source links must agree with the retained observation;
+// these consistency checks do not authenticate its original producer.
 function isObject(value) {
   return value !== null && typeof value === 'object' && !Array.isArray(value);
 }
@@ -83,7 +89,8 @@ function isTextArray(value) {
 }
 
 function validObservedProjection(prior, repo) {
-  if (!isObject(prior) || prior.unavailable || !repo.head_sha || prior.headSha !== repo.head_sha
+  if (!isObject(prior) || prior.unavailable || typeof repo.head_sha !== 'string'
+      || !/^[a-f0-9]{40}$/i.test(repo.head_sha) || prior.headSha !== repo.head_sha
       || prior.repository !== 'The-Interdependency/' + repo.name || prior.name !== repo.name
       || prior.schema !== 'interdependency.repository-public-projection/0.1.0'
       || !isTextArray(prior.hmmm)) return false;
@@ -91,15 +98,23 @@ function validObservedProjection(prior, repo) {
   if (!isObject(docs) || !isTextArray(docs.hmmm) || !Array.isArray(docs.documents)) return false;
   const validDocument = document => isObject(document)
     && typeof document.path === 'string' && document.path.length > 0
+    && !document.path.split('/').some(part => !part || part === '.' || part === '..' || part.includes('\0'))
     && typeof document.content === 'string'
-    && Number.isSafeInteger(document.bytes) && document.bytes >= 0
+    && Number.isSafeInteger(document.bytes) && document.bytes >= 0 && document.bytes <= MAX_DOCUMENT_BYTES
     && document.bytes === Buffer.byteLength(document.content)
-    && typeof document.sourceUrl === 'string' && document.sourceUrl.length > 0;
-  if (docs.readme !== null && !validDocument(docs.readme)) return false;
+    && typeof document.sha256 === 'string' && /^[a-f0-9]{64}$/.test(document.sha256)
+    && createHash('sha256').update(document.content).digest('hex') === document.sha256
+    && document.sourceUrl === 'https://github.com/The-Interdependency/' + encodeURIComponent(repo.name)
+      + '/blob/' + encodeURIComponent(repo.head_sha) + '/' + document.path.split('/').map(encodeURIComponent).join('/');
+  if (docs.readme !== null && (!validDocument(docs.readme) || !/^README\.md$/i.test(docs.readme.path))) return false;
   if (!docs.documents.every(validDocument)) return false;
+  const paths = [...(docs.readme ? [docs.readme.path] : []), ...docs.documents.map(document => document.path)];
+  if (new Set(paths).size !== paths.length) return false;
+  // Reuse the producer's root/docs Markdown selection and count bound.
+  if (selectDocumentationPaths(paths.map(path => ({ type: 'blob', path }))).paths.length !== paths.length) return false;
   return Number.isSafeInteger(docs.projectedDocumentCount)
     && docs.projectedDocumentCount === docs.documents.length + (docs.readme === null ? 0 : 1)
-    && Number.isSafeInteger(docs.projectedBytes) && docs.projectedBytes >= 0
+    && Number.isSafeInteger(docs.projectedBytes) && docs.projectedBytes >= 0 && docs.projectedBytes <= MAX_TOTAL_BYTES
     && docs.projectedBytes === docs.documents.reduce((sum, document) => sum + document.bytes, docs.readme?.bytes || 0);
 }
 
