@@ -1,0 +1,19 @@
+{# Display only: repository-owned license files remain authoritative. #}
+{%- set detected = repo.license -%}
+{%- if detected and detected.spdx_id -%}
+  {%- set detected = detected.spdx_id -%}
+{%- endif -%}
+{%- if detected is string -%}
+  {%- set detected = detected | trim -%}
+  {%- if detected == 'NOASSERTION' -%}
+    Other / unclassified
+  {%- elif detected -%}
+    {{- detected | escape -}}
+  {%- else -%}
+    Not detected
+  {%- endif -%}
+{%- elif detected -%}
+  Other / unclassified
+{%- else -%}
+  Not detected
+{%- endif -%}

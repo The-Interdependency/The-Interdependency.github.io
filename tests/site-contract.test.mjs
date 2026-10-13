@@ -190,7 +190,7 @@ test('builder journal source is collapsible and loads the canonical website-buil
   assert.match(page, /entry\.model/);
   assert.match(vendored, /name: website-builder-journal/);
   assert.match(vendored, /Load this when any modification to The-Interdependency\/The-Interdependency\.github\.io is planned or underway/i);
-  assert.match(sourceReadme, /0981aed7695ba2675d5de35ef43ba734e94adea0/);
+  assert.match(sourceReadme, /38c64332b840b2bbe1c07e53aeee8996644548e9/);
 });
 
 test('global navigation is organized by durable visitor goals with subordinate section navigation', async () => {

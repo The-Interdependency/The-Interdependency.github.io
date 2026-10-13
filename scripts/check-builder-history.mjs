@@ -59,8 +59,9 @@ export function validateHistory(previous, current) {
     assert.deepEqual(current[index], entry, `append-only journal: entry ${index + 1} changed or moved`);
   });
 
+  // Publication order is append-only. An older branch record may arrive later;
+  // preserve its original date rather than sorting or rewriting the published prefix.
   const ids = new Set();
-  let lastDate = '';
   current.forEach((entry, index) => {
     assert.ok(entry && typeof entry === 'object' && !Array.isArray(entry), 'entry must be an object');
     assert.ok(Object.keys(entry).every(key => allowedFields.has(key)), 'unknown entry field');
@@ -69,7 +70,6 @@ export function validateHistory(previous, current) {
     assert.match(entry.id, /^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'entry id must be a stable fragment');
     assert.ok(!ids.has(entry.id), `duplicate entry id: ${entry.id}`);
     validateDate(entry.date);
-    assert.ok(entry.date >= lastDate, 'entries must stay in chronological order');
 
     if ('time' in entry) validateTime(entry.time);
     if ('model' in entry) validateModel(entry.model);
@@ -88,7 +88,6 @@ export function validateHistory(previous, current) {
     }
 
     ids.add(entry.id);
-    lastDate = entry.date;
   });
 
   return { preserved: previous.length, appended: current.length - previous.length };

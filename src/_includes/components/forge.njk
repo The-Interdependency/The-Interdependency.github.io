@@ -1,0 +1,87 @@
+{# Usage: included only by Stack's project page. forge.json is a reviewed, dated companion to exact Stack sources. #}
+<section class="forge" aria-labelledby="forge-orientation">
+  <h2 id="forge-orientation">Inside the forge</h2>
+  <p>Explore what Stack brings together, what is taking shape, and what has earned an independent release. Open any research area for its purpose, relationships and remaining questions.</p>
+  <p class="field-help">Reviewed source snapshot · {{ forge.reviewedOn }}. These descriptions are a website companion to Stack’s records. Each project retains its own authority and evidence.</p>
+  {% if repo.head_sha and repo.head_sha != forge.source.commit %}
+  <p class="hmmm">The repository listing and this reviewed Forge snapshot have different source commits. Read the pinned sources below for these descriptions. The documentation below records its own source identity; neither snapshot is assumed to be newer.</p>
+  {% endif %}
+  <nav class="forge-nav" aria-label="Inside the forge">
+    <a href="#brought-together">Brought together</a>
+    <a href="#in-the-forge">In the forge</a>
+    <a href="#graduated">Graduated</a>
+    <a href="#returned-upstream">Returned upstream</a>
+  </nav>
+
+  <section id="brought-together" class="forge-stage">
+    <p class="eyebrow">Inputs · independent owners</p>
+    <h2>Brought together</h2>
+    <p>Stack brings exact versions of existing projects into a shared workspace. Their source repositories continue to own their definitions and results.</p>
+    <div class="grid">
+    {% for participant in forge.manifest.repositories %}
+    {% if participant.lifecycle != 'graduated' %}
+      <details class="forge-work">
+        <summary>{{ participant.repository | replace('The-Interdependency/', '') | escape }}</summary>
+        <p>{{ participant.authority | escape }}</p>
+        <p>{{ participant.relation | escape }}</p>
+        <a href="https://github.com/{{ participant.repository | escape }}/tree/{{ participant.commit }}">Explore pinned source</a>
+      </details>
+    {% endif %}
+    {% endfor %}
+    </div>
+  </section>
+
+  <section id="in-the-forge" class="forge-stage">
+    <p class="eyebrow">Construction · experiment · evidence</p>
+    <h2>In the forge</h2>
+    <p>Each workspace carries its own standing. Being composed here does not establish a theory, transfer proof, or grant release status.</p>
+    <div class="forge-research">
+    {% for work in forge.research %}
+      <details class="forge-work" id="forge-{{ work.id }}">
+        <summary><span>{{ work.title | escape }}</span><small>{{ work.standing | escape }}</small></summary>
+        <p>{{ work.purpose | escape }}</p>
+        <h3>What it draws upon</h3><p>{{ work.relations | escape }}</p>
+        <h3>hmmm</h3><p>{{ work.hmmm | escape }}</p>
+        <a href="{{ forge.source | forgeSourceUrl(work.path) | escape }}">Read workspace and evidence</a>
+      </details>
+    {% endfor %}
+    </div>
+    <p><a href="{{ forge.source | forgeSourceUrl('README.md') | escape }}">Explore the full Stack layout, including research against existing projects</a></p>
+  </section>
+
+  <section id="graduated" class="forge-stage">
+    <p class="eyebrow">Independent release · consumed back into Stack</p>
+    <h2>Graduated</h2>
+    <p>Graduation records an independent owner, a release and Stack’s consumption of that release. Historical forge evidence stays available.</p>
+    {% for participant in forge.manifest.repositories %}
+    {% if participant.lifecycle == 'graduated' %}
+    <article class="panel">
+      <h3>{{ participant.repository | replace('The-Interdependency/', '') | upper | escape }}</h3>
+      <p>{{ participant.authority | escape }}.</p>
+      <p>{{ participant.relation | escape }}.</p>
+      <div class="actions">
+        <a class="button" href="{{ participant.release.url | escape }}">Explore independent release {{ participant.release.tag | escape }}</a>
+        <a href="{{ forge.source | forgeSourceUrl(participant.transition_receipt) | escape }}">Read graduation and forge-history evidence</a>
+      </div>
+      <p class="field-help">Release standing does not establish scientific validity; the transition receipt preserves the bounded findings and open questions.</p>
+    </article>
+    {% endif %}
+    {% endfor %}
+  </section>
+
+  <section id="returned-upstream" class="forge-stage">
+    <p class="eyebrow">Contribution · return to the owner</p>
+    <h2>Returned upstream</h2>
+    <p>When research improves an existing project, the accepted change belongs in that project’s repository. Stack then refreshes its pinned view and research base to the accepted version.</p>
+    <p><a href="{{ forge.source | forgeSourceUrl('README.md#usage-guidance') | escape }}">Follow the upstream contribution route</a></p>
+    <p class="hmmm">hmmm: {{ forge.upstreamHmmm | escape }}</p>
+  </section>
+
+  <details class="provenance-disclosure">
+    <summary>Forge sources and boundaries</summary>
+    <p>Interpretation reviewed {{ forge.reviewedOn }}, pinned to Stack <code>{{ forge.source.commit }}</code>. This view is a retained editorial snapshot, not a live status feed. The documentation refresh below does not update these descriptions.</p>
+    <p><a href="{{ forge.source | forgeSourceUrl('stack-manifest.json') | escape }}">Exact Stack manifest</a> · <a href="{{ forge.source | forgeSourceUrl('README.md') | escape }}">Exact Stack README</a></p>
+    <p>Source-local ownership, licenses and evidence remain with their owners. Stack’s root license does not automatically license every research area. Read the source licensing map before reuse.</p>
+    <ul>{% for item in forge.manifest.boundaries.hmmm %}<li>{{ item | escape }}</li>{% endfor %}</ul>
+  </details>
+</section>
