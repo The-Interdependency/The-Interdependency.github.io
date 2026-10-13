@@ -102,3 +102,15 @@ test('untracked website files also trigger the entry requirement and missing bas
     rmSync(cwd, { recursive: true, force: true });
   }
 });
+
+// Usage: a branch written earlier may merge later; dates describe authorship,
+// while immutable array order records publication. Neither fact may be rewritten.
+test('retrospective appends preserve original dates and immutable publication order', () => {
+  const published = [legacy, { ...next, date: '2026-10-06' }];
+  const retrospective = { ...correction, date: '2026-09-25' };
+  const current = [...published, retrospective];
+  assert.deepEqual(validateHistory(published, current), { preserved: 2, appended: 1 });
+  assert.throws(() => validateHistory(published, [legacy, retrospective, published[1]]), /changed or moved/);
+  assert.throws(() => validateHistory(published, [legacy, { ...published[1], date: '2026-09-24' }, retrospective]), /changed or moved/);
+  assert.throws(() => validateHistory(published, [legacy, retrospective]), /changed or moved/);
+});

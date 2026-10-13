@@ -47,6 +47,8 @@ for (const button of document.querySelectorAll('[data-msdmd-refresh]')) {
       }
       if (docs) {
         docs.innerHTML = renderDocumentation(payload.documentation);
+        // Keep overflowed code keyboard-scrollable after replacing the static view.
+        for (const pre of docs.querySelectorAll('pre')) pre.setAttribute('tabindex', '0');
         const head = scope?.querySelector('[data-project-doc-head]');
         const branch = scope?.querySelector('[data-project-doc-branch]');
         const count = scope?.querySelector('[data-project-doc-count]');

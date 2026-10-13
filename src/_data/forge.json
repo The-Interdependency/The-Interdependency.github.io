@@ -1,0 +1,466 @@
+{
+  "title": "Stack \u2014 The Forge",
+  "intro": "Where existing work comes together, new constructions take shape, and tested projects earn an independent life.",
+  "reviewedOn": "2026-09-30",
+  "source": {
+    "repository": "The-Interdependency/stack",
+    "commit": "49ca652d24b974a58ed614bdf564ae32bea590aa",
+    "url": "https://github.com/The-Interdependency/stack/blob/49ca652d24b974a58ed614bdf564ae32bea590aa/",
+    "sources": [
+      {
+        "path": "README.md",
+        "blob": "a21d4650693f0c71237145855772505e2d56db7c",
+        "sha256": "6434e413458fbcab34bb3d908f82ed9992a042e2bd688a3c0fb24b4eaec96fd3"
+      },
+      {
+        "path": "stack-manifest.json",
+        "blob": "36563768e947e1d349c960a294adc78e6d7674e1",
+        "sha256": "a5cd75f2d8472219d510517fb616f355bfa9d6bdecb8c9770670ef7882d00865"
+      },
+      {
+        "path": "integration/epac/authority-transition.json",
+        "blob": "ae886b6177ce26eba1bb8f83137e760a263609bb",
+        "sha256": "20c33f747e41a571a1b142bb1a3a70c3ef3ae0967973b5025b9ae9b1b2361646"
+      },
+      {
+        "path": "ahbg/README.md",
+        "blob": "5fd67e39957af14e62315f9b6e302966f341d4c8",
+        "sha256": "3759ffeb1834308aa21ce808d26946ed4618fb277f5f32eff2f37ed29621b5e0"
+      },
+      {
+        "path": "research/english-gonol/README.md",
+        "blob": "a4547cb4f5fdaef03b09ab9350a62fc221da3bda",
+        "sha256": "f9188997aa68c9fddd70ec0be7be931c1d68799093a58364382dc38db5b0d406"
+      },
+      {
+        "path": "research/python-gonol/README.md",
+        "blob": "0efc4353cd32666c60b4eb020e5c7eefaedcd9b9",
+        "sha256": "c7977e618163df95b29cca52acdbbd824b69f27773815ce444c254a9cfecb4fb"
+      },
+      {
+        "path": "research/zfae/README.md",
+        "blob": "932ee893fb382c3008bf75a2de3cf84acf0d6a43",
+        "sha256": "a138355ef75a8f4eaec9a05b3283caa5203335b5858b5d175c68eadca12badbe"
+      },
+      {
+        "path": "research/epac-derived-carrier/README.md",
+        "blob": "7210c009c341b5e1ccd2d06b1678d83f19ba1611",
+        "sha256": "c88356917543494d6442bb506eabbfec9cad7c6b90daca8da871f0103d913e54"
+      },
+      {
+        "path": "research/psfr/README.md",
+        "blob": "4b2fede3b8a54648d358654bf2aadbeda8a9efd5",
+        "sha256": "c7cd4f4617585648328ab585d1b6d2daeafdc426a70aaa7d454be97666d19fa8"
+      },
+      {
+        "path": "research/from-photons-to-macroverse/README.md",
+        "blob": "95377f0a916c84ebcdb4708eaa0da907f380e3d0",
+        "sha256": "b1fa27a683c15a56d74dedd80747ad6c8f41dee22c3a0368a991b59e96684850"
+      },
+      {
+        "path": "research/urpcs/README.md",
+        "blob": "2a93a5f927be204e8cb7ba61819ee311f05cb091",
+        "sha256": "c0f0301cef260d68c0bca53838d85b784b63efb224ea3d9ecb8aa9494b342423"
+      }
+    ]
+  },
+  "manifest": {
+    "schema": "the-interdependency.stack-manifest",
+    "version": "1.1.0",
+    "work_graph_sha256": "7faa844d63c0e6d30727f3310f82c3ebc57193324b05f6c7979ed1fb90e7ef17",
+    "repositories": [
+      {
+        "repository": "The-Interdependency/skill-lib",
+        "commit": "fb3b53a7629f7f03ecf255167d52c13abef1a979",
+        "authority": "organization-wide build and evidence doctrine",
+        "relation": "full operational snapshot at stack root skill-lib/"
+      },
+      {
+        "repository": "The-Interdependency/metapat",
+        "commit": "34d954aa1e2092e615b03a180500f6b6977f501e",
+        "authority": "semantic authority (Meta Energy Theory)",
+        "relation": "pinned canonical repository view at libs/metapat/; stack-local work at research/metapat/"
+      },
+      {
+        "repository": "The-Interdependency/ucns",
+        "commit": "828c0b8bbcfc267efb5701da714191c1f73a81ff",
+        "authority": "geometry and mathematical representation",
+        "relation": "pinned canonical repository view at libs/ucns/; stack-local work at research/ucns/"
+      },
+      {
+        "repository": "The-Interdependency/edcm",
+        "commit": "7951ca32ba0f2494dc68ff9b7f6a80151918a56d",
+        "authority": "measurement and evaluation of text-domain outputs",
+        "relation": "pinned canonical repository view at libs/edcm/; stack-local measurement research at research/edcm/; English Gonol construction is separate at research/english-gonol/"
+      },
+      {
+        "repository": "The-Interdependency/pcea",
+        "commit": "91ffa8c7249dfb810ca64a0bbc500481c0bd12a9",
+        "authority": "prime circle encryption algorithm",
+        "relation": "pinned canonical repository view at libs/pcea/; stack-local work at research/pcea/"
+      },
+      {
+        "repository": "The-Interdependency/ptcna",
+        "commit": "97abdd1bbda61a68e0aac8595a32a3cb0ce73487",
+        "authority": "prime tensor circled neural architecture",
+        "relation": "pinned canonical repository view at libs/ptcna/; stack-local work at research/ptcna/"
+      },
+      {
+        "authority": "independent implementation and public-contract authority for EPAC",
+        "commit": "949cb1cb304927942966c9fb396caf6227120e7f",
+        "lifecycle": "graduated",
+        "relation": "immutable release artifact consumer at integration/epac/; historical forge evidence at research/epac/; libs/epac/ remains unpopulated",
+        "release": {
+          "lock": "integration/epac/release-lock.json",
+          "lock_sha256": "43e3750aa321e567ea1b7ff445ce8008a2936b9902e133e9bbe5ae6b22e4e11d",
+          "tag": "v0.1.0",
+          "url": "https://github.com/The-Interdependency/epac/releases/tag/v0.1.0"
+        },
+        "repository": "The-Interdependency/epac",
+        "transition_receipt": "integration/epac/authority-transition.json",
+        "upstream": {
+          "authority_transfer": false,
+          "commit": "6eea1828a34ed8ec99879f8090ea5d48352d8c2d",
+          "repository": "The-Interdependency/ucns"
+        }
+      }
+    ],
+    "boundaries": {
+      "authority_transfer": false,
+      "proof_status_transfer": false,
+      "measurement_status_transfer": false,
+      "semantic_mapping": "external-provenance",
+      "agent_scope": "cross-repository-work-graph",
+      "hmmm": [
+        "ucns has no LICENSE file at snapshot commit 828c0b8",
+        "Python Gonol Construction remains stack-local research without independent repository or release authority",
+        "URPCS remains an authenticated codec experiment with bounded independent decoder evidence but without a confidentiality model or release authority",
+        "skill-lib remains a special operational snapshot at stack root rather than following the libs/research pair"
+      ]
+    },
+    "research_participants": [
+      {
+        "workspace": "research/from-photons-to-macroverse/",
+        "participant_id": "stack-baseline",
+        "repository": "The-Interdependency/stack",
+        "commit": "77ef8c7fb0ff75a524181655ee9f9641372768f7",
+        "relation": "target composition forge baseline at audit start",
+        "canonical_release": false,
+        "authority_transfer": false
+      },
+      {
+        "workspace": "research/from-photons-to-macroverse/",
+        "participant_id": "skill-lib",
+        "repository": "The-Interdependency/skill-lib",
+        "commit": "61eb3b14db440e6ee9b7bf8de3b646dbfd00fb32",
+        "relation": "audit, domain-claim, work-graph, and hmmm doctrine",
+        "canonical_release": false,
+        "authority_transfer": false
+      },
+      {
+        "workspace": "research/from-photons-to-macroverse/",
+        "participant_id": "metapat",
+        "repository": "The-Interdependency/metapat",
+        "commit": "d6699e21b11c8f8394998efc34a468e2d6efc8b0",
+        "relation": "domain-restraint authority; root impact none",
+        "canonical_release": false,
+        "authority_transfer": false
+      },
+      {
+        "workspace": "research/from-photons-to-macroverse/",
+        "participant_id": "ucns",
+        "repository": "The-Interdependency/ucns",
+        "commit": "ef98748309913588fb13f389f809d5ef6cb5fec3",
+        "relation": "candidate exact visible-circle continuum/gonal trace; no ratification or meaning transfer",
+        "canonical_release": false,
+        "authority_transfer": false
+      },
+      {
+        "workspace": "research/from-photons-to-macroverse/",
+        "participant_id": "edcm",
+        "repository": "The-Interdependency/edcm",
+        "commit": "eb5f200d48a8c4ffa7b943238407fbdac4934946",
+        "relation": "adjacent measurement discipline only; no validation claim",
+        "canonical_release": false,
+        "authority_transfer": false
+      },
+      {
+        "workspace": "research/from-photons-to-macroverse/",
+        "participant_id": "pcea",
+        "repository": "The-Interdependency/pcea",
+        "commit": "834987cb0c1fea5f62d6ea08e5c5bb878c312646",
+        "relation": "adjacent runtime/security work; no ontology transfer",
+        "canonical_release": false,
+        "authority_transfer": false
+      },
+      {
+        "workspace": "research/from-photons-to-macroverse/",
+        "participant_id": "epac",
+        "repository": "The-Interdependency/epac",
+        "commit": "d8868858b2e455381ce670797bdbe47189bdc496",
+        "relation": "adjacent internal research; no external physics transfer",
+        "canonical_release": false,
+        "authority_transfer": false
+      },
+      {
+        "workspace": "research/english-gonol/",
+        "participant_id": "english-gonol",
+        "repository": "The-Interdependency/stack",
+        "commit": "99b3598b02a6e683b3c84184d8ea443b12fc0e1a",
+        "relation": "stack-local English lexical/gonol construction separated from EDCM; consumes UCNS geometry; EDCM may evaluate outputs but does not define construction",
+        "canonical_release": false,
+        "authority_transfer": false
+      },
+      {
+        "workspace": "research/python-gonol/",
+        "participant_id": "python-gonol",
+        "repository": "The-Interdependency/stack",
+        "commit": "0e8384bbb60e4c2189016a212bdd0030d04aed7d",
+        "relation": "stack-local bottom-up Python 3.12 source gonol construction; applies METAPAT affixiation semantics, consumes optional UCNS geometry, and transfers no language authority to UCNS or EDCM",
+        "canonical_release": false,
+        "authority_transfer": false
+      },
+      {
+        "workspace": "research/ucns/",
+        "participant_id": "ucns-source-base",
+        "repository": "The-Interdependency/ucns",
+        "commit": "1975fe70cf4e0826a8020c2da3047569e277af64",
+        "relation": "explicit source base for integrated stack-local UCNS research; does not refresh or replace the manifest-pinned libs/ucns canonical view",
+        "canonical_release": false,
+        "authority_transfer": false
+      },
+      {
+        "authority_transfer": false,
+        "canonical_release": false,
+        "commit": "0e8384bbb60e4c2189016a212bdd0030d04aed7d",
+        "participant_id": "epac",
+        "relation": "historical forge documents and receipts; Python implementation retired in favor of the independent EPAC release",
+        "repository": "The-Interdependency/stack",
+        "workspace": "research/epac/"
+      },
+      {
+        "authority_transfer": false,
+        "canonical_release": false,
+        "commit": "545e135e2efbbcf29f033ab5530ac4876a68b718",
+        "participant_id": "epac-derived-carrier",
+        "relation": "active stack-local carrier audit consuming exact EPAC source; no EPAC implementation/public-contract or scientific standing transfer",
+        "repository": "The-Interdependency/stack",
+        "workspace": "research/epac-derived-carrier/"
+      },
+      {
+        "authority_transfer": false,
+        "canonical_release": false,
+        "commit": "a428a41a38a8b30bacb7025a4d54070b228a8089",
+        "participant_id": "urpcs",
+        "relation": "stack-local authenticated recursive pairing codec research with byte-exact reference vectors; no confidentiality, PCEA compatibility, or UCNS-gonol identity transfer",
+        "repository": "The-Interdependency/stack",
+        "workspace": "research/urpcs/"
+      },
+      {
+        "workspace": "research/english-gonol/",
+        "participant_id": "views-source",
+        "repository": "The-Interdependency/stack",
+        "commit": "1f9a35eb355296fc88d09784c7a3e2e95511ca31",
+        "authority": "Stack English construction and view candidates",
+        "relation": "complete four-view audit source; existing candidate formulas remain unchanged",
+        "canonical_release": false,
+        "authority_transfer": false
+      },
+      {
+        "workspace": "research/english-gonol/",
+        "participant_id": "views-ucns-motion",
+        "repository": "The-Interdependency/ucns",
+        "commit": "1cf10c2df2541a332a77f2ed3feda0c6bef4abcc",
+        "authority": "UCNS native motion and scoped displacement geometry",
+        "relation": "exact eight-file motion dependency closure consumed for every word; no broader geometry selection",
+        "canonical_release": false,
+        "authority_transfer": false
+      },
+      {
+        "workspace": "research/english-gonol/",
+        "participant_id": "views-doctrine",
+        "repository": "The-Interdependency/skill-lib",
+        "commit": "abd259b4722901317e4388d774a20d6819d959c2",
+        "authority": "organization build, complete-scope and option-selection doctrine",
+        "relation": "full-corpus comparison discipline; address utility distinguished from downstream inference usefulness",
+        "canonical_release": false,
+        "authority_transfer": false
+      },
+      {
+        "workspace": "research/zfae/",
+        "participant_id": "stack-baseline",
+        "repository": "The-Interdependency/stack",
+        "commit": "d713cc5f901d74deb902a191837ef5657dbaba94",
+        "authority": "composition forge and existing English/Python construction owner",
+        "relation": "research baseline; no new canonical runtime",
+        "canonical_release": false,
+        "authority_transfer": false
+      },
+      {
+        "workspace": "research/zfae/",
+        "participant_id": "zfae",
+        "repository": "The-Interdependency/zfae",
+        "commit": "95fd37ef0e1775643399c8a9e8292190abf05c04",
+        "authority": "ZFAE conceptual/specification authority",
+        "relation": "construction questions and source-bound carrier observation",
+        "canonical_release": false,
+        "authority_transfer": false
+      },
+      {
+        "workspace": "research/zfae/",
+        "participant_id": "ptcna",
+        "repository": "The-Interdependency/ptcna",
+        "commit": "a06a049cd8722adaad32dbc9c36d9c87b0204236",
+        "authority": "PTCNA construction authority",
+        "relation": "current intended-construction gate; historical scaffold is not intended architecture",
+        "canonical_release": false,
+        "authority_transfer": false
+      },
+      {
+        "workspace": "research/zfae/",
+        "participant_id": "a0",
+        "repository": "The-Interdependency/a0",
+        "commit": "f4faf5c50dd5bc55e377279a0e403e088bcdced8",
+        "authority": "a0 runtime integration authority",
+        "relation": "producer-state and Zeta evaluation source inspection; no runtime mutation",
+        "canonical_release": false,
+        "authority_transfer": false
+      },
+      {
+        "workspace": "research/zfae/",
+        "participant_id": "a0-betatest",
+        "repository": "The-Interdependency/a0-betatest",
+        "commit": "5d51d70a0ae6044d1386d72bd0cada9d48887f77",
+        "authority": "separate a0-betatest implementation authority",
+        "relation": "exact heuristic parser comparison source; not equivalent to a0",
+        "canonical_release": false,
+        "authority_transfer": false
+      },
+      {
+        "workspace": "research/zfae/",
+        "participant_id": "uchc",
+        "repository": "The-Interdependency/uchc",
+        "commit": "118b48802b20509afa556cf3ce68cee915628af0",
+        "authority": "intended independent language-construct authority; Stack retains current forge ownership",
+        "relation": "extracted construct and pending release/reconsumption boundary",
+        "canonical_release": false,
+        "authority_transfer": false
+      },
+      {
+        "workspace": "research/zfae/",
+        "participant_id": "metapat",
+        "repository": "The-Interdependency/metapat",
+        "commit": "e4165b0cac9eca41daef9c2f941881028ca55d48",
+        "authority": "semantic authority for its own domain",
+        "relation": "current domain-restraint consultation; root impact none",
+        "canonical_release": false,
+        "authority_transfer": false
+      },
+      {
+        "workspace": "research/zfae/",
+        "participant_id": "skill-lib",
+        "repository": "The-Interdependency/skill-lib",
+        "commit": "abd259b4722901317e4388d774a20d6819d959c2",
+        "authority": "organization build and evidence doctrine",
+        "relation": "current research, source, structural-update and metadata rules; no snapshot refresh",
+        "canonical_release": false,
+        "authority_transfer": false
+      },
+      {
+        "workspace": "research/zfae/",
+        "participant_id": "ucns",
+        "repository": "The-Interdependency/ucns",
+        "commit": "4086ab82399c4d142b0eacfbc09e0a69ed151aa5",
+        "authority": "UCNS geometry and Public Gonol carrier authority",
+        "relation": "exact 157-position carrier consumed by the existing Stack glyph producer for the declared parser profile; no function semantics inferred",
+        "canonical_release": false,
+        "authority_transfer": false
+      },
+      {
+        "workspace": "research/zfae/",
+        "participant_id": "uchc-input-candidate",
+        "repository": "The-Interdependency/uchc",
+        "commit": "3d82007b88f74ded88ca913d6e85bcd6f6ff024d",
+        "authority": "extracted language construction and input public contract; domain graduation incomplete",
+        "relation": "exact installed wheel consumer via research/zfae/UCHC_INPUT.json; no fixed-width semantic projection or neural readiness promotion",
+        "canonical_release": false,
+        "authority_transfer": false
+      }
+    ]
+  },
+  "research": [
+    {
+      "id": "ahbg",
+      "title": "AHBG \u2014 Agent Harness Benchmark Game",
+      "path": "ahbg/README.md",
+      "purpose": "A persistent game world for agents to perceive, plan, communicate, move and build.",
+      "standing": "Emerging game and benchmark",
+      "relations": "UCNS supplies board geometry; AHBG supplies game rules and agent interaction.",
+      "hmmm": "The current target is one functional persistent plane; wider multiplayer and federation remain deferred."
+    },
+    {
+      "id": "english-gonol",
+      "title": "English Gonol Construction",
+      "path": "research/english-gonol/README.md",
+      "purpose": "Builds English character, word and definition constructions while preserving identity, order and source positions.",
+      "standing": "Stack-local research",
+      "relations": "METAPAT supplies affixiation semantics, UCNS supplies geometry, and EDCM may evaluate the outputs.",
+      "hmmm": "Full-corpus evidence does not establish downstream inference quality or independent graduation."
+    },
+    {
+      "id": "python-gonol",
+      "title": "Python Gonol Construction",
+      "path": "research/python-gonol/README.md",
+      "purpose": "Constructs Python source from glyphs and control characters while retaining every source occurrence.",
+      "standing": "Stack-local research",
+      "relations": "Consumes UCNS Public Gonol geometry and the construction method used by English Gonol.",
+      "hmmm": "Parser tokens and syntax trees are witnesses; independent release authority remains unresolved."
+    },
+    {
+      "id": "zfae",
+      "title": "ZFAE construction research",
+      "path": "research/zfae/README.md",
+      "purpose": "Investigates how admitted input and retained state produce an attributable inference.",
+      "standing": "Incubating",
+      "relations": "ZFAE owns the conceptual specification, PTCNA owns neural construction, and a0 owns runtime integration.",
+      "hmmm": "Neural-audit prerequisites and UCHC release/reconsumption remain incomplete in this source snapshot."
+    },
+    {
+      "id": "epac-derived-carrier",
+      "title": "EPAC-derived carrier audit",
+      "path": "research/epac-derived-carrier/README.md",
+      "purpose": "Tests whether coordinates derived from EPAC preserve the frozen carrier controls.",
+      "standing": "Active Stack audit",
+      "relations": "Consumes exact EPAC source; EPAC keeps its implementation and public-contract authority.",
+      "hmmm": "Bond-context orbital participation, ligand-field regime, coordination capacity and topology remain unresolved."
+    },
+    {
+      "id": "psfr",
+      "title": "Psychosocial Fauna Research",
+      "path": "research/psfr/README.md",
+      "purpose": "Studies transmissible thought-pattern lineages, identity coupling, susceptibility, accountability and repair.",
+      "standing": "Proposed cross-domain theory",
+      "relations": "Keeps pattern-lineage ecology and agency-displacement phenomenology as separate research tracks.",
+      "hmmm": "The simulator does not establish external-agent ontology; this is not a clinical or diagnostic instrument."
+    },
+    {
+      "id": "from-photons-to-macroverse",
+      "title": "From Photons to the Macroverse",
+      "path": "research/from-photons-to-macroverse/README.md",
+      "purpose": "Preserves and audits a consciousness-first candidate theory and its proposed synthetic tests.",
+      "standing": "Candidate research program",
+      "relations": "Retains source claims, audit findings and exact work-graph identities without transferring authority from adjacent projects.",
+      "hmmm": "Candidate-program survival adds no empirical validation of the metaphysical postulate or consciousness claims."
+    },
+    {
+      "id": "urpcs",
+      "title": "URPCS codec experiment",
+      "path": "research/urpcs/README.md",
+      "purpose": "Explores a recursive pairing and witness format with reference vectors and an independent decoder.",
+      "standing": "Bounded codec research",
+      "relations": "A codec-local Gonol is separate from UCNS geometry; PCEA is a separate project.",
+      "hmmm": "Round-trip and decoder evidence establish neither confidentiality nor production security."
+    }
+  ],
+  "upstreamHmmm": "This snapshot provides the upstream contribution route, but no consolidated ledger of completed upstream returns. No completed return is inferred from a research workspace."
+}

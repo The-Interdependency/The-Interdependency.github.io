@@ -14,12 +14,15 @@ title: "Project: {{ repo.name }}"
 <div data-repository-refresh-scope>
 <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/projects/">Projects</a> / {{ repo.name }}</nav>
 <header class="page-head">
-  <p class="eyebrow">{{ repo.category }}</p>
-  <h1>{{ repo.name }}</h1>
+  <p class="eyebrow">{% if repo.name == 'stack' %}Composition forge{% else %}{{ repo.category }}{% endif %}</p>
+  <h1>{% if repo.name == 'stack' %}{{ forge.title }}{% else %}{{ repo.name }}{% endif %}</h1>
   <div class="status-row"><span class="status {{ repo.status | statusClass }}">{{ repo.status }}</span>{% if repo.fork %}<span class="status">fork</span>{% endif %}</div>
-  <p class="lede">{{ repo.description or 'No public summary supplied.' }}</p>
+  <p class="lede">{% if repo.name == 'stack' %}{{ forge.intro }}{% else %}{{ repo.description or 'No public summary supplied.' }}{% endif %}</p>
 </header>
 
+{% if repo.name == 'stack' %}
+{% include "components/forge.njk" %}
+{% else %}
 {% if repo.purpose %}
 <section class="panel"><h2>Purpose within the whole</h2><p>{{ repo.purpose }}</p></section>
 {% else %}
@@ -28,6 +31,7 @@ title: "Project: {{ repo.name }}"
 
 {% if repo.relationships.length %}
 <section><h2>Relationships</h2><ul>{% for relation in repo.relationships %}<li>{{ relation }}</li>{% endfor %}</ul></section>
+{% endif %}
 {% endif %}
 
 <section class="panel" aria-labelledby="project-msdmd-title">

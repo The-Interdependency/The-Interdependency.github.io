@@ -68,6 +68,7 @@
   <nav class="section-nav" aria-label="Projects section">
     <span class="section-nav-label">Projects</span>
     <a href="/projects/"{% if page.url == "/projects/" %} aria-current="page"{% endif %}>Projects</a>
+    {% for project in generated.repos.repositories %}{% if project.name == 'stack' %}<a href="/projects/{{ project.slug }}/"{% if page.url == "/projects/stack/" %} aria-current="page"{% endif %}>The Forge</a>{% endif %}{% endfor %}
     <a href="/sitrep/"{% if page.url == "/sitrep/" %} aria-current="page"{% endif %}>Repository SITREP</a>
     <a href="/artifacts/"{% if "/artifacts/" in page.url %} aria-current="page"{% endif %}>Artifacts</a>
     <a href="/projects/map/"{% if page.url == "/projects/map/" %} aria-current="page"{% endif %}>Organization map</a>

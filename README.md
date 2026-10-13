@@ -118,7 +118,7 @@ Repository source cannot configure the Pages source, custom domain, DNS, HTTPS, 
 
 ## Maintaining the builder journal
 
-The canonical behavior contract is `The-Interdependency/skill-lib:website-builder-journal`, consumed here from commit `0981aed7695ba2675d5de35ef43ba734e94adea0`. Before changing any website file, load `.agents/skills/website-builder-journal/SKILL.md`.
+The canonical behavior contract is `The-Interdependency/skill-lib:website-builder-journal`, consumed here from commit `38c64332b840b2bbe1c07e53aeee8996644548e9`. Before changing any website file, load `.agents/skills/website-builder-journal/SKILL.md`.
 
 Every website change transaction appends at least one object to `src/_data/builder.json`. Preserve every prior object unchanged. New entries require a unique `id`, `date`, `time` with explicit UTC offset, exact runtime `model`, and Markdown `body`. Subject matter belongs wholly to the model; no title, patch summary, theme, minimum length, or changelog structure is required. Corrections append new entries.
 

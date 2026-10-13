@@ -15,7 +15,7 @@ import {
 //   network: delegates exact-head reads to repository_public_projection
 //   storage: generated projectDocs JSON plus last-known-good snapshot
 //   authority: source repositories own document content; this website owns presentation only
-//   failure: same-head last-known-good data may be retained per repository with fallback=true (online and OFFLINE=1); a different, unknown, or missing head, a missing snapshot entry, and a missing/unreadable/corrupt snapshot all emit unavailable projections; non-public repositories never reuse cached document content
+//   failure: same-head last-known-good data may be retained per repository with fallback=true (online and OFFLINE=1); a different, unknown, or missing head, a missing snapshot entry, and a missing/unreadable/corrupt snapshot, and structurally invalid snapshot entries all emit unavailable projections; non-public repositories never reuse cached document content
 // === END BOUNDARIES ===
 
 const GENERATED_REPOS = 'src/_data/generated/repos.json';
@@ -72,12 +72,40 @@ function unavailableProjection(repo, message) {
   };
 }
 
+// Usage: both refresh modes apply the same retained-observation contract. A matching
+// head alone is not evidence that cached documentation is structurally usable.
+function isObject(value) {
+  return value !== null && typeof value === 'object' && !Array.isArray(value);
+}
+
+function isTextArray(value) {
+  return Array.isArray(value) && value.every(item => typeof item === 'string');
+}
+
+function validObservedProjection(prior, repo) {
+  if (!isObject(prior) || prior.unavailable || !repo.head_sha || prior.headSha !== repo.head_sha
+      || prior.repository !== 'The-Interdependency/' + repo.name || prior.name !== repo.name
+      || prior.schema !== 'interdependency.repository-public-projection/0.1.0'
+      || !isTextArray(prior.hmmm)) return false;
+  const docs = prior.documentation;
+  if (!isObject(docs) || !isTextArray(docs.hmmm) || !Array.isArray(docs.documents)) return false;
+  const validDocument = document => isObject(document)
+    && typeof document.path === 'string' && document.path.length > 0
+    && typeof document.content === 'string'
+    && typeof document.sourceUrl === 'string' && document.sourceUrl.length > 0;
+  if (docs.readme !== null && !validDocument(docs.readme)) return false;
+  if (!docs.documents.every(validDocument)) return false;
+  return Number.isSafeInteger(docs.projectedDocumentCount)
+    && docs.projectedDocumentCount === docs.documents.length + (docs.readme === null ? 0 : 1)
+    && Number.isSafeInteger(docs.projectedBytes) && docs.projectedBytes >= 0;
+}
+
 // Offline projection is keyed by the current repos.json, never by the snapshot: a snapshot
 // entry is reused only when its headSha equals the repository's current head_sha.
 async function offlineProjection(snapshot) {
   const repoData = JSON.parse(await readFile(GENERATED_REPOS, 'utf8'));
   const boundary = snapshotBoundary(snapshot);
-  const snapshotByRepo = snapshot.data?.byRepository && typeof snapshot.data.byRepository === 'object'
+  const snapshotByRepo = isObject(snapshot.data?.byRepository)
     ? snapshot.data.byRepository
     : {};
   const byRepository = {};
@@ -86,7 +114,7 @@ async function offlineProjection(snapshot) {
 
   for (const repo of repoData.repositories || []) {
     const prior = snapshotByRepo[repo.name];
-    if (!boundary && prior && !prior.unavailable && repo.head_sha && prior.headSha === repo.head_sha) {
+    if (!boundary && validObservedProjection(prior, repo)) {
       fallbackCount += 1;
       byRepository[repo.name] = {
         ...prior,
@@ -102,6 +130,8 @@ async function offlineProjection(snapshot) {
       message = 'OFFLINE=1 and the current repository head is unknown; snapshot documentation cannot be matched to it and remains unavailable.';
     } else if (!prior || prior.unavailable) {
       message = 'OFFLINE=1 and the last-known-good snapshot holds no observed documentation for this repository; document content remains unavailable.';
+    } else if (prior.headSha === repo.head_sha) {
+      message = 'OFFLINE=1 and the matching-head snapshot entry is structurally invalid; repository document content remains unavailable.';
     } else {
       message = 'OFFLINE=1 and the last-known-good snapshot was observed at a different head than the current repository head; stale documentation was not reused.';
     }
@@ -141,7 +171,7 @@ async function main() {
   }
 
   const repoData = JSON.parse(await readFile(GENERATED_REPOS, 'utf8'));
-  const previousByRepo = snapshot.data?.byRepository || {};
+  const previousByRepo = isObject(snapshot.data?.byRepository) ? snapshot.data.byRepository : {};
   const byRepository = {};
   let fallbackCount = 0;
 
@@ -163,7 +193,7 @@ async function main() {
         continue;
       }
       const prior = previousByRepo[repo.name];
-      if (prior?.headSha === repo.head_sha) {
+      if (validObservedProjection(prior, repo)) {
         fallbackCount += 1;
         byRepository[repo.name] = {
           ...prior,

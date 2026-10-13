@@ -116,8 +116,8 @@ function observedProjection(name, headSha) {
         content: '# Observed ' + name + '\n\nSnapshot README body.',
         sourceUrl: 'https://github.com/The-Interdependency/' + name + '/blob/' + headSha + '/README.md'
       },
-      documents: [{ path: 'docs/guide.md', bytes: 42, sourceUrl: 'https://github.com/The-Interdependency/' + name + '/blob/' + headSha + '/docs/guide.md' }],
-      projectedDocumentCount: 1,
+      documents: [{ path: 'docs/guide.md', content: 'Guide body.', bytes: 42, sourceUrl: 'https://github.com/The-Interdependency/' + name + '/blob/' + headSha + '/docs/guide.md' }],
+      projectedDocumentCount: 2,
       projectedBytes: 42,
       hmmm: []
     },
@@ -129,7 +129,7 @@ function observedProjection(name, headSha) {
 
 // Usage: runs the real project-docs refresh with OFFLINE=1 in an isolated working tree.
 // snapshot: undefined (no file), a string (raw file bytes), or an object (serialized JSON).
-async function runOfflineProjectDocs(repositories, snapshot) {
+async function runOfflineProjectDocs(repositories, snapshot, { onlineFailure = false } = {}) {
   const root = await mkdtemp(join(tmpdir(), 'interdependency-project-docs-offline-'));
   await mkdir(join(root, 'src', '_data', 'generated'), { recursive: true });
   await writeFile(join(root, 'src', '_data', 'generated', 'repos.json'), JSON.stringify({ repositories }, null, 2));
@@ -140,9 +140,19 @@ async function runOfflineProjectDocs(repositories, snapshot) {
       typeof snapshot === 'string' ? snapshot : JSON.stringify(snapshot, null, 2)
     );
   }
-  const result = await execFileAsync(process.execPath, [projectDocsScriptPath], {
+  let executable = projectDocsScriptPath;
+  if (onlineFailure) {
+    // Run the identical script with only its network dependency replaced.
+    await mkdir(join(root, 'scripts'), { recursive: true });
+    executable = join(root, 'scripts', 'fetch-project-docs.mjs');
+    await copyFile(projectDocsScriptPath, executable);
+    await writeFile(join(root, 'scripts', 'repository-public-projection.mjs'),
+      'export async function fetchRepositoryPublicProjection() { throw new Error("fixture network failure"); }\n' +
+      'export function isRepositoryNotPublicError() { return false; }\n');
+  }
+  const result = await execFileAsync(process.execPath, [executable], {
     cwd: root,
-    env: { ...process.env, OFFLINE: '1', GITHUB_TOKEN: '' }
+    env: { ...process.env, OFFLINE: onlineFailure ? '0' : '1', GITHUB_TOKEN: '' }
   });
   const generated = JSON.parse(await readFile(join(root, 'src', '_data', 'generated', 'projectDocs.json'), 'utf8'));
   return { root, stdout: result.stdout, generated };
@@ -227,7 +237,7 @@ test('offline snapshot entry at the matching head is retained per repository as 
     assert.match(html, /Snapshot README body\./);
     assert.match(html, /retained from a last-known-good projection observed at the same repository head/);
     assert.equal(provenance(html, 'head'), headA);
-    assert.equal(provenance(html, 'count'), '1');
+    assert.equal(provenance(html, 'count'), '2');
     assert.equal(provenance(html, 'mode'), 'same-head last-known-good fallback');
     assert.doesNotMatch(html, /exact-head build observation/);
   } finally {
@@ -314,3 +324,64 @@ test('repository with no emitted documentation projection renders unavailable ra
     await rm(root, { recursive: true, force: true });
   }
 });
+
+// Usage: exercise each corrupted retained shape through both real fallback paths.
+for (const onlineFailure of [false, true]) {
+  test(`${onlineFailure ? 'online failed refresh' : 'offline refresh'} rejects malformed matching-head snapshots`, async () => {
+    const malformed = [
+      ['object-hmmm', value => { value.hmmm = {}; }],
+      ['string-hmmm', value => { value.hmmm = 'not a list'; }],
+      ['missing-documentation', value => { delete value.documentation; }],
+      ['array-documentation', value => { value.documentation = []; }],
+      ['invalid-document-hmmm', value => { value.documentation.hmmm = {}; }],
+      ['missing-documents', value => { delete value.documentation.documents; }],
+      ['invalid-document', value => { value.documentation.documents = [null]; }],
+      ['missing-readme', value => { delete value.documentation.readme; }],
+      ['missing-content', value => { delete value.documentation.readme.content; }],
+      ['invalid-count', value => { value.documentation.projectedDocumentCount = 0; }],
+      ['invalid-bytes', value => { value.documentation.projectedBytes = null; }],
+      ['wrong-repository', value => { value.repository = 'The-Interdependency/other'; }]
+    ];
+    const repos = [repoRow('good-project', headA), ...malformed.map(([name]) => repoRow(name, headA))];
+    const byRepository = { 'good-project': observedProjection('good-project', headA) };
+    for (const [name, corrupt] of malformed) {
+      byRepository[name] = observedProjection(name, headA);
+      corrupt(byRepository[name]);
+    }
+    const { root, generated } = await runOfflineProjectDocs(repos, { byRepository }, { onlineFailure });
+    try {
+      assert.equal(generated.fallbackCount, 1);
+      assert.equal(generated.byRepository['good-project'].fallback, true);
+      const pages = await renderProjectPages(root, repos, generated);
+      for (const [name] of malformed) {
+        const projection = generated.byRepository[name];
+        assert.equal(projection.unavailable, true, name);
+        assert.equal(projection.fallback, false, name);
+        assert.equal(projection.headSha, null, name);
+        assert.equal(projection.documentation.projectedDocumentCount, null, name);
+        assert.equal(provenance(pages[name], 'mode'), 'unavailable', name);
+        assert.equal(provenance(pages[name], 'count'), 'hmmm', name);
+        assert.doesNotMatch(pages[name], /Snapshot README body|No root README\.md|exact-head build observation/, name);
+        if (!onlineFailure) assert.match(projection.hmmm.join(' '), /structurally invalid/, name);
+      }
+    } finally {
+      await rm(root, { recursive: true, force: true });
+    }
+  });
+
+  test(`${onlineFailure ? 'online failed refresh' : 'offline refresh'} retains a valid observed empty documentation set`, async () => {
+    const repos = [repoRow('empty-project', headA)];
+    const projection = observedProjection('empty-project', headA);
+    projection.documentation = { readme: null, documents: [], projectedDocumentCount: 0, projectedBytes: 0, hmmm: [] };
+    const { root, generated } = await runOfflineProjectDocs(repos, { byRepository: { 'empty-project': projection } }, { onlineFailure });
+    try {
+      assert.equal(generated.fallbackCount, 1);
+      assert.equal(generated.byRepository['empty-project'].fallback, true);
+      const html = (await renderProjectPages(root, repos, generated))['empty-project'];
+      assert.equal(provenance(html, 'count'), '0');
+      assert.equal(provenance(html, 'mode'), 'same-head last-known-good fallback');
+    } finally {
+      await rm(root, { recursive: true, force: true });
+    }
+  });
+}

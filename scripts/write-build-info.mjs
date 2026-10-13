@@ -49,11 +49,17 @@ const repositories = JSON.parse(await readFile('src/_data/generated/repos.json',
 const organizationMsdmd = JSON.parse(await readFile('src/_data/generated/orgMsdmd.json', 'utf8'));
 const sitrep = JSON.parse(await readFile('src/_data/generated/sitrep.json', 'utf8'));
 const works = JSON.parse(await readFile('src/_data/generated/works.json', 'utf8'));
+const forge = JSON.parse(await readFile('src/_data/forge.json', 'utf8'));
 const commit = process.env.GITHUB_SHA || localCommit();
 const info = {
   repository: process.env.GITHUB_REPOSITORY || 'The-Interdependency/The-Interdependency.github.io',
   commit,
   generatedAt: new Date().toISOString(),
+  forge: {
+    mode: 'reviewed-source-snapshot',
+    reviewedOn: forge.reviewedOn,
+    ...forge.source
+  },
   canonicalSource: {
     repository: canon.source.repository,
     path: canon.source.path,
