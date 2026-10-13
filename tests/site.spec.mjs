@@ -363,3 +363,44 @@ test('specialist pages retain only the scripts that enhance their own content', 
   await expect(page.locator('script[src="/assets/js/sitrep.js"]')).toHaveCount(1);
   await expect(page.locator('script[src="/assets/js/org-map.js"]')).toHaveCount(0);
 });
+
+// Usage: exercise the real refresh client with deterministic unavailable/live states.
+// Failure preserves whatever the reader currently has, including an unavailable
+// placeholder or the result of an earlier successful refresh.
+test('failed refresh preserves unavailable and previously refreshed content without false provenance', async ({ page }) => {
+  await page.goto('/projects/ucns/');
+  const content = page.locator('[data-project-docs-content]');
+  const status = page.locator('[data-msdmd-refresh-status]');
+  const mode = page.locator('[data-project-doc-mode]');
+  const head = page.locator('[data-project-doc-head]');
+  await content.evaluate(element => { element.textContent = 'Repository documentation is unavailable; no observation claimed.'; });
+  await mode.evaluate(element => { element.textContent = 'unavailable'; });
+  await head.evaluate(element => { element.textContent = 'hmmm'; });
+  let attempt = 0;
+  await page.route('https://the-interdependency-mcp-live.onrender.com/api/repository-refresh', route => {
+    attempt += 1;
+    if (attempt !== 2) return route.abort();
+    return route.fulfill({ contentType: 'application/json', body: JSON.stringify({
+      headSha: 'a'.repeat(40), defaultBranch: 'main', msdmd: null,
+      documentation: { readme: { html: '<p>Fresh README witness.</p>', sourceUrl: 'https://github.com/The-Interdependency/ucns' }, documents: [], projectedDocumentCount: 1, hmmm: [] }
+    }) });
+  });
+  const button = page.getByRole('button', { name: 'Refresh MSDMD + docs' });
+  await button.click();
+  await expect(status).toHaveText('hmmm · live refresh unavailable; the current page content remains displayed.');
+  await expect(content).toContainText('no observation claimed');
+  await expect(mode).toHaveText('unavailable');
+  await expect(head).toHaveText('hmmm');
+  await expect(button).toBeEnabled();
+  await button.click();
+  await expect(content).toContainText('Fresh README witness.');
+  await expect(mode).toHaveText('live exact-head observation');
+  await expect(head).toHaveText('a'.repeat(40));
+  await expect(button).toBeEnabled();
+  await button.click();
+  await expect(status).toHaveText('hmmm · live refresh unavailable; the current page content remains displayed.');
+  await expect(content).toContainText('Fresh README witness.');
+  await expect(mode).toHaveText('live exact-head observation');
+  await expect(head).toHaveText('a'.repeat(40));
+  await expect(button).toBeEnabled();
+});

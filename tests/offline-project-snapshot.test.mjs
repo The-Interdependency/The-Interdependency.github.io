@@ -102,6 +102,8 @@ function repoRow(name, headSha) {
 }
 
 function observedProjection(name, headSha) {
+  const readmeContent = '# Observed ' + name + '\n\nSnapshot README body.';
+  const guideContent = 'Guide body.';
   return {
     schema: 'interdependency.repository-public-projection/0.1.0',
     repository: 'The-Interdependency/' + name,
@@ -113,12 +115,13 @@ function observedProjection(name, headSha) {
     documentation: {
       readme: {
         path: 'README.md',
-        content: '# Observed ' + name + '\n\nSnapshot README body.',
+        content: readmeContent,
+        bytes: Buffer.byteLength(readmeContent),
         sourceUrl: 'https://github.com/The-Interdependency/' + name + '/blob/' + headSha + '/README.md'
       },
-      documents: [{ path: 'docs/guide.md', content: 'Guide body.', bytes: 42, sourceUrl: 'https://github.com/The-Interdependency/' + name + '/blob/' + headSha + '/docs/guide.md' }],
+      documents: [{ path: 'docs/guide.md', content: guideContent, bytes: Buffer.byteLength(guideContent), sourceUrl: 'https://github.com/The-Interdependency/' + name + '/blob/' + headSha + '/docs/guide.md' }],
       projectedDocumentCount: 2,
-      projectedBytes: 42,
+      projectedBytes: Buffer.byteLength(readmeContent) + Buffer.byteLength(guideContent),
       hmmm: []
     },
     msdmd: null,
@@ -212,6 +215,8 @@ test('clean offline project documentation refresh emits unavailable observations
     assert.match(html, /no document-content observation is claimed/);
     assert.doesNotMatch(html, /No root README\.md/);
     assert.doesNotMatch(html, /copied from the exact repository head/);
+    assert.doesNotMatch(html, /build-time exact-head projection remains/);
+    assert.match(html, /The displayed content stays in place if refresh fails/);
     assert.equal(provenance(html, 'count'), 'hmmm');
     assert.equal(provenance(html, 'mode'), 'unavailable');
   } finally {
@@ -340,6 +345,13 @@ for (const onlineFailure of [false, true]) {
       ['missing-content', value => { delete value.documentation.readme.content; }],
       ['invalid-count', value => { value.documentation.projectedDocumentCount = 0; }],
       ['invalid-bytes', value => { value.documentation.projectedBytes = null; }],
+      ['missing-document-bytes', value => { delete value.documentation.documents[0].bytes; }],
+      ['string-document-bytes', value => { value.documentation.documents[0].bytes = '11'; }],
+      ['negative-document-bytes', value => { value.documentation.documents[0].bytes = -1; }],
+      ['unsafe-document-bytes', value => { value.documentation.documents[0].bytes = Number.MAX_SAFE_INTEGER + 1; }],
+      ['wrong-document-bytes', value => { value.documentation.documents[0].bytes += 1; }],
+      ['missing-readme-bytes', value => { delete value.documentation.readme.bytes; }],
+      ['wrong-aggregate-bytes', value => { value.documentation.projectedBytes += 1; }],
       ['wrong-repository', value => { value.repository = 'The-Interdependency/other'; }]
     ];
     const repos = [repoRow('good-project', headA), ...malformed.map(([name]) => repoRow(name, headA))];

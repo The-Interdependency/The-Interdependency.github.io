@@ -92,12 +92,15 @@ function validObservedProjection(prior, repo) {
   const validDocument = document => isObject(document)
     && typeof document.path === 'string' && document.path.length > 0
     && typeof document.content === 'string'
+    && Number.isSafeInteger(document.bytes) && document.bytes >= 0
+    && document.bytes === Buffer.byteLength(document.content)
     && typeof document.sourceUrl === 'string' && document.sourceUrl.length > 0;
   if (docs.readme !== null && !validDocument(docs.readme)) return false;
   if (!docs.documents.every(validDocument)) return false;
   return Number.isSafeInteger(docs.projectedDocumentCount)
     && docs.projectedDocumentCount === docs.documents.length + (docs.readme === null ? 0 : 1)
-    && Number.isSafeInteger(docs.projectedBytes) && docs.projectedBytes >= 0;
+    && Number.isSafeInteger(docs.projectedBytes) && docs.projectedBytes >= 0
+    && docs.projectedBytes === docs.documents.reduce((sum, document) => sum + document.bytes, docs.readme?.bytes || 0);
 }
 
 // Offline projection is keyed by the current repos.json, never by the snapshot: a snapshot

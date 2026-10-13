@@ -60,7 +60,7 @@ for (const button of document.querySelectorAll('[data-msdmd-refresh]')) {
       }
       button.textContent = docs ? 'Refresh MSDMD + docs' : 'Refresh MSDMD';
     } catch (error) {
-      if (status) status.textContent = 'hmmm · live refresh unavailable; static exact-head projection remains displayed.';
+      if (status) status.textContent = 'hmmm · live refresh unavailable; the current page content remains displayed.';
     } finally {
       button.disabled = false;
     }
