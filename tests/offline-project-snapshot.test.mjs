@@ -8,7 +8,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { promisify } from 'node:util';
 import Eleventy from '@11ty/eleventy';
-import { MAX_DOCUMENT_BYTES, MAX_TOTAL_BYTES } from '../scripts/repository-public-projection.mjs';
+import { fetchRepositoryPublicProjection, MAX_DOCUMENT_BYTES, MAX_TOTAL_BYTES } from '../scripts/repository-public-projection.mjs';
 
 const execFileAsync = promisify(execFile);
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -372,6 +372,8 @@ for (const onlineFailure of [false, true]) {
       ['oversized-document', value => { const doc = value.documentation.documents[0]; doc.content = 'x'.repeat(MAX_DOCUMENT_BYTES + 1); doc.bytes = Buffer.byteLength(doc.content); doc.sha256 = createHash('sha256').update(doc.content).digest('hex'); value.documentation.projectedBytes = value.documentation.readme.bytes + doc.bytes; }],
       ['excess-document-count', value => { const doc = value.documentation.documents[0]; value.documentation.documents = Array.from({ length: 33 }, (_, i) => ({ ...doc, path: 'docs/guide-' + i + '.md', sourceUrl: 'https://github.com/' + value.repository + '/blob/' + headA + '/docs/guide-' + i + '.md' })); value.documentation.projectedDocumentCount = 34; value.documentation.projectedBytes = value.documentation.readme.bytes + 33 * doc.bytes; }],
       ['excess-aggregate-bytes', value => { const content = 'x'.repeat(MAX_DOCUMENT_BYTES); const bytes = Buffer.byteLength(content); const sha256 = createHash('sha256').update(content).digest('hex'); const count = Math.floor(MAX_TOTAL_BYTES / bytes) + 1; value.documentation.documents = Array.from({ length: count }, (_, i) => ({ path: 'docs/large-' + i + '.md', sourceUrl: 'https://github.com/' + value.repository + '/blob/' + headA + '/docs/large-' + i + '.md', content, bytes, sha256 })); value.documentation.projectedDocumentCount = count + 1; value.documentation.projectedBytes = value.documentation.readme.bytes + count * bytes; }],
+      ['ill-formed-path', value => { value.documentation.documents[0].path = 'docs/\ud800.md'; }],
+      ['ill-formed-content', value => { const doc = value.documentation.documents[0]; doc.content = '\ud800'; doc.bytes = Buffer.byteLength(doc.content); doc.sha256 = createHash('sha256').update(doc.content).digest('hex'); value.documentation.projectedBytes = value.documentation.readme.bytes + doc.bytes; }],
       ['wrong-repository', value => { value.repository = 'The-Interdependency/other'; }]
     ];
     const repos = [repoRow('good-project', headA), ...malformed.map(([name]) => repoRow(name, headA))];
@@ -451,5 +453,62 @@ test('matching invalid head identifiers never qualify as observed fallback', asy
     } finally {
       await rm(root, { recursive: true, force: true });
     }
+  }
+});
+
+// Usage: a null dedicated README slot cannot establish root README absence.
+// Git can contain case-variant root names, and the producer can omit the selected
+// README after a 404 while retaining another root README in the document index.
+for (const omitSelectedReadme of [false, true]) {
+  test(`actual producer case-variant README output remains valid when selected README is ${omitSelectedReadme ? 'omitted' : 'present'}`, async () => {
+    const originalFetch = globalThis.fetch;
+    let projection;
+    globalThis.fetch = async target => {
+      const url = new URL(target);
+      if (url.origin === 'https://api.github.com') {
+        return { ok: true, json: async () => url.pathname.includes('/git/trees/')
+          ? { tree: ['README.md', 'readme.md', 'docs/guide.md'].map(path => ({ type: 'blob', path })) }
+          : { private: false, visibility: 'public', default_branch: 'main' } };
+      }
+      if (omitSelectedReadme && url.pathname.endsWith('/README.md')) return { ok: false, status: 404 };
+      return { ok: true, text: async () => 'Observed content for ' + url.pathname };
+    };
+    try {
+      projection = await fetchRepositoryPublicProjection('case-project', { headSha: headA, includeDocumentation: true, includeMsdmd: false });
+    } finally {
+      globalThis.fetch = originalFetch;
+    }
+    assert.equal(projection.documentation.readme === null, omitSelectedReadme);
+    assert.ok(projection.documentation.documents.some(document => document.path === 'readme.md'));
+    const repos = [repoRow('case-project', headA)];
+    for (const onlineFailure of [false, true]) {
+      const { root, generated } = await runOfflineProjectDocs(repos, { byRepository: { 'case-project': projection } }, { onlineFailure });
+      try {
+        assert.equal(generated.fallbackCount, 1);
+        const html = (await renderProjectPages(root, repos, generated))['case-project'];
+        assert.doesNotMatch(html, /No root README\.md/);
+        assert.match(html, /<code>readme\.md<\/code>/);
+        if (omitSelectedReadme) assert.match(html, /No README is rendered in this section/);
+      } finally {
+        await rm(root, { recursive: true, force: true });
+      }
+    }
+  });
+}
+
+test('a README carried only in the document index does not imply root README absence', async () => {
+  const projection = observedProjection('indexed-readme', headA);
+  projection.documentation.documents.unshift(projection.documentation.readme);
+  projection.documentation.readme = null;
+  const repos = [repoRow('indexed-readme', headA)];
+  const { root, generated } = await runOfflineProjectDocs(repos, { byRepository: { 'indexed-readme': projection } });
+  try {
+    assert.equal(generated.fallbackCount, 1);
+    const html = (await renderProjectPages(root, repos, generated))['indexed-readme'];
+    assert.match(html, /<code>README\.md<\/code>/);
+    assert.match(html, /No README is rendered in this section/);
+    assert.doesNotMatch(html, /No root README\.md/);
+  } finally {
+    await rm(root, { recursive: true, force: true });
   }
 });

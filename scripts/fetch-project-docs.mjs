@@ -97,9 +97,9 @@ function validObservedProjection(prior, repo) {
   const docs = prior.documentation;
   if (!isObject(docs) || !isTextArray(docs.hmmm) || !Array.isArray(docs.documents)) return false;
   const validDocument = document => isObject(document)
-    && typeof document.path === 'string' && document.path.length > 0
+    && typeof document.path === 'string' && document.path.length > 0 && document.path.isWellFormed()
     && !document.path.split('/').some(part => !part || part === '.' || part === '..' || part.includes('\0'))
-    && typeof document.content === 'string'
+    && typeof document.content === 'string' && document.content.isWellFormed()
     && Number.isSafeInteger(document.bytes) && document.bytes >= 0 && document.bytes <= MAX_DOCUMENT_BYTES
     && document.bytes === Buffer.byteLength(document.content)
     && typeof document.sha256 === 'string' && /^[a-f0-9]{64}$/.test(document.sha256)
