@@ -163,14 +163,15 @@ test('CLI authorizes Render only after successful ordinary-push classification',
   const valid = spawnSync(process.execPath, [script], { cwd: f.cwd, env, encoding: 'utf8' });
   assert.equal(valid.status, 0, valid.stderr);
   assert.equal(readFileSync(output, 'utf8'), 'deploy_render=true\n');
-  for (const contents of ['{', JSON.stringify({ before: 'a'.repeat(40), after }), JSON.stringify({ before: '0'.repeat(40), after })]) {
-    rmSync(output);
+  for (const [index, contents] of ['{', JSON.stringify({ before: 'a'.repeat(40), after }), JSON.stringify({ before: '0'.repeat(40), after })].entries()) {
+    // A fresh path per invalid case needs no check-then-recreate operation.
+    const invalidOutput = join(f.cwd, `invalid-output-${index}.txt`);
     writeFileSync(eventPath, contents);
-    const invalid = spawnSync(process.execPath, [script], { cwd: f.cwd, env, encoding: 'utf8' });
+    const invalid = spawnSync(process.execPath, [script], { cwd: f.cwd, env: { ...env, GITHUB_OUTPUT: invalidOutput }, encoding: 'utf8' });
     assert.equal(invalid.status, 1);
     assert.match(invalid.stderr, /no hook authorized/);
-    assert.equal(existsSync(output), false);
-    writeFileSync(output, '');
+    assert.equal(existsSync(invalidOutput), false);
+    assert.equal(readFileSync(output, 'utf8'), 'deploy_render=true\n');
   }
 });
 
