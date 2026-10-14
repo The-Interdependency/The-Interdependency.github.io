@@ -22,6 +22,8 @@ jobs:
   build:
     name: Build verified site
     runs-on: ubuntu-latest
+    outputs:
+      deploy_render: ${{ steps.render_scope.outputs.deploy_render }}
     steps:
       - name: Checkout
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6, node24
@@ -33,6 +35,12 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
+
+      # Only the reviewed support release from its frozen base skips Render.
+      # Later pushes retain the hook; classification errors never authorize it.
+      - name: Classify Render deployment scope
+        id: render_scope
+        run: node scripts/support-only-deployment.mjs
 
       - name: Install dependencies
         run: npm ci
@@ -95,7 +103,7 @@ jobs:
         run: node scripts/verify-live-deployment.mjs "https://interdependentway.org" "${{ github.sha }}"
 
       - name: Trigger Render MCP deploy
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.build.outputs.deploy_render == 'true'
         env:
           RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
         run: |
