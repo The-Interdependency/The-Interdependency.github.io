@@ -64,17 +64,17 @@ test('committed or refreshed fallback snapshot is exact, usable, and retains sou
   assert.ok(snapshot.skills.some(skill => skill.name === 'repo-audit-repair'));
 });
 
-test('public registry presents msdmd, meta, fresh-making, and EPAC display while hiding unrelated specialist skills', () => {
+test('registry exposes all source skills with exact dependency closure', () => {
   const registry = createSkillRegistry(sampleProjection());
   assert.deepEqual(
     registry.listSkills().map(skill => skill.name),
-    ['msdmd', 'cap-build', 'meta', 'fresh-making', 'epac-selection-display']
+    ['msdmd', 'cap-build', 'meta', 'fresh-making', 'epac-selection-display', 'repo-audit-repair']
   );
-  assert.equal(registry.findSkills({ query: 'audit repository' }).length, 0);
+  assert.equal(registry.findSkills({ query: 'audit repository' })[0].name, 'repo-audit-repair');
   assert.equal(registry.findSkills({ query: 'capability' })[0].name, 'cap-build');
   assert.equal(registry.findSkills({ query: 'derived artifact' })[0].name, 'fresh-making');
   assert.equal(registry.findSkills({ query: 'EPAC molecule' })[0].name, 'epac-selection-display');
-  assert.throws(() => registry.inspectSkill({ name: 'repo-audit-repair' }), /unknown public skill/);
+  assert.equal(registry.inspectSkill({ name: 'repo-audit-repair' }).canonical_path, 'repo-audit-repair/SKILL.md');
 
   assert.deepEqual(registry.resolveSkillClosure({ name: 'cap-build' }).map(skill => skill.name), ['msdmd', 'cap-build']);
   assert.deepEqual(registry.resolveSkillClosure({ name: 'fresh-making' }).map(skill => skill.name), ['fresh-making']);
@@ -83,9 +83,9 @@ test('public registry presents msdmd, meta, fresh-making, and EPAC display while
     ['epac-selection-display']
   );
   const status = registry.getRegistryStatus();
-  assert.equal(status.skill_count, 5);
+  assert.equal(status.skill_count, 6);
   assert.equal(status.source_skill_count, 6);
-  assert.equal(status.public_scope, 'metadata-block plus meta plus fresh-making plus epac-selection-display');
+  assert.equal(status.public_scope, 'all registered skill-lib skills');
 });
 
 test('WebMCP provider registers five base registry tools and one explicit dynamic browser handoff', async () => {
@@ -152,12 +152,12 @@ test('dedicated WebMCP route presents collapsible skill cards, every generated r
   assert.match(page, /permalink: \/webmcp\//);
   assert.match(page, /webmcp: true/);
   assert.match(page, /The page is the provider/);
-  assert.match(page, /skill\.kind == "metadata-block"/);
-  assert.match(page, /skill\.name == "meta"/);
-  assert.match(page, /skill\.name == "fresh-making"/);
-  assert.match(page, /skill\.name == "epac-selection-display"/);
-  assert.match(page, /data-skill-group="epac"/);
-  assert.match(page, /Select and display EPAC/);
+  assert.match(page, /All \{\{ generated\.skillRegistry\.skills\.length \}\} skills/);
+  assert.match(page, /skill\.kind == group\.kind/);
+  assert.match(page, /data-skill-group="\{\{ group\.kind \}\}"/);
+  assert.match(page, /"metadata-block"/);
+  assert.match(page, /"procedural"/);
+  assert.match(page, /generated\.skillRegistry\.skills\.length/);
   assert.match(page, /<details data-skill-description>/);
   assert.match(page, /<summary>Description<\/summary>/);
   assert.match(page, /generated\.repos\.repositories/);
@@ -170,8 +170,12 @@ test('dedicated WebMCP route presents collapsible skill cards, every generated r
   assert.match(page, /Nothing is sent merely by selecting or typing/);
   assert.match(page, /Send repository \+ skill \+ request to agent/);
   assert.match(page, /No internal repository or skill identifier needs to be typed/);
-  assert.match(page, /data-human-skill-filter[^>]+disabled/);
+  assert.doesNotMatch(page, /data-human-skill-filter[^>]+disabled/);
   assert.match(page, /data-select-skill[^>]+disabled/);
+  assert.match(page, /data-mcp-endpoint/);
+  assert.match(page, /data-mcp-discover/);
+  assert.match(page, /data-mcp-tool-result/);
+  assert.match(page, /data-mcp-enact disabled/);
   const repositoryStep = page.indexOf('1. Choose the repository');
   const skillStep = page.indexOf('2. Choose how the agent should work');
   const outcomeStep = page.indexOf('3. State the outcome and send');
@@ -198,5 +202,8 @@ test('human-readable surface keeps machine identifiers out of the visible readin
   assert.doesNotMatch(source, /\.slice\(0, 12\)/);
   assert.doesNotMatch(source, /status\.source\.commit/);
   assert.match(source, /The Interdependency skill library · commit-pinned verified snapshot/);
+  assert.match(source, /bindRemoteMcpInvocation\(registry, selection\)/);
+  assert.match(source, /SKILL_EXECUTION_TOOL/);
+  assert.match(source, /if \(requiresConsent \|\| tool\.annotations\?\.readOnlyHint !== true\)/);
   assert.match(source, /skill\.human_title \|\| skill\.name/);
 });
