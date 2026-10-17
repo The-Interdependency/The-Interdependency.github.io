@@ -28,6 +28,7 @@ This site displays exact, provenance-bearing chapter snapshots. It does not merg
 - `/about-me/` preserves the founder-authored **In Service to Love** narrative.
 - `/home/` is the newcomer-oriented Start Here route, organized by visitor intent rather than repository or content type.
 - `/about-the-site/` owns orientation, construction practices, and verification limits; `/start/` preserves its former address.
+- `/webmcp/` publishes the complete commit-pinned skill-lib catalogue and a browser-native agent handoff. A separate, human-triggered MCP client can discover and call actual tools at a trusted endpoint; a skill runs only when an authorized executor advertises and implements `tiw_execute_skill`. The default public MCP server remains read-only. See [`docs/webmcp-execution.md`](docs/webmcp-execution.md).
 - `/by-the-builder/` renders the append-only, attributed builder journal.
 - `/research/` is the evidence index over admitted studies, bounded findings, and visible gaps; `/research/method/` is its subordinate admission/review method.
 - `/preamble/` remains available within the canonical reading system and primary navigation.
@@ -52,6 +53,7 @@ This site displays exact, provenance-bearing chapter snapshots. It does not merg
 npm install
 npm run dev
 npm run check
+npm run test:mcp
 ```
 
 Refresh only the textbook source set:
