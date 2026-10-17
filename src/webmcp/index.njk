@@ -1,7 +1,7 @@
 ---
 layout: layouts/base.njk
 title: The Interdependency WebMCP
-description: Live browser-native WebMCP over shared skill and repository material.
+description: Full skill-lib catalogue, browser-native handoff, and explicit MCP tool invocation.
 permalink: /webmcp/
 webmcp: true
 ---
@@ -50,85 +50,37 @@ webmcp: true
   <p class="eyebrow">Shared human + agent skill material</p>
   <h2 id="skill-catalog-title">2. Choose how the agent should work</h2>
   <p data-skill-stage-status data-state="hmmm" aria-live="polite">Choose a repository first to enable its agent-work choices.</p>
-  <p>The public skill surface is deliberately narrow: the metadata skills built on the module self-declared metadata convention, the METAPAT consultation router, deterministic refresh of derived artifacts, and receipt-backed EPAC selection/display. The remaining skills stay canonical in the source library rather than becoming competing definitions here.</p>
+  <p>All {{ generated.skillRegistry.skills.length }} skills in the verified skill-lib registry are listed below. This is a commit-pinned readout, not a second definition. A skill describes how an authorized agent should work; being listed does not prove an executor is connected.</p>
 
   <form data-human-skill-filter-form>
     <label for="human-skill-filter">Optional skill search</label>
-    <input id="human-skill-filter" data-human-skill-filter name="skill-filter" type="search" placeholder="documentation, capabilities, boundaries, meta, refresh, EPAC…" autocomplete="off" disabled>
-    <span aria-live="polite" data-human-skill-count>Presented skills shown</span>
+    <input id="human-skill-filter" data-human-skill-filter name="skill-filter" type="search" placeholder="Search names, definitions, dependencies…" autocomplete="off">
+    <span aria-live="polite" data-human-skill-count>{{ generated.skillRegistry.skills.length }} registered skills</span>
   </form>
 
-  <h3>Metadata skills</h3>
-  <div class="grid" data-human-skill-catalog data-skill-group="msdmd">
+  {% for group in [{ "kind": "metadata-block", "heading": "Metadata skills" }, { "kind": "procedural", "heading": "Procedural skills" }] %}
+  <h3>{{ group.heading }}</h3>
+  <div class="grid" data-human-skill-catalog data-skill-group="{{ group.kind }}">
     {% for skill in generated.skillRegistry.skills %}
-    {% if skill.kind == "metadata-block" %}
+    {% if skill.kind == group.kind %}
     <article class="card" data-human-skill data-skill-name="{{ skill.name }}" data-skill-kind="{{ skill.kind }}">
-      <p class="eyebrow">metadata skill</p>
+      <p class="eyebrow">{{ group.kind }}</p>
       <h4>{{ skill.human_title or skill.name }}</h4>
+      <p>{{ skill.name }}</p>
       <details data-skill-description>
         <summary>Description</summary>
         <p>{{ skill.description }}</p>
+        {% if skill.depends_on and skill.depends_on.length %}
+        <p>Required skills: {{ skill.depends_on | join(", ") }}</p>
+        {% endif %}
       </details>
       <p><button type="button" data-select-skill aria-pressed="false" disabled>Select this skill</button></p>
-      <p><a href="https://github.com/{{ generated.skillRegistry.source.repository }}/blob/{{ generated.skillRegistry.source.commit }}/{{ skill.path }}">Read the canonical skill definition</a></p>
+      <p><a href="https://github.com/{{ generated.skillRegistry.source.repository }}/blob/{{ generated.skillRegistry.source.commit }}/{{ skill.path }}">Read canonical skill definition</a></p>
     </article>
     {% endif %}
     {% endfor %}
   </div>
-
-  <h3>Consultation router</h3>
-  <div class="grid" data-human-skill-catalog data-skill-group="meta">
-    {% for skill in generated.skillRegistry.skills %}
-    {% if skill.name == "meta" %}
-    <article class="card" data-human-skill data-skill-name="{{ skill.name }}" data-skill-kind="{{ skill.kind }}">
-      <p class="eyebrow">METAPAT</p>
-      <h4>{{ skill.human_title or skill.name }}</h4>
-      <details data-skill-description>
-        <summary>Description</summary>
-        <p>{{ skill.description }}</p>
-      </details>
-      <p><button type="button" data-select-skill aria-pressed="false" disabled>Select this skill</button></p>
-      <p><a href="https://github.com/{{ generated.skillRegistry.source.repository }}/blob/{{ generated.skillRegistry.source.commit }}/{{ skill.path }}">Read the canonical skill definition</a></p>
-    </article>
-    {% endif %}
-    {% endfor %}
-  </div>
-
-  <h3>refresh</h3>
-  <div class="grid" data-human-skill-catalog data-skill-group="refresh">
-    {% for skill in generated.skillRegistry.skills %}
-    {% if skill.name == "fresh-making" %}
-    <article class="card" data-human-skill data-skill-name="{{ skill.name }}" data-skill-kind="{{ skill.kind }}">
-      <p class="eyebrow">refresh</p>
-      <h4>Make derived artifacts fresh</h4>
-      <details data-skill-description>
-        <summary>Description</summary>
-        <p>{{ skill.description }}</p>
-      </details>
-      <p><button type="button" data-select-skill aria-pressed="false" disabled>Select refresh</button></p>
-      <p><a href="https://github.com/{{ generated.skillRegistry.source.repository }}/blob/{{ generated.skillRegistry.source.commit }}/{{ skill.path }}">Read the canonical skill definition</a></p>
-    </article>
-    {% endif %}
-    {% endfor %}
-  </div>
-
-  <h3>EPAC display</h3>
-  <div class="grid" data-human-skill-catalog data-skill-group="epac">
-    {% for skill in generated.skillRegistry.skills %}
-    {% if skill.name == "epac-selection-display" %}
-    <article class="card" data-human-skill data-skill-name="{{ skill.name }}" data-skill-kind="{{ skill.kind }}">
-      <p class="eyebrow">EPAC research presentation</p>
-      <h4>Select and display EPAC</h4>
-      <details data-skill-description>
-        <summary>Description</summary>
-        <p>{{ skill.description }}</p>
-      </details>
-      <p><button type="button" data-select-skill aria-pressed="false" disabled>Select EPAC display</button></p>
-      <p><a href="https://github.com/{{ generated.skillRegistry.source.repository }}/blob/{{ generated.skillRegistry.source.commit }}/{{ skill.path }}">Read the canonical skill definition</a></p>
-    </article>
-    {% endif %}
-    {% endfor %}
-  </div>
+  {% endfor %}
 
   <div class="hmmm-boundary" data-selected-skill-boundary>
     <strong>Selected skill</strong>
@@ -151,6 +103,29 @@ webmcp: true
   <pre tabindex="0" data-webmcp-output>Select a repository first, then a skill. No internal repository or skill identifier needs to be typed.</pre>
 </section>
 
+<section class="panel" aria-labelledby="mcp-invocation-title">
+  <p class="eyebrow">Explicit tool invocation · live MCP response</p>
+  <h2 id="mcp-invocation-title">4. Connect and call the MCP server</h2>
+  <p>The public Interdependency MCP server provides read-only registry tools. To enact a skill, connect an authorized Streamable HTTP MCP executor that actually advertises <code>tiw_execute_skill</code>. The website never invents an execution result or supplies execution authority.</p>
+  <p>Only use an MCP endpoint you trust. Browser requests go directly to that endpoint; it must allow your browser origin and return JSON MCP responses. A private VM service requires its own approved gateway or client connection.</p>
+  <label for="mcp-endpoint">MCP endpoint</label>
+  <input id="mcp-endpoint" data-mcp-endpoint type="url" value="https://the-interdependency-mcp.onrender.com/mcp" autocomplete="url" spellcheck="false">
+  <label for="mcp-bearer">Optional bearer token (kept only in this page's memory)</label>
+  <input id="mcp-bearer" data-mcp-bearer type="password" autocomplete="off" spellcheck="false" placeholder="Only for a trusted, authenticated MCP server">
+  <p><button type="button" data-mcp-discover>Discover live MCP tools</button></p>
+  <p data-mcp-tool-status data-state="hmmm" aria-live="polite">No MCP tools discovered. The public server can be queried without a credential.</p>
+  <label for="mcp-tool">Advertised tool</label>
+  <select id="mcp-tool" data-mcp-tool disabled><option value="">Discover tools first…</option></select>
+  <label for="mcp-arguments">Tool arguments (JSON object)</label>
+  <textarea id="mcp-arguments" data-mcp-arguments rows="5" spellcheck="false">{}</textarea>
+  <p>
+    <button type="button" data-mcp-call disabled>Call selected MCP tool</button>
+    <button type="button" data-mcp-enact disabled>Enact selected skill via MCP</button>
+  </p>
+  <p data-mcp-execution-status data-state="hmmm" aria-live="polite">Skill execution requires a live executor that advertises tiw_execute_skill, a selected repository and skill, and a stated outcome.</p>
+  <pre tabindex="0" data-mcp-tool-result>Live MCP results and explicit failures appear here.</pre>
+</section>
+
 <section class="panel" aria-labelledby="webmcp-boundary-title">
   <h2 id="webmcp-boundary-title">Same material, meaningful human selection</h2>
   <pre tabindex="0">current public repository projection + skill definitions
@@ -164,7 +139,7 @@ human chooses repository + reads the applicable skill
 agent receives the exact repository, skill set, and human request
                  ↓
 agent's separately authorized change tools</pre>
-  <p>For the refresh skill, choosing it automatically supplies the standard make-fresh request; the human may edit it. For EPAC selection/display, the human names the target and representation; the server passes that request but does not construct or render the research artifact. The browser handoff itself remains read-only and page-session-only. Actual repository changes require the agent's separately authorized repository, filesystem, deployment, or other tools.</p>
+  <p>For fresh-making, choosing the skill supplies an editable standard request. For EPAC selection/display, the human supplies a target and presentation; a repository selection does not select canon. The browser-agent handoff remains read-only and page-session-only. A separate deliberate MCP execution request may invoke an authenticated tool on a connected executor, whose response and authorization remain the executor's responsibility.</p>
 </section>
 
-<div class="hmmm-boundary"><strong>hmmm</strong><span>Repository observation identifies the target; it does not authenticate the target, grant write authority, prove that every declared freshness executor is available, or prove that a selected EPAC source contains a committed renderer.</span></div>
+<div class="hmmm-boundary"><strong>hmmm</strong><span>The default public MCP endpoint has no skill executor. Discovering or selecting a skill cannot run it: execution is blocked until an independently authorized MCP service exposes the exact execution tool. Repository observations and skill documentation remain provenance, not credentials or proof of operational capability.</span></div>
