@@ -57,14 +57,14 @@ test('WebMCP establishes repository context before agent-work selection', async 
   const intent = page.locator('[data-human-handoff-intent]');
   const send = page.locator('[data-human-handoff-send]');
 
-  await expect(skillFilter).toBeDisabled();
+  await expect(skillFilter).toBeEnabled();
   await expect(freshMaking).toBeDisabled();
   await repository.selectOption('skill-lib');
   await expect(skillFilter).toBeEnabled();
   await expect(freshMaking).toBeEnabled();
 
   await freshMaking.click();
-  await expect(selectedSkill).toContainText('Make derived artifacts fresh');
+  await expect(selectedSkill).toHaveText(await page.locator('[data-human-skill][data-skill-name="fresh-making"] h4').textContent());
   await expect(intent).toHaveValue(/minimal affected closure/);
   await expect(send).toBeEnabled();
 

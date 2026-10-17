@@ -1,6 +1,6 @@
 // === MODULE_BUILD ===
 // id: webmcp_skill_registry_adapter
-//   purpose: Provide deterministic read-only operations over the public human-and-agent view of the website's commit-pinned skill-lib registry projection.
+//   purpose: Provide deterministic read-only operations over every registered skill in the website's commit-pinned skill-lib projection.
 //   entrypoint: imported by /assets/js/webmcp.js, server/mcp-protocol.mjs, and tests
 //   tests: tests/webmcp.test.mjs, tests/mcp-server.test.mjs
 // === END MODULE_BUILD ===
@@ -12,9 +12,9 @@
 //   operational_effects: none; all exported operations are read-only transformations over supplied registry data
 // === END BOUNDARIES ===
 // === CONTRACTS ===
-// id: webmcp_public_catalogue_matches_human_catalogue
-//   given: the source registry contains public-facing and internal/specialist skills
-//   then: public list/find/inspect/closure expose msdmd metadata-block applications, the exact meta skill, fresh-making, and epac-selection-display, matching the human card catalogue
+// id: webmcp_full_catalogue_matches_source_registry
+//   given: the verified skill-lib projection contains both metadata-block and procedural skills
+//   then: public list/find/inspect/closure expose every registered skill and its source, matching the human catalogue
 //   class: correctness
 //
 // id: webmcp_registry_smallest_dependency_closure
@@ -26,13 +26,6 @@
 
 function normalizeText(value) {
   return String(value || '').trim().toLowerCase();
-}
-
-function isPresentedSkill(skill) {
-  return skill?.kind === 'metadata-block'
-    || skill?.name === 'meta'
-    || skill?.name === 'fresh-making'
-    || skill?.name === 'epac-selection-display';
 }
 
 export function humanTitle(description) {
@@ -62,13 +55,13 @@ export function createSkillRegistry(registryData) {
   }
 
   const source = registryData.source;
-  const skills = registryData.skills.filter(isPresentedSkill);
+  const skills = registryData.skills;
   const byName = new Map(skills.map(skill => [skill.name, skill]));
 
   for (const skill of skills) {
     for (const dependency of skill.depends_on) {
       if (!byName.has(dependency)) {
-        throw new Error(`presented skill dependency is not presented: ${skill.name} -> ${dependency}`);
+        throw new Error(`registered skill dependency is not registered: ${skill.name} -> ${dependency}`);
       }
     }
   }
@@ -142,7 +135,7 @@ export function createSkillRegistry(registryData) {
       registry_version: registryData.version,
       skill_count: skills.length,
       source_skill_count: registryData.skills.length,
-      public_scope: 'metadata-block plus meta plus fresh-making plus epac-selection-display',
+      public_scope: 'all registered skill-lib skills',
       source: { ...source },
       fallback: Boolean(registryData.fallback),
       hmmm: Array.isArray(registryData.hmmm) ? [...registryData.hmmm] : []

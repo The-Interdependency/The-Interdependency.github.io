@@ -29,7 +29,7 @@
 {% set inWay = page.url == "/way/" or "/way/" in page.url or "/lab/" in page.url or "/articles/" in page.url or "/narratives/" in page.url or "/works/" in page.url %}
 {% set inTextbook = "/chapters/" in page.url %}
 {% set inResearch = "/research/" in page.url %}
-{% set inProjects = "/projects/" in page.url or page.url == "/sitrep/" or "/artifacts/" in page.url %}
+{% set inProjects = "/projects/" in page.url or page.url == "/sitrep/" or "/artifacts/" in page.url or page.url == "/webmcp/" %}
 {% set inAbout = page.url == "/about/" or page.url == "/about-me/" or page.url == "/about-the-site/" or page.url == "/by-the-builder/" or page.url == "/accessibility/" %}
 <body>
   <a class="skip-link" href="#content">Skip to content</a>
@@ -72,6 +72,7 @@
     <a href="/sitrep/"{% if page.url == "/sitrep/" %} aria-current="page"{% endif %}>Repository SITREP</a>
     <a href="/artifacts/"{% if "/artifacts/" in page.url %} aria-current="page"{% endif %}>Artifacts</a>
     <a href="/projects/map/"{% if page.url == "/projects/map/" %} aria-current="page"{% endif %}>Organization map</a>
+    <a href="/webmcp/"{% if page.url == "/webmcp/" %} aria-current="page"{% endif %}>Skill library &amp; MCP</a>
   </nav>
   {% elif inAbout %}
   <nav class="section-nav" aria-label="About section">
