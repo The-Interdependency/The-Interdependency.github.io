@@ -57,7 +57,7 @@ test('WebMCP establishes repository context before agent-work selection', async 
   const intent = page.locator('[data-human-handoff-intent]');
   const send = page.locator('[data-human-handoff-send]');
 
-  await expect(skillFilter).toBeDisabled();
+  await expect(skillFilter).toBeEnabled();
   await expect(freshMaking).toBeDisabled();
   await repository.selectOption('skill-lib');
   await expect(skillFilter).toBeEnabled();
