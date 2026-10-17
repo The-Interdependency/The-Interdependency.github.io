@@ -10,7 +10,7 @@ function renderDocumentation(documentation) {
   if (!documentation) return '<section class="hmmm"><h2>hmmm</h2><p>Live documentation projection was unavailable.</p></section>';
   const readme = documentation.readme
     ? '<section class="project-readme prose"><p class="eyebrow">README · live exact-head projection</p>' + documentation.readme.html + '<p><a href="' + escapeText(documentation.readme.sourceUrl) + '" rel="noopener noreferrer">Open exact README source</a></p></section>'
-    : '<section class="hmmm"><h2>README</h2><p>No root README.md was present at the refreshed head.</p></section>';
+    : '<section class="hmmm"><h2>README</h2><p>No README is rendered in this section. See the repository documents and availability notes below.</p></section>';
   const documents = (documentation.documents || []).map(document =>
     '<details class="project-document"><summary>' + escapeText(document.path) + '</summary><div class="prose">' + document.html + '</div><p><a href="' + escapeText(document.sourceUrl) + '" rel="noopener noreferrer">Open exact source</a></p></details>'
   ).join('');
@@ -60,7 +60,7 @@ for (const button of document.querySelectorAll('[data-msdmd-refresh]')) {
       }
       button.textContent = docs ? 'Refresh MSDMD + docs' : 'Refresh MSDMD';
     } catch (error) {
-      if (status) status.textContent = 'hmmm · live refresh unavailable; static exact-head projection remains displayed.';
+      if (status) status.textContent = 'hmmm · live refresh unavailable; the current page content remains displayed.';
     } finally {
       button.disabled = false;
     }

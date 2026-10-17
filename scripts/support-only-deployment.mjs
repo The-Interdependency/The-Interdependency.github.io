@@ -2,10 +2,10 @@
 // id: support_only_deployment_guard
 //   module_name: support-only-deployment
 //   module_kind: instrument
-//   summary: Suppress the Render MCP hook for the single reviewed support-link release from its frozen base commit.
+//   summary: Suppress the Render MCP hook only for reviewed website releases from their frozen base commits.
 //   owner: website maintainers
 //   public_surface: node scripts/support-only-deployment.mjs; classifyDeployment(context)
-//   internal_surface: exact support path allowlist, push commit diff, package test-registration check
+//   internal_surface: exact release path allowlists, push commit diff, support package test-registration check
 //   auth_boundary: none
 //   storage_boundary: read
 //   network_boundary: none
@@ -20,17 +20,35 @@
 // Actions. Successful classification writes deploy_render=true/false to
 // GITHUB_OUTPUT when present. Missing history or invalid push identity exits
 // nonzero without authorizing Render. Non-push events never authorize Render.
-// The exemption applies only to a push from supportReleaseBase below, not to
-// future changes on the same paths. Keep that reviewed base frozen; subsequent
-// main pushes retain the existing Render behavior. At least one visible support
-// surface must change, and the allowlist is exact. package.json is allowed
-// only for appending these support tests; dependency or other script changes
-// retain the existing deployment behavior. Renames inspect both paths.
+// Each exemption applies only to a push from its reviewed frozen base below,
+// never future changes on the same paths. The support release requires a visible
+// support surface change; its package.json exception only appends support tests.
+// The PR76 documentation release requires both producer and template changes
+// and never permits package or workflow changes. Both allowlists are exact.
+// Dependency, MCP, or out-of-scope changes retain existing Render behavior.
+// Renames inspect both paths. Keep both reviewed bases frozen.
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { appendFileSync, readFileSync } from 'node:fs';
 import { isDeepStrictEqual } from 'node:util';
 import { pathToFileURL } from 'node:url';
+
+// PR76's public-site release is independent of the MCP server. This frozen
+// exception must not be moved forward or broadened for subsequent releases.
+export const projectDocsReleaseBase = '9411ab01aab94f1f0783108c8e877877484b7305';
+const projectDocsReleasePaths = new Set([
+  'scripts/check-builder-history.mjs',
+  'scripts/fetch-project-docs.mjs',
+  'scripts/repository-public-projection.mjs',
+  'src/_data/builder.json',
+  'src/assets/js/project-refresh.js',
+  'src/projects/repo.njk',
+  'tests/builder-history.test.mjs',
+  'tests/offline-project-snapshot.test.mjs',
+  'tests/site.spec.mjs',
+  'scripts/support-only-deployment.mjs',
+  'tests/support-only-deployment.test.mjs'
+]);
 
 export const supportReleaseBase = '1dea160f3281e3d98e3697e3ebadc08d8d6fe0c8';
 const supportSurfaces = new Set([
@@ -82,7 +100,18 @@ export function classifyDeployment({ eventName, ref, before, after, sha, cwd = p
   if (supportOnly && changedPaths.includes('package.json')) {
     supportOnly = isSupportTestRegistration(git('show', `${before}:package.json`), git('show', `${after}:package.json`));
   }
-  return { deployRender: !supportOnly, reason: supportOnly ? 'support-only' : 'ordinary-main-push', changedPaths };
+  // Require the actual documentation producer and visible documentation surface,
+  // not merely tests, guard maintenance, or a journal entry. Package/dependency
+  // and workflow changes are deliberately absent from this release's allowlist.
+  const projectDocsOnly = before === projectDocsReleaseBase
+    && changedPaths.includes('scripts/fetch-project-docs.mjs')
+    && changedPaths.includes('src/projects/repo.njk')
+    && changedPaths.every(path => projectDocsReleasePaths.has(path));
+  return {
+    deployRender: !(supportOnly || projectDocsOnly),
+    reason: supportOnly ? 'support-only' : projectDocsOnly ? 'project-docs-only' : 'ordinary-main-push',
+    changedPaths
+  };
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

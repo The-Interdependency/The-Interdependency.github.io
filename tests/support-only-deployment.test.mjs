@@ -1,5 +1,5 @@
 // Usage: node --test tests/support-only-deployment.test.mjs. Temporary local
-// Git histories cover the one-time support release, mixed, later, and failed push
+// Git histories cover frozen support and PR76 releases, mixed, later, and failed push
 // classifications; CLI tests verify fail-closed Actions outputs. No network or
 // deployment hook is called. Fixtures clone the local repository's frozen base
 // (full history is required, as in the release workflows) and are removed after
@@ -11,7 +11,7 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, w
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { classifyDeployment, isSupportTestRegistration, supportReleaseBase } from '../scripts/support-only-deployment.mjs';
+import { classifyDeployment, isSupportTestRegistration, supportReleaseBase, projectDocsReleaseBase } from '../scripts/support-only-deployment.mjs';
 
 const script = fileURLToPath(new URL('../scripts/support-only-deployment.mjs', import.meta.url));
 const repository = fileURLToPath(new URL('..', import.meta.url));
@@ -19,7 +19,7 @@ const packageBefore = JSON.parse(execFileSync('git', ['show', `${supportReleaseB
 const addedTests = ' tests/support-links.test.mjs tests/support-only-deployment.test.mjs';
 const packageAfter = { ...packageBefore, scripts: { ...packageBefore.scripts, test: packageBefore.scripts.test + addedTests } };
 
-function fixture(t) {
+function fixture(t, base = supportReleaseBase) {
   const cwd = mkdtempSync(join(tmpdir(), 'support-deployment-'));
   t.after(() => rmSync(cwd, { recursive: true, force: true }));
   const git = (...args) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: 'pipe' }).trim();
@@ -33,8 +33,8 @@ function fixture(t) {
   git('config', 'user.email', 'test@example.invalid');
   git('config', 'commit.gpgsign', 'false');
   git('config', 'core.hooksPath', '/dev/null');
-  git('checkout', '--quiet', '--detach', supportReleaseBase);
-  const before = supportReleaseBase;
+  git('checkout', '--quiet', '--detach', base);
+  const before = base;
   const classify = () => {
     const after = commit();
     return classifyDeployment({ eventName: 'push', ref: 'refs/heads/main', before, after, sha: after, cwd });
@@ -201,4 +201,95 @@ test('Pages keeps its deployment path and requires an explicit successful Render
   assert.match(workflow, /name: Deploy to GitHub Pages\s+id: deployment\s+uses: actions\/deploy-pages@/);
   assert.match(workflow, /curl --fail --show-error --silent --retry 3 --request POST "\$RENDER_DEPLOY_HOOK_URL"/);
   assert.doesNotMatch(workflow, /paths-ignore:|paths:/);
+});
+
+// PR76 has its own frozen base and stricter scope: no package/workflow changes.
+const projectDocsFixPaths = [
+  'scripts/check-builder-history.mjs',
+  'scripts/fetch-project-docs.mjs',
+  'scripts/repository-public-projection.mjs',
+  'src/assets/js/project-refresh.js',
+  'src/projects/repo.njk',
+  'tests/builder-history.test.mjs',
+  'tests/offline-project-snapshot.test.mjs',
+  'tests/site.spec.mjs'
+];
+function writeDocsFix(f) {
+  for (const path of ['scripts/fetch-project-docs.mjs', 'src/projects/repo.njk']) {
+    f.write(path, readFileSync(join(repository, path), 'utf8'));
+  }
+}
+
+test('the complete PR76 documentation release skips Render from its exact frozen base', t => {
+  const f = fixture(t, projectDocsReleaseBase);
+  // Use actual reviewed release sources, including the guard and its tests.
+  for (const path of [...projectDocsFixPaths, 'scripts/support-only-deployment.mjs', 'tests/support-only-deployment.test.mjs']) {
+    f.write(path, readFileSync(join(repository, path), 'utf8'));
+  }
+  f.write('src/_data/builder.json', JSON.stringify([{ date: '2026-10-17', body: 'Documentation release; model identity unavailable.' }]));
+  const result = f.classify();
+  assert.equal(result.deployRender, false);
+  assert.equal(result.reason, 'project-docs-only');
+  assert.equal(result.changedPaths.length, 11);
+});
+
+for (const path of ['server/mcp-server.mjs', 'package.json', 'package-lock.json', '.github/workflows/pages.yml', '.github/workflows/ci.yml', 'README.md', 'src/index.njk', 'scripts/fetch-project-docs.mjs.extra']) {
+  test(`PR76 mixed with ${path} retains Render deployment`, t => {
+    const f = fixture(t, projectDocsReleaseBase);
+    writeDocsFix(f);
+    f.write(path, 'Unrelated change');
+    assert.equal(f.classify().deployRender, true);
+  });
+}
+
+for (const paths of [[], ['src/_data/builder.json'], ['scripts/support-only-deployment.mjs', 'tests/support-only-deployment.test.mjs'], ['tests/offline-project-snapshot.test.mjs'], ['scripts/fetch-project-docs.mjs'], ['src/projects/repo.njk']]) {
+  test(`PR76 requires substantive producer and template changes: ${JSON.stringify(paths)}`, t => {
+    const f = fixture(t, projectDocsReleaseBase);
+    for (const path of paths) f.write(path, 'Only ancillary or incomplete changes');
+    assert.equal(f.classify().deployRender, true);
+  });
+}
+
+test('later pushes on the exact PR76 paths retain Render deployment', t => {
+  const f = fixture(t, projectDocsReleaseBase);
+  writeDocsFix(f);
+  const before = f.commit();
+  for (const path of projectDocsFixPaths) f.write(path, 'Later same-path change');
+  const after = f.commit();
+  const result = classifyDeployment({ eventName: 'push', ref: 'refs/heads/main', before, after, sha: after, cwd: f.cwd });
+  assert.equal(result.deployRender, true);
+  assert.equal(result.reason, 'ordinary-main-push');
+});
+
+test('PR76 checks the entire push range for MCP changes', t => {
+  const f = fixture(t, projectDocsReleaseBase);
+  f.write('server/mcp-server.mjs', 'Earlier MCP change');
+  f.commit();
+  writeDocsFix(f);
+  assert.equal(f.classify().deployRender, true);
+});
+
+test('PR76 rejects a rename out of the approved scope', t => {
+  const f = fixture(t, projectDocsReleaseBase);
+  writeDocsFix(f);
+  renameSync(join(f.cwd, 'server/mcp-server.mjs'), join(f.cwd, 'src/assets/js/project-refresh.js'));
+  assert.equal(f.classify().deployRender, true);
+});
+
+
+test('CLI records the PR76 skip using real release source changes', t => {
+  const f = fixture(t, projectDocsReleaseBase);
+  writeDocsFix(f);
+  const after = f.commit();
+  const eventPath = join(f.cwd, 'event.json');
+  const output = join(f.cwd, 'output.txt');
+  writeFileSync(eventPath, JSON.stringify({ before: f.before, after }));
+  const result = spawnSync(process.execPath, [script], {
+    cwd: f.cwd,
+    env: { ...process.env, GITHUB_EVENT_NAME: 'push', GITHUB_REF: 'refs/heads/main', GITHUB_SHA: after, GITHUB_EVENT_PATH: eventPath, GITHUB_OUTPUT: output },
+    encoding: 'utf8'
+  });
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal(readFileSync(output, 'utf8'), 'deploy_render=false\n');
+  assert.equal(JSON.parse(result.stdout).reason, 'project-docs-only');
 });
