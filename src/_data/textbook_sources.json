@@ -95,14 +95,14 @@
     "slug": "chapter-six",
     "title": "The Instrument",
     "repository": "The-Interdependency/a0",
-    "path": "docs/chapter-6.md",
+    "path": "archive/docs/chapter-6.md",
     "branch": "main",
     "expected_title_match": "substring plus declared Chapter 6 heading",
     "license": "AGPL-3.0-only",
     "license_status": "declared",
-    "correction_target": "The-Interdependency/a0:docs/chapter-6.md",
-    "status": "research instrument",
-    "summary": "a0 as the codebase, a0p as the public instrument, and persistent agent structure distinct from interchangeable model providers."
+    "correction_target": "The-Interdependency/a0:archive/docs/chapter-6.md",
+    "status": "historical research instrument",
+    "summary": "Preserved historical documentation of a0 as the codebase, a0p as the public instrument, and persistent agent structure distinct from interchangeable model providers."
   },
   {
     "number": 7,

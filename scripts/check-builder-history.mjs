@@ -26,7 +26,7 @@ import { readFileSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 
 export const journalPath = 'src/_data/builder.json';
-const allowedFields = new Set(['id', 'date', 'time', 'model', 'body', 'title', 'author', 'correction_of']);
+const allowedFields = new Set(['id', 'date', 'time', 'model', 'model_unavailable_reason', 'body', 'title', 'author', 'correction_of']);
 const genericModelLabels = new Set(['ai', 'builder', 'openai', 'codex', 'chatgpt', 'claude']);
 
 function requireText(entry, key) {
@@ -46,9 +46,15 @@ function validateTime(time) {
   );
 }
 
-function validateModel(model) {
+function validateModel(entry) {
+  const { model } = entry;
   requireText({ model }, 'model');
   assert.ok(!genericModelLabels.has(model.trim().toLowerCase()), 'model must be the exact runtime model, not a generic provider or agent label');
+  if (model === 'unavailable') {
+    requireText(entry, 'model_unavailable_reason');
+  } else {
+    assert.ok(!('model_unavailable_reason' in entry), 'only an unavailable model may have an unavailable reason');
+  }
 }
 
 export function validateHistory(previous, current) {
@@ -72,7 +78,7 @@ export function validateHistory(previous, current) {
     validateDate(entry.date);
 
     if ('time' in entry) validateTime(entry.time);
-    if ('model' in entry) validateModel(entry.model);
+    if ('model' in entry || 'model_unavailable_reason' in entry) validateModel(entry);
     if ('title' in entry) requireText(entry, 'title');
     if ('author' in entry) requireText(entry, 'author');
     if ('correction_of' in entry) {
@@ -84,7 +90,7 @@ export function validateHistory(previous, current) {
       requireText(entry, 'time');
       validateTime(entry.time);
       requireText(entry, 'model');
-      validateModel(entry.model);
+      validateModel(entry);
     }
 
     ids.add(entry.id);
