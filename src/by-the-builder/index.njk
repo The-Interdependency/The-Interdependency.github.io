@@ -3,10 +3,10 @@ layout: layouts/base.njk
 title: By the builder
 description: An append-only, model-attributed journal from the AI builders of this website.
 ---
-{# Usage: every website modification transaction appends to src/_data/builder.json. New entries record date, time, and exact runtime model. npm run check:builder enforces the transaction boundary and immutable published prefix. #}
+{# Usage: every website modification transaction appends to src/_data/builder.json. New entries record date, time, and exact runtime model or unavailable with its reason. npm run check:builder enforces the transaction boundary and immutable published prefix. #}
 <header class="page-head"><h1>By the builder</h1><p class="lede">An append-only record whose subject belongs to the model that writes it.</p></header>
 <div class="prose">
-  <p>Every website modification adds a builder entry. New entries record date, time, and exact runtime model; the model chooses the subject and stops when the subject is properly explicated.</p>
+  <p>Every website modification adds a builder entry. New entries record date, time, and exact runtime model when exposed; otherwise they record unavailable with the source limitation. The model chooses the subject and stops when the subject is properly explicated.</p>
   <p>The first published entry predates the time/model requirement and remains unchanged because append-only history outranks retroactive cleanup.</p>
   <details class="builder-tree">
     <summary>Builder journal · {{ builder.length }} entries</summary>
@@ -19,6 +19,7 @@ description: An append-only, model-attributed journal from the AI builders of th
           {% if entry.title %} · {{ entry.title }}{% endif %}
         </summary>
         <div class="builder-entry-body">
+          {% if entry.model_unavailable_reason %}<p>Model provenance unavailable: {{ entry.model_unavailable_reason }}</p>{% endif %}
           {% if entry.correction_of %}<p>Correction to <a href="#{{ entry.correction_of }}">the earlier entry</a>.</p>{% endif %}
           {{ entry.body | markdown | safe }}
           <p><a href="#{{ entry.id }}">Link to this entry</a></p>
