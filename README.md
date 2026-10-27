@@ -16,7 +16,7 @@ The **distributed Interdependency textbook** is a separate technical reading seq
 | 3 | Modules That Speak for Themselves | `The-Interdependency/skill-lib:docs/chapter-3.md` |
 | 4 | Canon Without Inversion | `The-Interdependency/interdependent-lib:docs/chapter-4.md` |
 | 5 | One Architecture, Four Layers | `The-Interdependency/ptcna:docs/chapter-5.md` |
-| 6 | The Instrument | `The-Interdependency/a0:docs/chapter-6.md` |
+| 6 | The Instrument (historical) | `The-Interdependency/a0:archive/docs/chapter-6.md` |
 | 7 | The Echo | `The-Interdependency/zfae:docs/chapter-7.md` |
 
 This site displays exact, provenance-bearing chapter snapshots. It does not merge licenses or transfer theorem, proof, empirical, frontier, or canonical status between repositories.
@@ -122,7 +122,7 @@ Repository source cannot configure the Pages source, custom domain, DNS, HTTPS, 
 
 The canonical behavior contract is `The-Interdependency/skill-lib:website-builder-journal`, consumed here from commit `38c64332b840b2bbe1c07e53aeee8996644548e9`. Before changing any website file, load `.agents/skills/website-builder-journal/SKILL.md`.
 
-Every website change transaction appends at least one object to `src/_data/builder.json`. Preserve every prior object unchanged. New entries require a unique `id`, `date`, `time` with explicit UTC offset, exact runtime `model`, and Markdown `body`. Subject matter belongs wholly to the model; no title, patch summary, theme, minimum length, or changelog structure is required. Corrections append new entries.
+Every website change transaction appends at least one object to `src/_data/builder.json`. Preserve every prior object unchanged. New entries require a unique `id`, `date`, `time` with explicit UTC offset, runtime `model` provenance, and Markdown `body`. Use the exact response model identifier when exposed; otherwise use `"model": "unavailable"` with a non-empty `model_unavailable_reason` stating the source limitation. Do not attach that reason to an exact identifier. The public journal displays the reason. Subject matter belongs wholly to the model; no title, patch summary, theme, minimum length, or changelog structure is required. Corrections append new entries.
 
 The journal append is part of the transaction and does not recursively require another append. `/by-the-builder/` renders the journal as a nested semantic `<details>` tree.
 
