@@ -12,7 +12,7 @@ const expected = [
   [3, 'chapter-three', 'Modules That Speak for Themselves', 'The-Interdependency/skill-lib', 'docs/chapter-3.md'],
   [4, 'chapter-four', 'Canon Without Inversion', 'The-Interdependency/interdependent-lib', 'docs/chapter-4.md'],
   [5, 'chapter-five', 'One Architecture, Four Layers', 'The-Interdependency/ptcna', 'docs/chapter-5.md'],
-  [6, 'chapter-six', 'The Instrument', 'The-Interdependency/a0', 'docs/chapter-6.md'],
+  [6, 'chapter-six', 'The Instrument', 'The-Interdependency/a0', 'archive/docs/chapter-6.md'],
   [7, 'chapter-seven', 'The Echo', 'The-Interdependency/zfae', 'docs/chapter-7.md']
 ];
 
