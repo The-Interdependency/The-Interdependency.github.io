@@ -6,6 +6,24 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { connectionContract } from '../src/eai/aicontext.11ty.js';
 
+// Regression: valid adapter output must reach the actual static page. Eleventy
+// does not execute a default data function when its module also has named exports.
+test('support page renders every approved balance and its observation date', async () => {
+  const html = await readFile('_site/support/index.html', 'utf8');
+  const snapshot = JSON.parse(await readFile('src/_data/supportSnapshot.json', 'utf8'));
+  assert.equal((html.match(/<article class="card">/g) || []).length, snapshot.accounts.length);
+  for (const account of snapshot.accounts) {
+    assert.ok(html.includes(`<h3>${account.label}</h3>`), `missing ${account.label}`);
+    const value = account.current_minor === null ? 'Unavailable' :
+      new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(account.current_minor / 100);
+    assert.ok(html.includes(`<p class="lede">${value}</p>`), `missing balance for ${account.label}`);
+  }
+  assert.ok(html.includes(`datetime="${snapshot.observed_at}"`));
+  assert.ok(html.includes(`datetime="${snapshot.funding.period_start}"`));
+  if (snapshot.funding.confirmed_received_minor === null) assert.match(html, /Total awaiting verification/);
+  assert.match(html, /Coverage is incomplete/);
+});
+
 // === CHECKS ===
 // id: check_ai_context_public_discovery
 //   proves: ai_context_public_discovery

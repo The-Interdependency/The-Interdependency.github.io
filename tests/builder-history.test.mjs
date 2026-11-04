@@ -49,6 +49,13 @@ test('edits, deletions, reordering, duplicate IDs, invalid dates, and invented c
   assert.throws(() => validateHistory([legacy], [legacy, { ...correction, correction_of: 'missing' }]));
 });
 
+test('unavailable model needs a reason and configured aliases remain separate', () => {
+  const unavailable = { ...next, model: 'unavailable', model_unavailable_reason: 'Runtime does not expose an exact response model identifier.', requested_model: 'configured-alias' };
+  assert.equal(validateHistory([legacy], [legacy, unavailable]).appended, 1);
+  assert.throws(() => validateHistory([legacy], [legacy, { ...next, model: 'unavailable' }]), /model_unavailable_reason/);
+  assert.throws(() => validateHistory([legacy], [legacy, { ...next, model_unavailable_reason: 'Unknown' }]), /exact model/);
+});
+
 function fixture() {
   const cwd = mkdtempSync(join(tmpdir(), 'builder-history-'));
   const git = (...args) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: 'pipe' }).trim();

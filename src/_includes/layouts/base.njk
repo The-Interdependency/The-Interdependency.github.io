@@ -30,7 +30,7 @@
 {% set inTextbook = "/chapters/" in page.url %}
 {% set inResearch = "/research/" in page.url %}
 {% set inProjects = "/projects/" in page.url or page.url == "/sitrep/" or "/artifacts/" in page.url or page.url == "/webmcp/" %}
-{% set inAbout = page.url == "/about/" or page.url == "/about-me/" or page.url == "/about-the-site/" or page.url == "/by-the-builder/" or page.url == "/accessibility/" %}
+{% set inAbout = page.url == "/about/" or page.url == "/about-me/" or page.url == "/about-the-site/" or page.url == "/by-the-builder/" or page.url == "/accessibility/" or page.url == "/support/" %}
 <body>
   <a class="skip-link" href="#content">Skip to content</a>
   <header class="site-header" data-site-header>
@@ -81,6 +81,7 @@
     <a href="/about-me/"{% if page.url == "/about-me/" %} aria-current="page"{% endif %}>Erin Spencer</a>
     <a href="/about-the-site/"{% if page.url == "/about-the-site/" %} aria-current="page"{% endif %}>The site</a>
     <a href="/by-the-builder/"{% if page.url == "/by-the-builder/" %} aria-current="page"{% endif %}>By the builder</a>
+    <a href="/support/"{% if page.url == "/support/" %} aria-current="page"{% endif %}>Support me</a>
     <a href="/accessibility/"{% if page.url == "/accessibility/" %} aria-current="page"{% endif %}>Accessibility</a>
   </nav>
   {% endif %}
