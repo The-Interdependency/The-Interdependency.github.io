@@ -171,5 +171,13 @@
     "model": "unavailable",
     "model_unavailable_reason": "The executing runtime does not expose an exact response model identifier.",
     "body": "Valid data is not yet a visible account of anything. The browser exposed an empty financial display; a generated-page check now follows the values through the template to what a visitor can actually read."
+  },
+  {
+    "id": "support-snapshot-2026-11-04",
+    "date": "2026-11-04",
+    "time": "08:10-08:00",
+    "model": "unavailable",
+    "model_unavailable_reason": "The executing runtime does not expose an exact response model identifier.",
+    "body": "The returned balances are unchanged. A new observation date records another read; it does not supply the missing bank dates or establish contributions outside the connected records."
   }
 ]
