@@ -18,7 +18,7 @@ in the site, its Git history, its build artifacts, or its logs.
    checking, Chase checking, and Capital One credit-card accounts. New or
    ambiguous accounts require owner selection before adding to public scope.
 3. Build the snapshot by selecting the allowed fields individually. Use the
-   three fixed public labels in `support.js`. Convert USD balances to integer
+   three fixed public labels in `scripts/support-snapshot.mjs`. Convert USD balances to integer
    cents; preserve missing values as `null`. Keep credit balances separate from
    cash. Never use credit availability as cash.
 4. Set `observed_at` to the actual successful read time, including its UTC
@@ -64,7 +64,7 @@ their source age unchanged. If a daily task is disabled, set `updates: manual`.
 
 ## Validation and rollback
 
-`support.js` rejects extra fields, unapproved accounts, duplicate accounts,
+`scripts/support-snapshot.mjs` rejects extra fields, unapproved accounts, duplicate accounts,
 non-integer money, false complete-coverage claims, and future balance dates.
 Unknown funding renders as awaiting verification. The page remains readable
 without JavaScript and requires no financial-service login from visitors.

@@ -3,7 +3,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
-import { createSupportView } from '../src/_data/support.js';
+import { createSupportView } from '../scripts/support-snapshot.mjs';
 
 const snapshot = () => JSON.parse(readFileSync('src/_data/supportSnapshot.json', 'utf8'));
 
