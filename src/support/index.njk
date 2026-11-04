@@ -1,0 +1,43 @@
+---
+layout: layouts/base.njk
+title: Support me
+description: Support Erin Spencer's research and community work, with funding and account balance snapshots.
+---
+{# Usage: support.js validates the public snapshot before Eleventy renders it. Never supply raw Finances records to this template. #}
+<header class="page-head"><h1>Support me</h1></header>
+<div class="prose">
+  {% include "components/support-ask.njk" %}
+  <p><a class="button" href="https://cash.app/$wayseer00">Support via Cash App ($wayseer00)</a></p>
+  <p><a href="/by-the-builder/">Builder journal</a> · <a href="/projects/">Published code and instruments</a> · <a href="https://x.com/wayseer00">Follow on X (@wayseer00)</a></p>
+</div>
+
+<section class="panel" aria-labelledby="funding-heading">
+  <h2 id="funding-heading">Funding received</h2>
+  <p class="lede">{{ support.funding.label | escape }}</p>
+  <p>Tracking from <time datetime="{{ support.funding.period_start | escape }}">{{ support.funding.period_start | escape }}</time> through <time datetime="{{ support.funding.through | escape }}">{{ support.funding.through | escape }}</time>.</p>
+  <p>{{ support.funding.note | escape }}</p>
+  <p>Account balances include money from other sources and do not measure contributions to this ask.</p>
+</section>
+
+<section aria-labelledby="balances-heading">
+  <h2 id="balances-heading">Account balances</h2>
+  <p>Read from ChatGPT Finances on <time datetime="{{ support.observed_at | escape }}">{{ support.observed_label | escape }}</time>. These are saved account snapshots.</p>
+  <div class="grid">
+    {% for account in support.accounts %}
+    <article class="card">
+      <h3>{{ account.label | escape }}</h3>
+      <p class="lede">{{ account.current_label | escape }}</p>
+      <p>{{ account.kind_label | escape }}</p>
+      {% if account.available_label %}<p>Reported available: {{ account.available_label | escape }}</p>{% endif %}
+      <p>{{ account.age_label | escape }}</p>
+    </article>
+    {% endfor %}
+  </div>
+  <p>Balances are not a statement of uncommitted spending money or a current card payoff amount.</p>
+  <details>
+    <summary>Coverage and updates</summary>
+    <p>{{ support.update_note | escape }}</p>
+    <p>Only X Money checking, Chase checking, and Capital One credit card are included. Cash App receipts and cash contributions are outside this connection. Transfers between accounts, benefits, refunds, interest, cashback, and borrowed money are excluded from research contributions.</p>
+    <p>When the source supplies no balance date, its age stays unknown. The read time above records when this page's data was retrieved.</p>
+  </details>
+</section>

@@ -26,7 +26,7 @@ import { readFileSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 
 export const journalPath = 'src/_data/builder.json';
-const allowedFields = new Set(['id', 'date', 'time', 'model', 'body', 'title', 'author', 'correction_of']);
+const allowedFields = new Set(['id', 'date', 'time', 'model', 'body', 'title', 'author', 'correction_of', 'model_unavailable_reason', 'requested_model']);
 const genericModelLabels = new Set(['ai', 'builder', 'openai', 'codex', 'chatgpt', 'claude']);
 
 function requireText(entry, key) {
@@ -85,6 +85,9 @@ export function validateHistory(previous, current) {
       validateTime(entry.time);
       requireText(entry, 'model');
       validateModel(entry.model);
+      if (entry.model === 'unavailable') requireText(entry, 'model_unavailable_reason');
+      else assert.ok(!('model_unavailable_reason' in entry), 'exact model cannot have an unavailable reason');
+      if ('requested_model' in entry) requireText(entry, 'requested_model');
     }
 
     ids.add(entry.id);
