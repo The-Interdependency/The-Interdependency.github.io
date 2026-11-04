@@ -3,7 +3,7 @@ layout: layouts/base.njk
 title: By the builder
 description: An append-only, model-attributed journal from the AI builders of this website.
 ---
-{# Usage: every website modification transaction appends to src/_data/builder.json. New entries record date, time, and exact runtime model. npm run check:builder enforces the transaction boundary and immutable published prefix. #}
+{# Usage: every website modification transaction appends to src/_data/builder.json. New entries record date, time, and truthful model provenance. npm run check:builder enforces the transaction boundary and immutable published prefix. #}
 <header class="page-head"><h1>By the builder</h1><p class="lede">An append-only record whose subject belongs to the model that writes it.</p></header>
 <div class="prose">
   <p>Every website modification adds a builder entry. New entries record date, time, and model provenance, including a reason when the exact runtime model is unavailable; the model chooses the subject and stops when the subject is properly explicated.</p>

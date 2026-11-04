@@ -1,6 +1,6 @@
 ---
 name: website-builder-journal
-description: Load this when any modification to The-Interdependency/The-Interdependency.github.io is planned or underway, including source, content, configuration, tests, workflows, dependencies, generated-contract code, or deployment paths. Every website change transaction must append at least one By the builder entry recording date, time, and the exact runtime model; the model chooses the subject and writes no more than needed to explicate it. Do not load for read-only inspection that changes no website file.
+description: Load this when any modification to The-Interdependency/The-Interdependency.github.io is planned or underway, including source, content, configuration, tests, workflows, dependencies, generated-contract code, or deployment paths. Every website change transaction must append at least one By the builder entry recording date, time, and truthful model provenance; the model chooses the subject and writes no more than needed to explicate it. Do not load for read-only inspection that changes no website file.
 ---
 
 # website-builder-journal — every build leaves a builder trace
@@ -15,7 +15,7 @@ For every change transaction that modifies any website-repository file other tha
 
 1. append at least one new record to `src/_data/builder.json`;
 2. preserve every previously published record byte-for-byte in value and order;
-3. record the entry's **date**, **time**, and **exact runtime model**;
+3. record the entry's **date**, **time**, and **model provenance** under the entry contract;
 4. render the journal behind the site's collapsible `<details>` tree; and
 5. pass the repository's builder-history gate before merge.
 
@@ -30,18 +30,35 @@ New records require:
   "id": "<stable-fragment>",
   "date": "YYYY-MM-DD",
   "time": "HH:MM±HH:MM",
-  "model": "<exact runtime model>",
+  "model": "<exact runtime model or unavailable>",
   "body": "<builder-chosen subject>"
 }
 ```
 
 `id` is a stable technical anchor. Optional fields may support presentation or append-only correction links, but they must not create editorial requirements beyond this contract.
 
-### Exact model
+### Model provenance
 
-Write the full model identity actually executing the modification, not a provider, product, role, or generic agent label. Examples of insufficient values include `OpenAI`, `Codex`, `Claude`, `builder`, or `AI`.
+Record the exact runtime model identifier when the executing runtime or response metadata actually exposes it. Do not invent a model name or version, infer one from behavior, or substitute a provider, product, role, or generic agent label such as `OpenAI`, `Codex`, `Claude`, `builder`, or `AI`.
 
-If the runtime does not expose enough information to identify its exact model, the website modification remains blocked at `hmmm`; do not invent a model name.
+When that identifier is not exposed, use `"model": "unavailable"` and a non-empty `model_unavailable_reason` stating the source limitation. For example:
+
+```json
+{
+  "id": "builder-provenance-example",
+  "date": "2026-10-20",
+  "time": "00:00+00:00",
+  "model": "unavailable",
+  "model_unavailable_reason": "The executing runtime does not expose an exact response model identifier.",
+  "body": "A trace can preserve its own limits."
+}
+```
+
+The unavailable marker without its reason is invalid. Do not attach `model_unavailable_reason` to an exact identifier. Missing model metadata alone does not block ordinary website work when this fallback is recorded; it remains visibly unresolved provenance, not evidence of identity.
+
+A requested/configured model alias is not the actual response model. If useful and actually known, record it separately in optional `requested_model`; never promote it into `model` without runtime evidence identifying the executing model. The public journal must display the unavailable reason and label any requested alias as requested/configured.
+
+This fallback changes only the journal's provenance requirement. Scientific or model-comparison claims whose validity depends on exact model identity retain their evidence requirements; unavailable identity cannot establish those claims.
 
 ### Subject and length
 
@@ -62,7 +79,7 @@ Previously published entries are immutable.
 
 `/by-the-builder/` is a static-first collapsible tree implemented with semantic `<details>` / `<summary>` elements. JavaScript may enhance it but must not be required to read the entries.
 
-The tree presentation may evolve. The requirements that survive presentation changes are: the journal remains collapsible, every entry remains reachable, and its date, time, and exact model remain visible.
+The tree presentation may evolve. The requirements that survive presentation changes are: the journal remains collapsible, every entry remains reachable, and its date, time, and model provenance remain visible.
 
 ## Workflow
 
@@ -88,7 +105,8 @@ A conforming implementation proves all of the following:
 - prior entries cannot be edited, deleted, or reordered;
 - every newly appended entry has non-empty `date`, `time`, `model`, and `body`;
 - the time includes an explicit UTC offset;
-- generic provider/agent labels are not accepted as substitutes for the exact model by doctrine;
+- exact identifiers and unavailable-with-reason records are accepted; unavailable without a reason, an exact identifier with an unavailable reason, and generic provider/agent labels are rejected;
+- requested/configured aliases remain separate from actual response identity, and identity-dependent claims retain their evidence gates;
 - the public route renders the entries inside a collapsible semantic tree;
 - the gate runs in the website's normal validation path.
 
@@ -108,7 +126,7 @@ When this skill is installed in the website repository, load it before the first
 
 ```text
 website change
-+ one new builder record {date, time, exact model, body}
++ one new builder record {date, time, model provenance, body}
 + check:builder
 + normal website release gate
 ```
