@@ -16,7 +16,7 @@ The **distributed Interdependency textbook** is a separate technical reading seq
 | 3 | Modules That Speak for Themselves | `The-Interdependency/skill-lib:docs/chapter-3.md` |
 | 4 | Canon Without Inversion | `The-Interdependency/interdependent-lib:docs/chapter-4.md` |
 | 5 | One Architecture, Four Layers | `The-Interdependency/ptcna:docs/chapter-5.md` |
-| 6 | The Instrument | `The-Interdependency/a0:docs/chapter-6.md` |
+| 6 | The Instrument | `The-Interdependency/a0:archive/docs/chapter-6.md` |
 | 7 | The Echo | `The-Interdependency/zfae:docs/chapter-7.md` |
 
 This site displays exact, provenance-bearing chapter snapshots. It does not merge licenses or transfer theorem, proof, empirical, frontier, or canonical status between repositories.

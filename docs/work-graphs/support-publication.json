@@ -1,0 +1,35 @@
+{
+  "schema": "the-interdependency.stack-manifest",
+  "version": "1.0.0",
+  "repositories": [
+    {
+      "repository": "The-Interdependency/The-Interdependency.github.io",
+      "commit": "c955f2f9c36e69a68b8d3a7e0acb70e8fca6c36b",
+      "authority": "Publication source spine, retrieval, rendering, and release checks",
+      "relation": "Consumer whose old A0 chapter path blocks the support-page release"
+    },
+    {
+      "repository": "The-Interdependency/a0",
+      "commit": "ef9f44b518087b9152240731a727ec0f3d531913",
+      "authority": "Archived chapter text and source retirement status",
+      "relation": "Source owner explicitly directs current-branch consumers to archive/; no source edit or runtime revival"
+    },
+    {
+      "repository": "The-Interdependency/skill-lib",
+      "commit": "d71a3a938cb6d646ffc0b59186452117e4a37d13",
+      "authority": "Publication, provenance, and builder-journal contracts",
+      "relation": "Build doctrine source"
+    }
+  ],
+  "boundaries": {
+    "authority_transfer": false,
+    "proof_status_transfer": false,
+    "measurement_status_transfer": false,
+    "semantic_mapping": "external-provenance",
+    "agent_scope": "cross-repository-work-graph",
+    "hmmm": [
+      "Only the A0 chapter locator and its archived status change. The existing ordered spine and build manifest continue to bind the other seven sources. Source identity does not establish producer authentication or transfer certification or empirical validity."
+    ]
+  },
+  "work_graph_sha256": "ae33239d239ed4ecb53585e0e2117742eca3c4f30436912c38cd4f785c1cb6d4"
+}

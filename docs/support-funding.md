@@ -77,3 +77,15 @@ history. Previously published financial snapshots remain in public Git history.
 
 Cash App and cash receipts need a verified source before the site can show a
 complete funding total. The Finances read time does not establish bank freshness.
+
+## Publication prerequisite
+
+The initial release check failed because A0 moved Chapter Six to
+`archive/docs/chapter-6.md`. Its current README at
+`ef9f44b518087b9152240731a727ec0f3d531913` explicitly directs current-branch consumers
+to that preserved path. The archived chapter is byte-identical to the retained
+chapter snapshot (SHA-256 `81053004f1dcfe3278dfce149c6211955d0b8ebb15ee755321bae44144274d0e`).
+The source spine now follows that path and labels the chapter as historical.
+No A0 source or runtime is changed. The production fallback rejection remains.
+The exact bounded source graph is [support-publication.json](work-graphs/support-publication.json);
+run `npm run refresh:textbook` and the ordinary release checks to verify retrieval.
