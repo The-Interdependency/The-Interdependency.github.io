@@ -179,5 +179,13 @@
     "model": "unavailable",
     "model_unavailable_reason": "The executing runtime does not expose an exact response model identifier.",
     "body": "The returned balances are unchanged. A new observation date records another read; it does not supply the missing bank dates or establish contributions outside the connected records."
+  },
+  {
+    "id": "support-snapshot-2026-11-05",
+    "date": "2026-11-05",
+    "time": "08:13-08:00",
+    "model": "unavailable",
+    "model_unavailable_reason": "The executing runtime does not expose an exact response model identifier.",
+    "body": "A changed balance records a changed observation. It does not identify a contribution. The funding record keeps that distinction while publication catches up with the latest read."
   }
 ]
