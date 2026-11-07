@@ -1,7 +1,7 @@
 {
   "schema": "interdependentway.support-snapshot/1",
   "source": "ChatGPT Finances",
-  "observed_at": "2026-11-06T16:37:18Z",
+  "observed_at": "2026-11-07T16:41:51Z",
   "currency": "USD",
   "updates": "daily",
   "accounts": [
@@ -15,7 +15,7 @@
     {
       "label": "Capital One credit card",
       "kind": "credit",
-      "current_minor": 85591,
+      "current_minor": 97223,
       "available_minor": null,
       "balance_as_of": null
     },
@@ -29,7 +29,7 @@
   ],
   "funding": {
     "period_start": "2026-11-03",
-    "through": "2026-11-06",
+    "through": "2026-11-07",
     "confirmed_received_minor": null,
     "coverage": "partial"
   }
