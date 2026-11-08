@@ -21,10 +21,12 @@ amounts belong in the site, its current files, its build artifacts, or its logs.
    checking, Chase checking, and Capital One credit-card accounts. New or
    ambiguous accounts require owner selection before adding to public scope.
 3. Sum the approved accounts before writing any file. Convert USD balances to
-   integer cents; preserve missing values as `null`. Checking current and
-   checking available are separate totals. If any included checking value is
-   null, that total is null; do not publish a partial sum. Credit is its own
-   total and never includes available credit. A balance date is kept only when
+   integer cents and keep the sign: an overdrawn checking balance and a credit
+   on the card are negative and stay in the total. Preserve missing values as
+   `null`. Checking current and checking available are separate totals. If any
+   included checking value is null, that total is null; do not publish a partial
+   sum. Credit is its own total and never includes available credit. Confirmed
+   support cannot be negative. A balance date is kept only when
    every account in that total reports the same date; otherwise the total's
    date is null. Run `node scripts/support-snapshot.mjs <private.json>` and
    commit its stdout only. The command prints aggregate totals and does not
@@ -79,6 +81,7 @@ their source age unchanged. If a daily task is disabled, set `updates: manual`.
 `scripts/support-snapshot.mjs` rejects the old per-account publication shape,
 extra fields, identity keys, unapproved accounts, duplicate accounts,
 non-integer money, false complete-coverage claims, and future balance dates.
+Checking and credit totals may be negative. Confirmed support may not.
 A refresh that commits account rows or donor details fails the build instead
 of being hidden in the template. Unknown funding renders as awaiting verification.
 The page remains readable without JavaScript and requires no financial-service

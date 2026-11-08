@@ -67,9 +67,9 @@ function amount(value) {
   assert.ok(value === null || Number.isSafeInteger(value), 'money must be integer cents or null');
 }
 
-function nonNegative(value) {
+function nonNegative(value, message) {
   amount(value);
-  assert.ok(value === null || value >= 0, 'money cannot be negative');
+  assert.ok(value === null || value >= 0, message);
 }
 
 function rejectIdentityKeys(value) {
@@ -102,7 +102,7 @@ function fundingOf(snapshot) {
   day(funding.period_start);
   day(funding.through);
   assert.ok(funding.period_start <= funding.through && funding.through <= snapshot.observed_at.slice(0, 10), 'invalid funding period');
-  nonNegative(funding.confirmed_received_minor);
+  nonNegative(funding.confirmed_received_minor, 'confirmed receipts cannot be negative');
   // The current connection omits Cash App/cash and supplies no source freshness.
   // A complete-total claim needs a separately reviewed coverage implementation.
   assert.equal(funding.coverage, 'partial');
@@ -141,8 +141,8 @@ function reduceAccounts(snapshot) {
     assert.equal(approvedAccounts.get(account.label), account.kind, 'account is outside the approved public scope');
     assert.ok(!seen.has(account.label), 'duplicate account');
     seen.add(account.label);
-    nonNegative(account.current_minor);
-    nonNegative(account.available_minor);
+    amount(account.current_minor);
+    amount(account.available_minor);
     const balanceAsOf = optionalDate(account.balance_as_of, snapshot.observed_at);
     if (account.kind === 'credit') {
       assert.equal(account.available_minor, null, 'credit availability is not cash');
@@ -163,9 +163,9 @@ function reduceAccounts(snapshot) {
 function totalsOf(snapshot) {
   const totals = snapshot.totals;
   keys(totals, ['checking_current_minor', 'checking_available_minor', 'checking_balance_as_of', 'credit_current_minor', 'credit_balance_as_of']);
-  nonNegative(totals.checking_current_minor);
-  nonNegative(totals.checking_available_minor);
-  nonNegative(totals.credit_current_minor);
+  amount(totals.checking_current_minor);
+  amount(totals.checking_available_minor);
+  amount(totals.credit_current_minor);
   return {
     checking_current_minor: totals.checking_current_minor,
     checking_available_minor: totals.checking_available_minor,
@@ -234,14 +234,32 @@ export function createSupportView(snapshot) {
   };
 }
 
+function parseSnapshotText(text) {
+  try {
+    return JSON.parse(text);
+  } catch {
+    const error = new Error('support snapshot rejected: input is not valid JSON');
+    error.publicMessage = true;
+    throw error;
+  }
+}
+
+function stderrLine(error) {
+  if (error instanceof Error && error.publicMessage === true && error.message === 'support snapshot rejected: input is not valid JSON') return error.message;
+  if (error instanceof assert.AssertionError && error.generatedMessage === false) {
+    const line = String(error.message).split('\n')[0];
+    if (/^[A-Za-z0-9 ,.:;()/_+-]{1,200}$/.test(line)) return line;
+  }
+  return 'support snapshot rejected';
+}
+
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   try {
     const file = process.argv[2];
     assert.ok(file && process.argv.length === 3, 'Usage: node scripts/support-snapshot.mjs <private-or-public.json>');
-    process.stdout.write(`${JSON.stringify(aggregateSupportSnapshot(JSON.parse(readFileSync(file, 'utf8'))), null, 2)}\n`);
+    process.stdout.write(`${JSON.stringify(aggregateSupportSnapshot(parseSnapshotText(readFileSync(file, 'utf8'))), null, 2)}\n`);
   } catch (error) {
-    const message = error && typeof error === 'object' && typeof error.message === 'string' ? error.message.split('\n')[0] : 'support snapshot rejected';
-    process.stderr.write(`${message}\n`);
+    process.stderr.write(`${stderrLine(error)}\n`);
     process.exit(1);
   }
 }

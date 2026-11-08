@@ -34,16 +34,49 @@ test('the support ask is shared by the homepage and dedicated support page', () 
   assert.ok(readFileSync('src/index.njk', 'utf8').includes('Support me · funding totals'));
 });
 
-test('published totals equal the last verified account snapshot and name nobody', () => {
+test('the historical account snapshot reduces to totals without freezing later reads', () => {
   const prior = priorAccounts();
-  const published = snapshot();
   const summed = aggregateSupportSnapshot(prior);
-  assert.deepEqual(published.totals, summed.totals);
-  assert.equal(published.funding.confirmed_received_minor, prior.funding.confirmed_received_minor);
-  assert.equal(published.observed_at, prior.observed_at);
-  assert.equal(published.funding.period_start, prior.funding.period_start);
-  assert.equal(published.funding.through, prior.funding.through);
+  const checking = prior.accounts.filter(account => account.kind === 'depository');
+  const credit = prior.accounts.filter(account => account.kind === 'credit');
+  assert.equal(summed.totals.checking_current_minor, checking.reduce((sum, account) => sum + account.current_minor, 0));
+  assert.equal(summed.totals.checking_available_minor, checking.reduce((sum, account) => sum + account.available_minor, 0));
+  assert.equal(summed.totals.credit_current_minor, credit.reduce((sum, account) => sum + account.current_minor, 0));
+  assert.equal(summed.totals.checking_balance_as_of, null);
+  assert.equal(summed.totals.credit_balance_as_of, null);
+  assert.equal(summed.funding.confirmed_received_minor, prior.funding.confirmed_received_minor);
+  assert.equal(summed.schema, 'interdependentway.support-snapshot/2');
+  for (const account of prior.accounts) assert.equal(JSON.stringify(summed).includes(account.label), false);
+
+  const later = {
+    schema: 'interdependentway.support-snapshot/2',
+    source: 'ChatGPT Finances',
+    observed_at: '2026-12-01T18:00:00Z',
+    currency: 'USD',
+    updates: 'daily',
+    totals: {
+      checking_current_minor: 500,
+      checking_available_minor: 400,
+      checking_balance_as_of: null,
+      credit_current_minor: -20,
+      credit_balance_as_of: null
+    },
+    funding: {
+      period_start: '2026-11-03',
+      through: '2026-12-01',
+      confirmed_received_minor: 2500,
+      coverage: 'partial'
+    }
+  };
+  const view = createSupportView(later);
+  assert.equal(view.checking.current_label, money(500));
+  assert.equal(view.credit.current_label, money(-20));
+  assert.equal(view.funding.label, '$25.00 confirmed in available records');
+  assert.notEqual(later.observed_at, prior.observed_at);
+
+  const published = snapshot();
   assert.equal(published.schema, 'interdependentway.support-snapshot/2');
+  createSupportView(published);
   const surface = publicPaths.map(path => readFileSync(path, 'utf8')).join('\n') + JSON.stringify(createSupportView(published));
   for (const account of prior.accounts) {
     assert.equal(surface.includes(account.label), false);
@@ -130,6 +163,28 @@ test('raw identifiers, donor data, and unsupported totals fail publication', () 
   assert.throws(() => createSupportView(labeled), /public fields|cannot carry/);
 });
 
+test('overdrawn checking and a card credit remain in the signed totals', () => {
+  const prior = priorAccounts();
+  const checking = prior.accounts.filter(account => account.kind === 'depository');
+  checking[0].current_minor = -400;
+  checking[0].available_minor = -400;
+  const card = prior.accounts.find(account => account.kind === 'credit');
+  card.current_minor = -125;
+  const reduced = aggregateSupportSnapshot(prior);
+  assert.equal(reduced.totals.checking_current_minor, checking.reduce((sum, account) => sum + account.current_minor, 0));
+  assert.equal(reduced.totals.checking_available_minor, checking.reduce((sum, account) => sum + account.available_minor, 0));
+  assert.equal(reduced.totals.credit_current_minor, -125);
+  const view = createSupportView(reduced);
+  assert.equal(view.checking.current_label, money(reduced.totals.checking_current_minor));
+  assert.equal(view.credit.current_label, money(-125));
+  const published = snapshot();
+  published.totals.checking_current_minor = -10;
+  published.totals.credit_current_minor = -20;
+  assert.equal(createSupportView(published).credit.current_label, money(-20));
+  reduced.funding.confirmed_received_minor = -1;
+  assert.throws(() => createSupportView(reduced), /confirmed receipts cannot be negative/);
+});
+
 test('non-integer money, false complete totals, and future source dates reject', () => {
   const mutations = [
     s => { s.totals.checking_current_minor = 1.5; },
@@ -175,5 +230,23 @@ test('the refresh command prints totals only', () => {
     for (const account of priorAccounts().accounts) assert.equal(output.includes(account.label), false);
   } finally {
     rmSync(directoryOk, { recursive: true, force: true });
+  }
+});
+
+test('malformed private input does not echo the file contents', () => {
+  const directory = mkdtempSync(join(tmpdir(), 'support-totals-'));
+  const secret = 'PRIVATE_DONOR_1234';
+  try {
+    const file = join(directory, 'private.json');
+    writeFileSync(file, secret);
+    execFileSync('node', ['scripts/support-snapshot.mjs', file], { encoding: 'utf8' });
+    assert.fail('malformed input must fail');
+  } catch (error) {
+    assert.equal(error.status, 1);
+    const output = `${error.stdout || ''}${error.stderr || ''}`;
+    assert.equal(output.includes(secret), false);
+    assert.match(String(error.stderr), /^support snapshot rejected: input is not valid JSON\n$/);
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
   }
 });
