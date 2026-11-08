@@ -1,32 +1,16 @@
 {
-  "schema": "interdependentway.support-snapshot/1",
+  "schema": "interdependentway.support-snapshot/2",
   "source": "ChatGPT Finances",
   "observed_at": "2026-11-07T16:41:51Z",
   "currency": "USD",
   "updates": "daily",
-  "accounts": [
-    {
-      "label": "X Money checking",
-      "kind": "depository",
-      "current_minor": 7194,
-      "available_minor": 7194,
-      "balance_as_of": null
-    },
-    {
-      "label": "Capital One credit card",
-      "kind": "credit",
-      "current_minor": 97223,
-      "available_minor": null,
-      "balance_as_of": null
-    },
-    {
-      "label": "Chase checking",
-      "kind": "depository",
-      "current_minor": 16500,
-      "available_minor": 16500,
-      "balance_as_of": null
-    }
-  ],
+  "totals": {
+    "checking_current_minor": 23694,
+    "checking_available_minor": 23694,
+    "checking_balance_as_of": null,
+    "credit_current_minor": 97223,
+    "credit_balance_as_of": null
+  },
   "funding": {
     "period_start": "2026-11-03",
     "through": "2026-11-07",

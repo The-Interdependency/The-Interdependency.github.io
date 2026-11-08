@@ -1,14 +1,17 @@
 # Support page financial snapshots
 
 The owner requested public funding and account balances on `/support/` on
-2026-11-03. The ask lives in `src/_includes/components/support-ask.njk` and is
-shared with the homepage. Its Boardy attribution belongs to the supplied text.
+2026-11-03. On 2026-11-08 the public page was limited to aggregate totals:
+confirmed support, checking, and credit. The ask lives in
+`src/_includes/components/support-ask.njk` and is shared with the homepage. Its
+Boardy attribution belongs to the supplied text and is not a donation acknowledgment.
 
 The site remains static. An authorized ChatGPT task reads the owner's Finances
-connection, produces the restricted snapshot in `src/_data/supportSnapshot.json`,
-and publishes it through the repository's ordinary checks and Pages deployment.
-No bank connection, credentials, raw transactions, or private identifiers belong
-in the site, its Git history, its build artifacts, or its logs.
+connection, reduces it with `scripts/support-snapshot.mjs`, and commits only the
+totals object in `src/_data/supportSnapshot.json`. Publication still goes through
+the repository's ordinary checks and Pages deployment. No bank connection,
+credentials, raw transactions, account rows, donor identities, or per-account
+amounts belong in the site, its current files, its build artifacts, or its logs.
 
 ## Updating the snapshot
 
@@ -17,14 +20,21 @@ in the site, its Git history, its build artifacts, or its logs.
 2. Call Finances `get_linked_accounts`. Resolve exactly the existing X Money
    checking, Chase checking, and Capital One credit-card accounts. New or
    ambiguous accounts require owner selection before adding to public scope.
-3. Build the snapshot by selecting the allowed fields individually. Use the
-   three fixed public labels in `scripts/support-snapshot.mjs`. Convert USD balances to integer
-   cents; preserve missing values as `null`. Keep credit balances separate from
-   cash. Never use credit availability as cash.
+3. Sum the approved accounts before writing any file. Convert USD balances to
+   integer cents; preserve missing values as `null`. Checking current and
+   checking available are separate totals. If any included checking value is
+   null, that total is null; do not publish a partial sum. Credit is its own
+   total and never includes available credit. A balance date is kept only when
+   every account in that total reports the same date; otherwise the total's
+   date is null. Run `node scripts/support-snapshot.mjs <private.json>` and
+   commit its stdout only. The command prints aggregate totals and does not
+   copy labels, per-account amounts, names, memos, or transactions.
 4. Set `observed_at` to the actual successful read time, including its UTC
-   offset. Set each `balance_as_of` only from `balances.balance_date` or a
-   source-reported balance timestamp. Record-update, sync, ingestion and read
-   timestamps do not establish balance age. Otherwise use `null`.
+   offset. On the private read, set each `balance_as_of` only from
+   `balances.balance_date` or a source-reported balance timestamp. Record-update,
+   sync, ingestion and read timestamps do not establish balance age. Otherwise
+   use `null`. Those dates are inputs to the total; they are not published as
+   separate account rows.
 5. For funding, retain `period_start: 2026-11-03`. Query posted broad inflows
    from that date through the current Pacific date, using `amount < 0`,
    `include_transfers: true`, `pending: false`, and no category filter. Retrieve
@@ -36,7 +46,9 @@ in the site, its Git history, its build artifacts, or its logs.
    transfer category alone cannot establish a contribution. Count support only
    when its purpose is explicit in source evidence or owner-confirmed records;
    count each receipt once and apply its attributable refunds. Calculate in
-   integer cents. Publish only an aggregate, never donor or transaction details.
+   integer cents. The committed funding value is one total or null. Never write
+   a donor, a receipt, a counterparty, or a transaction into the snapshot,
+   page, download, or embedded JSON.
 7. `confirmed_received_minor: null` means unverified. Zero requires evidence
    that the reviewed scope contains zero confirmed support; it never represents
    unknown Cash App/cash receipts. Any numeric amount is only the confirmed
@@ -64,14 +76,17 @@ their source age unchanged. If a daily task is disabled, set `updates: manual`.
 
 ## Validation and rollback
 
-`scripts/support-snapshot.mjs` rejects extra fields, unapproved accounts, duplicate accounts,
+`scripts/support-snapshot.mjs` rejects the old per-account publication shape,
+extra fields, identity keys, unapproved accounts, duplicate accounts,
 non-integer money, false complete-coverage claims, and future balance dates.
-Unknown funding renders as awaiting verification. The page remains readable
-without JavaScript and requires no financial-service login from visitors.
+A refresh that commits account rows or donor details fails the build instead
+of being hidden in the template. Unknown funding renders as awaiting verification.
+The page remains readable without JavaScript and requires no financial-service
+login from visitors.
 
-To stop publication, disable the daily task and remove the balance/funding
-sections and `support.js` together. Keep the ask, support links, and builder
-history. Previously published financial snapshots remain in public Git history.
+To stop publication, disable the daily task and remove the totals sections and
+`support.js` together. Keep the ask, support links, and builder history.
+Previously published financial snapshots remain in public Git history.
 
 ## hmmm
 

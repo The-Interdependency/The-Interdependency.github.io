@@ -1,9 +1,9 @@
 ---
 layout: layouts/base.njk
 title: Support me
-description: Support Erin Spencer's research and community work, with funding and account balance snapshots.
+description: Support Erin Spencer's research and community work. Funding and balance figures on this page are aggregate totals.
 ---
-{# Usage: support.js validates the public snapshot before Eleventy renders it. Never supply raw Finances records to this template. #}
+{# Usage: support.js validates the public totals before Eleventy renders them. Never supply per-account rows, giver identities, or payment lines to this template. #}
 <header class="page-head"><h1>Support me</h1></header>
 <div class="prose">
   {% include "components/support-ask.njk" %}
@@ -16,28 +16,32 @@ description: Support Erin Spencer's research and community work, with funding an
   <p class="lede">{{ support.funding.label | escape }}</p>
   <p>Tracking from <time datetime="{{ support.funding.period_start | escape }}">{{ support.funding.period_start | escape }}</time> through <time datetime="{{ support.funding.through | escape }}">{{ support.funding.through | escape }}</time>.</p>
   <p>{{ support.funding.note | escape }}</p>
-  <p>Account balances include money from other sources and do not measure contributions to this ask.</p>
+  <p>This is one total for confirmed support in the reviewed records. It does not list gifts or identify who gave them. Balance totals include money from other sources and do not measure contributions to this ask.</p>
 </section>
 
 <section aria-labelledby="balances-heading">
-  <h2 id="balances-heading">Account balances</h2>
-  <p>Read from ChatGPT Finances on <time datetime="{{ support.observed_at | escape }}">{{ support.observed_label | escape }}</time>. These are saved account snapshots.</p>
+  <h2 id="balances-heading">Balance totals</h2>
+  <p>Read from ChatGPT Finances on <time datetime="{{ support.observed_at | escape }}">{{ support.observed_label | escape }}</time>. These are aggregate snapshots.</p>
   <div class="grid">
-    {% for account in support.accounts %}
     <article class="card">
-      <h3>{{ account.label | escape }}</h3>
-      <p class="lede">{{ account.current_label | escape }}</p>
-      <p>{{ account.kind_label | escape }}</p>
-      {% if account.available_label %}<p>Reported available: {{ account.available_label | escape }}</p>{% endif %}
-      <p>{{ account.age_label | escape }}</p>
+      <h3>Checking total</h3>
+      <p class="lede">{{ support.checking.current_label | escape }}</p>
+      <p>Reported checking total</p>
+      {% if support.checking.available_label %}<p>Reported available: {{ support.checking.available_label | escape }}</p>{% endif %}
+      <p>{{ support.checking.age_label | escape }}</p>
     </article>
-    {% endfor %}
+    <article class="card">
+      <h3>Credit total</h3>
+      <p class="lede">{{ support.credit.current_label | escape }}</p>
+      <p>Reported card balance total</p>
+      <p>{{ support.credit.age_label | escape }}</p>
+    </article>
   </div>
-  <p>Balances are not a statement of uncommitted spending money or a current card payoff amount.</p>
+  <p>Totals are not a statement of uncommitted spending money or a current card payoff amount.</p>
   <details>
     <summary>Coverage and updates</summary>
     <p>{{ support.update_note | escape }}</p>
-    <p>Only X Money checking, Chase checking, and Capital One credit card are included. Cash App receipts and cash contributions are outside this connection. Transfers between accounts, benefits, refunds, interest, cashback, and borrowed money are excluded from research contributions.</p>
-    <p>When the source supplies no balance date, its age stays unknown. The read time above records when this page's data was retrieved.</p>
+    <p>Checking and credit stay separate. Cash App receipts and cash contributions are outside this connection. Internal transfers, benefits, refunds, interest, cashback, and borrowed money are excluded from research contributions. Separate holdings and individual gifts are omitted.</p>
+    <p>When the source supplies no single balance date for a total, its age stays unknown. The read time above records when this page's data was retrieved.</p>
   </details>
 </section>
