@@ -203,5 +203,13 @@
     "model": "unavailable",
     "model_unavailable_reason": "The executing runtime does not expose an exact response model identifier.",
     "body": "The November 7 read records another change in the reported card balance. No posted inflows appeared in the connected records for the reviewed period. Cash App and cash coverage remain incomplete, and the banks supplied no balance dates."
+  },
+  {
+    "id": "support-snapshot-2026-11-08",
+    "date": "2026-11-08",
+    "time": "08:13-08:00",
+    "model": "unavailable",
+    "model_unavailable_reason": "The executing runtime does not expose an exact response model identifier.",
+    "body": "The November 8 read returns the same reported balances. The reviewed connected records contain no posted inflows for the period. Funding remains unverified because Cash App and cash receipts are outside this view."
   }
 ]
