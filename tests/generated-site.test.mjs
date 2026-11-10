@@ -8,16 +8,22 @@ import { connectionContract } from '../src/eai/aicontext.11ty.js';
 
 // Regression: valid adapter output must reach the actual static page. Eleventy
 // does not execute a default data function when its module also has named exports.
-test('support page renders every approved balance and its observation date', async () => {
-  const html = await readFile('_site/support/index.html', 'utf8');
+test('support page renders aggregate totals and no account or giver identity', async () => {
+  const [html, home] = await Promise.all([
+    readFile('_site/support/index.html', 'utf8'),
+    readFile('_site/index.html', 'utf8')
+  ]);
   const snapshot = JSON.parse(await readFile('src/_data/supportSnapshot.json', 'utf8'));
-  assert.equal((html.match(/<article class="card">/g) || []).length, snapshot.accounts.length);
-  for (const account of snapshot.accounts) {
-    assert.ok(html.includes(`<h3>${account.label}</h3>`), `missing ${account.label}`);
-    const value = account.current_minor === null ? 'Unavailable' :
-      new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(account.current_minor / 100);
-    assert.ok(html.includes(`<p class="lede">${value}</p>`), `missing balance for ${account.label}`);
-  }
+  const money = minor => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(minor / 100);
+  assert.equal((html.match(/<article class="card">/g) || []).length, 2);
+  assert.match(html, /Checking total/);
+  assert.match(html, /Credit total/);
+  assert.ok(html.includes(`<p class="lede">${money(snapshot.totals.checking_current_minor)}</p>`));
+  assert.ok(html.includes(`<p class="lede">${money(snapshot.totals.credit_current_minor)}</p>`));
+  assert.equal(html.includes('accounts'), false);
+  assert.doesNotMatch(html, /donor|transaction|X Money|Capital One|Chase checking/);
+  assert.doesNotMatch(home, /X Money|Capital One|Chase checking|account balances/);
+  assert.match(home, /funding totals/);
   assert.ok(html.includes(`datetime="${snapshot.observed_at}"`));
   assert.ok(html.includes(`datetime="${snapshot.funding.period_start}"`));
   if (snapshot.funding.confirmed_received_minor === null) assert.match(html, /Total awaiting verification/);
