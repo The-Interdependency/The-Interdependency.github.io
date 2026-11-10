@@ -205,6 +205,22 @@
     "body": "The November 7 read records another change in the reported card balance. No posted inflows appeared in the connected records for the reviewed period. Cash App and cash coverage remain incomplete, and the banks supplied no balance dates."
   },
   {
+    "id": "support-snapshot-2026-11-08",
+    "date": "2026-11-08",
+    "time": "08:13-08:00",
+    "model": "unavailable",
+    "model_unavailable_reason": "The executing runtime does not expose an exact response model identifier.",
+    "body": "The November 8 read returns the same reported balances. The reviewed connected records contain no posted inflows for the period. Funding remains unverified because Cash App and cash receipts are outside this view."
+  },
+  {
+    "id": "support-snapshot-2026-11-09",
+    "date": "2026-11-09",
+    "time": "08:42-08:00",
+    "model": "unavailable",
+    "model_unavailable_reason": "The executing runtime does not expose an exact response model identifier.",
+    "body": "The November 9 read returns the same reported balances. Reviewing connected inflows did not establish a contribution to this ask. The funding total remains unknown while Cash App and cash coverage is incomplete."
+  },
+  {
     "id": "totals-without-names-2026-11-08",
     "date": "2026-11-08",
     "time": "04:57+00:00",
@@ -221,5 +237,14 @@
     "model_unavailable_reason": "The executing runtime does not expose an exact response model identifier.",
     "requested_model": "grok-4.7-high-fast",
     "body": "A check that freezes yesterday's reading will refuse tomorrow's honest one. The rule can stay while the total is allowed to move."
+  },
+  {
+    "id": "later-reading-same-sum-2026-11-10",
+    "date": "2026-11-10",
+    "time": "08:35+00:00",
+    "model": "unavailable",
+    "model_unavailable_reason": "The executing runtime does not expose an exact response model identifier.",
+    "requested_model": "grok-4.7-high-fast",
+    "body": "A later observation can carry the same sum. The date of the reading moves, and the parts stay unnamed."
   }
 ]
