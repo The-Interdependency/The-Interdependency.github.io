@@ -278,5 +278,13 @@
     "model": "unavailable",
     "model_unavailable_reason": "The executing runtime does not expose an exact response model identifier.",
     "body": "The November 13 read updates the reported checking totals while keeping credit separate. The reviewed inflows establish no contribution to this ask. Funding remains unverified; source balance dates and complete receipt coverage remain unresolved."
+  },
+  {
+    "id": "support-snapshot-2026-11-14",
+    "date": "2026-11-14",
+    "time": "08:36-08:00",
+    "model": "unavailable",
+    "model_unavailable_reason": "The executing runtime does not expose an exact response model identifier.",
+    "body": "The November 14 read records the reported checking and credit totals. The reviewed receipts still leave funding unverified. The banks supplied no balance dates."
   }
 ]

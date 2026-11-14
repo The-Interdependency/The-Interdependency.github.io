@@ -1,19 +1,19 @@
 {
   "schema": "interdependentway.support-snapshot/2",
   "source": "ChatGPT Finances",
-  "observed_at": "2026-11-13T16:36:33Z",
+  "observed_at": "2026-11-14T16:36:12Z",
   "currency": "USD",
   "updates": "daily",
   "totals": {
     "checking_current_minor": 44206,
     "checking_available_minor": 41597,
     "checking_balance_as_of": null,
-    "credit_current_minor": 83823,
+    "credit_current_minor": 101090,
     "credit_balance_as_of": null
   },
   "funding": {
     "period_start": "2026-11-03",
-    "through": "2026-11-13",
+    "through": "2026-11-14",
     "confirmed_received_minor": null,
     "coverage": "partial"
   }
