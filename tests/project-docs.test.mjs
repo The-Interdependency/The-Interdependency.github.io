@@ -7,6 +7,7 @@ import {
   REPOSITORY_NOT_PUBLIC,
   selectDocumentationPaths
 } from '../scripts/repository-public-projection.mjs';
+import { readPublicHead } from '../scripts/public-repository-git.mjs';
 import { resolveRepositoryImageReference } from '../scripts/repository-markdown-links.mjs';
 
 test('documentation selection keeps README first, root docs next, docs tree next, and excludes control metadata', () => {
@@ -337,4 +338,55 @@ test('live refresh scopes SITREP to MSDMD and updates project provenance when do
   assert.match(template, /data-project-doc-mode/);
   assert.match(eleventy, /resolveRepositoryImageReference\(source, env\?\.sourceUrl\)/);
   assert.match(server, /repositoryRefresher\(body\?\.repository, projectionOptions\)/);
+});
+
+test('live refresh serves commit-pinned metadata and documents when upstream REST lookups fail', async t => {
+  const head = 'a'.repeat(40);
+  const used = [];
+  const publicGit = {
+    head: async repo => { used.push(repo); return { headSha: head, defaultBranch: 'main' }; },
+    tree: async (repo, sha) => { used.push(sha); return { tree: [{ type: 'blob', path: 'README.md' }], truncated: false }; }
+  };
+  t.mock.method(globalThis, 'fetch', async url => {
+    if (url.origin === 'https://api.github.com') return new Response('', { status: 403 });
+    assert.ok(url.pathname.includes('/alpha/' + head + '/'));
+    if (url.pathname.endsWith('_msdmd.ts')) return Response.json({ repo: 'alpha', declarations: [], gaps: [], edges: [] });
+    return new Response('# Current public README');
+  });
+  const projection = await fetchRepositoryPublicProjection('alpha', {}, publicGit);
+  assert.deepEqual(used, ['alpha', head]);
+  assert.equal(projection.headSha, head);
+  assert.equal(projection.msdmd.status, 'ok');
+  assert.equal(projection.documentation.readme.content, '# Current public README');
+  assert.equal(projection.documentation.discoveryComplete, true);
+});
+
+test('non-public and missing repositories cannot trigger the alternate transport', async t => {
+  const publicGit = { head: () => assert.fail('anonymous fallback after a private/absent result') };
+  for (const response of [() => Response.json({ private: true }), () => new Response('', { status: 404 })]) {
+    const mock = t.mock.method(globalThis, 'fetch', response);
+    await assert.rejects(fetchRepositoryPublicProjection('alpha', {}, publicGit), isRepositoryNotPublicError);
+    mock.mock.restore();
+  }
+});
+
+test('anonymous ref discovery reads a split first packet and rejects missing or spoofed HEAD', async t => {
+  const sha = 'f'.repeat(40);
+  const payload = sha + ' HEAD\0multi_ack symref=HEAD:refs/heads/trunk agent=git/github\n';
+  const ref = '001e# service=git-upload-pack\n0000' + (Buffer.byteLength(payload) + 4).toString(16).padStart(4, '0') + payload;
+  let source = ref;
+  t.mock.method(globalThis, 'fetch', async (url, options) => {
+    assert.equal(url, 'https://github.com/The-Interdependency/alpha.git/info/refs?service=git-upload-pack');
+    assert.equal(options.redirect, 'error');
+    assert.equal(options.credentials, 'omit');
+    const body = new ReadableStream({ start(controller) {
+      for (const part of [source.slice(0, 7), source.slice(7, 39), source.slice(39)]) controller.enqueue(Buffer.from(part));
+      controller.close();
+    } });
+    return new Response(body, { headers: { 'content-type': 'application/x-git-upload-pack-advertisement' } });
+  });
+  assert.deepEqual(await readPublicHead('alpha'), { headSha: sha, defaultBranch: 'trunk', headCommittedAt: null });
+  source = '001e# service=git-upload-pack\n00000000';
+  await assert.rejects(readPublicHead('alpha'), /did not advertise/);
+  await assert.rejects(readPublicHead('..'), /invalid/);
 });
