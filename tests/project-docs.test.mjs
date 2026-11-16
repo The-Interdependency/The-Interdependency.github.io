@@ -145,6 +145,17 @@ test('an explicitly missing captured head remains unavailable instead of re-reso
   }
 });
 
+test('captured file values must be a public slug and exact commit before a request can leave', async t => {
+  const network = t.mock.method(globalThis, 'fetch', () => { throw new Error('unexpected request'); });
+  for (const name of ['..', 'outside/private', 'https://example.com']) {
+    await assert.rejects(fetchRepositoryPublicProjection(name, { headSha: 'a'.repeat(40) }), /invalid repository name/);
+  }
+  for (const headSha of ['document content', 'a'.repeat(39), '../private']) {
+    await assert.rejects(fetchRepositoryPublicProjection('skill-lib', { headSha }), /repository head unavailable/);
+  }
+  assert.equal(network.mock.callCount(), 0);
+});
+
 test('live MSDMD projection rejects a collection declaring another repository identity', async () => {
   const originalFetch = globalThis.fetch;
   globalThis.fetch = async target => {

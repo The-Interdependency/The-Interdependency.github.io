@@ -1,3 +1,4 @@
+import { build as bundle } from 'esbuild';
 import markdownIt from 'markdown-it';
 import { installMathRenderer } from './scripts/markdown-math.mjs';
 import { resolveRepositoryImageReference } from './scripts/repository-markdown-links.mjs';
@@ -151,7 +152,14 @@ function installSourceReferenceRenderer(md) {
 export default function configureEleventy(eleventyConfig) {
   const md = installSourceReferenceRenderer(installMathRenderer(markdownIt({ html: false, linkify: true, typographer: true })));
   eleventyConfig.setLibrary('md', md);
+  // Ship the parser and Markdown renderer only when a reader needs the direct GitHub fallback.
+  eleventyConfig.on('eleventy.before', () => bundle({
+    entryPoints: ['scripts/browser-repository-refresh.mjs'],
+    outfile: '.cache/project-refresh/github.js',
+    bundle: true, minify: true, format: 'esm', platform: 'browser', target: 'es2022', legalComments: 'inline'
+  }));
   eleventyConfig.addPassthroughCopy({
+    '.cache/project-refresh': 'assets/project-refresh',
     'src/assets': 'assets',
     '.cache/msdmd-public-pages/projects': 'projects',
     'src/_data/gonol_relationship_display.json': 'assets/data/gonol-relationship-display-v1.json',

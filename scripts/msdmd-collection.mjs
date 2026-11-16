@@ -20,18 +20,34 @@ export async function fetchCollection(repo, head) {
   }
   // The response body is uncompressed by fetch. Count those bytes even for a chunked or compressed transfer.
   if (!response.body) {
-    const bytes = Buffer.from(await response.text());
+    const bytes = new TextEncoder().encode(await response.text());
     if (bytes.length > COLLECTION_BYTE_LIMIT) throw oversized();
     return bytes;
   }
   const chunks = [];
   let length = 0;
-  for await (const chunk of response.body) {
-    length += chunk.length;
-    if (length > COLLECTION_BYTE_LIMIT) throw oversized();
-    chunks.push(chunk);
+  const reader = response.body.getReader();
+  try {
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      length += value.byteLength;
+      if (length > COLLECTION_BYTE_LIMIT) {
+        await reader.cancel();
+        throw oversized();
+      }
+      chunks.push(value);
+    }
+  } finally {
+    reader.releaseLock();
   }
-  return Buffer.concat(chunks, length);
+  const bytes = new Uint8Array(length);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.length;
+  }
+  return bytes;
 }
 
 function literal(node, allowChunks = false) {

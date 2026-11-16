@@ -30,6 +30,8 @@ const budgets = Object.freeze({
   largestMetadataHtmlBytes: 64 * 1024,
   totalFirstPartyCssBytes: 96 * 1024,
   totalFirstPartyJsBytes: 128 * 1024,
+  // The parser and Markdown renderer load only after a reader requests a live refresh and the service fails.
+  directRefreshJsBytes: 256 * 1024,
   largestHtmlBytes: 192 * 1024
 });
 
@@ -61,7 +63,8 @@ const observed = {
   metadataCorpusBytes: sum(metadataCorpus),
   largestMetadataHtmlBytes: htmlRecords.reduce((max, record) => readerPage(record) ? Math.max(max, record.bytes) : max, 0),
   totalFirstPartyCssBytes: sum(record => record.relative.startsWith('assets/') && record.relative.endsWith('.css')),
-  totalFirstPartyJsBytes: sum(record => record.relative.startsWith('assets/') && record.relative.endsWith('.js')),
+  totalFirstPartyJsBytes: sum(record => record.relative.startsWith('assets/') && record.relative.endsWith('.js') && record.relative !== 'assets/project-refresh/github.js'),
+  directRefreshJsBytes: sum(record => record.relative === 'assets/project-refresh/github.js'),
   largestHtmlBytes: largestHtml.bytes
 };
 

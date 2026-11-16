@@ -54,7 +54,7 @@ title: "Project: {{ repo.name }}"
   <p class="hmmm">No build-time MSDMD repository row was available.</p>
   {% endif %}
   <div class="actions">
-    <button class="button" type="button" data-msdmd-refresh data-repository="{{ repo.name }}">Refresh MSDMD + docs</button>
+    <button class="button" type="button" data-msdmd-refresh data-repository="{{ repo.name }}"{% if repoMsdmd.collection.status == 'ok' %} data-published-head="{{ repoMsdmd.headSha }}" data-published-sha256="{{ repoMsdmd.collection.sha256 }}" data-published-counts="{{ repoMsdmd.counts | json | escape }}"{% endif %}>Refresh MSDMD + docs</button>
   </div>
   <p class="field-help" data-msdmd-refresh-status aria-live="polite">Refresh reads the repository's current public HEAD without mutating it. The displayed content stays in place if refresh fails.</p>
 </section>
