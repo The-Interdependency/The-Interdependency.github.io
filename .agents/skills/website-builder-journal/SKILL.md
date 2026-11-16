@@ -1,6 +1,6 @@
 ---
 name: website-builder-journal
-description: Load this when any modification to The-Interdependency/The-Interdependency.github.io is planned or underway, including source, content, configuration, tests, workflows, dependencies, generated-contract code, or deployment paths. Every website change transaction must append at least one By the builder entry recording date, time, and truthful model provenance; the model chooses the subject and writes no more than needed to explicate it. Do not load for read-only inspection that changes no website file.
+description: Load this when any modification to The-Interdependency/The-Interdependency.github.io is planned or underway, including source, content, configuration, tests, workflows, dependencies, generated-contract code, or deployment paths. Reserve an independent research allowance before the required By the builder entry; record date, time, and truthful model provenance while leaving subject and length to the model. Do not load for read-only inspection that changes no website file.
 ---
 
 # website-builder-journal — every build leaves a builder trace
@@ -66,6 +66,43 @@ The model has complete discretion over the journal entry's subject matter. It do
 
 Write only as much as is required to properly explicate the chosen subject. There is no minimum length, target length, mandatory title, changelog template, or required rhetorical shape.
 
+### Independent research allowance
+
+Give the diary a separate work phase before composing its entry. Choose freely how
+to use it: investigation, computation, invention, reflection, or developing an
+existing thought. The subject may be unrelated to the website change. Use available
+tools within existing authorization; the allowance is not a requirement to search,
+spend tokens, or produce any particular kind of discovery.
+
+For the initial three-entry trial, reserve **40,000 total model tokens per diary
+research session**, allocated as ceilings of **15,000 input tokens** and **25,000
+generated tokens**. One website change transaction receives one such session, not
+a fresh allowance per request, revision, or appended record. Keep this allowance
+separate from the website implementation work; unused capacity stays unused.
+
+Count all model requests belonging to the diary phase:
+
+- Input includes instructions, context, sources and tool results actually sent to
+  the model. Count repeated and cached inputs on each request as reported; a cache
+  discount changes cost, not token count.
+- Generated usage includes reasoning, visible writing and other generated tokens.
+  Reasoning already included in the provider's output total is counted once.
+- Sum input and generated usage across the session. Before another request,
+  check both remaining allocations and reserve room for its generation. Do not
+  start a request that cannot fit; preserve unfinished work as `hmmm`.
+
+Use actual provider or host usage counters when exposed. If this executor cannot
+meter or enforce the allowance, report **`hmmm: diary research usage unmetered;
+40,000-token allowance is planning guidance, not an enforced cap`**. Keep the work
+focused and preserve any available partial counters; do not invent usage or claim
+exact compliance. Do not configure new paid execution merely to obtain a meter.
+
+Keep usage accounting in execution receipts or the task report. It adds no required
+section, topic, quotation, citation format or length to the journal body. The writer
+may include any of it by choice. After the first three entries governed by this
+allowance, review their actual available usage and reader-assessed value with Erin
+before changing the allowance. Tokens spent do not establish that an entry is useful.
+
 ## Append-only boundary
 
 Previously published entries are immutable.
@@ -85,7 +122,7 @@ The tree presentation may evolve. The requirements that survive presentation cha
 
 1. Resolve the exact website base commit before editing.
 2. Make the authorized website modification.
-3. Before terminal validation, append one or more compliant builder records.
+3. Use the independent diary work phase, then append one or more compliant builder records before terminal validation. This phase belongs to the same transaction and creates no recursive entry obligation.
 4. Run:
    ```bash
    npm run check:builder -- --base <base-commit>
@@ -110,6 +147,14 @@ A conforming implementation proves all of the following:
 - the public route renders the entries inside a collapsible semantic tree;
 - the gate runs in the website's normal validation path.
 
+For the research allowance, check a multi-request usage trace rather than prose
+length: reject a next request exceeding either remaining allocation, count included
+reasoning once, and preserve unavailable counters as `hmmm`. Forward-test with a
+freely chosen subject outside the immediate change; assess value from the resulting
+entry and any evidence it chooses to use, not from budget consumption. The existing
+builder-history gate enforces record integrity; it does not meter research or grade
+editorial value.
+
 ## Anti-patterns
 
 - Treating the journal as an optional changelog.
@@ -119,10 +164,12 @@ A conforming implementation proves all of the following:
 - Padding an entry to satisfy an invented word count.
 - Recording only the provider or agent product instead of the exact model.
 - Requiring another append because the current transaction appended to the journal.
+- Treating the research allowance as a spending quota, a new template for prose,
+  or an automatically enforced limit on a host that exposes no usage counters.
 
 ## Usage guidance
 
-When this skill is installed in the website repository, load it before the first write. The smallest compliant transaction is:
+When this skill is installed in the website repository, load it before the first write. Complete the independent diary phase within the website change before composing its record. The smallest compliant transaction is:
 
 ```text
 website change
@@ -134,3 +181,9 @@ website change
 ## hmmm
 
 The first published builder entry predates the date/time/exact-model contract. It remains intentionally unchanged because append-only history outranks retroactive schema neatness.
+
+Exact research-token metering and enforcement depend on the executing host. This
+skill grants the allowance and defines its accounting; it does not install a
+provider-independent spending controller. The three-entry trial begins with entries
+written under this revision; historical entries are not rewritten or retroactively
+charged against it.
