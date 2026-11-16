@@ -376,6 +376,7 @@ test('failed refresh preserves unavailable and previously refreshed content with
   await content.evaluate(element => { element.textContent = 'Repository documentation is unavailable; no observation claimed.'; });
   await mode.evaluate(element => { element.textContent = 'unavailable'; });
   await head.evaluate(element => { element.textContent = 'hmmm'; });
+  await page.route('https://api.github.com/**', route => route.abort());
   let attempt = 0;
   await page.route('https://the-interdependency-mcp-live.onrender.com/api/repository-refresh', route => {
     attempt += 1;
@@ -421,4 +422,43 @@ test('live document index does not turn a missing dedicated README into an absen
   await expect(content).toContainText('readme.md');
   await content.locator('summary', { hasText: 'readme.md' }).click();
   await expect(content).toContainText('Case-variant README witness.');
+});
+
+test('Refresh reads GitHub directly on service failure and only reuses counts at the identical commit', async ({ page }) => {
+  await page.goto('/projects/skill-lib/');
+  const button = page.getByRole('button', { name: 'Refresh MSDMD + docs' });
+  const published = await button.getAttribute('data-published-head');
+  const publishedCounts = JSON.parse(await button.getAttribute('data-published-counts'));
+  expect(published).toMatch(/^[a-f0-9]{40}$/);
+  let head = published;
+  let collectionsRead = 0;
+  await page.route('https://the-interdependency-mcp-live.onrender.com/api/repository-refresh', route => route.fulfill({ status: 502, body: '' }));
+  await page.route('https://api.github.com/repos/The-Interdependency/skill-lib**', async route => {
+    expect(route.request().headers().authorization).toBeUndefined();
+    const url = new URL(route.request().url());
+    if (url.pathname.endsWith('/skill-lib')) return route.fulfill({ json: { private: false, default_branch: 'main' } });
+    if (url.pathname.endsWith('/commits/main')) return route.fulfill({ json: { sha: head } });
+    expect(url.pathname).toBe('/repos/The-Interdependency/skill-lib/git/trees/' + head);
+    return route.fulfill({ json: { tree: [{ path: 'README.md', type: 'blob' }] } });
+  });
+  await page.route('https://raw.githubusercontent.com/The-Interdependency/skill-lib/**', async route => {
+    const path = new URL(route.request().url()).pathname;
+    expect(path).toContain('/' + head + '/');
+    if (path.endsWith('README.md')) return route.fulfill({ body: '# Public README\n\n[Proof](proof.md)' });
+    expect(path).toContain('skill-lib_msdmd.ts');
+    collectionsRead++;
+    return route.fulfill({ body: "export default defineMsdmdCollection({repo:'skill-lib', declarations:[{id:'fresh'}], gaps:[]});" });
+  });
+  await button.click();
+  const status = page.locator('[data-msdmd-refresh-status]');
+  await expect(status).toContainText(publishedCounts.nativeFacts + ' native facts');
+  await expect(page.locator('[data-project-docs-content] h1')).toHaveText('Public README');
+  expect(collectionsRead).toBe(0);
+  head = 'b'.repeat(40);
+  await button.click();
+  await expect(status).toContainText('1 declaration ·');
+  await expect(status).toContainText('HEAD bbbbbbbbb');
+  await expect(page.locator('[data-project-doc-head]')).toHaveText(head);
+  await expect(page.locator('[data-project-docs-content] a', { hasText: 'Proof' })).toHaveAttribute('href', 'https://github.com/The-Interdependency/skill-lib/blob/' + head + '/proof.md');
+  expect(collectionsRead).toBe(1);
 });

@@ -363,7 +363,7 @@ async function fetchRepositoryInputs(repositories) {
     }
     try {
       const bytes = await fetchCollection(name, base.headSha);
-      const collection = parseCollectionText(bytes.toString('utf8'));
+      const collection = parseCollectionText(new TextDecoder().decode(bytes));
       if (!matchesRepository(collection, name)) throw new Error('Collection declares a different repository');
       inputs.push({
         ...base,

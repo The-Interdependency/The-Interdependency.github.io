@@ -20,6 +20,30 @@ function renderDocumentation(documentation) {
     + (hmmm ? '<section class="hmmm"><h2>hmmm</h2><ul>' + hmmm + '</ul></section>' : '');
 }
 
+async function refreshRepository(button, repository, options, status) {
+  try {
+    const response = await fetch(ENDPOINT, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', accept: 'application/json' },
+      body: JSON.stringify({ repository, ...options }),
+      signal: AbortSignal.timeout(10000)
+    });
+    if (!response.ok) throw new Error('Repository service returned ' + response.status);
+    const payload = await response.json();
+    if (!/^[0-9a-f]{40}$/i.test(payload?.headSha)) throw new Error('Missing repository commit');
+    return payload;
+  } catch {
+    if (status) status.textContent = 'Reading the public repository from GitHub…';
+    const { refreshFromGitHub } = await import('/assets/project-refresh/github.js');
+    const data = button.dataset;
+    const published = data.publishedHead ? {
+      name: repository, headSha: data.publishedHead, sha256: data.publishedSha256,
+      counts: JSON.parse(data.publishedCounts)
+    } : null;
+    return refreshFromGitHub(repository, options, published);
+  }
+}
+
 for (const button of document.querySelectorAll('[data-msdmd-refresh]')) {
   button.addEventListener('click', async () => {
     const repository = button.dataset.repository;
@@ -31,21 +55,17 @@ for (const button of document.querySelectorAll('[data-msdmd-refresh]')) {
     button.disabled = true;
     if (status) status.textContent = 'Refreshing current repository HEAD…';
     try {
-      const response = await fetch(ENDPOINT, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json', accept: 'application/json' },
-        body: JSON.stringify({ repository, includeDocumentation: Boolean(docs), includeMsdmd: true })
-      });
-      const payload = await response.json();
-      if (!response.ok) throw new Error(payload?.error || 'refresh failed');
+      const options = { includeDocumentation: Boolean(docs), includeMsdmd: true };
+      const payload = await refreshRepository(button, repository, options, status);
       const msdmd = payload.msdmd;
       if (status) {
         const head = String(payload.headSha || 'hmmm').slice(0, 9);
         const counts = msdmd?.status === 'ok' && msdmd.counts;
         const totals = counts ? [
-          counts.nativeFacts != null && counts.nativeFacts + ' native facts',
-          counts.declarations + ' declarations', counts.edges + ' edges', counts.gaps + ' gaps'
-        ].filter(Boolean) : [];
+          [counts.nativeFacts, 'native fact'], [counts.declarations, 'declaration'],
+          [counts.edges, 'edge'], [counts.gaps, 'gap']
+        ].filter(([count]) => count != null)
+          .map(([count, label]) => count + ' ' + label + (count === 1 ? '' : 's')) : [];
         status.textContent = ['MSDMD ' + (msdmd?.status || 'unavailable'), ...totals, 'HEAD ' + head].join(' · ');
       }
       if (docs) {
