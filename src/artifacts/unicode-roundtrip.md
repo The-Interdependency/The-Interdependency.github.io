@@ -1,11 +1,11 @@
 ---
-layout: layouts/base.njk
+layout: layouts/prose.njk
 title: Replay a completed text construction
 description: One executable Stack result with exact UCNS source identities, recursive replay and rejection checks.
 permalink: /artifacts/unicode-roundtrip/
 ---
 
-<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/home/">Start Here</a> / <a href="/artifacts/">Artifacts</a> / Text construction</nav>
+[Start Here](/home/) / [Artifacts](/artifacts/) / Text construction
 
 # Replay a completed text construction
 

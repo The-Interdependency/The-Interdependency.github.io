@@ -1,0 +1,7 @@
+---
+layout: layouts/base.njk
+---
+{# Usage: Markdown reading pages select this layout for bounded line length and explicit copy controls on fenced code. Source HTML remains disabled by the Markdown renderer. #}
+<article class="prose">
+{{ content | replace('<pre>', '<pre data-copy-field>') | safe }}
+</article>

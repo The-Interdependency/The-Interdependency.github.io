@@ -98,12 +98,16 @@ it does not authenticate the producer.
   sources without fallback and replaces the stale retained snapshot; neither
   source text nor the integrity test was edited.
 - With that refreshed snapshot, `npm test` passes 194 tests, skips one and fails
-  none. All 19 generated-site tests pass. The internal-link check passes 3,493
+  none. All 19 generated-site tests pass. The internal-link check passes 3,523
   references across 130 HTML files, and the static performance budgets pass.
 - The complete local content build renders all 130 pages, both added routes,
   the production AI-context artifact and the search index. Its textbook inputs
   are current exact sources; other retained metadata is explicitly fallback.
   This is content-build evidence, not browser or live-deployment evidence.
+- Both new Markdown readers use the existing prose styling through a shared
+  layout. Fenced code opts into the existing copy/export controls. The rendered
+  shell block was decoded from its HTML and matched the executed command exactly;
+  breadcrumb links render as links rather than escaped source markup.
 - Browser verification remains unexecuted in this host: the Playwright browser
   download was unavailable, and installed Chromium could not create its process
   singleton socket under the host restrictions. Do not report a screenshot,

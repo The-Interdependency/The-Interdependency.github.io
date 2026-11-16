@@ -1,11 +1,11 @@
 ---
-layout: layouts/base.njk
+layout: layouts/prose.njk
 title: "Community pilot: need, contribution, harm and review"
 description: A proposed operating procedure with capacity checks, independent review, private records and concrete failure cases.
 permalink: /articles/article-one/pilot/
 ---
 
-<nav class="breadcrumb" aria-label="Breadcrumb"><a href="/home/">Start Here</a> / <a href="/articles/article-one/">Article One</a> / Pilot procedure</nav>
+[Start Here](/home/) / [Article One](/articles/article-one/) / Pilot procedure
 
 # Need, contribution, harm and review
 
