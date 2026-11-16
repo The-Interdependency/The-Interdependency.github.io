@@ -56,7 +56,7 @@ title: "Project: {{ repo.name }}"
   <div class="actions">
     <button class="button" type="button" data-msdmd-refresh data-repository="{{ repo.name }}">Refresh MSDMD + docs</button>
   </div>
-  <p class="field-help" data-msdmd-refresh-status aria-live="polite">Refresh checks the current repository commit and loads its documentation.</p>
+  <p class="field-help" data-msdmd-refresh-status aria-live="polite">Refresh reads the repository's current public HEAD without mutating it. The displayed content stays in place if refresh fails.</p>
 </section>
 
 <section aria-labelledby="project-documentation-title">
