@@ -81,7 +81,7 @@ test('source links reject attribute injection, foreign origins and traversal at 
 
 test('imported documentation preserves code and makes it keyboard-scrollable', () => {
   const filters = new Map();
-  configureEleventy({ setLibrary() {}, addPassthroughCopy() {}, addTransform() {}, addFilter(name, fn) { filters.set(name, fn); } });
+  configureEleventy({ on() {}, setLibrary() {}, addPassthroughCopy() {}, addTransform() {}, addFilter(name, fn) { filters.set(name, fn); } });
   const html = filters.get('projectDocMarkdown')({ content: '```bash\npython3 integration/epac/reconsume.py\n```', sourceUrl: forge.source.url + 'README.md' });
   assert.match(html, /<pre tabindex="0"><code class="language-bash">python3 integration\/epac\/reconsume\.py\n<\/code><\/pre>/);
 });

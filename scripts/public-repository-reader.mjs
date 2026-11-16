@@ -64,10 +64,10 @@ function headers(token) {
 
 async function getJson(url, token) {
   if (!(url instanceof URL) || url.origin !== API_ORIGIN || url.protocol !== 'https:') throw new Error('refusing non-GitHub API target');
-  // Only normalized public repository/head identifiers flow here; destination origin is hard-pinned and checked above.
-  // lgtm[js/file-access-to-http]
-  // codeql[js/file-access-to-http]
-  const response = await fetch(url, { headers: headers(token), signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) });
+  // Build inputs supply public GitHub slugs and commit IDs. No document bytes enter this GET.
+  const response = await fetch(url, {
+    method: 'GET', redirect: 'error', headers: headers(token), signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS)
+  });
   if (!response.ok) {
     const error = new Error('GitHub API request failed: ' + response.status);
     error.status = response.status;
@@ -318,12 +318,12 @@ export async function readRepositoryProjection(repository, options = {}, { publi
   } = options;
   const repo = normalizeRepository(repository);
   const headWasSupplied = Object.prototype.hasOwnProperty.call(options, 'headSha');
-  if (headWasSupplied && !headSha) throw new Error('repository head unavailable');
+  if (headWasSupplied && !/^[a-f0-9]{40}$/i.test(headSha ?? '')) throw new Error('repository head unavailable');
   if (headWasSupplied) await publicRepositoryMetadata(repo, token);
   const resolved = headWasSupplied
     ? { headSha, defaultBranch, headCommittedAt }
     : await resolveLiveHead(repo, publicGit, token);
-  if (!resolved.headSha) throw new Error('repository head unavailable');
+  if (!/^[a-f0-9]{40}$/i.test(resolved.headSha ?? '')) throw new Error('repository head unavailable');
 
   // A collection addressed by the same Git commit already has verified public counts.
   const sameCollection = published?.name === repo && published.headSha === resolved.headSha
