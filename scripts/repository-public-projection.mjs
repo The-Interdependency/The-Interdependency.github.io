@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { readPublicHead, readPublicDocumentTree } from './public-repository-git.mjs';
 import { fetchCollection, parseCollectionText, matchesRepository, collectionCounts } from './msdmd-collection.mjs';
 
 // === MODULE_BUILD ===
@@ -9,7 +10,7 @@ import { fetchCollection, parseCollectionText, matchesRepository, collectionCoun
 // === END MODULE_BUILD ===
 // === BOUNDARIES ===
 // id: repository_public_projection_boundary
-//   network: allowlisted GitHub API and raw.githubusercontent.com only
+//   network: allowlisted GitHub REST and raw sources, with anonymous HTTPS Git ref/tree fallback for live reads
 //   storage: none
 //   authority: repository source bytes remain authoritative; this module only projects exact-head public evidence
 //   failure: missing collection points and omitted/oversize docs remain explicit hmmm; no source state is synthesized
@@ -177,9 +178,18 @@ async function resolveHead(repo) {
   };
 }
 
-async function documentationProjection(repo, headSha) {
+async function readDocumentTree(repo, headSha, publicGit) {
+  try {
+    return await getJson(apiUrl('/repos/' + encodeURIComponent(ORGANIZATION) + '/' + encodeURIComponent(repo) + '/git/trees/' + encodeURIComponent(headSha), { recursive: 1 }));
+  } catch (error) {
+    if (!publicGit || error.status === 404 || error.status === 451) throw error;
+    return publicGit.tree(repo, headSha);
+  }
+}
+
+async function documentationProjection(repo, headSha, publicGit) {
   const hmmm = [];
-  const tree = await getJson(apiUrl('/repos/' + encodeURIComponent(ORGANIZATION) + '/' + encodeURIComponent(repo) + '/git/trees/' + encodeURIComponent(headSha), { recursive: 1 }));
+  const tree = await readDocumentTree(repo, headSha, publicGit);
   const selected = selectDocumentationPaths(tree.tree || []);
   const treeTruncated = tree.truncated === true;
   if (treeTruncated) hmmm.push('GitHub recursive tree response was truncated; document discovery is incomplete.');
@@ -289,7 +299,18 @@ async function msdmdProjection(repo, headSha) {
   }
 }
 
-export async function fetchRepositoryPublicProjection(repository, options = {}) {
+async function resolveLiveHead(repo, publicGit) {
+  try {
+    return await resolveHead(repo);
+  } catch (error) {
+    if (isRepositoryNotPublicError(error) || error.status === 451) throw error;
+    return publicGit.head(repo);
+  }
+}
+
+const publicGitTransport = { head: readPublicHead, tree: readPublicDocumentTree };
+
+export async function fetchRepositoryPublicProjection(repository, options = {}, publicGit = publicGitTransport) {
   const {
     headSha = null,
     defaultBranch = null,
@@ -303,11 +324,11 @@ export async function fetchRepositoryPublicProjection(repository, options = {}) 
   if (headWasSupplied) await publicRepositoryMetadata(repo);
   const resolved = headWasSupplied
     ? { headSha, defaultBranch, headCommittedAt }
-    : await resolveHead(repo);
+    : await resolveLiveHead(repo, publicGit);
   if (!resolved.headSha) throw new Error('repository head unavailable');
 
   const [documentation, msdmd] = await Promise.all([
-    includeDocumentation ? documentationProjection(repo, resolved.headSha) : Promise.resolve(null),
+    includeDocumentation ? documentationProjection(repo, resolved.headSha, headWasSupplied ? null : publicGit) : Promise.resolve(null),
     includeMsdmd ? msdmdProjection(repo, resolved.headSha) : Promise.resolve(null)
   ]);
 
