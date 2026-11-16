@@ -120,9 +120,13 @@ Repository source cannot configure the Pages source, custom domain, DNS, HTTPS, 
 
 ## Maintaining the builder journal
 
-The canonical behavior contract is `The-Interdependency/skill-lib:website-builder-journal`, consumed here from commit `d71a3a938cb6d646ffc0b59186452117e4a37d13`. Before changing any website file, load `.agents/skills/website-builder-journal/SKILL.md`.
+The canonical behavior contract is `The-Interdependency/skill-lib:website-builder-journal`, consumed here from commit `df066ab3adac9eb9632e379003e0f90ac784767f`. Before changing any website file, load `.agents/skills/website-builder-journal/SKILL.md`.
 
 Every website change transaction appends at least one object to `src/_data/builder.json`. Preserve every prior object unchanged. New entries require a unique `id`, `date`, `time` with explicit UTC offset, `model` with the exact runtime identity or `unavailable` plus `model_unavailable_reason`, and Markdown `body`. Subject matter belongs wholly to the model; no title, patch summary, theme, minimum length, or changelog structure is required. Corrections append new entries.
+
+Before composing, use the independent work phase and research allowance defined in the consumed skill. Keep the entry's subject and length discretionary. Usage receipts belong to the execution record; a host without actual counters must report unmetered usage rather than claim an enforced token limit.
+
+The initial three-entry trial starts with `the-cost-outside-the-average-2026-11-15` and includes the next two new entries. Review their available usage and reading value before changing the allowance. The [first trial's reproducible queue experiment](docs/diary-research/first-trial.md) and its metering boundary remain separate from the diary prose.
 
 The journal append is part of the transaction and does not recursively require another append. `/by-the-builder/` renders the journal as a nested semantic `<details>` tree.
 
