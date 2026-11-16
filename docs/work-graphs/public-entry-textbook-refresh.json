@@ -1,0 +1,174 @@
+{
+  "schema": "the-interdependency.fresh-making-receipt",
+  "version": "1.0.0",
+  "target": "website:textbook-retained-snapshot",
+  "freshness_key_sha256": "259e6711edef5af575fc53443345a4a394582f165921103e88ca541250baa6be",
+  "derivation_spec": {
+    "schema": "the-interdependency.fresh-making-spec",
+    "version": "1.0.0",
+    "target": "website:textbook-retained-snapshot",
+    "inputs": [
+      {
+        "name": "chapter-0",
+        "identity": "git:The-Interdependency/metapat@af17dae458a806b5a0d607cbaa61be8f68b85a5e",
+        "path": "CHAPTER_ZERO.md",
+        "blob": "d820a5855867569e97f46bdd15bbd9ff3a67706c",
+        "content_sha256": "3f04c219ea990cb64ce9f67c3ac0c5b492f1c3f87ba46af847f85ef4f9f4ea3f"
+      },
+      {
+        "name": "chapter-1",
+        "identity": "git:The-Interdependency/ucns@008551a4ce4f6ee76b0db9d326192cc8e33d3378",
+        "path": "docs/chapter-1.md",
+        "blob": "2b2e25fdabdcc6d2f07eb510f6feb60184f0a734",
+        "content_sha256": "1553bea141a8568f03f2821824bbc53a322c6a27d9132fdbc2025559acfb7b45"
+      },
+      {
+        "name": "chapter-2",
+        "identity": "git:The-Interdependency/edcm@da87781893f44d609e1d0b4e182f2ba7fe243320",
+        "path": "docs/chapter-2.md",
+        "blob": "0689d68d1400c951824ca641095394e204459f0c",
+        "content_sha256": "4ce22a8063f0dcce176b31ebcc13075ce2dfbef34cdac9f4d210451512459caf"
+      },
+      {
+        "name": "chapter-3",
+        "identity": "git:The-Interdependency/skill-lib@9e76d5e509bc2ab2de74addaf9ca78d2a171d71f",
+        "path": "docs/chapter-3.md",
+        "blob": "849e8ab57cd055fd8b5eebe7f3ec701fd1e85aeb",
+        "content_sha256": "335cc1240c56c516e16c0c1e99f410c95bc186d966bedff8e276120fd80e6978"
+      },
+      {
+        "name": "chapter-4",
+        "identity": "git:The-Interdependency/interdependent-lib@c5ddb4be3a8fa8ab50aaa26bbb5459503ec166b2",
+        "path": "docs/chapter-4.md",
+        "blob": "a63b1c95ccd5bebdcf8610d4d36e3b21c54dcc61",
+        "content_sha256": "9bddf006f20b90272001bd99e5d10ab4d5a05612e989a2200ece7dec98e35e3c"
+      },
+      {
+        "name": "chapter-5",
+        "identity": "git:The-Interdependency/ptcna@7f9778e99c2751ecd290363636a9f175ba723524",
+        "path": "docs/chapter-5.md",
+        "blob": "ef11e7bfec90a50e7c3a95a3412d0001e9be9243",
+        "content_sha256": "a379dc35531ceb0297a99265c67d059fc1406fce8609b48bd41d6a4fdeb72ebb"
+      },
+      {
+        "name": "chapter-6",
+        "identity": "git:The-Interdependency/a0@c683e4c86894bf04257512f56a004d69e4ee40eb",
+        "path": "archive/docs/chapter-6.md",
+        "blob": "7dd62051f2e645d1e61a75e7e6afa054d4cd652f",
+        "content_sha256": "81053004f1dcfe3278dfce149c6211955d0b8ebb15ee755321bae44144274d0e"
+      },
+      {
+        "name": "chapter-7",
+        "identity": "git:The-Interdependency/zfae@6d72dc4f69518903d3b1eaa7f80df569cdb3b7f7",
+        "path": "docs/chapter-7.md",
+        "blob": "bb5abb135cc79d3f3fa98efcde7eab79016046ac",
+        "content_sha256": "244bab809559196dd5dd684028052cbb7cdfea949f9c926981816dc5bf351e12"
+      },
+      {
+        "name": "ordered-source-manifest",
+        "identity": "git-blob:1e5e34e9ffa36ae4071a3a0639e06fc370e02719"
+      }
+    ],
+    "generator": {
+      "identity": "git:The-Interdependency/The-Interdependency.github.io@8cb6505ccc7740687b21a79248dcce3a8a3b1e4d",
+      "path": "scripts/fetch-textbook.mjs",
+      "blob": "cc8a7586d187457323ea352eeba0517c77d2927c",
+      "command": "npm run refresh:textbook"
+    },
+    "outputs": [
+      {
+        "path": "src/_data/snapshots/textbook.last-known-good.json"
+      }
+    ],
+    "verifier": {
+      "identity": "git:The-Interdependency/The-Interdependency.github.io@8cb6505ccc7740687b21a79248dcce3a8a3b1e4d",
+      "path": "tests/textbook-integrity.test.mjs",
+      "blob": "a6c6505097ffac53a9a1e88d5b8127276d6b9c93",
+      "command": "npm test; independently recompute all eight content SHA-256 and Git blob SHA-1 values"
+    },
+    "depends_on": []
+  },
+  "inputs": [
+    {
+      "name": "chapter-0",
+      "identity": "git:The-Interdependency/metapat@af17dae458a806b5a0d607cbaa61be8f68b85a5e",
+      "path": "CHAPTER_ZERO.md",
+      "blob": "d820a5855867569e97f46bdd15bbd9ff3a67706c",
+      "content_sha256": "3f04c219ea990cb64ce9f67c3ac0c5b492f1c3f87ba46af847f85ef4f9f4ea3f"
+    },
+    {
+      "name": "chapter-1",
+      "identity": "git:The-Interdependency/ucns@008551a4ce4f6ee76b0db9d326192cc8e33d3378",
+      "path": "docs/chapter-1.md",
+      "blob": "2b2e25fdabdcc6d2f07eb510f6feb60184f0a734",
+      "content_sha256": "1553bea141a8568f03f2821824bbc53a322c6a27d9132fdbc2025559acfb7b45"
+    },
+    {
+      "name": "chapter-2",
+      "identity": "git:The-Interdependency/edcm@da87781893f44d609e1d0b4e182f2ba7fe243320",
+      "path": "docs/chapter-2.md",
+      "blob": "0689d68d1400c951824ca641095394e204459f0c",
+      "content_sha256": "4ce22a8063f0dcce176b31ebcc13075ce2dfbef34cdac9f4d210451512459caf"
+    },
+    {
+      "name": "chapter-3",
+      "identity": "git:The-Interdependency/skill-lib@9e76d5e509bc2ab2de74addaf9ca78d2a171d71f",
+      "path": "docs/chapter-3.md",
+      "blob": "849e8ab57cd055fd8b5eebe7f3ec701fd1e85aeb",
+      "content_sha256": "335cc1240c56c516e16c0c1e99f410c95bc186d966bedff8e276120fd80e6978"
+    },
+    {
+      "name": "chapter-4",
+      "identity": "git:The-Interdependency/interdependent-lib@c5ddb4be3a8fa8ab50aaa26bbb5459503ec166b2",
+      "path": "docs/chapter-4.md",
+      "blob": "a63b1c95ccd5bebdcf8610d4d36e3b21c54dcc61",
+      "content_sha256": "9bddf006f20b90272001bd99e5d10ab4d5a05612e989a2200ece7dec98e35e3c"
+    },
+    {
+      "name": "chapter-5",
+      "identity": "git:The-Interdependency/ptcna@7f9778e99c2751ecd290363636a9f175ba723524",
+      "path": "docs/chapter-5.md",
+      "blob": "ef11e7bfec90a50e7c3a95a3412d0001e9be9243",
+      "content_sha256": "a379dc35531ceb0297a99265c67d059fc1406fce8609b48bd41d6a4fdeb72ebb"
+    },
+    {
+      "name": "chapter-6",
+      "identity": "git:The-Interdependency/a0@c683e4c86894bf04257512f56a004d69e4ee40eb",
+      "path": "archive/docs/chapter-6.md",
+      "blob": "7dd62051f2e645d1e61a75e7e6afa054d4cd652f",
+      "content_sha256": "81053004f1dcfe3278dfce149c6211955d0b8ebb15ee755321bae44144274d0e"
+    },
+    {
+      "name": "chapter-7",
+      "identity": "git:The-Interdependency/zfae@6d72dc4f69518903d3b1eaa7f80df569cdb3b7f7",
+      "path": "docs/chapter-7.md",
+      "blob": "bb5abb135cc79d3f3fa98efcde7eab79016046ac",
+      "content_sha256": "244bab809559196dd5dd684028052cbb7cdfea949f9c926981816dc5bf351e12"
+    }
+  ],
+  "generator": {
+    "identity": "git:The-Interdependency/The-Interdependency.github.io@8cb6505ccc7740687b21a79248dcce3a8a3b1e4d",
+    "path": "scripts/fetch-textbook.mjs",
+    "blob": "cc8a7586d187457323ea352eeba0517c77d2927c",
+    "command": "npm run refresh:textbook"
+  },
+  "outputs": [
+    {
+      "path": "src/_data/snapshots/textbook.last-known-good.json",
+      "sha256": "ab047a13120ada7699e2576df27d66774c88c47b855705af482a651bf48260d2"
+    }
+  ],
+  "verification": {
+    "verifier_identity": "git:The-Interdependency/The-Interdependency.github.io@8cb6505ccc7740687b21a79248dcce3a8a3b1e4d",
+    "result": "pass",
+    "content_and_git_blob_digests": "8 of 8 match; source order and expected titles preserved",
+    "suite": "194 passed, 1 skipped, 0 failed"
+  },
+  "executor": {
+    "kind": "local",
+    "attempt_id": "public-entry-repair-2026-11-15"
+  },
+  "hmmm": [
+    "Digests establish content identity, not source authorship authentication. Browser and deployed-build checks remain separate."
+  ]
+}

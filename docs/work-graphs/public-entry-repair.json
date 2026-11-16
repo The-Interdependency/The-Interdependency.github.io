@@ -1,0 +1,92 @@
+{
+  "schema": "the-interdependency.stack-manifest",
+  "version": "1.0.0",
+  "repositories": [
+    {
+      "repository": "The-Interdependency/skill-lib",
+      "commit": "9e76d5e509bc2ab2de74addaf9ca78d2a171d71f",
+      "authority": "Reusable build and evidence discipline",
+      "relation": "governing workflow source"
+    },
+    {
+      "repository": "The-Interdependency/metapat",
+      "commit": "af17dae458a806b5a0d607cbaa61be8f68b85a5e",
+      "authority": "Its own semantic framework and domain restraint",
+      "relation": "boundary consultation; no geometry-to-governance inference"
+    },
+    {
+      "repository": "The-Interdependency/stack",
+      "commit": "8b14858c0608b84616c3e7a7c559aa5c5fb8b6c9",
+      "authority": "Language construction adapter and Stack delivery instructions",
+      "relation": "executable example producer and delivery-focus edit owner"
+    },
+    {
+      "repository": "The-Interdependency/ucns",
+      "commit": "0bbed0b3ca7ba507101ada6c8019f870499429fe",
+      "authority": "Consumed native Unicode geometry and recursive constructor",
+      "relation": "exact executable dependency of the public example"
+    },
+    {
+      "repository": "The-Interdependency/.github",
+      "commit": "ee75d95df027be02ce2ff0a59b8022001684cf4a",
+      "authority": "Organization profile presentation",
+      "relation": "funding-language and entry-order edit owner"
+    },
+    {
+      "repository": "The-Interdependency/The-Interdependency.github.io",
+      "commit": "8cb6505ccc7740687b21a79248dcce3a8a3b1e4d",
+      "authority": "Website presentation and explicitly subordinate Article Lab interpretation",
+      "relation": "publication consumer and proposed community-procedure edit owner"
+    },
+    {
+      "repository": "The-Interdependency/ucns",
+      "commit": "008551a4ce4f6ee76b0db9d326192cc8e33d3378",
+      "authority": "Owns textbook chapter 1 and its source-local content, license and standing",
+      "relation": "Exact source for the refreshed retained textbook snapshot: docs/chapter-1.md"
+    },
+    {
+      "repository": "The-Interdependency/edcm",
+      "commit": "da87781893f44d609e1d0b4e182f2ba7fe243320",
+      "authority": "Owns textbook chapter 2 and its source-local content, license and standing",
+      "relation": "Exact source for the refreshed retained textbook snapshot: docs/chapter-2.md"
+    },
+    {
+      "repository": "The-Interdependency/interdependent-lib",
+      "commit": "c5ddb4be3a8fa8ab50aaa26bbb5459503ec166b2",
+      "authority": "Owns textbook chapter 4 and its source-local content, license and standing",
+      "relation": "Exact source for the refreshed retained textbook snapshot: docs/chapter-4.md"
+    },
+    {
+      "repository": "The-Interdependency/ptcna",
+      "commit": "7f9778e99c2751ecd290363636a9f175ba723524",
+      "authority": "Owns textbook chapter 5 and its source-local content, license and standing",
+      "relation": "Exact source for the refreshed retained textbook snapshot: docs/chapter-5.md"
+    },
+    {
+      "repository": "The-Interdependency/a0",
+      "commit": "c683e4c86894bf04257512f56a004d69e4ee40eb",
+      "authority": "Owns textbook chapter 6 and its source-local content, license and standing",
+      "relation": "Exact source for the refreshed retained textbook snapshot: archive/docs/chapter-6.md"
+    },
+    {
+      "repository": "The-Interdependency/zfae",
+      "commit": "6d72dc4f69518903d3b1eaa7f80df569cdb3b7f7",
+      "authority": "Owns textbook chapter 7 and its source-local content, license and standing",
+      "relation": "Exact source for the refreshed retained textbook snapshot: docs/chapter-7.md"
+    }
+  ],
+  "boundaries": {
+    "authority_transfer": false,
+    "proof_status_transfer": false,
+    "measurement_status_transfer": false,
+    "semantic_mapping": "external-provenance",
+    "agent_scope": "cross-repository-work-graph",
+    "hmmm": [
+      "The upstream Way canon could not be retrieved; the pinned website recovery mirror and Article Lab interpretations are the inspected local sources.",
+      "Community adoption, named roles, scarcity rules, safe record custody and retention period remain unset.",
+      "Construction and replay do not establish inference quality, automatic bearings, cryptographic security or production readiness.",
+      "Website release, GitHub profile publication and delivery-instruction merge require their own terminal evidence."
+    ]
+  },
+  "work_graph_sha256": "741a92d4c39cded6b7713aae40da6a0032f0b9bd81e22718d0176ece91682813"
+}
