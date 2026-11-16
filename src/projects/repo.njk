@@ -40,18 +40,23 @@ title: "Project: {{ repo.name }}"
   {% if repoMsdmd %}
   <div class="status-row">
     <span class="status {% if repoMsdmd.collection.status == 'ok' %}status-implemented{% else %}status-hmmm{% endif %}">{{ repoMsdmd.collection.status }}</span>
+    {% if repoMsdmd.collection.status == 'ok' %}
+    {% if repoMsdmd.collection.schemaVersion == '2.0.0' %}<span class="status">{{ repoMsdmd.counts.nativeFacts }} native facts</span>{% endif %}
     <span class="status">{{ repoMsdmd.counts.declarations }} declarations</span>
     <span class="status">{{ repoMsdmd.counts.gaps }} gaps</span>
     <span class="status">{{ repoMsdmd.counts.edges }} edges</span>
+    {% endif %}
   </div>
-  <p>Collection <code>{{ repoMsdmd.collection.path }}</code> at <code>{{ repoMsdmd.headSha | truncate(12, true, '') }}</code>. The repository remains source authority; this page only projects it.</p>
+  {% if repoMsdmd.collection.readerPath %}<p><a class="button" href="{{ repoMsdmd.collection.readerPath }}">Browse collected metadata</a></p>{% endif %}
+  {% if repoMsdmd.collection.error %}<p>{{ repoMsdmd.collection.error }}</p>{% endif %}
+  <p>Published collection <code>{{ repoMsdmd.collection.path }}</code> at <code>{{ repoMsdmd.headSha | truncate(12, true, '') }}</code>.</p>
   {% else %}
   <p class="hmmm">No build-time MSDMD repository row was available.</p>
   {% endif %}
   <div class="actions">
     <button class="button" type="button" data-msdmd-refresh data-repository="{{ repo.name }}">Refresh MSDMD + docs</button>
   </div>
-  <p class="field-help" data-msdmd-refresh-status aria-live="polite">Refresh reads the repository's current public HEAD without mutating it. The displayed content stays in place if refresh fails.</p>
+  <p class="field-help" data-msdmd-refresh-status aria-live="polite">Refresh checks the current repository commit and loads its documentation.</p>
 </section>
 
 <section aria-labelledby="project-documentation-title">

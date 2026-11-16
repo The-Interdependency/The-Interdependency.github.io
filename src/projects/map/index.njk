@@ -11,6 +11,7 @@ description: A build-time, provenance-bearing relationship map generated from ac
   <p class="lede">Active repositories describe themselves. This website joins those commit-pinned descriptions and displays the resulting relations without becoming a second source of repository canon. Archived repositories are not part of the public map.</p>
   <div class="status-row">
     <span class="status status-implemented">{{ map.summary.collectionCount }}/{{ map.summary.repositoryCount }} collections</span>
+    {% if map.summary.nativeFactCount %}<span class="status status-public">{{ map.summary.nativeFactCount }} native facts</span>{% endif %}
     <span class="status status-public">{{ map.summary.declarationCount }} declarations</span>
     <span class="status status-research">{{ map.summary.crossRepoPairCount }} cross-repo pairs</span>
     {% if map.summary.unresolvedEdgeCount %}<span class="status status-hmmm">{{ map.summary.unresolvedEdgeCount }} hmmm edges</span>{% endif %}
@@ -31,7 +32,7 @@ description: A build-time, provenance-bearing relationship map generated from ac
     <div class="org-map-stat"><strong>{{ map.summary.gapCount }}</strong><span>coverage gaps</span></div>
     <div class="org-map-stat"><strong>{{ map.summary.unresolvedEdgeCount }}</strong><span>hmmm edges</span></div>
   </div>
-  <div class="org-map-shell" data-org-map data-source="/assets/data/org-msdmd.json">
+  <div class="org-map-shell" data-org-map data-source="/assets/data/org-msdmd-graph.json">
     <div class="org-map-frame" data-org-map-frame>
       <div class="org-map-detail" data-org-map-detail aria-live="polite">JavaScript adds the visual graph here. The complete static evidence remains below.</div>
     </div>
@@ -43,12 +44,15 @@ description: A build-time, provenance-bearing relationship map generated from ac
   <h2 id="repo-evidence-title">Repository evidence</h2>
   <div class="grid org-map-repo-grid">
     {% for repo in activeMapRepos %}
-    <a class="card org-map-repo-card" href="/projects/{{ repo.slug }}/">
+    <a class="card org-map-repo-card" href="{% if repo.collection.readerPath %}{{ repo.collection.readerPath }}{% else %}/projects/{{ repo.slug }}/{% endif %}">
       <div class="status-row">
         {% if repo.collection.status == 'ok' %}<span class="status status-implemented">msdmd</span>{% elif repo.collection.status == 'invalid' %}<span class="status status-risk">invalid collection</span>{% else %}<span class="status status-hmmm">collection hmmm</span>{% endif %}
       </div>
       <h3>{{ repo.name }}</h3>
+      {% if repo.collection.status == 'ok' %}
+      {% if repo.collection.readerPath %}<span>Browse collected metadata</span>{% endif %}
       <dl>
+        {% if repo.collection.schemaVersion == '2.0.0' %}<dt>native facts</dt><dd>{{ repo.counts.nativeFacts }}</dd>{% endif %}
         <dt>declarations</dt><dd>{{ repo.counts.declarations }}</dd>
         <dt>edges</dt><dd>{{ repo.counts.edges }}</dd>
         <dt>opaque</dt><dd>{{ repo.counts.externalTargets or 0 }}</dd>
@@ -56,6 +60,7 @@ description: A build-time, provenance-bearing relationship map generated from ac
         <dt>cross-repo</dt><dd>{{ repo.counts.crossRepoEdges }}</dd>
         <dt>hmmm</dt><dd>{{ repo.counts.unresolvedEdges }}</dd>
       </dl>
+      {% elif repo.collection.error %}<p>{{ repo.collection.error }}</p>{% endif %}
     </a>
     {% endfor %}
   </div>
@@ -94,6 +99,7 @@ description: A build-time, provenance-bearing relationship map generated from ac
 <details class="provenance provenance-disclosure">
   <summary>Provenance</summary>
   <h2>Consumed source identities</h2>
+  <p><a href="/assets/data/org-msdmd.json">Download the organization map as JSON</a></p>
   <p class="section-intro">The snapshot identity is <code>{{ map.sourceSnapshot.stateDigest }}</code>. Its source time is the latest consumed repository head time, {{ map.sourceSnapshot.latestHeadCommittedAt or 'hmmm' }}. Rebuilding against unchanged heads and collection bytes produces the same JSON.</p>
   <ul class="org-map-receipts">
     {% for repo in activeMapRepos %}

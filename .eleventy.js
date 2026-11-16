@@ -153,6 +153,7 @@ export default function configureEleventy(eleventyConfig) {
   eleventyConfig.setLibrary('md', md);
   eleventyConfig.addPassthroughCopy({
     'src/assets': 'assets',
+    '.cache/msdmd-public-pages/projects': 'projects',
     'src/_data/gonol_relationship_display.json': 'assets/data/gonol-relationship-display-v1.json',
     'src/_data/generated/sitrep.json': 'assets/data/sitrep.json',
     'src/_data/generated/orgMsdmd.json': 'assets/data/org-msdmd.json',

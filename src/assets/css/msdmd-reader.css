@@ -1,0 +1,9 @@
+.metadata-reader { max-width: 62rem; margin: 0 auto; padding: 1.25rem clamp(1rem, 4vw, 3rem) 4rem; overflow-wrap: anywhere; }
+.metadata-reader .breadcrumb { display: flex; flex-wrap: wrap; gap: .45rem; }
+.metadata-reader h1 { margin-block: 1.5rem .75rem; }
+.metadata-reader h2 { font-size: 1.2rem; }
+.metadata-index { line-height: 1.7; padding-inline-start: 1.25rem; }
+.metadata-index a, .metadata-pager a { display: inline-block; padding-block: .3rem; }
+.metadata-record { padding: 1rem 0; border-top: 1px solid currentColor; }
+.metadata-reader pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: .9rem; }
+.metadata-reader dd { margin-inline-start: 0; }

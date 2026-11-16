@@ -39,6 +39,7 @@
   "dependencies": {
     "@11ty/eleventy": "3.1.6",
     "@pagefind/default-ui": "1.5.2",
+    "acorn": "8.17.0",
     "gray-matter": "4.0.3",
     "js-yaml": "5.4.1",
     "markdown-it": "15.0.0",

@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { parseCollectionText } from './fetch-org-msdmd.mjs';
+import { fetchCollection, parseCollectionText, matchesRepository, collectionCounts } from './msdmd-collection.mjs';
 
 // === MODULE_BUILD ===
 // id: repository_public_projection
@@ -21,7 +21,6 @@ const RAW_ORIGIN = 'https://raw.githubusercontent.com';
 const MAX_DOCUMENTS = 32;
 export const MAX_DOCUMENT_BYTES = 128 * 1024;
 export const MAX_TOTAL_BYTES = 640 * 1024;
-const MAX_METADATA_BYTES = 2 * 1024 * 1024;
 const MAX_API_BYTES = 4 * 1024 * 1024;
 const REQUEST_TIMEOUT_MS = 10_000;
 export const REPOSITORY_NOT_PUBLIC = 'REPOSITORY_NOT_PUBLIC';
@@ -108,7 +107,7 @@ async function readBoundedText(response, maxBytes) {
   return text + decoder.decode();
 }
 
-async function getText(url, maxBytes = MAX_METADATA_BYTES) {
+async function getText(url, maxBytes) {
   if (!(url instanceof URL) || url.origin !== RAW_ORIGIN || url.protocol !== 'https:') throw new Error('refusing non-raw-GitHub target');
   const response = await fetch(url, {
     headers: { 'user-agent': 'the-interdependency-public-projection' },
@@ -239,20 +238,16 @@ async function documentationProjection(repo, headSha) {
 async function msdmdProjection(repo, headSha) {
   const path = repo + '_msdmd.ts';
   try {
-    const text = await getText(rawUrl(repo, headSha, path));
-    const collection = parseCollectionText(text);
+    const bytes = await fetchCollection(repo, headSha);
+    const collection = parseCollectionText(bytes.toString('utf8'));
     const declarations = Array.isArray(collection.declarations) ? collection.declarations : [];
-    const gaps = Array.isArray(collection.gaps) ? collection.gaps : [];
-    const edges = Array.isArray(collection.edges) ? collection.edges : [];
     const blockCounts = {};
     for (const declaration of declarations) {
       const block = String(declaration?.block || 'hmmm');
       blockCounts[block] = (blockCounts[block] || 0) + 1;
     }
     const declaredRepo = collection.repo || null;
-    const declaredRepoMatchesRepository = declaredRepo === null
-      || declaredRepo === repo
-      || declaredRepo === ORGANIZATION + '/' + repo;
+    const declaredRepoMatchesRepository = matchesRepository(collection, repo);
     const hmmm = [];
     if (!declaredRepoMatchesRepository) {
       hmmm.push('Collection-declared repository identity does not match the repository being refreshed.');
@@ -264,17 +259,15 @@ async function msdmdProjection(repo, headSha) {
       status: declaredRepoMatchesRepository ? 'ok' : 'invalid',
       path,
       sourceUrl: sourceUrl(repo, headSha, path),
-      sha256: sha256(text),
+      sha256: sha256(bytes),
       declaredRepo,
       declaredRepoMatchesRepository,
       declaredSourceCommit: collection.source_commit || null,
       sourceCommitMatchesHead: collection.source_commit ? collection.source_commit === headSha : null,
-      counts: {
-        declarations: declarations.length,
-        gaps: gaps.length,
-        edges: edges.length
-      },
-      blockCounts,
+      schemaVersion: collection.schema_version || '1.0.0',
+      sourceRevision: collection.source?.revision || collection.source_commit || null,
+      counts: declaredRepoMatchesRepository ? collectionCounts(collection) : null,
+      blockCounts: declaredRepoMatchesRepository ? blockCounts : {},
       hmmm
     };
   } catch (error) {
@@ -287,11 +280,11 @@ async function msdmdProjection(repo, headSha) {
       declaredRepoMatchesRepository: null,
       declaredSourceCommit: null,
       sourceCommitMatchesHead: null,
-      counts: { declarations: 0, gaps: 0, edges: 0 },
+      counts: null,
       blockCounts: {},
       hmmm: [error?.status === 404
         ? 'No repo-level MSDMD collection point was present at the current head.'
-        : 'The repo-level MSDMD collection point could not be read or parsed.']
+        : 'Collection unavailable: ' + error.message]
     };
   }
 }

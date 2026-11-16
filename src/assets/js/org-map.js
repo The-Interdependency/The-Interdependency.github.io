@@ -6,7 +6,7 @@
 // === END MODULE_BUILD ===
 // === BOUNDARIES ===
 // id: organization_msdmd_map_renderer_boundary
-//   network: fetches only the same-origin generated /assets/data/org-msdmd.json artifact
+//   network: fetches only the same-origin generated /assets/data/org-msdmd-graph.json artifact
 //   storage: none
 //   failure: leaves the complete server-rendered active-repository, relation, unresolved-edge, and provenance lists intact
 // === END BOUNDARIES ===
@@ -50,7 +50,10 @@ function updateDetail(detail, repo) {
   const span = document.createElement('span');
   const collection = repo.collection?.status || 'hmmm';
   const counts = repo.counts || {};
-  span.textContent = `${collection} collection · ${counts.declarations || 0} declarations · ${counts.edges || 0} edges · ${counts.gaps || 0} gaps`;
+  span.textContent = collection === 'ok' ? [
+    counts.nativeFacts != null && counts.nativeFacts + ' native facts',
+    counts.declarations + ' declarations', counts.edges + ' edges', counts.gaps + ' gaps'
+  ].filter(Boolean).join(' · ') : collection + ' collection';
   detail.append(strong, span);
 }
 
@@ -91,7 +94,7 @@ export function renderOrganizationMap(root, data) {
     const point = positions.get(repo.name);
     if (!point) continue;
     const link = svgElement('a', {
-      href: `/projects/${repo.slug}/`,
+      href: repo.collection?.readerPath || `/projects/${repo.slug}/`,
       class: 'org-map-node',
       'data-status': repo.collection?.status || 'hmmm',
       'aria-label': `${repo.name}: ${repo.collection?.status || 'hmmm'} msdmd collection`
