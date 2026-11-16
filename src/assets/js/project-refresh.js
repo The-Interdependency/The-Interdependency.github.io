@@ -41,9 +41,12 @@ for (const button of document.querySelectorAll('[data-msdmd-refresh]')) {
       const msdmd = payload.msdmd;
       if (status) {
         const head = String(payload.headSha || 'hmmm').slice(0, 9);
-        status.textContent = msdmd
-          ? 'MSDMD ' + msdmd.status + ' · ' + msdmd.counts.declarations + ' declarations · ' + msdmd.counts.gaps + ' gaps · HEAD ' + head
-          : 'MSDMD unavailable · HEAD ' + head;
+        const counts = msdmd?.status === 'ok' && msdmd.counts;
+        const totals = counts ? [
+          counts.nativeFacts != null && counts.nativeFacts + ' native facts',
+          counts.declarations + ' declarations', counts.edges + ' edges', counts.gaps + ' gaps'
+        ].filter(Boolean) : [];
+        status.textContent = ['MSDMD ' + (msdmd?.status || 'unavailable'), ...totals, 'HEAD ' + head].join(' · ');
       }
       if (docs) {
         docs.innerHTML = renderDocumentation(payload.documentation);

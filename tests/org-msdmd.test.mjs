@@ -1,5 +1,12 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import { createHash } from 'node:crypto';
+import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
+import { COLLECTION_BYTE_LIMIT, fetchCollection } from '../scripts/msdmd-collection.mjs';
+import { publishMetadataPages, prepareRetainedPages } from '../scripts/msdmd-pages.mjs';
+import { fetchRepositoryPublicProjection } from '../scripts/repository-public-projection.mjs';
 import { buildOrgMap, immutableCollectionRegressions, parseCollectionText } from '../scripts/fetch-org-msdmd.mjs';
 
 // Usage: `node --test tests/org-msdmd.test.mjs`; all fixtures are local and perform no network requests.
@@ -110,4 +117,101 @@ test('unchanged immutable heads cannot silently lose a previously retrieved coll
     collectionPath: 'alpha_msdmd.ts',
     collectionStatus: 'missing'
   }], previous), [], 'a new head may deliberately remove its collection and must remain visible as missing');
+});
+
+const pin = 'a'.repeat(40);
+function fact(id, value) {
+  return {
+    address: 'msdmd://alpha/' + id, kind: 'frontmatter', standing: 'declared',
+    native: { value }, source: { file: 'skills/how to/SKILL.md', location: { start_line: 2 } },
+    subject: { identity: id, address: 'msdmd://alpha/subject/' + id }
+  };
+}
+
+function versionTwo(facts) {
+  return {
+    schema: 'the-interdependency.msdmd-collection', schema_version: '2.0.0',
+    repo: 'The-Interdependency/alpha', source: { repository: 'The-Interdependency/alpha' },
+    coverage: { native_facts: facts.length, supplemental_declarations: 1 }, facts,
+    declarations: [{ id: 'manual', address: 'msdmd://alpha/block/manual', fields: { purpose: 'fixture' }, file: 'notes.md' }],
+    gaps: [], edges: [{ from: facts[0].subject.address, to: facts[0].address, kind: 'references' }],
+    discovery: [], reader_manifests: [], reader_runs: [], diagnostics: [], conflicts: []
+  };
+}
+
+function generatedChunks(c) {
+  const chunks = c.facts.map(record => JSON.stringify([record]));
+  const object = JSON.stringify({ ...c, facts: 'CHUNKS' }, null, 2)
+    .replace('"facts": "CHUNKS"', '"facts": mergeMsdmdFactChunks(\n' + chunks.join(',\n') + '\n  )');
+  return 'import { defineMsdmdCollectionV2, mergeMsdmdFactChunks } from "./helpers";\n'
+    + 'export default defineMsdmdCollectionV2(' + object + ');\n';
+}
+
+test('published schema-2 chunks, flat modules and JSON preserve native values, addresses and coverage', () => {
+  const c = versionTwo([fact('one', 'quoted mergeMsdmdFactChunks( [ ] )'), fact('two', { value: 'é' })]);
+  for (const input of [generatedChunks(c), 'export default defineMsdmdCollectionV2(' + JSON.stringify(c) + ');', JSON.stringify(c)]) {
+    assert.deepEqual(parseCollectionText(input), c);
+  }
+  assert.throws(() => parseCollectionText(generatedChunks(c).replace('"native_facts": 2', '"native_facts": 1')), /coverage/);
+  const executable = generatedChunks(c).replace('"é"', 'globalThis.fetch("should-never-run")');
+  assert.throws(() => parseCollectionText(executable), /nonliteral/);
+  const map = buildOrgMap([{ name: 'alpha', slug: 'alpha', collectionStatus: 'ok', collection: c }]);
+  assert.equal(map.summary.nativeFactCount, 2);
+  assert.equal(map.repositories[0].counts.declarations, 1);
+  assert.equal(map.edges[0].sourceId, c.facts[0].subject.address);
+  assert.equal(map.edges[0].targetId, c.facts[0].address);
+});
+
+test('live current-head refresh reads beyond the old 2 MiB limit with a hash of the exact source bytes', async t => {
+  const c = versionTwo([fact('one', 'x'.repeat(3 * 1024 * 1024))]);
+  const bytes = generatedChunks(c);
+  t.mock.method(globalThis, 'fetch', async url => String(url).startsWith('https://api.github.com/')
+    ? Response.json({ default_branch: 'main', private: false, visibility: 'public' })
+    : new Response(bytes));
+  const result = await fetchRepositoryPublicProjection('alpha', { headSha: pin, includeDocumentation: false });
+  assert.equal(result.msdmd.status, 'ok');
+  assert.deepEqual(result.msdmd.counts, { declarations: 1, gaps: 0, edges: 1, nativeFacts: 1, diagnostics: 0, conflicts: 0 });
+  assert.equal(result.msdmd.sha256, createHash('sha256').update(bytes).digest('hex'));
+});
+
+test('fetch bounds declared and streamed bytes including when Content-Length is absent', async t => {
+  const chunk = new Uint8Array(1024 * 1024);
+  const responses = [
+    () => new Response('', { headers: { 'content-length': String(COLLECTION_BYTE_LIMIT + 1) } }),
+    () => new Response(new ReadableStream({ pull(controller) { controller.enqueue(chunk); } })),
+    () => new Response('', { status: 404 })
+  ];
+  t.mock.method(globalThis, 'fetch', () => responses.shift()());
+  await assert.rejects(fetchCollection('alpha', pin), /reading limit/);
+  await assert.rejects(fetchCollection('alpha', pin), /reading limit/);
+  await assert.rejects(fetchCollection('alpha', pin), { status: 404 });
+  await assert.rejects(fetchCollection('../alpha', pin), /exact Git commit/);
+});
+
+test('static reader exposes every record, independent pages and complete oversized values', async t => {
+  const parent = await mkdtemp(path.join(tmpdir(), 'msdmd-test-'));
+  t.after(() => rm(parent, { recursive: true, force: true }));
+  const c = versionTwo(Array.from({ length: 26 }, (_, n) => fact('field-' + n, n === 25 ? 'large'.repeat(9000) : '<script>witness</script>')));
+  const item = { name: 'alpha', slug: 'alpha', headSha: pin, collectionStatus: 'ok', collectionSha256: '1'.repeat(64), collection: c };
+  const map = buildOrgMap([item]);
+  const dir = path.join(parent, 'reader');
+  await publishMetadataPages([item], map, dir);
+  const base = path.join(dir, 'projects/alpha/metadata');
+  assert.equal(map.repositories[0].collection.readerPath, '/projects/alpha/metadata/');
+  const html = file => readFile(path.join(base, file), 'utf8');
+  assert.match(await html('index.html'), /Native facts<\/a> <small>\(26\)/);
+  assert.match(await html('facts/index.html'), /1\/#r-1/);
+  const first = await html('facts/1/index.html');
+  assert.match(first, /&lt;script&gt;witness&lt;\/script&gt;/);
+  assert.match(first, new RegExp('/blob/' + pin + '/skills/how%20to/SKILL.md#L2'));
+  const second = await html('facts/2/index.html');
+  assert.match(second, /href="\.\.\/record-26.json"/);
+  assert.equal((first + second).match(/<article id=/g).length, 26);
+  assert.deepEqual(JSON.parse(await html('facts/record-26.json')), c.facts.at(-1));
+  await prepareRetainedPages(map, dir);
+  assert.ok(map.repositories[0].collection.readerPath);
+  map.sourceSnapshot.stateDigest = 'different snapshot';
+  await prepareRetainedPages(map, dir);
+  assert.equal(map.repositories[0].collection.readerPath, undefined);
+  await assert.rejects(html('index.html'), { code: 'ENOENT' });
 });

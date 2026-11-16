@@ -23,7 +23,11 @@ import path from 'node:path';
 
 const siteRoot = path.resolve('_site');
 const budgets = Object.freeze({
-  totalSiteBytes: 8 * 1024 * 1024,
+  // The previous 8 MiB budget continues to bound ordinary pages, assets, search and navigation.
+  coreSiteBytes: 8 * 1024 * 1024,
+  // Measured on the twelve published collections: 39.4 MiB of records and under 5 MiB of map JSON.
+  metadataCorpusBytes: 56 * 1024 * 1024,
+  largestMetadataHtmlBytes: 64 * 1024,
   totalFirstPartyCssBytes: 96 * 1024,
   totalFirstPartyJsBytes: 128 * 1024,
   largestHtmlBytes: 192 * 1024
@@ -50,8 +54,12 @@ const records = await Promise.all(files.map(async file => ({
 const sum = predicate => records.filter(predicate).reduce((total, record) => total + record.bytes, 0);
 const htmlRecords = records.filter(record => record.relative.endsWith('.html'));
 const largestHtml = htmlRecords.reduce((largest, record) => record.bytes > largest.bytes ? record : largest, { relative: 'none', bytes: 0 });
+const readerPage = record => /^projects\/[^/]+\/metadata\//.test(record.relative);
+const metadataCorpus = record => readerPage(record) || record.relative === 'assets/data/org-msdmd.json';
 const observed = {
-  totalSiteBytes: sum(() => true),
+  coreSiteBytes: sum(record => !metadataCorpus(record)),
+  metadataCorpusBytes: sum(metadataCorpus),
+  largestMetadataHtmlBytes: htmlRecords.reduce((max, record) => readerPage(record) ? Math.max(max, record.bytes) : max, 0),
   totalFirstPartyCssBytes: sum(record => record.relative.startsWith('assets/') && record.relative.endsWith('.css')),
   totalFirstPartyJsBytes: sum(record => record.relative.startsWith('assets/') && record.relative.endsWith('.js')),
   largestHtmlBytes: largestHtml.bytes

@@ -1,4 +1,6 @@
-import { execFileSync } from 'node:child_process';
+import { fetchCollection, parseCollectionText, matchesRepository, collectionCounts } from './msdmd-collection.mjs';
+import { prepareRetainedPages, publishMetadataPages } from './msdmd-pages.mjs';
+export { parseCollectionText } from './msdmd-collection.mjs';
 import { createHash } from 'node:crypto';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
@@ -35,12 +37,10 @@ import { pathToFileURL } from 'node:url';
 // Usage: run after `npm run refresh:github`. The generated artifact is consumed by /projects/map/ and copied to /assets/data/org-msdmd.json.
 
 const ORGANIZATION = 'The-Interdependency';
-const RAW_GITHUB_ORIGIN = 'https://raw.githubusercontent.com';
 const GENERATED_REPOS = 'src/_data/generated/repos.json';
 const GENERATED_OUT = 'src/_data/generated/orgMsdmd.json';
 const SNAPSHOT_OUT = 'src/_data/snapshots/org-msdmd.last-known-good.json';
 const COLLECTION_SUFFIX = '_msdmd.ts';
-const COLLECTION_MARKER = 'defineMsdmdCollection(';
 const HMMM_RESOLUTIONS = new Set(['empty-target', 'ambiguous-declaration', 'broken-explicit-declaration']);
 
 function sha256(value) {
@@ -51,172 +51,17 @@ function stableJson(value) {
   return `${JSON.stringify(value, null, 2)}\n`;
 }
 
-function rawGithubUrl(repo, commit, path) {
-  const parts = [ORGANIZATION, repo, commit, ...String(path).split('/')].map(encodeURIComponent);
-  return new URL(`/${parts.join('/')}`, RAW_GITHUB_ORIGIN);
-}
-
-function getText(target) {
-  const url = target instanceof URL ? target : new URL(target);
-  if (url.protocol !== 'https:' || url.origin !== RAW_GITHUB_ORIGIN) {
-    throw new Error(`refusing non-raw-GitHub target: ${url.origin}`);
-  }
-  return execFileSync(
-    'curl',
-    ['-fsSL', '--retry', '2', '--max-time', '20', url.href],
-    { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }
-  );
-}
-
-export function stripComments(text) {
-  let out = '';
-  let quote = '';
-  for (let i = 0; i < text.length;) {
-    const ch = text[i];
-    if (quote) {
-      out += ch;
-      if (ch === '\\' && i + 1 < text.length) {
-        out += text[i + 1];
-        i += 2;
-        continue;
-      }
-      if (ch === quote) quote = '';
-      i += 1;
-      continue;
-    }
-    if (ch === '"' || ch === "'") {
-      quote = ch;
-      out += ch;
-      i += 1;
-      continue;
-    }
-    if (ch === '/' && text[i + 1] === '/') {
-      i += 2;
-      while (i < text.length && text[i] !== '\n') i += 1;
-      continue;
-    }
-    if (ch === '/' && text[i + 1] === '*') {
-      const end = text.indexOf('*/', i + 2);
-      i = end < 0 ? text.length : end + 2;
-      continue;
-    }
-    out += ch;
-    i += 1;
-  }
-  return out;
-}
-
-export function extractCollectionPayload(text) {
-  const start = text.indexOf(COLLECTION_MARKER);
-  if (start < 0) throw new Error('collection marker not found');
-  const payloadStart = start + COLLECTION_MARKER.length;
-  let depth = 1;
-  let quote = '';
-  for (let i = payloadStart; i < text.length; i += 1) {
-    const ch = text[i];
-    if (quote) {
-      if (ch === '\\') {
-        i += 1;
-        continue;
-      }
-      if (ch === quote) quote = '';
-      continue;
-    }
-    if (ch === '"' || ch === "'") {
-      quote = ch;
-      continue;
-    }
-    if (ch === '(') depth += 1;
-    if (ch === ')') {
-      depth -= 1;
-      if (depth === 0) return text.slice(payloadStart, i);
-    }
-  }
-  throw new Error('unterminated collection call');
-}
-
-function readQuoted(text, start) {
-  const quote = text[start];
-  let value = '';
-  for (let i = start + 1; i < text.length; i += 1) {
-    const ch = text[i];
-    if (ch === quote) return { json: JSON.stringify(value), next: i + 1 };
-    if (ch !== '\\') {
-      value += ch;
-      continue;
-    }
-    if (i + 1 >= text.length) throw new Error('unterminated string escape');
-    const next = text[++i];
-    const escapes = { n: '\n', r: '\r', t: '\t', b: '\b', f: '\f', v: '\v', '0': '\0' };
-    if (next === 'u') {
-      const hex = text.slice(i + 1, i + 5);
-      if (!/^[0-9a-fA-F]{4}$/.test(hex)) throw new Error('invalid unicode escape');
-      value += String.fromCharCode(Number.parseInt(hex, 16));
-      i += 4;
-    } else if (next === 'x') {
-      const hex = text.slice(i + 1, i + 3);
-      if (!/^[0-9a-fA-F]{2}$/.test(hex)) throw new Error('invalid hex escape');
-      value += String.fromCharCode(Number.parseInt(hex, 16));
-      i += 2;
-    } else {
-      value += escapes[next] ?? next;
-    }
-  }
-  throw new Error('unterminated quoted string');
-}
-
-export function objectLiteralToJson(text) {
-  let out = '';
-  for (let i = 0; i < text.length;) {
-    const ch = text[i];
-    if (ch === '"' || ch === "'") {
-      const quoted = readQuoted(text, i);
-      out += quoted.json;
-      i = quoted.next;
-      continue;
-    }
-    const match = /^[A-Za-z_$][A-Za-z0-9_$]*/.exec(text.slice(i));
-    if (match) {
-      const ident = match[0];
-      let j = i + ident.length;
-      while (/\s/.test(text[j] || '')) j += 1;
-      out += text[j] === ':' ? JSON.stringify(ident) : ident;
-      i += ident.length;
-      continue;
-    }
-    out += ch;
-    i += 1;
-  }
-  return out.replace(/,\s*([}\]])/g, '$1');
-}
-
-export function parseCollectionText(text) {
-  const stripped = stripComments(String(text)).trim();
-  if (stripped.startsWith('{')) return JSON.parse(stripped);
-  const payload = extractCollectionPayload(stripped).trim();
-  try {
-    return JSON.parse(payload);
-  } catch {
-    return JSON.parse(objectLiteralToJson(payload));
-  }
-}
-
 function normalizeRepoName(value) {
   const name = String(value || '');
   if (!/^[A-Za-z0-9_.-]{1,100}$/.test(name)) throw new Error(`invalid repository name: ${name}`);
   return name;
 }
 
-function collectionRepoMatches(value, repoName) {
-  if (!value) return true;
-  return value === repoName || value === `${ORGANIZATION}/${repoName}`;
-}
-
 function normalizeDeclaration(repoName, declaration) {
   const localId = String(declaration?.id || '').trim();
   if (!localId) return null;
   return {
-    id: `${repoName}::${localId}`,
+    id: declaration.address || `${repoName}::${localId}`,
     localId,
     repo: repoName,
     file: String(declaration?.file || 'hmmm'),
@@ -242,9 +87,12 @@ function resolveEdgeTarget(sourceRepo, target, context) {
   if (!raw) return { resolution: 'empty-target', targetId: null, targetRepo: null };
 
   const local = `${sourceRepo}::${raw}`;
-  if (context.declarationIds.has(local)) {
-    return { resolution: 'local-declaration', targetId: local, targetRepo: sourceRepo };
+  if (context.addressOwners.has(raw)) {
+    return { resolution: 'qualified-address', targetId: raw, targetRepo: context.addressOwners.get(raw) };
   }
+  const localTargets = context.aliases.get(local) || [];
+  if (localTargets.length === 1) return { resolution: 'local-declaration', targetId: localTargets[0], targetRepo: sourceRepo };
+  if (localTargets.length > 1) return { resolution: 'ambiguous-declaration', targetId: null, targetRepo: null };
 
   const explicit = explicitRepoTarget(raw, context.repoNames);
   if (explicit) {
@@ -252,16 +100,16 @@ function resolveEdgeTarget(sourceRepo, target, context) {
       return { resolution: 'explicit-repository', targetId: `repo:${explicit.repo}`, targetRepo: explicit.repo };
     }
     const explicitId = `${explicit.repo}::${explicit.declaration}`;
-    if (context.declarationIds.has(explicitId)) {
-      return { resolution: 'explicit-declaration', targetId: explicitId, targetRepo: explicit.repo };
-    }
+    const targets = context.aliases.get(explicitId) || [];
+    if (targets.length === 1) return { resolution: 'explicit-declaration', targetId: targets[0], targetRepo: explicit.repo };
+    if (targets.length > 1) return { resolution: 'ambiguous-declaration', targetId: null, targetRepo: explicit.repo };
     return { resolution: 'broken-explicit-declaration', targetId: null, targetRepo: explicit.repo };
   }
 
   const global = context.globalIds.get(raw) || [];
   if (global.length === 1) {
     const [targetId] = global;
-    return { resolution: 'unique-global-declaration', targetId, targetRepo: targetId.split('::')[0] };
+    return { resolution: 'unique-global-declaration', targetId, targetRepo: context.addressOwners.get(targetId) };
   }
   if (global.length > 1) {
     return { resolution: 'ambiguous-declaration', targetId: null, targetRepo: null };
@@ -307,6 +155,8 @@ export function buildOrgMap(repositoryInputs) {
   const gaps = [];
   const repositoryRows = [];
 
+  const addressOwners = new Map();
+  const aliases = new Map();
   for (const item of repositoryInputs) {
     const hmmm = [...(item.hmmm || [])];
     const collection = item.collection || null;
@@ -329,6 +179,7 @@ export function buildOrgMap(repositoryInputs) {
         error: item.collectionError || null
       },
       counts: {
+        nativeFacts: null,
         declarations: 0,
         gaps: 0,
         edges: 0,
@@ -341,24 +192,41 @@ export function buildOrgMap(repositoryInputs) {
       hmmm
     };
 
+    if (!collection || !matchesRepository(collection, item.name)) {
+      for (const key of Object.keys(row.counts)) row.counts[key] = null;
+    }
     if (!collection) {
       if (item.collectionStatus === 'invalid') hmmm.push('The repository collection point was present but could not be parsed.');
       else hmmm.push('No consumable repo-level msdmd collection point was found at the recorded head.');
       repositoryRows.push(row);
       continue;
     }
-    if (!collectionRepoMatches(collection.repo, item.name)) {
+    if (!matchesRepository(collection, item.name)) {
+      row.collection.status = 'invalid';
       hmmm.push(`Collection declares repo=${collection.repo}; consumed repository is ${item.name}.`);
+      repositoryRows.push(row);
+      continue;
     }
     if (row.collection.sourceCommitMatchesHead === false) {
       hmmm.push('Collection-declared source_commit does not match the repository head consumed by this website build.');
     }
 
+    row.collection.schemaVersion = collection.schema_version || '1.0.0';
+    row.collection.sourceRevision = collection.source?.revision || collection.source_commit || null;
+    Object.assign(row.counts, collectionCounts(collection));
+    for (const fact of collection.facts || []) {
+      if (fact.address) addressOwners.set(fact.address, item.name);
+      if (fact.subject?.address) addressOwners.set(fact.subject.address, item.name);
+    }
     for (const declaration of collection.declarations || []) {
       const normalized = normalizeDeclaration(item.name, declaration);
       if (!normalized) continue;
       declarations.push(normalized);
-      row.counts.declarations += 1;
+      addressOwners.set(normalized.id, item.name);
+      const alias = item.name + '::' + normalized.localId;
+      const local = aliases.get(alias) || [];
+      local.push(normalized.id);
+      aliases.set(alias, local);
       row.blockCounts[normalized.block] = (row.blockCounts[normalized.block] || 0) + 1;
     }
     for (const gap of collection.gaps || []) {
@@ -368,28 +236,30 @@ export function buildOrgMap(repositoryInputs) {
         missing: Array.isArray(gap?.missing) ? gap.missing.map(String) : [],
         reason: gap?.reason ? String(gap.reason) : null
       });
-      row.counts.gaps += 1;
     }
     row._rawEdges = Array.isArray(collection.edges) ? collection.edges : [];
     row.counts.edges = row._rawEdges.length;
     repositoryRows.push(row);
   }
 
-  const declarationIds = new Set(declarations.map(item => item.id));
   const globalIds = new Map();
   for (const declaration of declarations) {
     const values = globalIds.get(declaration.localId) || [];
     values.push(declaration.id);
     globalIds.set(declaration.localId, values);
   }
-  const context = { repoNames, declarationIds, globalIds };
+  const context = { repoNames, addressOwners, aliases, globalIds };
   const edges = [];
   for (const row of repositoryRows) {
     for (const edge of row._rawEdges || []) {
-      const sourceLocalId = String(edge?.from || edge?.source_id || 'hmmm');
-      const sourceId = `${row.name}::${sourceLocalId}`;
+      const from = String(edge?.from || edge?.source_id || 'hmmm');
+      const nativeFormat = row.collection.schemaVersion === '2.0.0';
+      const sourceLocalId = nativeFormat ? edge.source_entry_id ?? null : from;
+      const sourceId = nativeFormat ? from : `${row.name}::${from}`;
       const targetRaw = String(edge?.to || '');
-      const resolved = resolveEdgeTarget(row.name, targetRaw, context);
+      const resolved = edge.target_resolution === 'ambiguous'
+        ? { resolution: 'ambiguous-declaration', targetId: null, targetRepo: null }
+        : resolveEdgeTarget(row.name, targetRaw, context);
       const normalized = {
         sourceRepo: row.name,
         sourceId,
@@ -400,7 +270,8 @@ export function buildOrgMap(repositoryInputs) {
         resolution: resolved.resolution,
         kind: String(edge?.kind || 'relation'),
         sourceBlock: String(edge?.source_block || 'hmmm'),
-        sourceDeclarationId: String(edge?.source_id || sourceLocalId)
+        sourceDeclarationId: nativeFormat ? edge.source_id ?? null : String(edge?.source_id || from),
+        ...(edge.target_resolution ? { declaredTargetResolution: edge.target_resolution } : {})
       };
       edges.push(normalized);
       if (isHmmmResolution(normalized.resolution)) row.counts.unresolvedEdges += 1;
@@ -449,6 +320,7 @@ export function buildOrgMap(repositoryInputs) {
       missingCollectionCount,
       invalidCollectionCount,
       declarationCount: declarations.length,
+      nativeFactCount: repositoryRows.reduce((sum, row) => sum + (row.counts.nativeFacts || 0), 0),
       gapCount: gaps.length,
       edgeCount: edges.length,
       resolvedEdgeCount: graphResolvedEdgeCount,
@@ -490,17 +362,17 @@ async function fetchRepositoryInputs(repositories) {
       continue;
     }
     try {
-      const text = getText(rawGithubUrl(name, base.headSha, collectionPath));
-      const collection = parseCollectionText(text);
+      const bytes = await fetchCollection(name, base.headSha);
+      const collection = parseCollectionText(bytes.toString('utf8'));
+      if (!matchesRepository(collection, name)) throw new Error('Collection declares a different repository');
       inputs.push({
         ...base,
         collectionStatus: 'ok',
-        collectionSha256: sha256(Buffer.from(text, 'utf8')),
+        collectionSha256: sha256(bytes),
         collection
       });
     } catch (error) {
-      const stderr = String(error?.stderr || '');
-      const status = /404|not found/i.test(stderr) ? 'missing' : 'invalid';
+      const status = error.status === 404 ? 'missing' : 'invalid';
       inputs.push({
         ...base,
         collectionStatus: status,
@@ -538,30 +410,26 @@ async function main() {
     const fallback = JSON.parse(await readFile(SNAPSHOT_OUT, 'utf8'));
     fallback.fallback = true;
     fallback.hmmm = [...new Set([...(fallback.hmmm || []), 'OFFLINE=1: displaying the last-known-good org msdmd snapshot.'])];
-    await writeFile(GENERATED_OUT, stableJson(fallback));
+    await prepareRetainedPages(fallback);
+    await writeFile(GENERATED_OUT, JSON.stringify(fallback));
     console.log(`org-msdmd ${fallback.summary?.collectionCount || 0}/${fallback.summary?.repositoryCount || 0} fallback`);
     return;
   }
 
-  try {
-    const repoData = JSON.parse(await readFile(GENERATED_REPOS, 'utf8'));
-    const previous = await readSnapshot();
-    const inputs = await fetchRepositoryInputs(repoData.repositories || []);
-    const regressions = immutableCollectionRegressions(inputs, previous);
-    if (regressions.length) {
-      throw new Error(`immutable collection retrieval regressed at unchanged heads: ${regressions.join(', ')}`);
-    }
-    const data = buildOrgMap(inputs);
-    await writeFile(GENERATED_OUT, stableJson(data));
-    await writeFile(SNAPSHOT_OUT, stableJson(data));
-    console.log(`org-msdmd ${data.summary.collectionCount}/${data.summary.repositoryCount} collections · ${data.summary.crossRepoPairCount} cross-repo pairs · ${data.summary.externalTargetCount} opaque targets · ${data.summary.unresolvedEdgeCount} hmmm edges`);
-  } catch (error) {
-    const fallback = JSON.parse(await readFile(SNAPSHOT_OUT, 'utf8'));
-    fallback.fallback = true;
-    fallback.hmmm = [...new Set([...(fallback.hmmm || []), `Refresh failed; displaying last-known-good snapshot: ${String(error?.message || error)}`])];
-    await writeFile(GENERATED_OUT, stableJson(fallback));
-    console.log(`org-msdmd ${fallback.summary?.collectionCount || 0}/${fallback.summary?.repositoryCount || 0} fallback`);
+  const repoData = JSON.parse(await readFile(GENERATED_REPOS, 'utf8'));
+  const previous = await readSnapshot();
+  const inputs = await fetchRepositoryInputs(repoData.repositories || []);
+  const skillLib = inputs.find(input => input.name === 'skill-lib');
+  if (skillLib?.collectionStatus !== 'ok') {
+    throw new Error('Cannot publish the skill-lib reader: ' + (skillLib?.collectionError || 'repository absent'));
   }
+  const regressions = immutableCollectionRegressions(inputs, previous);
+  if (regressions.length) throw new Error('Previously readable immutable collections could not be read: ' + regressions.join(', '));
+  const data = buildOrgMap(inputs);
+  await publishMetadataPages(inputs, data);
+  await writeFile(GENERATED_OUT, JSON.stringify(data));
+  await writeFile(SNAPSHOT_OUT, stableJson(data));
+  console.log(`org-msdmd ${data.summary.collectionCount}/${data.summary.repositoryCount} collections · ${data.summary.nativeFactCount} native facts · ${data.summary.unresolvedEdgeCount} unresolved edges`);
 }
 
 const invokedAsScript = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
