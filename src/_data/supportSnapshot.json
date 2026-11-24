@@ -1,7 +1,7 @@
 {
   "schema": "interdependentway.support-snapshot/2",
   "source": "ChatGPT Finances",
-  "observed_at": "2026-11-23T16:29:48Z",
+  "observed_at": "2026-11-24T16:19:03Z",
   "currency": "USD",
   "updates": "daily",
   "totals": {
@@ -13,7 +13,7 @@
   },
   "funding": {
     "period_start": "2026-11-03",
-    "through": "2026-11-23",
+    "through": "2026-11-24",
     "confirmed_received_minor": null,
     "coverage": "partial"
   }
