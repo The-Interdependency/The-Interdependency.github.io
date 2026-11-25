@@ -190,7 +190,13 @@ test('builder journal source is collapsible and loads the canonical website-buil
   assert.match(page, /entry\.model/);
   assert.match(vendored, /name: website-builder-journal/);
   assert.match(vendored, /Load this when any modification to The-Interdependency\/The-Interdependency\.github\.io is planned or underway/i);
-  assert.match(sourceReadme, /df066ab3adac9eb9632e379003e0f90ac784767f/);
+  const sourceCommit = sourceReadme.match(/Source commit: `([0-9a-f]{40})`/)?.[1];
+  assert.ok(sourceCommit, 'vendored skills README must cite a full source commit SHA');
+  const siteReadme = await readFile('README.md', 'utf8');
+  assert.ok(
+    siteReadme.includes(`consumed here from commit \`${sourceCommit}\``),
+    'site README must cite the same skill-lib source commit as the vendored skills README'
+  );
 });
 
 test('global navigation is organized by durable visitor goals with subordinate section navigation', async () => {
